@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ifti's Notebook</title>
-<meta name="description" content="Notes on design, clients and the business between them.">
+<meta name="description" content="Ifti on design, clients and the business between them. Key accounts at Musemind, working from Dhaka with clients across the GCC.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Figtree:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -162,6 +162,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .log .tag { --c: var(--lavender); font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); border-radius: 3px; padding: 0.05rem 0.45rem; }
 .tag.t-ai { --c: var(--mauve); } .tag.t-design { --c: var(--pink); } .tag.t-anime { --c: var(--peach); }
 .tag.t-series { --c: var(--green); } .tag.t-film { --c: var(--sky); } .tag.t-book { --c: var(--yellow); } .tag.t-tool { --c: var(--teal); }
+.tag.t-music { --c: var(--maroon); }
 .log .st { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); min-width: 9rem; text-align: right; }
 .log p { flex-basis: 100%; color: var(--muted); font-size: 0.95em; }
 .suggest { display: grid; gap: 1rem; padding: 1.25rem; border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--rule)); border-radius: 6px; background: var(--paper); }
@@ -292,6 +293,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 
 /* mobile navigation experiments: tabs (bottom bar) · sheet (full-screen index) · classic */
 .m-top, .m-tabs, .m-sheet { display: none; }
+.page h2[id] { scroll-margin-top: 5rem; }
 @media (max-width: 760px) {
   :root[data-mnav="tabs"] .rail, :root[data-mnav="sheet"] .rail,
   :root[data-mnav="tabs"] .ap-tab, :root[data-mnav="sheet"] .ap-tab { display: none; }
@@ -497,20 +499,30 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <!-- ============ INDEX ============ -->
     <section class="page" id="index">
       <h1>Ifti</h1>
-      <p class="lede">I help founders and enterprise teams in the GCC turn design work into business results.</p>
-      <p>Day to day, I run key accounts at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency. I sit between what a client's business needs and what our designers make, and I make sure the work moves a number the client cares about.</p>
-      <p>My clients range from enterprise teams with a dozen stakeholders to solo founders with six months of runway. <span class="sn-ref"></span><span class="sn">Different buyers, same question underneath: is this worth it?</span> I've learned that the hard part is rarely the design. It's alignment, timing, and saying the uncomfortable thing early.</p>
-      <p>This site is my notebook. I write down what I learn in those rooms, and keep a monthly log of what I'm exploring, watching and reading. <a href="#suggest">Suggestions welcome.</a></p>
+      <p class="lede">I run key accounts and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency. I help founders and enterprise teams across the GCC make design pay for itself.</p>
+      <p>I'm Mehedi Hasan Ifti, based in Dhaka. My job sits between what a client's business needs and what our designers make. I keep both pointed at the same number.</p>
+      <p>Clients range from enterprise teams with a dozen stakeholders to solo founders.<span class="sn-ref"></span><span class="sn">Different buyers. Every one of them is asking whether this is worth it.</span> The design is usually the easy part. Alignment, timing and saying the uncomfortable thing early are harder.</p>
+
+      <h2>Ask me about</h2>
+      <ul class="plain">
+        <li><b>Selling design to a CFO.</b> What it costs, what it returns, and how to say both on one page.</li>
+        <li><b>Aligning a room.</b> Getting a dozen stakeholders to one decision with one owner.</li>
+        <li><b>Negotiation.</b> Pricing, scope, and the questions to ask before anyone names a number.</li>
+        <li><b>Building with AI.</b> I made this site by talking it through with Claude Code.</li>
+        <li><b>Liverpool.</b> Or Brazil. I'll take either.</li>
+      </ul>
 
       <h2>Recent notes</h2>
+      <p class="sub">What I learn in client rooms, written down before I forget it.</p>
       <ul class="entries">
-        <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed. Enterprises buy safety.</span><span class="d">12 Oct</span></a></li>
-        <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep</span></a></li>
-        <li><a href="#n-002"><span class="no">N°002</span><span class="t">The recap email is the contract people read</span><span class="d">14 Sep</span></a></li>
+        <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
+        <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep 2026</span></a></li>
+        <li><a href="#n-002"><span class="no">N°002</span><span class="t">The recap email is the contract people read</span><span class="d">14 Sep 2026</span></a></li>
       </ul>
       <p><a class="back" href="#notes">All notes →</a></p>
 
       <h2>Elsewhere</h2>
+      <p>Email is fastest. There's also a <a href="#now">monthly log</a> of what I'm exploring, watching and reading. <a href="#suggest">Suggestions welcome.</a></p>
       <div class="contact">
         <span>mh.hasan884@gmail.com <button class="copy" type="button" data-copy="mh.hasan884@gmail.com">copy</button></span>
         <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>
@@ -525,48 +537,70 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <section class="page" id="now">
       <p class="label">Now · October 2026</p>
       <h1>What I'm up to</h1>
-      <p>This is a <a href="https://nownow.com/about" target="_blank" rel="noopener">now page</a>: what's on my desk, my screen and my nightstand this month. I update it once a month.</p>
+      <p>This is a <a href="https://nownow.com/about" target="_blank" rel="noopener">now page</a>: what's on my desk, my screen and my headphones this month.</p>
 
       <dl class="facts">
-        <dt>Work</dt><dd>Running a portfolio of key accounts at Musemind, from enterprise programmes to early-stage founders.</dd>
+        <dt>Work</dt><dd>Key accounts, sales and partnerships at Musemind. Enterprise programmes to early-stage founders.</dd>
         <dt>Practising</dt><dd>Negotiation. Asking better questions before I talk price.</dd>
-        <dt>Based in</dt><dd>Dhaka, Bangladesh. Working across the GCC.</dd>
+        <dt>Building</dt><dd>Small things with Claude Code, starting with this site.</dd>
+        <dt>Based in</dt><dd>Dhaka, Bangladesh. Working with clients across the GCC.</dd>
       </dl>
 
       <h2>Exploring</h2>
-      <p class="sub">Tools and ideas I'm trying out, mostly AI.</p>
+      <p class="sub">Mostly AI, and mostly hands-on.</p>
       <ul class="log">
-        <li><span class="t">Claude Code</span><span class="tag t-ai">AI</span><p>Built this site with it, by talking through what I wanted.</p></li>
-        <li><span class="t">Figma AI</span><span class="tag t-design">Design</span><p>Seeing where it speeds up early concepts and where it gets in the way.</p></li>
-        <li><span class="t">Meeting recorders</span><span class="tag t-ai">AI</span><p>Testing whether AI call notes are good enough to replace my own.</p></li>
+        <li><span class="t">Claude Code</span><span class="tag t-ai">AI</span><p>Built this site with it, one conversation at a time.</p></li>
+        <li><span class="t">OpenAI releases</span><span class="tag t-ai">AI</span><p>Keeping up with each launch and what it changes for client work.</p></li>
+        <li><span class="t">Theo <span class="by">· t3.gg</span></span><span class="tag t-tool">YouTube</span><p>My main feed for what's moving in AI and dev tools.</p></li>
       </ul>
 
       <h2>Watching</h2>
-      <p class="sub">Series, films and anime currently on my screen.</p>
+      <p class="sub">Series and films on my screen lately.</p>
       <ul class="log">
-        <li><span class="t">Frieren: Beyond Journey's End</span><span class="tag t-anime">Anime</span><span class="st">S2 · watching</span></li>
-        <li><span class="t">Severance</span><span class="tag t-series">Series</span><span class="st">S2 · finished</span></li>
-        <li><span class="t">Vinland Saga</span><span class="tag t-anime">Anime</span><span class="st">up next</span></li>
+        <li><span class="t">The Mandalorian</span><span class="tag t-series">Series</span></li>
+        <li><span class="t">Mirzapur</span><span class="tag t-series">Series</span></li>
+        <li><span class="t">The Gentlemen</span></li>
+        <li><span class="t">Spider-Man</span><span class="tag t-film">Film</span></li>
+        <li><span class="t">Supergirl</span></li>
       </ul>
 
       <h2>Reading</h2>
+      <p class="sub">On the list.</p>
       <ul class="log">
-        <li><span class="t">High Output Management <span class="by">· Andrew Grove</span></span><span class="tag t-book">Book</span><span class="st">reading · 2nd time</span></li>
-        <li><span class="t">The Mom Test <span class="by">· Rob Fitzpatrick</span></span><span class="tag t-book">Book</span><span class="st">up next</span></li>
+        <li><span class="t">Never Split the Difference <span class="by">· Chris Voss</span></span><span class="tag t-book">Book</span></li>
       </ul>
-      <p><a class="back" href="#shelf">Books that stuck → Shelf</a></p>
+      <p><a class="back" href="#shelf">Books that stuck →</a></p>
+
+      <h2>Listening</h2>
+      <p class="sub">On repeat this month.</p>
+      <ul class="log">
+        <li><span class="t">Linkin Park</span><span class="tag t-music">Music</span></li>
+        <li><span class="t">The Weeknd</span><span class="tag t-music">Music</span></li>
+        <li><span class="t">Karan Aujla</span><span class="tag t-music">Music</span></li>
+      </ul>
+
+      <h2>Off the clock</h2>
+      <p class="sub">Everything that isn't client work.</p>
+      <dl class="facts">
+        <dt>Sport</dt><dd>Liverpool and Brazil. I used to play football, and I used to lift.</dd>
+        <dt>Comedy</dt><dd>Stand-up from Anubhav Singh Bassi and Samay Raina.</dd>
+        <dt>Cars</dt><dd>Reviews, walkarounds and long cars-and-conversation videos.</dd>
+        <dt>Homes</dt><dd>Architectural Digest tours. A good floor plan is UX you can walk through.</dd>
+        <dt>Travel</dt><dd>Bangladesh first. Chattogram, Cox's Bazar, Bhatiari waterfall, Himchari National Park. Plenty of travel vlogs in between.</dd>
+        <dt>Coffee</dt><dd>In Dhaka? Try Nerdy Bean Coffee House, Brewers Den or Arabika Coffee.</dd>
+      </dl>
 
       <h2 id="suggest">Suggest something</h2>
-      <p>Know a show, an anime, a book or a tool I should try? Tell me. The best ones end up on this page.</p>
+      <p>Know a show, a film, a book, an album or a tool I should try? Tell me. The good ones end up on this page.</p>
       <form class="suggest" id="suggest-form" novalidate>
         <div class="kinds" role="radiogroup" aria-label="Type">
           <label><input type="radio" name="kind" id="k-show" value="Series" checked><span>Series</span></label>
-          <label><input type="radio" name="kind" id="k-anime" value="Anime"><span>Anime</span></label>
           <label><input type="radio" name="kind" id="k-film" value="Film"><span>Film</span></label>
           <label><input type="radio" name="kind" id="k-book" value="Book"><span>Book</span></label>
+          <label><input type="radio" name="kind" id="k-music" value="Music"><span>Music</span></label>
           <label><input type="radio" name="kind" id="k-tool" value="Tool"><span>Tool</span></label>
         </div>
-        <label class="field"><span>Title</span><input type="text" id="s-title" name="title" required maxlength="120" placeholder="e.g. Blue Eye Samurai"></label>
+        <label class="field"><span>Title</span><input type="text" id="s-title" name="title" required maxlength="120" placeholder="e.g. Succession"></label>
         <label class="field"><span>Why I'd like it <i>(optional)</i></span><textarea id="s-why" name="why" rows="3" maxlength="600"></textarea></label>
         <label class="field"><span>Your name <i>(optional)</i></span><input type="text" id="s-name" name="name" maxlength="80"></label>
         <div class="actions"><button type="submit" class="btn">Send suggestion</button><span class="status" id="s-status" role="status"></span></div>
@@ -576,30 +610,41 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <!-- ============ NOTES ============ -->
     <section class="page" id="notes">
       <h1>Notes</h1>
-      <p>Short notes from client work: negotiation, stakeholder alignment, and the business side of design. Numbered in the order I wrote them.</p>
+      <p class="lede">Short notes from client work.</p>
+      <p>Negotiation, stakeholder alignment and the business side of design. Each one fits on a phone screen. Numbered in the order I wrote them.</p>
       <ul class="entries">
-        <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed. Enterprises buy safety.</span><span class="d">12 Oct 2026</span></a></li>
+        <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
         <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep 2026</span></a></li>
         <li><a href="#n-002"><span class="no">N°002</span><span class="t">The recap email is the contract people read</span><span class="d">14 Sep 2026</span></a></li>
-        <li><a href="#n-001"><span class="no">N°001</span><span class="t">Why this notebook exists</span><span class="d">01 Sep 2026</span></a></li>
+        <li><a href="#n-001"><span class="no">N°001</span><span class="t">Why this notebook exists</span><span class="d">1 Sep 2026</span></a></li>
       </ul>
     </section>
 
     <article class="page" id="n-004">
       <div class="note-head"><span class="label">N°004</span><span class="label">12 Oct 2026</span></div>
-      <h1>Founders buy speed. Enterprises buy safety.</h1>
-      <p>Same proposal, two buyers. A founder reads it asking, "How fast can I ship?" An enterprise stakeholder reads it asking, "What happens if this goes wrong, and who gets blamed?"</p>
-      <p>Pitch speed to the enterprise and you sound reckless. Pitch governance to the founder and you sound slow.<span class="sn-ref"></span><span class="sn">The scope, price and timeline barely change. Only the framing does.</span></p>
-      <p>So now I write the first paragraph twice. <mark>Everything below it stays the same.</mark></p>
+      <h1>Founders buy speed, enterprises buy safety</h1>
+      <p>Same proposal, two buyers. Each reads the first paragraph looking for one thing.</p>
+      <dl class="facts">
+        <dt>Founder</dt><dd>"How fast can I ship?"</dd>
+        <dt>Enterprise</dt><dd>"What happens if this goes wrong, and who gets blamed?"</dd>
+      </dl>
+      <p>Pitch speed to the enterprise and you sound reckless. Pitch governance to the founder and you sound slow.<span class="sn-ref"></span><span class="sn">Scope, price and timeline barely change between the two. Only the framing does.</span></p>
+      <p>So I write the first paragraph twice. <mark>Everything below it stays the same.</mark></p>
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
 
     <article class="page" id="n-003">
       <div class="note-head"><span class="label">N°003</span><span class="label">28 Sep 2026</span></div>
       <h1>Scope creep starts at kickoff</h1>
-      <p>Most scope fights aren't about scope. They're about an assumption nobody said out loud in week one.</p>
-      <p>I now end every kickoff with one question: <mark>"What would make you unhappy in month two, even if we hit every deliverable?"</mark><span class="sn-ref"></span><span class="sn">Ask it to the most senior person in the room, last. The answer changes when the boss is listening.</span></p>
-      <p>The answers are the real scope. Write them down, put them in the recap, and get a yes.</p>
+      <p>Most scope fights trace back to week one. Someone assumed something, and nobody said it out loud.</p>
+      <p>So I end every kickoff with one question.</p>
+      <p class="lede"><mark>"What would make you unhappy in month two, even if we hit every deliverable?"</mark><span class="sn-ref"></span><span class="sn">Ask the most senior person in the room, and ask them last. The answer changes when the boss is listening.</span></p>
+      <p>The answers are the real scope. Then three steps.</p>
+      <ul class="plain">
+        <li>Write them down.</li>
+        <li>Put them in the recap.</li>
+        <li>Get a yes.</li>
+      </ul>
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
 
@@ -607,16 +652,22 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <div class="note-head"><span class="label">N°002</span><span class="label">14 Sep 2026</span></div>
       <h1>The recap email is the contract people read</h1>
       <p>Nobody rereads the statement of work. Everyone rereads the email you sent after the call.</p>
-      <p>So that email does the heavy lifting: decisions, owners, dates, open questions. Five lines, no adjectives.<span class="sn-ref"></span><span class="sn">My test: could the client's CFO read it cold and know what happens next?</span></p>
-      <p>If the stakeholder can't forward it to their boss without editing it, it isn't done.</p>
+      <p>So that email carries the weight. Keep it short, cut the adjectives, and cover four things.</p>
+      <ul class="plain">
+        <li><b>Decisions.</b> What we agreed.</li>
+        <li><b>Owners.</b> One name per decision.</li>
+        <li><b>Dates.</b> When each thing happens.</li>
+        <li><b>Open questions.</b> What's still unresolved, and who answers it.</li>
+      </ul>
+      <p>If the stakeholder can't forward it to their boss without editing, it isn't finished.<span class="sn-ref"></span><span class="sn">Second test. Could the client's CFO read it cold and know what happens next?</span></p>
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
 
     <article class="page" id="n-001">
-      <div class="note-head"><span class="label">N°001</span><span class="label">01 Sep 2026</span></div>
+      <div class="note-head"><span class="label">N°001</span><span class="label">1 Sep 2026</span></div>
       <h1>Why this notebook exists</h1>
-      <p>I spend my days with founders and enterprise teams working out what design is worth to their business. I learn something most weeks, and then I forget most of it.</p>
-      <p>This is where I write it down. Short notes, no schedule, no newsletter.<span class="sn-ref"></span><span class="sn">Inspired by Paul Graham's essays. Much shorter, written by someone with much less time.</span></p>
+      <p>I spend my days with founders and enterprise teams, working out what design is worth to their business. I learn something most weeks. Then I forget most of it.</p>
+      <p>So I write it down here. Short notes, no schedule, no newsletter.<span class="sn-ref"></span><span class="sn">Inspired by Paul Graham's essays. Much shorter, written by someone with much less time.</span></p>
       <p>If one is useful to you, email me and tell me why.</p>
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
@@ -624,18 +675,25 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <!-- ============ WORK ============ -->
     <section class="page" id="work">
       <h1>Work</h1>
-      <p class="lede">Key Accounts at Musemind. I make sure design work pays for itself.</p>
-      <p>Musemind is a UX design agency working with companies across the GCC. My job is the relationship: understanding what the client's business needs, keeping stakeholders aligned, and steering the work toward outcomes rather than deliverables.</p>
+      <p class="lede">I make sure design work pays for itself.</p>
+      <dl class="facts">
+        <dt>Role</dt><dd>Assistant Manager, Key Accounts, Sales &amp; Partnerships</dd>
+        <dt>Company</dt><dd><a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency serving the GCC</dd>
+        <dt>Since</dt><dd>February 2026</dd>
+        <dt>Based in</dt><dd>Dhaka, Bangladesh</dd>
+      </dl>
+      <p>My job is the relationship. I learn what the client's business needs, keep stakeholders aligned and steer the work toward outcomes.</p>
+      <p>Trust compounds. I'd rather earn the second project than squeeze the first.</p>
 
       <h2>Who I work with</h2>
       <dl class="facts">
-        <dt>Enterprise</dt><dd>Teams that need design to get through procurement, internal politics and a dozen stakeholders, and still ship something good.</dd>
+        <dt>Enterprise</dt><dd>Teams that need design to clear procurement, internal politics and a dozen stakeholders, and still ship something good.</dd>
         <dt>Founders</dt><dd>People who need a product that sells before the runway ends. Fewer meetings, faster decisions.</dd>
       </dl>
 
       <h2>How I work</h2>
       <ul class="plain">
-        <li><b>Outcomes before outputs.</b> A screen is not a result. Revenue, retention or time saved is.</li>
+        <li><b>Outcomes before outputs.</b> A screen is a deliverable. Revenue, retention or time saved is a result.</li>
         <li><b>Say the hard thing early.</b> Bad news gets more expensive every week you wait.</li>
         <li><b>One owner per decision.</b> If everyone owns it, nobody signs it off.</li>
         <li><b>Write it down.</b> If it isn't in the recap, it didn't happen.</li>
@@ -662,27 +720,32 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       </figure>
 
       <h2>Working together</h2>
-      <p>If you're building something in the GCC and want a design partner who cares about the numbers, email me at <b>mh.hasan884@gmail.com</b>.</p>
+      <p>Building something in the GCC and want a design partner who watches the numbers? Email me at <b>mh.hasan884@gmail.com</b> or find me on <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>. Two questions worth answering before we talk:</p>
+      <ul class="plain">
+        <li><b>What are you trying to move?</b> Revenue, retention or time saved, and by when.</li>
+        <li><b>Who signs off?</b> Who decides, who pays, and who can say no.</li>
+      </ul>
     </section>
 
     <!-- ============ SHELF ============ -->
     <section class="page" id="shelf">
       <h1>Shelf</h1>
-      <p>Books that changed how I work, with one line on why.</p>
+      <p class="lede">Books that changed how I work. One line each on why.</p>
       <ul class="shelf">
-        <li><b>Never Split the Difference</b> <span class="by">· Chris Voss</span><p>Negotiation is mostly listening. Labels and calibrated questions changed how I run pricing calls.</p></li>
-        <li><b>The Mom Test</b> <span class="by">· Rob Fitzpatrick</span><p>How to ask questions that people can't answer politely. Essential for discovery calls.</p></li>
-        <li><b>High Output Management</b> <span class="by">· Andrew Grove</span><p>Treat your work like a production line and find the bottleneck. Still the best book on management.</p></li>
-        <li><b>Thinking in Bets</b> <span class="by">· Annie Duke</span><p>Judge a decision by the information you had, not by how it turned out.</p></li>
-        <li><b>The Design of Everyday Things</b> <span class="by">· Don Norman</span><p>Why I can explain to a CFO what UX actually means.</p></li>
+        <li><b>Never Split the Difference</b> <span class="by">· Chris Voss</span><p>Negotiation is mostly listening. Labels and calibrated questions belong in every pricing call.</p></li>
+        <li><b>The Mom Test</b> <span class="by">· Rob Fitzpatrick</span><p>How to ask questions people can't answer politely. Required reading before any discovery call.</p></li>
+        <li><b>High Output Management</b> <span class="by">· Andrew Grove</span><p>Treat work like a production line and find the bottleneck. Still the clearest book on management.</p></li>
+        <li><b>Thinking in Bets</b> <span class="by">· Annie Duke</span><p>Judge a decision by what you knew when you made it. The outcome is a separate question.</p></li>
+        <li><b>The Design of Everyday Things</b> <span class="by">· Don Norman</span><p>Good design explained in plain words. Useful when the audience is a CFO.</p></li>
       </ul>
+      <p class="sub">Got one that belongs here? <a href="#suggest">Suggest it.</a></p>
     </section>
   </main>
 
   <aside class="meta" id="meta" aria-label="Page details"></aside>
 
   <footer class="colophon">
-    Set in Bricolage Grotesque, Literata and IBM Plex Mono. Hand-written HTML. No tracking, no cookies.<br>
+    Set in Bricolage Grotesque, Literata and IBM Plex Mono. Built by talking it through with Claude Code. No tracking, no cookies.<br>
     <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a><br>
     <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · T theme</span>
   </footer>
@@ -968,7 +1031,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 
   function show() {
     var id = (location.hash || '#index').slice(1);
-    var target = document.getElementById(id);
+    var target = document.getElementById(id), anchor = null;
+    if (target && !target.classList.contains('page') && target.closest('.page')) { anchor = target; target = target.closest('.page'); id = target.id; }
     if (!target || !target.classList.contains('page')) { target = document.getElementById('index'); id = 'index'; }
     pages.forEach(function (p) { p.classList.toggle('on', p === target); });
     var section = id.indexOf('n-') === 0 ? 'notes' : id;
@@ -983,10 +1047,10 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     sheetOpen(false);
     if (id === 'work' && radarPlay) radarPlay();
     window.scrollTo(0, 0);
-    setTimeout(function () { window.scrollTo(0, 0); }, 0);
+    setTimeout(function () { if (anchor) anchor.scrollIntoView(); else window.scrollTo(0, 0); }, 0);
   }
   window.addEventListener('hashchange', show);
-  window.addEventListener('load', function () { window.scrollTo(0, 0); });
+  window.addEventListener('load', function () { var a = document.getElementById(location.hash.slice(1)); if (a && !a.classList.contains('page') && a.closest('.page')) a.scrollIntoView(); else window.scrollTo(0, 0); });
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   show();
 

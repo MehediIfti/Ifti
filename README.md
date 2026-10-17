@@ -20,7 +20,7 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Social links:** the `SOCIALS UPDATE` list in the script. Each profile appears as a pill on the homepage (Let's talk), in the phone index menu, and as an icon tile under "Find me" in the right column. The footer links are plain HTML.
 
-**Booking:** set `var CALENDLY = '...'` (the `BOOKING` comment in the script). Every `data-book` button switches from email to that link.
+**Booking:** the booking link (Google Calendar) is `var CALENDLY` (the `BOOKING` comment in the script). Every `data-book` button points to it.
 
 **Contact form:** posts to FormSubmit and lands in mh.hasan884@gmail.com. The first submission sends a one-time activation email; click it once and every later message comes through. The endpoint is `SUGGEST_ENDPOINT` in the script.
 

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-palette="black" data-bg="grid" data-calm="spotlight" data-type="serif" data-layout="3">
+<html lang="en" data-theme="midnight-ledger" data-palette="black" data-bg="grid" data-calm="spotlight" data-type="serif" data-layout="3">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -926,6 +926,16 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .ap-x:hover { color: var(--text); background: var(--surface0); }
 .ap-g { display: grid; gap: 0.5rem; }
 .ap-g > span { color: var(--label); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.6875rem; }
+.ap-presets { display: grid; gap: 0.45rem; }
+.ap-preset { font: inherit; text-align: left; cursor: pointer; display: grid; gap: 0.35rem; padding: 0.7rem 0.75rem; border-radius: 9px; color: var(--sw-fg); background: var(--sw-bg); border: 1px solid color-mix(in srgb, var(--sw-fg) 18%, transparent); background-image: var(--sw-pat); background-size: 14px 14px; }
+.ap-preset[aria-pressed="true"] { outline: 2px solid var(--mauve); outline-offset: 1px; }
+.ap-preset .pr-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.ap-preset b { font-family: var(--display); font-size: 1rem; letter-spacing: 0; color: var(--sw-ac); }
+.ap-preset em { font-style: normal; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
+.ap-preset small { font-size: 0.6875rem; line-height: 1.4; opacity: 0.8; }
+.ap-edit { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; padding-top: 0.9rem; border-top: 1px solid var(--surface0); color: var(--subtext0); }
+.ap-edit b { color: var(--text); font-weight: 500; }
+.ap-edit i { font-style: normal; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--peach); }
 .ap-themes { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
 .ap-themes button {
   font: inherit; text-align: left; cursor: pointer;
@@ -1844,6 +1854,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 <aside class="ap-panel" id="ap-panel" aria-label="Appearance" hidden>
   <div class="ap-head"><b>Appearance</b><button type="button" class="ap-x" id="ap-close" aria-label="Close">×</button></div>
   <div class="ap-g"><span>Theme</span>
+    <div class="ap-presets" id="ap-presets" role="group" aria-label="Themes"></div>
+  </div>
+  <div class="ap-edit"><span>Edit <b id="ap-cur">this theme</b></span><i id="ap-dirty" hidden>edited</i></div>
+  <div class="ap-g"><span>Colours</span>
     <div class="ap-themes" data-attr="palette">
       <button type="button" id="th-black" data-val="black" style="--sw-bg:#0c0d10;--sw-fg:#d4d4d8"><span class="sw"><i style="background:#cba6f7"></i><i style="background:#fab387"></i><i style="background:#94e2d5"></i></span>Black</button>
       <button type="button" id="th-mocha" data-val="mocha" style="--sw-bg:#1e1e2e;--sw-fg:#cdd6f4"><span class="sw"><i style="background:#cba6f7"></i><i style="background:#fab387"></i><i style="background:#94e2d5"></i></span>Mocha</button>
@@ -2447,27 +2461,63 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     mini.innerHTML = html;
   })();
 
-  // Appearance: theme, background and text style, remembered per visitor.
-  var AP_DEFAULTS = { palette: 'black', bg: 'grid', calm: 'spotlight', type: 'serif', layout: '3', mnav: 'tabs' };
+  // Appearance. A theme is a named bundle of settings (colours, background, pattern, layout, text).
+  // THEME UPDATE: add next week's theme at the top of THEMES. The first one is what new visitors get.
+  // `sw` is how its card looks in the picker: background, text, accent, and the background pattern.
+  var THEMES = [
+    { id: 'midnight-ledger', name: 'Midnight Ledger', week: 'Week 42', note: 'Black ink, a drafting grid and a spotlight on the page.',
+      set: { palette: 'black', bg: 'grid', calm: 'spotlight', layout: '3', type: 'serif' },
+      sw: { bg: '#0c0d10', fg: '#d4d4d8', ac: '#cba6f7', pat: 'linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)' } }
+  ];
+  var THEME_KEYS = ['palette', 'bg', 'calm', 'layout', 'type'];
+  var AP_GLOBAL = { mnav: 'tabs' };
   var tab = document.getElementById('ap-tab');
   var panel = document.getElementById('ap-panel');
   var groups = document.querySelectorAll('#ap-panel [data-attr]');
-  function apSet(attr, val, save) {
+  var presets = document.getElementById('ap-presets');
+  function store(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+  function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function themeById(id) { return THEMES.filter(function (t) { return t.id === id; })[0] || THEMES[0]; }
+  function edits(id) { try { return JSON.parse(read('ap-t-' + id) || '{}') || {}; } catch (e) { return {}; } }
+  var cur = themeById(read('ap-theme')).id;
+  ['palette', 'bg', 'calm', 'type', 'layout'].forEach(function (k) { store('ap-' + k, null); }); // settings saved before themes existed
+  function apSet(attr, val) {
     root.setAttribute('data-' + attr, val);
     document.querySelectorAll('#ap-panel [data-attr="' + attr + '"] button').forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-val') === val));
     });
-    if (save) { try { localStorage.setItem('ap-' + attr, val); } catch (e) {} }
   }
+  function apTheme(id) {
+    var t = themeById(id), ed = edits(t.id); cur = t.id;
+    root.setAttribute('data-theme', t.id);
+    THEME_KEYS.forEach(function (k) { apSet(k, ed[k] || t.set[k]); });
+    presets.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-id') === t.id)); });
+    document.getElementById('ap-cur').textContent = t.name;
+    document.getElementById('ap-dirty').hidden = !Object.keys(ed).length;
+  }
+  presets.innerHTML = THEMES.map(function (t) {
+    return '<button type="button" class="ap-preset" data-id="' + t.id + '" style="--sw-bg:' + t.sw.bg + ';--sw-fg:' + t.sw.fg + ';--sw-ac:' + t.sw.ac + ';--sw-pat:' + t.sw.pat + '">' +
+      '<span class="pr-top"><b>' + esc(t.name) + '</b><em>' + esc(t.week) + '</em></span><small>' + esc(t.note) + '</small></button>';
+  }).join('');
+  presets.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    apTheme(b.getAttribute('data-id')); store('ap-theme', cur);
+  });
   groups.forEach(function (g) {
     var attr = g.getAttribute('data-attr');
-    var val = AP_DEFAULTS[attr];
-    try { val = localStorage.getItem('ap-' + attr) || val; } catch (e) {}
-    apSet(attr, val, false);
+    if (attr in AP_GLOBAL) apSet(attr, read('ap-' + attr) || AP_GLOBAL[attr]);
     g.addEventListener('click', function (e) {
-      var b = e.target.closest('button'); if (b) apSet(attr, b.getAttribute('data-val'), true);
+      var b = e.target.closest('button'); if (!b) return;
+      var val = b.getAttribute('data-val');
+      apSet(attr, val);
+      if (attr in AP_GLOBAL) { store('ap-' + attr, val); return; }
+      var t = themeById(cur), ed = edits(cur);
+      if (val === t.set[attr]) delete ed[attr]; else ed[attr] = val;
+      store('ap-t-' + cur, Object.keys(ed).length ? JSON.stringify(ed) : null);
+      document.getElementById('ap-dirty').hidden = !Object.keys(ed).length;
     });
   });
+  apTheme(cur);
   function apOpen(open) {
     panel.hidden = !open; tab.setAttribute('aria-expanded', String(open));
     if (open) panel.querySelector('[aria-pressed="true"]').focus();
@@ -2478,10 +2528,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   });
   document.getElementById('ap-close').addEventListener('click', function () { apOpen(false); tab.focus(); });
   document.getElementById('ap-reset').addEventListener('click', function () {
-    Object.keys(AP_DEFAULTS).forEach(function (k) {
-      apSet(k, AP_DEFAULTS[k], false);
-      try { localStorage.removeItem('ap-' + k); } catch (e) {}
-    });
+    store('ap-t-' + cur, null); apTheme(cur);
   });
   document.addEventListener('click', function (e) {
     if (!panel.hidden && !panel.contains(e.target) && !tab.contains(e.target) && !e.target.closest('.ap-open')) apOpen(false);

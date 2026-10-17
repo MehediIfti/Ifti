@@ -169,34 +169,76 @@ ul.plain li::marker { color: var(--muted); }
 .pg-cards p { margin-top: 0.3rem; font-size: 0.92em; color: var(--muted); line-height: 1.5; }
 .pg-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .pg-chips span { font-family: var(--mono); font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; color: var(--pg); background: color-mix(in srgb, var(--pg) 13%, transparent); }
-/* paperclip org chart */
-.pc-org { display: grid; justify-items: center; padding: 1.4rem 1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--mantle); }
-.pc-row { display: flex; justify-content: center; gap: 0.75rem; }
-.pc-kids { position: relative; padding-top: 14px; }
-.pc-kids::before { content: ""; position: absolute; top: 0; left: calc(100% / 6); right: calc(100% / 6); height: 14px; border: 1px solid var(--surface1); border-bottom: 0; border-radius: 6px 6px 0 0; }
-.pc-v { width: 1px; height: 18px; background: var(--surface1); }
-.pc-node { position: relative; display: grid; justify-items: center; min-width: 7.5rem; padding: 0.55rem 0.9rem; background: var(--paper); border: 1px solid var(--surface0); border-radius: 8px; }
-.pc-node b { font-family: var(--display); font-size: 0.95rem; color: var(--ink); }
-.pc-node small { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
-.pc-node.board { border-color: var(--pg); }
-.pc-node.board b { color: var(--pg); }
-.pc-node .hb { position: absolute; top: 7px; right: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+/* paperclip: Wayne Enterprises dashboard */
+#paperclip.page { max-width: 46rem; }
+.pg-code { font-family: var(--mono); font-size: 0.8125rem; font-weight: 400; color: var(--text); }
+.we { display: grid; gap: 1.1rem; padding: 1.1rem; border: 1px solid var(--rule); border-radius: 12px; background: var(--mantle); }
+.we-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem 1.5rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--surface0); }
+.we-co { display: flex; align-items: center; gap: 0.7rem; }
+.we-co b { display: block; font-family: var(--display); font-size: 1.1rem; color: var(--ink); }
+.we-co small { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
+.we-logo { display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 8px; font: 700 1.1rem var(--display); color: var(--base); background: var(--pg); }
+.we-kpis { display: flex; gap: 1.2rem; font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+.we-kpis b { font-family: var(--display); font-size: 1.05rem; color: var(--ink); margin-right: 0.15rem; }
+.we-org { display: grid; justify-items: center; }
+.we-row { display: flex; justify-content: center; gap: 0.6rem; }
+.we-team { position: relative; padding-top: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; }
+.we-team::before { content: ""; position: absolute; top: 0; left: 12.5%; right: 12.5%; height: 14px; border: 1px solid var(--surface1); border-bottom: 0; border-radius: 6px 6px 0 0; }
+.we-team > .we-node::before { content: ""; position: absolute; top: -15px; left: 50%; width: 2px; height: 14px; margin-left: -1px; background: transparent; }
+.we-v { width: 1px; height: 18px; background: var(--surface1); }
+.we-v.on, .we-team > .we-node.link::before { background: repeating-linear-gradient(to bottom, var(--pg) 0 4px, transparent 4px 7px); width: 2px; }
+.we-node { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.15rem 0.55rem; min-width: 0; padding: 0.55rem 0.65rem; background: var(--paper); border: 1px solid var(--surface0); border-radius: 9px; transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s; }
+.we-row:not(.we-team) .we-node { min-width: 13rem; }
+.we-av { grid-row: span 2; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; font: 700 0.9rem var(--display); color: var(--pg); background: color-mix(in srgb, var(--pg) 15%, transparent); }
+.we-node.board .we-av { color: var(--base); background: var(--mauve); }
+.we-node.ceo .we-av { color: var(--base); background: var(--pg); }
+.we-who { min-width: 0; display: grid; }
+.we-who b { font-family: var(--display); font-size: 0.95rem; color: var(--ink); }
+.we-who small { font-family: var(--mono); font-size: 0.625rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.we-st { grid-column: 2; justify-self: start; font-family: var(--mono); font-size: 0.5625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--overlay1); }
+.we-st::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 0.3rem; border-radius: 50%; background: var(--surface1); vertical-align: 0.05em; }
+.we-node.working { border-color: var(--pg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pg) 18%, transparent); }
+.we-node.working .we-st { color: var(--pg); } .we-node.working .we-st::before { background: var(--pg); }
+.we-node.done .we-st { color: var(--green); } .we-node.done .we-st::before { background: var(--green); }
+.we[data-busy="true"] .we-node:not(.working):not(.done):not(.board) { opacity: 0.55; }
 @media (prefers-reduced-motion: no-preference) {
-  .pc-node .hb { animation: hb 2.4s ease-out infinite; }
-  @keyframes hb { 0%, 70%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 60%, transparent); } 10% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--green) 0%, transparent); } }
+  .we-node.working .we-st::before { animation: we-blink 0.9s ease-in-out infinite; }
+  .we-v.on, .we-team > .we-node.link::before { animation: we-flow 0.6s linear infinite; }
+  @keyframes we-blink { 50% { opacity: 0.25; } }
+  @keyframes we-flow { to { background-position: 0 7px; } }
 }
-/* paperclip budget demo */
-.pc-budget { display: grid; gap: 0.6rem; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); font-family: var(--mono); font-size: var(--s-0); --st: var(--green); }
-.pc-budget[data-state="warn"] { --st: var(--yellow); }
-.pc-budget[data-state="stop"] { --st: var(--maroon); }
-.pc-b-head { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); }
-.pc-b-head b { font-weight: 500; color: var(--ink); }
-.pc-b-head output { color: var(--ink); font-variant-numeric: tabular-nums; }
-.pc-b-bar { position: relative; height: 8px; border-radius: 4px; background: var(--surface0); }
-.pc-b-bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; background: var(--st); transition: width 0.15s, background 0.2s; }
-.pc-b-mark { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--overlay1); }
-.pc-budget input { width: 100%; accent-color: var(--pg); }
-.pc-b-status { margin: 0; color: var(--st); }
+.we-ask { display: grid; gap: 0.5rem; }
+.we-ask label { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.we-input { display: flex; gap: 0.5rem; }
+.we-input input { flex: 1; min-width: 0; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--paper); border: 1px solid var(--surface0); border-radius: 7px; padding: 0.55rem 0.75rem; }
+.we-input input:focus { outline: none; border-color: var(--pg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pg) 18%, transparent); }
+.we-input .pg-btn { cursor: pointer; }
+.we-presets { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.we-presets button { font-family: var(--sans); font-size: 0.8125rem; text-align: left; padding: 0.35rem 0.7rem; border-radius: 999px; cursor: pointer; color: var(--text); background: var(--paper); border: 1px solid var(--surface0); }
+.we-presets button:hover, .we-presets button[aria-pressed="true"] { border-color: var(--pg); color: var(--pg); }
+.we[data-busy="true"] .we-ask button { pointer-events: none; opacity: 0.5; }
+.we-run { display: grid; gap: 0.6rem; padding-top: 0.9rem; border-top: 1px solid var(--surface0); }
+.we-run-h { display: flex; gap: 0.75rem; align-items: center; font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.we-run-h #we-ticket { color: var(--muted); }
+.we-sim { margin-left: auto; color: var(--overlay1); }
+.we-log { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
+.we-log li { display: grid; grid-template-columns: 2.6rem 1.5rem minmax(0, 1fr); gap: 0.55rem; align-items: start; font-size: 0.9rem; line-height: 1.45; }
+.we-log time { font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); padding-top: 0.15rem; }
+.we-log .we-av { width: 1.5rem; height: 1.5rem; font-size: 0.7rem; grid-row: auto; }
+.we-log b { font-family: var(--sans); font-weight: 600; color: var(--ink); }
+.we-log .to { font-family: var(--mono); font-size: 0.6875rem; color: var(--pg); }
+@media (prefers-reduced-motion: no-preference) { .we-log li { animation: we-in 0.25s ease-out; } @keyframes we-in { from { opacity: 0; transform: translateY(4px); } } }
+.we-answer { padding: 0.9rem 1rem; border-radius: 8px; background: var(--paper); border: 1px solid color-mix(in srgb, var(--green) 40%, var(--surface0)); }
+.we-answer h4 { margin: 0 0 0.4rem; font: 600 0.8125rem var(--sans); color: var(--green); }
+.we-answer ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.25rem; font-size: 0.92rem; }
+@media (max-width: 760px) {
+  .we { padding: 0.8rem; }
+  .we-team { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: 0; gap: 0.5rem; }
+  .we-team::before, .we-team > .we-node::before { display: none; }
+  .we-row:not(.we-team) .we-node { min-width: 0; width: 100%; }
+  .we-row:not(.we-team) { width: 100%; }
+  .we-input { flex-direction: column; }
+}
 /* hermes learning loop */
 .hm-loop { display: grid; gap: 0.9rem; padding: 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--mantle); }
 .hm-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.4rem; counter-reset: none; }
@@ -1004,59 +1046,58 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p class="label">Playground · Agent orchestration</p>
       <h1>Paperclip</h1>
       <p class="pg-quote">“A team of agents for every person.”</p>
-      <p class="lede">An open-source control room for running a company of AI agents. You set the mission, it gives each agent a role, a boss, a budget and a ticket queue, and you sit above it all as the board.</p>
+      <p class="lede">An open-source control room for running a company of AI agents. Each agent gets a role, a boss, a budget and a ticket queue. You sit above it as the board.</p>
       <div class="pg-links">
         <a class="pg-btn" href="https://paperclip.ing" target="_blank" rel="noopener">paperclip.ing ↗</a>
         <a class="pg-btn ghost" href="https://paperclip.ing/docs" target="_blank" rel="noopener">Docs ↗</a>
         <a class="pg-btn ghost" href="https://github.com/paperclipai/paperclip" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
-      <div class="pg-term"><span class="pg-term-p" aria-hidden="true">$</span><code>npx paperclipai onboard --yes</code><button class="copy" type="button" data-copy="npx paperclipai onboard --yes">copy</button></div>
       <dl class="pg-facts">
         <div><dt>Licence</dt><dd>MIT</dd></div>
         <div><dt>Runs</dt><dd>Self-hosted</dd></div>
-        <div><dt>Account</dt><dd>None needed</dd></div>
+        <div><dt>Install</dt><dd><code class="pg-code">npx paperclipai onboard</code></dd></div>
       </dl>
 
-      <h2>How it works</h2>
-      <p class="sub">An example company. Every box is an agent; each one wakes on its heartbeat, checks its tickets and acts.</p>
-      <div class="pc-org" role="img" aria-label="Example org chart: you as the board, a CEO agent, and three agents reporting to it, each with a heartbeat">
-        <div class="pc-row"><div class="pc-node board"><b>You</b><small>the board</small></div></div>
-        <span class="pc-v" aria-hidden="true"></span>
-        <div class="pc-row"><div class="pc-node"><i class="hb"></i><b>CEO</b><small>Claude</small></div></div>
-        <span class="pc-v" aria-hidden="true"></span>
-        <div class="pc-row pc-kids">
-          <div class="pc-node"><i class="hb" style="animation-delay: .5s"></i><b>CTO</b><small>Codex</small></div>
-          <div class="pc-node"><i class="hb" style="animation-delay: 1.1s"></i><b>Marketing</b><small>Gemini</small></div>
-          <div class="pc-node"><i class="hb" style="animation-delay: 1.7s"></i><b>Research</b><small>Hermes</small></div>
+      <h2>How I run it</h2>
+      <p class="sub">My company inside Paperclip is Wayne Enterprises. This is a high-level overview of my setup, simplified. Yours can look nothing like it: Paperclip lets you design the company around how you work.</p>
+
+      <div class="we" id="we" data-busy="false">
+        <div class="we-top">
+          <div class="we-co"><span class="we-logo" aria-hidden="true">W</span><span><b>Wayne Enterprises</b><small>Mission: keep every key account moving</small></span></div>
+          <div class="we-kpis"><span><b>5</b> agents</span><span><b id="we-busy">0</b> working</span><span><b id="we-done">0</b> tickets closed</span></div>
+        </div>
+
+        <div class="we-org" role="group" aria-label="Wayne Enterprises org chart">
+          <div class="we-row"><div class="we-node board" data-a="ifti"><span class="we-av">I</span><span class="we-who"><b>Ifti</b><small>The board</small></span><span class="we-st">idle</span></div></div>
+          <span class="we-v" data-l="ifti-rocket" aria-hidden="true"></span>
+          <div class="we-row"><div class="we-node ceo" data-a="rocket"><span class="we-av">R</span><span class="we-who"><b>Rocket</b><small>CEO · plans and delegates</small></span><span class="we-st">idle</span></div></div>
+          <span class="we-v" data-l="rocket-team" aria-hidden="true"></span>
+          <div class="we-row we-team">
+            <div class="we-node" data-a="alfred"><span class="we-av">A</span><span class="we-who"><b>Alfred</b><small>Records & CRM</small></span><span class="we-st">idle</span></div>
+            <div class="we-node" data-a="oracle"><span class="we-av">O</span><span class="we-who"><b>Oracle</b><small>Cross-functional</small></span><span class="we-st">idle</span></div>
+            <div class="we-node" data-a="robin"><span class="we-av">R</span><span class="we-who"><b>Robin</b><small>Proposals (jr)</small></span><span class="we-st">idle</span></div>
+            <div class="we-node" data-a="lucius"><span class="we-av">L</span><span class="we-who"><b>Lucius</b><small>Business analyst</small></span><span class="we-st">idle</span></div>
+          </div>
+        </div>
+
+        <form class="we-ask" id="we-ask" autocomplete="off">
+          <label for="we-q">Give the company a task</label>
+          <div class="we-input"><input id="we-q" type="text" placeholder="e.g. Build the monthly management report" maxlength="160"><button type="submit" class="pg-btn">Run</button></div>
+          <div class="we-presets" id="we-presets">
+            <button type="button" data-s="crm">Clean up the CRM after this week's calls</button>
+            <button type="button" data-s="proposal">Draft a proposal for a fintech discovery call</button>
+            <button type="button" data-s="report">Build the monthly management report</button>
+            <button type="button" data-s="align">Get design, dev and finance aligned on a scope change</button>
+          </div>
+        </form>
+
+        <div class="we-run" id="we-run" hidden>
+          <div class="we-run-h"><span>Run log</span><span id="we-ticket"></span><span class="we-sim">simulated</span></div>
+          <ol class="we-log" id="we-log" aria-live="polite"></ol>
+          <div class="we-answer" id="we-answer" hidden></div>
         </div>
       </div>
-      <ul class="pg-cards">
-        <li><b>Org chart</b><p>Agents get roles and reporting lines. Work is delegated down the chart and escalated up it.</p></li>
-        <li><b>Heartbeats</b><p>Agents wake on a schedule, check their work and act. A new ticket or an @-mention wakes them too.</p></li>
-        <li><b>Budgets</b><p>Each agent has a monthly budget. A warning at 80%, an automatic pause at 100%.</p></li>
-        <li><b>Governance</b><p>You're the board. New hires need your approval, and you can pause, reassign or fire any agent.</p></li>
-        <li><b>Tickets</b><p>Work runs as tickets with owners, status and threads. Every tool call and decision goes in an audit log.</p></li>
-        <li><b>Goal alignment</b><p>Every task traces back to the company mission, so agents know what to do and why.</p></li>
-      </ul>
-
-      <h2>Try the budget rule</h2>
-      <div class="pc-budget" id="pc-budget" data-state="ok">
-        <div class="pc-b-head"><span><b>Research agent</b> · monthly budget</span><output id="pc-b-out">$42 of $100</output></div>
-        <div class="pc-b-bar" aria-hidden="true"><i id="pc-b-fill"></i><span class="pc-b-mark" style="left: 80%"></span></div>
-        <input type="range" id="pc-b-range" min="0" max="100" value="42" aria-label="Budget used, percent">
-        <p class="pc-b-status" id="pc-b-status" role="status"></p>
-      </div>
-      <p class="sub">Drag the slider. This is how Paperclip keeps a runaway agent from burning money.</p>
-
-      <h2>Who it can hire</h2>
-      <p>Anything that can receive a heartbeat: Claude Code, Codex, Gemini, Cursor, OpenClaw, OpenCode, Hermes, a Python script, a shell command or a webhook.</p>
-      <div class="pg-chips"><span>Claude</span><span>Codex</span><span>Gemini</span><span>Cursor</span><span>Hermes</span><span>OpenClaw</span><span>OpenCode</span><span>Pi</span><span>Scripts</span><span>Webhooks</span></div>
-
-      <h2>How I use it</h2>
-      <div class="pg-soon">
-        <span class="pg-dot" aria-hidden="true"></span>
-        <div><b>Coming next</b><p>My own setup and the workflows I run on it.</p></div>
-      </div>
+      <p class="sub">The run is a simulation that shows how work moves through the company. Real runs take minutes to hours and leave a full audit trail in Paperclip.</p>
       <p class="sub">Paperclip runs a team of agents. For one agent that learns, see <a href="#hermes">Hermes Agent</a>.</p>
     </section>
 
@@ -1922,18 +1963,103 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     if (keys[e.key]) location.hash = keys[e.key];
   });
 
-  // Paperclip: budget rule demo (warn at 80%, pause at 100%)
+  // Paperclip: Wayne Enterprises. A preset task plays out as a simulated run through the org chart.
   (function () {
-    var box = document.getElementById('pc-budget'); if (!box) return;
-    var range = document.getElementById('pc-b-range'), fill = document.getElementById('pc-b-fill'), out = document.getElementById('pc-b-out'), st = document.getElementById('pc-b-status');
-    function upd() {
-      var v = +range.value, state = v >= 100 ? 'stop' : v >= 80 ? 'warn' : 'ok';
-      fill.style.width = v + '%'; out.textContent = '$' + v + ' of $100'; box.setAttribute('data-state', state);
-      st.textContent = state === 'stop' ? 'Paused automatically. New tasks are blocked until the board raises the budget.'
-        : state === 'warn' ? 'Soft warning at 80%. The agent keeps working, and the board gets a heads-up.'
-        : 'Running. Wakes on its heartbeat and works its tickets.';
+    var we = document.getElementById('we'); if (!we) return;
+    var AG = { ifti: ['I', 'Ifti'], rocket: ['R', 'Rocket'], alfred: ['A', 'Alfred'], oracle: ['O', 'Oracle'], robin: ['R', 'Robin'], lucius: ['L', 'Lucius'] };
+    // each step: [agent, handed to (or ''), what happens]
+    var RUNS = {
+      crm: { q: "Clean up the CRM after this week's calls", steps: [
+        ['ifti', 'rocket', 'Opens a ticket: tidy the CRM after this week\'s client calls.'],
+        ['rocket', 'alfred', 'Scopes it as a records job and assigns it to Alfred.'],
+        ['alfred', '', 'Matches 9 call notes to their accounts and logs each as an activity.'],
+        ['alfred', '', 'Merges 4 duplicate contacts, fills 11 missing fields, moves 3 deals to the right stage.'],
+        ['alfred', 'rocket', 'Flags 2 deals with no next step and hands back.'],
+        ['rocket', 'ifti', 'Reviews the changes and closes the ticket.']],
+        answer: ['CRM is current', ['9 calls logged against the right accounts', '4 duplicate contacts merged, 11 fields filled', '3 deals moved to their real stage', '2 deals need a next step from you: listed in the ticket']] },
+      proposal: { q: 'Draft a proposal for a fintech discovery call', steps: [
+        ['ifti', 'rocket', 'Opens a ticket: proposal for the fintech founder I met on Tuesday.'],
+        ['rocket', 'lucius', 'Asks Lucius for context before anyone writes a word.'],
+        ['lucius', 'rocket', 'Pulls the call notes, comparable past projects and their actual budgets.'],
+        ['rocket', 'robin', 'Briefs Robin: three options, founder-speed framing, priced from Lucius\'s numbers.'],
+        ['robin', '', 'Drafts the proposal: Discovery sprint, MVP design, Full product.'],
+        ['robin', 'oracle', 'Sends the timeline to Oracle to check it with design and dev.'],
+        ['oracle', 'robin', 'Design and dev leads confirm capacity. Week 3 moves to week 4.'],
+        ['robin', 'rocket', 'Revises and submits for review.'],
+        ['rocket', 'ifti', 'Approves and hands you the draft.']],
+        answer: ['Proposal draft ready for your review', ['Three options, from a 2-week discovery sprint up to the full product', 'Pricing based on 4 comparable past projects', 'Timeline checked with design and dev capacity', 'Opening paragraph written for a founder: speed first']] },
+      report: { q: 'Build the monthly management report', steps: [
+        ['ifti', 'rocket', 'Opens a ticket: management report for this month.'],
+        ['rocket', 'alfred', 'Asks Alfred for a clean pipeline export first.'],
+        ['alfred', 'lucius', 'Exports pipeline, renewals and activity, already de-duplicated.'],
+        ['lucius', '', 'Crunches it: revenue by account, win rate, pipeline coverage, renewals at risk.'],
+        ['lucius', '', 'Builds the charts and a one-page summary.'],
+        ['lucius', 'rocket', 'Hands over the deck with three things management should decide.'],
+        ['rocket', 'ifti', 'Checks the numbers against last month and closes the ticket.']],
+        answer: ['Management report ready', ['Revenue, win rate and pipeline coverage, month on month', '2 renewals flagged at risk, with the reason for each', 'One-page summary on top, charts behind it', 'Three decisions for management, written as questions']] },
+      align: { q: 'Get design, dev and finance aligned on a scope change', steps: [
+        ['ifti', 'rocket', 'Opens a ticket: the client wants two new screens without moving the date.'],
+        ['rocket', 'oracle', 'Routes it to Oracle: this is a people problem first.'],
+        ['oracle', '', 'Collects what design, dev and finance each need to say yes.'],
+        ['oracle', 'lucius', 'Asks Lucius to cost the change.'],
+        ['lucius', 'oracle', 'Two extra screens: +6 design days, +4 dev days, about 9% on the fee.'],
+        ['oracle', 'rocket', 'Drafts two options: same date with a smaller scope, or the full scope a week later.'],
+        ['rocket', 'ifti', 'Sends you both options and the recap email to send.']],
+        answer: ['Two options, everyone on the same page', ['Option A: same date, one screen now, one in the next phase', 'Option B: both screens, launch moves by one week, +9% fee', 'Design, dev and finance have agreed to both', 'Recap email drafted for the client']] }
+    };
+    var MATCH = [['crm', /crm|record|contact|clean|log|hygiene/i], ['proposal', /proposal|pitch|quote|deck|scope of work|sow/i],
+                 ['report', /report|analy|data|number|metric|presentation|dashboard/i], ['align', /align|team|stakeholder|finance|change|cross/i]];
+    var nodes = {}, timers = [], closed = 0, t0;
+    we.querySelectorAll('.we-node').forEach(function (n) { nodes[n.getAttribute('data-a')] = n; });
+    var log = document.getElementById('we-log'), ans = document.getElementById('we-answer'), run = document.getElementById('we-run');
+    var q = document.getElementById('we-q'), busyEl = document.getElementById('we-busy'), doneEl = document.getElementById('we-done');
+    function av(a) { return '<span class="we-av">' + AG[a][0] + '</span>'; }
+    function reset() {
+      timers.forEach(clearTimeout); timers = [];
+      Object.keys(nodes).forEach(function (k) { nodes[k].classList.remove('working', 'done', 'link'); nodes[k].querySelector('.we-st').textContent = 'idle'; });
+      we.querySelectorAll('.we-v').forEach(function (v) { v.classList.remove('on'); });
     }
-    range.addEventListener('input', upd); upd();
+    function status(a, st) { var n = nodes[a]; n.classList.toggle('working', st === 'working'); n.classList.toggle('done', st === 'done'); n.querySelector('.we-st').textContent = st; }
+    function links(a, b) {
+      var pair = [a, b].sort().join('-'), team = ['alfred', 'oracle', 'robin', 'lucius'];
+      we.querySelector('[data-l="ifti-rocket"]').classList.toggle('on', pair === 'ifti-rocket');
+      var t = team.filter(function (x) { return x === a || x === b; });
+      we.querySelector('[data-l="rocket-team"]').classList.toggle('on', t.length > 0);
+      team.forEach(function (x) { nodes[x].classList.toggle('link', t.indexOf(x) >= 0); });
+    }
+    function play(key) {
+      var r = RUNS[key]; reset();
+      we.setAttribute('data-busy', 'true'); run.hidden = false; ans.hidden = true; log.innerHTML = '';
+      q.value = r.q;
+      we.querySelectorAll('.we-presets button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-s') === key)); });
+      document.getElementById('we-ticket').textContent = 'WE-' + (140 + closed + Object.keys(RUNS).indexOf(key));
+      var gap = matchMedia('(prefers-reduced-motion: reduce)').matches ? 500 : 1100;
+      r.steps.forEach(function (st, i) {
+        timers.push(setTimeout(function () {
+          Object.keys(nodes).forEach(function (k) { if (nodes[k].classList.contains('working')) status(k, 'done'); });
+          status(st[0], 'working'); links(st[0], st[1]);
+          busyEl.textContent = st[0] === 'ifti' ? 0 : 1;
+          var sec = Math.round(i * gap / 1000 * 3);
+          log.insertAdjacentHTML('beforeend', '<li><time>' + String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(sec % 60).padStart(2, '0') + '</time>' + av(st[0]) +
+            '<span><b>' + AG[st[0]][1] + '</b> ' + esc(st[2]) + (st[1] ? ' <span class="to">→ ' + AG[st[1]][1] + '</span>' : '') + '</span></li>');
+        }, i * gap));
+      });
+      timers.push(setTimeout(function () {
+        reset(); Object.keys(nodes).forEach(function (k) { if (r.steps.some(function (st) { return st[0] === k; })) status(k, 'done'); });
+        closed++; doneEl.textContent = closed; busyEl.textContent = 0; we.setAttribute('data-busy', 'false');
+        ans.innerHTML = '<h4>Rocket · ' + esc(r.answer[0]) + '</h4><ul>' + r.answer[1].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+        ans.hidden = false;
+      }, r.steps.length * gap));
+    }
+    we.querySelectorAll('.we-presets button').forEach(function (b) { b.addEventListener('click', function () { play(b.getAttribute('data-s')); }); });
+    document.getElementById('we-ask').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var hit = MATCH.filter(function (m) { return m[1].test(q.value); })[0];
+      if (hit) { play(hit[0]); return; }
+      reset(); run.hidden = false; ans.hidden = false; log.innerHTML = ''; document.getElementById('we-ticket').textContent = '';
+      ans.innerHTML = '<h4>Rocket · Not one of my demo runs</h4><ul><li>This demo plays four set tasks. Pick one of the prompts above, or mention the CRM, a proposal, a report or a scope change.</li></ul>';
+    });
+    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
   })();
   // Hermes: learning loop, auto-advances until the visitor picks a step
   (function () {

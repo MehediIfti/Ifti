@@ -19,3 +19,11 @@ Single static file (`index.html`), served with GitHub Pages.
 **Playground:** agent and workflow pages (Paperclip, Hermes Agent), under the Playground heading in the left rail, above Academia. On phones, the tab bar's More button opens the full index with Playground and Academia.
 
 **Social links:** the `SOCIALS UPDATE` list in the script. Each profile appears as a pill on the homepage (Let's talk), in the phone index menu, and as an icon tile under "Find me" in the right column. The footer links are plain HTML.
+
+**Booking:** set `var CALENDLY = '...'` (the `BOOKING` comment in the script). Every `data-book` button switches from email to that link.
+
+**Contact form:** posts to FormSubmit and lands in mh.hasan884@gmail.com. The first submission sends a one-time activation email; click it once and every later message comes through. The endpoint is `SUGGEST_ENDPOINT` in the script.
+
+**Share preview and domain:** the `SHARE PREVIEW` block in `<head>` holds the canonical URL, Open Graph / X tags and the Person schema. When the custom domain is connected, replace `https://mehediifti.github.io/Ifti/` there (and in the schema) with the new domain. The preview image is `og.png` (1200×630).
+
+**CV:** `cv.pdf`, one A4 page, linked from the homepage and the Work page.

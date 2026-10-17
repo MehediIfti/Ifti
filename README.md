@@ -15,3 +15,5 @@ Single static file (`index.html`), served with GitHub Pages.
 **Research:** the `RESEARCH UPDATE` block in `index.html`. One `<li>` per paper, newest first; each card links to the paper's DOI. The index tiles (Research Interest, citations, h-index, papers, preprints, first author) are copied from ResearchGate by hand.
 
 **Education:** the `EDUCATION UPDATE` block in `index.html`, one `<li>` per school, newest first. It sits under the Academia heading in the left rail with Research.
+
+**Playground:** agent and workflow pages (Paperclip, Hermes Agent), under the Playground heading in the left rail, above Academia. On phones, the tab bar's More button opens the full index with Playground and Academia.

@@ -147,6 +147,12 @@ dl.facts dd { margin: 0; }
 ul.plain { margin-inline: 0; margin-bottom: 0; padding-left: 1.1rem; display: grid; gap: 0.6rem; }
 ul.plain li::marker { color: var(--muted); }
 
+/* playground: agent and workflow pages */
+.pg-soon { display: flex; gap: 0.9rem; align-items: flex-start; padding: 1.1rem 1.2rem; border: 1px dashed color-mix(in srgb, var(--mauve) 45%, var(--rule)); border-radius: 8px; }
+.pg-soon b { font-family: var(--mono); font-size: var(--s-0); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.pg-soon p { margin-top: 0.25rem; color: var(--muted); }
+.pg-dot { flex: none; width: 9px; height: 9px; margin-top: 0.35rem; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 20%, transparent); }
+@media (prefers-reduced-motion: no-preference) { .pg-dot { animation: pg-pulse 2s ease-in-out infinite; } @keyframes pg-pulse { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--green) 0%, transparent); } } }
 /* education: a vertical timeline, years on the left, one card per school */
 .edu { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 1.25rem; }
 .edu > li { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 1rem; }
@@ -491,7 +497,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 
   /* A: bottom tab bar */
   :root[data-mnav="tabs"] .m-tabs {
-    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
     position: fixed; z-index: 25; left: 0; right: 0; bottom: 0;
     padding: 0.4rem max(8px, env(safe-area-inset-right, 0px)) calc(0.4rem + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
     background: color-mix(in srgb, var(--mantle) 88%, transparent);
@@ -504,7 +510,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     color: var(--subtext0); font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.04em;
   }
   .m-tabs .n { font-size: 0.9375rem; line-height: 1.2; color: var(--overlay1); }
-  .m-tabs a[aria-current="page"] { color: var(--text); background: var(--surface0); }
+  .m-tabs a[aria-current="page"], .m-tabs .m-more.on { color: var(--text); background: var(--surface0); }
+  .m-tabs .m-more.on .n { color: var(--h1); }
   .m-tabs a[aria-current="page"] .n { color: var(--h1); }
   .m-tabs .ap-dots { grid-auto-flow: column; gap: 3px; height: 1.15rem; align-items: center; }
   .m-tabs .ap-dots i { width: 6px; height: 6px; }
@@ -512,7 +519,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   :root[data-mnav="tabs"] footer.colophon { margin-bottom: 5.5rem; }
 
   /* B: full-screen index sheet */
-  :root[data-mnav="sheet"] .m-sheet:not([hidden]) {
+  :root[data-mnav="sheet"] .m-sheet:not([hidden]), :root[data-mnav="tabs"] .m-sheet:not([hidden]) {
     display: grid; align-content: start; gap: 2rem;
     position: fixed; inset: 0; z-index: 40; overflow-y: auto;
     background: var(--base);
@@ -664,10 +671,15 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <li><a class="nav" href="#work"><kbd>4</kbd>Work</a></li>
       <li><a class="nav" href="#shelf"><kbd>5</kbd>Shelf</a></li>
     </ol>
+    <a class="name" href="#paperclip">Playground</a>
+    <ol>
+      <li><a class="nav" href="#paperclip"><kbd>6</kbd>Paperclip</a></li>
+      <li><a class="nav" href="#hermes"><kbd>7</kbd>Hermes Agent</a></li>
+    </ol>
     <a class="name" href="#research">Academia</a>
     <ol>
-      <li><a class="nav" href="#research"><kbd>6</kbd>Research</a></li>
-      <li><a class="nav" href="#education"><kbd>7</kbd>Education</a></li>
+      <li><a class="nav" href="#research"><kbd>8</kbd>Research</a></li>
+      <li><a class="nav" href="#education"><kbd>9</kbd>Education</a></li>
     </ol>
     <p class="stamp">Updated<br>17 Oct 2026</p>
   </nav>
@@ -919,6 +931,28 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p class="sub">Got one that belongs here? <a href="#suggest">Suggest it.</a></p>
     </section>
 
+    <!-- ============ PLAYGROUND ============ -->
+    <!-- PLAYGROUND: agents and workflows I work with. One page each. -->
+    <section class="page" id="paperclip">
+      <p class="label">Playground</p>
+      <h1>Paperclip</h1>
+      <p class="lede">One of the agents I work with day to day.</p>
+      <div class="pg-soon">
+        <span class="pg-dot" aria-hidden="true"></span>
+        <div><b>Being built</b><p>An interactive walkthrough is on its way: what it does, how I set it up, and the workflows I run with it.</p></div>
+      </div>
+    </section>
+
+    <section class="page" id="hermes">
+      <p class="label">Playground</p>
+      <h1>Hermes Agent</h1>
+      <p class="lede">One of the agents I work with day to day.</p>
+      <div class="pg-soon">
+        <span class="pg-dot" aria-hidden="true"></span>
+        <div><b>Being built</b><p>An interactive walkthrough is on its way: what it does, how I set it up, and the workflows I run with it.</p></div>
+      </div>
+    </section>
+
     <!-- ============ EDUCATION ============ -->
     <!-- EDUCATION UPDATE: one <li> per school, newest first. -->
     <section class="page" id="education">
@@ -1058,7 +1092,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <footer class="colophon">
     Set in Bricolage Grotesque, Literata and IBM Plex Mono. Built by talking it through with Claude Code. No tracking, no cookies.<br>
     <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a><br>
-    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 research · 7 education · T theme</span>
+    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 paperclip · 7 hermes · 8 research · 9 education · T theme</span>
   </footer>
 </div>
 
@@ -1068,8 +1102,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <a class="nav" href="#notes"><span class="n">3</span>Notes</a>
   <a class="nav" href="#work"><span class="n">4</span>Work</a>
   <a class="nav" href="#shelf"><span class="n">5</span>Shelf</a>
-  <a class="nav" href="#research"><span class="n">6</span>Papers</a>
-  <a class="nav" href="#education"><span class="n">7</span>Edu</a>
+  <button type="button" class="m-more" aria-controls="m-sheet" aria-expanded="false"><span class="n">+</span>More</button>
   <button type="button" class="ap-open"><span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span>Theme</button>
 </nav>
 
@@ -1082,10 +1115,15 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <li><a class="nav" href="#work"><span class="n">04</span><span class="t">Work</span><span class="d">Musemind</span></a></li>
     <li><a class="nav" href="#shelf"><span class="n">05</span><span class="t">Shelf</span><span class="d">books</span></a></li>
   </ol>
+  <p class="grp">Playground</p>
+  <ol>
+    <li><a class="nav" href="#paperclip"><span class="n">06</span><span class="t">Paperclip</span><span class="d">agent</span></a></li>
+    <li><a class="nav" href="#hermes"><span class="n">07</span><span class="t">Hermes Agent</span><span class="d">agent</span></a></li>
+  </ol>
   <p class="grp">Academia</p>
   <ol>
-    <li><a class="nav" href="#research"><span class="n">06</span><span class="t">Research</span><span class="d">papers</span></a></li>
-    <li><a class="nav" href="#education"><span class="n">07</span><span class="t">Education</span><span class="d">IUT · BBA</span></a></li>
+    <li><a class="nav" href="#research"><span class="n">08</span><span class="t">Research</span><span class="d">papers</span></a></li>
+    <li><a class="nav" href="#education"><span class="n">09</span><span class="t">Education</span><span class="d">IUT · BBA</span></a></li>
   </ol>
   <div class="now-mini" id="m-nowmini"></div>
   <div class="links">
@@ -1489,7 +1527,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
-    html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>7</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
+    html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>9</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
     if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
     meta.innerHTML = html;
     tocItems = heads;
@@ -1613,6 +1651,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     buildMeta(target, id);
     document.getElementById('m-path').innerHTML = '~/' + (id === 'index' ? '' : id.indexOf('n-') === 0 ? 'notes/<b>' + id.slice(2) + '</b>' : '<b>' + id + '</b>');
     sheetOpen(false);
+    document.querySelectorAll('.m-more').forEach(function (b) { b.classList.toggle('on', ['paperclip', 'hermes', 'research', 'education'].indexOf(id) >= 0); });
     if (id === 'work' && radarPlay) radarPlay();
     window.scrollTo(0, 0);
     setTimeout(function () { if (anchor) anchor.scrollIntoView(); else window.scrollTo(0, 0); }, 0);
@@ -1648,9 +1687,11 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   function sheetOpen(open) {
     if (!sheet) return;
     sheet.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open));
+    document.querySelectorAll('.m-more').forEach(function (b) { b.setAttribute('aria-expanded', String(open)); });
     document.documentElement.style.overflow = open ? 'hidden' : '';
   }
   menuBtn.addEventListener('click', function () { sheetOpen(sheet.hidden); });
+  document.querySelectorAll('.m-more').forEach(function (b) { b.addEventListener('click', function () { sheetOpen(sheet.hidden); }); });
   document.getElementById('m-close').addEventListener('click', function () { sheetOpen(false); });
   document.getElementById('m-notecount').textContent = document.querySelectorAll('article.page[id^="n-"]').length + ' entries';
   (function () {
@@ -1711,7 +1752,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     if (e.key === 'Escape' && !sheet.hidden) sheetOpen(false);
   });
 
-  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'research', '7': 'education' };
+  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'paperclip', '7': 'hermes', '8': 'research', '9': 'education' };
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var t = e.target.tagName;

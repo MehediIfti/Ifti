@@ -573,6 +573,67 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   :root[data-layout="3"] .rail { border-right: 0; padding-right: 0; }
   :root[data-layout="3"] footer.colophon { grid-column: 1; }
 }
+/* home hero: a dot-matrix world, Dhaka in green, Musemind offices in the accent, linked by arcs */
+#index.page { max-width: 46rem; }
+#index > *:not(.hero) { max-width: 37rem; }
+.hero { display: grid; gap: 1rem; }
+.hero > * { margin: 0; }
+.hero h1 { margin-top: 0.15rem; }
+.hx-map { --home: var(--green); --office: var(--peach); margin: 0.5rem 0 0; display: grid; gap: 0.75rem; }
+.hm-stage { position: relative; }
+.hm-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.hm-globe { display: none; width: 100%; aspect-ratio: 16 / 9; cursor: grab; touch-action: pan-y; }
+.hx-map[data-mode="globe"] .hm-svg { display: none; }
+.hx-map[data-mode="globe"] .hm-globe { display: block; }
+.hm-land { fill: var(--surface1); }
+.hm-c { fill: color-mix(in srgb, var(--office) 55%, var(--surface1)); transition: fill 0.2s; }
+.hm-c.home { fill: var(--home); }
+.hm-c.on { fill: var(--office); }
+.hm-arc { fill: none; stroke: var(--office); stroke-width: 1.2; stroke-linecap: round; opacity: 0.45; stroke-dasharray: 3 5; transition: opacity 0.2s; }
+.hm-arc.on { opacity: 1; stroke-width: 1.6; }
+.hm-pin circle { fill: var(--office); stroke: var(--paper); stroke-width: 1.5; }
+.hm-pin.home circle { fill: var(--home); }
+.hm-pin circle.ring { stroke: var(--office); opacity: 0; }
+.hm-pin.home circle.ring { stroke: var(--home); }
+.hm-pin text { font-family: var(--mono); font-size: 10px; fill: var(--text); paint-order: stroke; stroke: var(--paper); stroke-width: 3px; opacity: 0; transition: opacity 0.2s; }
+.hm-pin.on text, .hm-pin.home text { opacity: 1; }
+.hm-pin circle.hm-hit { fill: transparent; stroke: none; cursor: pointer; }
+.hm-pin circle.ring { fill: none; stroke-width: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .hm-arc { animation: hm-flow 1.4s linear infinite; }
+  .hm-pin .ring { animation: hm-pulse 2.4s ease-out infinite; }
+  .hm-pin.on .ring, .hm-pin.home .ring { animation-duration: 1.6s; }
+  @keyframes hm-flow { to { stroke-dashoffset: -16; } }
+  @keyframes hm-pulse { 0% { r: 3; opacity: 0.8; } 100% { r: 14; opacity: 0; } }
+}
+.hx-map[data-mode="clocks"] .hm-arc { display: none; }
+.hx-map[data-mode="clocks"] .hm-svg { max-height: 12rem; }
+.hm-tip { position: absolute; z-index: 2; transform: translate(-50%, calc(-100% - 12px)); padding: 0.35rem 0.55rem; border-radius: 6px; background: var(--mantle); border: 1px solid var(--surface0); font-family: var(--mono); font-size: 0.6875rem; color: var(--text); white-space: nowrap; pointer-events: none; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+.hm-tip b { color: var(--ink); font-weight: 500; }
+.hm-legend { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.hm-legend button { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.25rem 0.65rem; border-radius: 999px; font-family: var(--mono); font-size: 0.6875rem; color: var(--text); background: var(--paper); border: 1px solid var(--surface0); cursor: pointer; }
+.hm-legend button::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--office); }
+.hm-legend .home button::before { background: var(--home); }
+.hm-legend button.on, .hm-legend button:hover { border-color: var(--office); }
+.hm-legend .home button.on, .hm-legend .home button:hover { border-color: var(--home); }
+.hm-legend time { color: var(--muted); }
+.hx-map[data-mode="clocks"] .hm-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.hx-map[data-mode="clocks"] .hm-legend button { display: grid; justify-items: start; gap: 0.1rem; width: 100%; padding: 0.6rem 0.75rem; border-radius: 8px; text-align: left; }
+.hx-map[data-mode="clocks"] .hm-legend button::before { position: absolute; }
+.hm-legend .hm-big { display: none; font-family: var(--display); font-size: 1.5rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.hm-legend .hm-meta { display: none; color: var(--muted); }
+.hx-map[data-mode="clocks"] .hm-legend .hm-big, .hx-map[data-mode="clocks"] .hm-legend .hm-meta { display: block; }
+.hx-map[data-mode="clocks"] .hm-legend .hm-sm { display: none; }
+.hm-legend button { position: relative; }
+.hx-map[data-mode="clocks"] .hm-legend button::before { top: 0.75rem; right: 0.75rem; }
+.hm-cap { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.hm-opt { display: flex; align-items: center; gap: 0.75rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); }
+.hm-opt .ap-seg { width: 20rem; }
+.hm-opt .ap-seg button { font-family: var(--mono); font-size: 0.6875rem; }
+@media (max-width: 760px) {
+  .hx-map[data-mode="clocks"] .hm-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hm-opt { flex-wrap: wrap; } .hm-opt .ap-seg { width: 100%; }
+}
 /* stats radar: a post-match screen for skills. Strength is solid teal, interest is dashed maroon, so identity never rests on colour alone. */
 .radar { --rd-str: var(--teal); --rd-int: var(--maroon); margin-inline: 0; margin-bottom: 0; display: grid; gap: 1rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: color-mix(in srgb, var(--mantle) 75%, transparent); }
 .rd-hud { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-bottom: 0.6rem; border-bottom: 1px dashed var(--rule); font-family: var(--mono); font-size: var(--s-0); color: var(--label); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -920,8 +981,21 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   <main>
     <!-- ============ INDEX ============ -->
     <section class="page" id="index">
-      <h1>Ifti</h1>
-      <p class="lede">I run key accounts and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency. I help founders and enterprise teams across the GCC make design pay for itself.</p>
+      <header class="hero">
+        <p class="label">Global Partnerships · Musemind</p>
+        <h1>Ifti</h1>
+        <p class="lede">I run key accounts and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency. I help founders and enterprise teams across the GCC make design pay for itself.</p>
+        <figure class="hx-map" id="hero" data-mode="map" aria-label="Musemind offices around the world, linked to Dhaka">
+          <div class="hm-stage">
+            <svg class="hm-svg" id="hm-svg" aria-hidden="true"></svg>
+            <canvas class="hm-globe" id="hm-globe" aria-hidden="true"></canvas>
+            <div class="hm-tip" id="hm-tip" hidden></div>
+          </div>
+          <ul class="hm-legend" id="hm-legend"></ul>
+          <figcaption class="hm-cap"><span>6 offices</span><span>350+ clients</span><span>run from Dhaka</span></figcaption>
+        </figure>
+        <div class="hm-opt" role="group" aria-label="Hero style (preview)"><span>Preview</span><div class="ap-seg" id="hm-opt"><button type="button" data-v="map">A · Map</button><button type="button" data-v="globe">B · Globe</button><button type="button" data-v="clocks">C · Clocks</button></div></div>
+      </header>
       <p>I'm Mehedi Hasan Ifti, based in Dhaka. My job sits between what a client's business needs and what our designers make. I keep both pointed at the same number.</p>
       <p>Clients range from enterprise teams with a dozen stakeholders to solo founders.<span class="sn-ref"></span><span class="sn">Different buyers. Every one of them is asking whether this is worth it.</span> The design is usually the easy part. Alignment, timing and saying the uncomfortable thing early are harder.</p>
 
@@ -2186,6 +2260,159 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     if (t === 'INPUT' || t === 'TEXTAREA') return;
     if (keys[e.key]) location.hash = keys[e.key];
   });
+
+  // Home hero: the world as a dot grid (Natural Earth, 1.8 degree cells, run-length encoded), offices linked to Dhaka.
+  (function () {
+    var fig = document.getElementById('hero'); if (!fig) return;
+    var RLE = '32.6x.x2.x2.x3.x17.22x44.4x15.x.9x13.3x21.|31.4x33.21x42.2x15.13x.x37.|30.12x.3x.x2.2x.2x.2x11.17x.x41.2x7.2x5.27x5.4x19.|11.4u20.x.6x4.2x2.9x.x8.16x26.5x20.3x.48x11.|8x14u94x5.8x.2x.x3.x2.2x58.|4.6x12u94x7.3x14.x59.|2x2.4x14u95x2.3x78.|5.u4.12u28x2.x3.x3.2x.x8.5x27.7x.87x.|8.14u26x9.3x13.3x27.7x2.75x2.x.5x4.|10.5u.u5.u24x8.x.4x42.8x5.70x4.x9.|12.2u10.2u22x9.8x32.g8.3x5.64x10.2x10.|11.u13.3u23x6.9x31.g7.x.2x3.65x10.4x9.|28.26x2.12x27.xg.2g5.d.d.x.65x11.2x11.|28.27x.13x26.2x.3g2.x4d70x.x7.x12.|30.37x.x28.3g.2x5d70x.x20.|30.x.30x.x4.2x29.5x3d71x22.|31.21u9xu2x6.x28.78x23.|31.23u7x2u3x33.8x.9x.8x3.47x6.x17.|31.23u2x5u2.x31.x3.5x2.2x.7x6.4x2.47x4.2x19.|31.30u34.7x5.2x2.5x2.2x3.4x3.42x28.|31.28u36.5x11.2x2.12x2.38x.3x7.x21.|32.26u37.5x8.x2.x.x.12x3.36x3.2x6.x22.|32.26u42.6x10.x.x.47x3.2x4.2x22.|33.24u39.10x14.46x4.x2.x.x24.|35.21u34.x4.13x4.x6.48x33.|35.x.4x14u40.15x.10x2s45x32.|36.x.4xux3u2.2u3.u37.x.25x6s2x.39x33.|36.2x.6xu8.u38.26x.7s2.38x33.|39.7x46.27x2.7sx.a.17xb16x34.|41.5x45.29x.8s2ax6.11x2b14x2.x32.|41.5x9.2x34.29x2.9s2x5.11xb.12x37.|13.u27.5x4.x6.2x32.30x.9sx8.8x4.7x41.|42.5x.3x8.2x30.30x2.4s4x10.6x5.7x8.x32.|45.6x35.x4.31x2.5x12.5x6.8x7.x32.|49.5x36.33x.4x13.3x10.7x6.x32.|51.3x37.34x17.3x10.6x39.|52.x6.x.x29.33x3.x14.2x13.3x40.|53.x4.2x.5x27.35x14.2x14.x41.|55.x.10x26.35x16.x10.x12.2x30.|57.13x24.7x2.24x29.x7.2x34.|57.15x33.21x27.2x.x6.2x35.|56.16x33.20x29.2x.x4.4x34.|56.16x33.19x31.3x3.4x3.x31.|55.20x30.18x33.2x3.4x.3x4.2x25.|56.22x28.16x34.3x3.3x.2x2.3x.5x21.|55.25x27.15x36.x7.x9.5x19.|56.25x26.15x36.2x.x12.x2.5x4.x13.|56.25x26.15x41.2x2.x2.x7.2x.x18.|57.23x28.14x61.x16.|57.22x29.15x51.2x3.x20.|4.x53.20x29.16x4.x42.x.4x3.x20.|59.19x29.15x3.3x41.7x3.2x19.|60.18x29.14x3.3x41.13x12.x6.|61.17x29.13x5.2x40.15x18.|61.16x31.12x4.3x37.19x17.|61.14x33.12x4.3x36.21x16.|61.13x34.11x5.2x37.22x15.|61.12x35.10x45.22x15.|60.13x36.9x46.21x15.|60.12x38.7x47.21x15.|60.11x39.6x48.7x2.12x15.|60.7x.2x40.4x50.5x6.9x16.|60.8x109.7x12.x3.|59.9x110.5x14.x2.|59.6x132.x2.|59.6x115.x16.x2.|60.5x116.x13.x4.|59.5x129.2x5.|58.4x131.x6.|59.4x137.|58.4x138.|59.3x5.x132.|59.3x138.|61.x138.';
+    var STEP = 1.8, LAT0 = 76, G = 4;
+    var grid = RLE.split('|').map(function (r) { var out = ''; r.replace(/(\d*)(\D)/g, function (_, n, c) { out += c.repeat(n ? +n : 1); }); return out; });
+    var ROWS = grid.length, COLS = grid[0].length, W = COLS * G, H = ROWS * G;
+    // [code, city, country, lat, lon, IANA zone]
+    var SITES = [
+      ['b', 'Dhaka', 'Bangladesh', 23.81, 90.41, 'Asia/Dhaka'],
+      ['a', 'Dubai', 'UAE', 25.20, 55.27, 'Asia/Dubai'],
+      ['s', 'Riyadh', 'Saudi Arabia', 24.71, 46.68, 'Asia/Riyadh'],
+      ['g', 'London', 'United Kingdom', 51.51, -0.13, 'Europe/London'],
+      ['d', 'Berlin', 'Germany', 52.52, 13.40, 'Europe/Berlin'],
+      ['u', 'New York', 'United States', 40.71, -74.00, 'America/New_York']
+    ];
+    var home = SITES[0];
+    function xy(lat, lon) { return [((lon + 180) / STEP) * G, ((LAT0 - lat) / STEP + 0.5) * G]; }
+    function dot(x, y, r) { return 'M' + (x - r).toFixed(1) + ' ' + y.toFixed(1) + 'a' + r + ' ' + r + ' 0 1 0 ' + 2 * r + ' 0a' + r + ' ' + r + ' 0 1 0 ' + -2 * r + ' 0'; }
+    function km(a, b) { var R = 6371, p = Math.PI / 180, dl = (b[4] - a[4]) * p, dp = (b[3] - a[3]) * p; var h = Math.sin(dp / 2) * Math.sin(dp / 2) + Math.cos(a[3] * p) * Math.cos(b[3] * p) * Math.sin(dl / 2) * Math.sin(dl / 2); return Math.round(2 * R * Math.asin(Math.sqrt(h)) / 10) * 10; }
+
+    // flat map
+    var svg = document.getElementById('hm-svg'), paths = { x: '' }, land = [];
+    SITES.forEach(function (st) { paths[st[0]] = ''; });
+    grid.forEach(function (row, r) { for (var c = 0; c < COLS; c++) { var ch = row[c]; if (ch === '.') continue; paths[ch] += dot(c * G + G / 2, r * G + G / 2, 1.15); land.push([LAT0 - r * STEP, -180 + STEP / 2 + c * STEP, ch]); } });
+    var h = '<path class="hm-land" d="' + paths.x + '"/>';
+    SITES.forEach(function (st) { h += '<path class="hm-c' + (st === home ? ' home' : '') + '" data-k="' + st[0] + '" d="' + paths[st[0]] + '"/>'; });
+    var hp = xy(home[3], home[4]);
+    SITES.slice(1).forEach(function (st) {
+      var p = xy(st[3], st[4]), mx = (hp[0] + p[0]) / 2, my = (hp[1] + p[1]) / 2, d = Math.hypot(p[0] - hp[0], p[1] - hp[1]);
+      h += '<path class="hm-arc" data-k="' + st[0] + '" d="M' + hp[0].toFixed(1) + ' ' + hp[1].toFixed(1) + 'Q' + mx.toFixed(1) + ' ' + (my - d * 0.32).toFixed(1) + ' ' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + '"/>';
+    });
+    SITES.forEach(function (st) {
+      var p = xy(st[3], st[4]), left = st[4] < -30;
+      h += '<g class="hm-pin' + (st === home ? ' home' : '') + '" data-k="' + st[0] + '"><circle class="ring" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3"/><circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.2"/>' +
+        '<text x="' + (p[0] + (left ? -7 : 7)).toFixed(1) + '" y="' + (p[1] - 6).toFixed(1) + '" text-anchor="' + (left ? 'end' : 'start') + '">' + st[1] + '</text><circle class="hm-hit" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="12"/></g>';
+    });
+    svg.setAttribute('viewBox', '0 ' + (2 * G) + ' ' + W + ' ' + (H - 2 * G));
+    svg.innerHTML = h;
+
+    // legend + clocks
+    var leg = document.getElementById('hm-legend');
+    leg.innerHTML = SITES.map(function (st) {
+      var dist = st === home ? 'home base' : km(home, st).toLocaleString('en') + ' km from Dhaka';
+      return '<li class="' + (st === home ? 'home' : '') + '"><button type="button" data-k="' + st[0] + '"><span class="hm-sm">' + st[1] + ' <time data-z="' + st[5] + '"></time></span><span class="hm-meta">' + st[1] + ' · ' + st[2] + '</span><span class="hm-big" data-z="' + st[5] + '"></span><span class="hm-meta" data-off="' + st[5] + '"></span><span class="hm-meta">' + dist + '</span></button></li>';
+    }).join('');
+    function hm(z) { return new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: z }).format(new Date()); }
+    function offset(z) {
+      var d = new Date(), f = function (zz) { var p = new Intl.DateTimeFormat('en-US', { timeZone: zz, hour12: false, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }).formatToParts(d), o = {}; p.forEach(function (x) { o[x.type] = x.value; }); return Date.UTC(o.year, o.month - 1, o.day, o.hour % 24, o.minute); };
+      var diff = Math.round((f(z) - f('Asia/Dhaka')) / 36e5 * 2) / 2;
+      return diff === 0 ? 'same time as Dhaka' : (diff > 0 ? '+' : '−') + Math.abs(diff) + 'h vs Dhaka';
+    }
+    function tick() {
+      leg.querySelectorAll('[data-z]').forEach(function (e) { e.textContent = hm(e.getAttribute('data-z')); });
+      leg.querySelectorAll('[data-off]').forEach(function (e) { e.textContent = offset(e.getAttribute('data-off')); });
+    }
+    tick(); setInterval(tick, 20000);
+
+    // highlight: map, legend and globe share one active office
+    var tip = document.getElementById('hm-tip'), active = null, auto = null, userTouched = false;
+    function setActive(k, showTip) {
+      active = k;
+      fig.querySelectorAll('[data-k]').forEach(function (e) { if (e.closest('.hm-legend') || e.matches('.hm-c, .hm-arc, .hm-pin')) e.classList.toggle('on', e.getAttribute('data-k') === k); });
+      var st = SITES.filter(function (x) { return x[0] === k; })[0];
+      if (!st || !showTip || fig.getAttribute('data-mode') === 'globe') { tip.hidden = true; return; }
+      var p = xy(st[3], st[4]), vb = svg.viewBox.baseVal, rect = svg.getBoundingClientRect(), stage = svg.parentNode.getBoundingClientRect();
+      tip.style.left = (rect.left - stage.left + (p[0] - vb.x) / vb.width * rect.width) + 'px';
+      tip.style.top = (rect.top - stage.top + (p[1] - vb.y) / vb.height * rect.height) + 'px';
+      tip.innerHTML = '<b>' + st[1] + '</b> · ' + st[2] + ' · ' + hm(st[5]) + (st === home ? ' · home base' : ' · ' + km(home, st).toLocaleString('en') + ' km');
+      tip.hidden = false;
+    }
+    function stopAuto() { userTouched = true; clearInterval(auto); }
+    fig.addEventListener('mouseover', function (e) { var t = e.target.closest('[data-k]'); if (t && !t.matches('.hm-land')) { stopAuto(); setActive(t.getAttribute('data-k'), true); } });
+    fig.addEventListener('focusin', function (e) { var t = e.target.closest('[data-k]'); if (t) { stopAuto(); setActive(t.getAttribute('data-k'), true); } });
+    fig.addEventListener('click', function (e) { var t = e.target.closest('[data-k]'); if (t) { stopAuto(); setActive(t.getAttribute('data-k'), true); spinTo(t.getAttribute('data-k')); } });
+    svg.addEventListener('mouseleave', function () { tip.hidden = true; });
+    var order = SITES.slice(1).map(function (x) { return x[0]; }), oi = 0;
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) auto = setInterval(function () {
+      if (!document.getElementById('index').classList.contains('on')) return;
+      setActive(order[oi++ % order.length], fig.getAttribute('data-mode') === 'map'); spinTo(active);
+    }, 2600);
+
+    // globe: the same dots on an orthographic projection, drag to turn
+    var cv = document.getElementById('hm-globe'), ctx = cv.getContext('2d'), lam = -70, phi = 20, target = null, drag = null, raf = null;
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches, rad = Math.PI / 180, cols = {};
+    function readCols() { var cs = getComputedStyle(document.documentElement); ['--surface1', '--green', '--peach', '--surface0', '--text'].forEach(function (v) { cols[v] = cs.getPropertyValue(v).trim(); }); }
+    function proj(lat, lon, R, cx, cy) {
+      var f = lat * rad, l = (lon + lam) * rad, f0 = phi * rad;
+      var c = Math.sin(f0) * Math.sin(f) + Math.cos(f0) * Math.cos(f) * Math.cos(l);
+      return [cx + R * Math.cos(f) * Math.sin(l), cy - R * (Math.cos(f0) * Math.sin(f) - Math.sin(f0) * Math.cos(f) * Math.cos(l)), c];
+    }
+    function slerp(a, b, t) {
+      var p1 = [Math.cos(a[3] * rad) * Math.cos(a[4] * rad), Math.cos(a[3] * rad) * Math.sin(a[4] * rad), Math.sin(a[3] * rad)];
+      var p2 = [Math.cos(b[3] * rad) * Math.cos(b[4] * rad), Math.cos(b[3] * rad) * Math.sin(b[4] * rad), Math.sin(b[3] * rad)];
+      var w = Math.acos(p1[0] * p2[0] + p1[1] * p2[1] + p1[2] * p2[2]), s1 = Math.sin((1 - t) * w) / Math.sin(w), s2 = Math.sin(t * w) / Math.sin(w);
+      var v = [s1 * p1[0] + s2 * p2[0], s1 * p1[1] + s2 * p2[1], s1 * p1[2] + s2 * p2[2]];
+      return [Math.asin(v[2]) / rad, Math.atan2(v[1], v[0]) / rad];
+    }
+    function drawGlobe() {
+      raf = null;
+      if (fig.getAttribute('data-mode') !== 'globe' || !document.getElementById('index').classList.contains('on')) return;
+      var dpr = devicePixelRatio || 1, w = cv.clientWidth, hh = cv.clientHeight;
+      if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(hh * dpr); }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, hh);
+      if (!cols['--green']) readCols();
+      var R = hh * 0.46, cx = w / 2, cy = hh / 2;
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.strokeStyle = cols['--surface0']; ctx.lineWidth = 1; ctx.stroke();
+      for (var i = 0; i < land.length; i++) {
+        var d = land[i], p = proj(d[0], d[1], R, cx, cy); if (p[2] <= 0) continue;
+        ctx.globalAlpha = 0.25 + 0.75 * p[2];
+        ctx.fillStyle = d[2] === 'x' ? cols['--surface1'] : d[2] === 'b' ? cols['--green'] : cols['--peach'];
+        ctx.fillRect(p[0] - 1, p[1] - 1, d[2] === 'x' ? 1.8 : 2.4, d[2] === 'x' ? 1.8 : 2.4);
+      }
+      ctx.globalAlpha = 1;
+      SITES.slice(1).forEach(function (st) {
+        ctx.beginPath(); var started = false;
+        for (var t = 0; t <= 1.0001; t += 0.025) {
+          var g = slerp(home, st, t), lift = 1 + 0.18 * Math.sin(Math.PI * t), p = proj(g[0], g[1], R * lift, cx, cy);
+          if (p[2] > -0.15) { started ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); started = true; } else started = false;
+        }
+        ctx.strokeStyle = cols['--peach']; ctx.globalAlpha = st[0] === active ? 1 : 0.45; ctx.lineWidth = st[0] === active ? 1.8 : 1.1; ctx.stroke(); ctx.globalAlpha = 1;
+      });
+      SITES.forEach(function (st) {
+        var p = proj(st[3], st[4], R, cx, cy); if (p[2] <= 0) return;
+        ctx.beginPath(); ctx.arc(p[0], p[1], st[0] === active || st === home ? 4 : 3, 0, 7); ctx.fillStyle = st === home ? cols['--green'] : cols['--peach']; ctx.fill();
+        if (st[0] === active || st === home) { ctx.font = '10px "IBM Plex Mono", monospace'; ctx.fillStyle = cols['--text']; ctx.fillText(st[1], p[0] + 7, p[1] - 6); }
+      });
+      if (target !== null) { var dl = ((target - lam + 540) % 360) - 180; lam += dl * 0.08; if (Math.abs(dl) < 0.3) target = null; }
+      else if (!drag && !still) lam += 0.12;
+      raf = requestAnimationFrame(drawGlobe);
+    }
+    function spinTo(k) { var st = SITES.filter(function (x) { return x[0] === k; })[0]; if (st) target = -st[4] + 10; }
+    function kick() { if (!raf) raf = requestAnimationFrame(drawGlobe); }
+    cv.addEventListener('pointerdown', function (e) { drag = [e.clientX, e.clientY, lam, phi]; target = null; stopAuto(); cv.setPointerCapture(e.pointerId); });
+    cv.addEventListener('pointermove', function (e) { if (!drag) return; lam = drag[2] + (e.clientX - drag[0]) * 0.35; phi = Math.max(-60, Math.min(60, drag[3] + (e.clientY - drag[1]) * 0.25)); });
+    cv.addEventListener('pointerup', function () { drag = null; });
+    new MutationObserver(function () { cols = {}; kick(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-palette'] });
+    window.addEventListener('hashchange', kick);
+
+    // preview switcher between the three hero options
+    var opt = document.getElementById('hm-opt');
+    function mode(v, save) {
+      fig.setAttribute('data-mode', v); tip.hidden = true;
+      opt.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === v)); });
+      if (save) { try { localStorage.setItem('hero-mode', v); } catch (e) {} }
+      kick();
+    }
+    opt.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) mode(b.getAttribute('data-v'), true); });
+    var m0 = 'map'; try { m0 = localStorage.getItem('hero-mode') || m0; } catch (e) {}
+    mode(m0, false);
+    setActive('a', false);
+  })();
 
   // Intro: type the breach lines, glitch the page in, then never again this visit.
   (function () {

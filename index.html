@@ -1199,6 +1199,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .sc-acts { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0 1rem; }
 .sc-acts > :not(.btn) { font: 500 0.75rem var(--mono); padding: 0.5rem 0.75rem; color: var(--text); background: none; border: 1px solid var(--surface0); border-radius: 5px; text-decoration: none; cursor: pointer; }
 .sc-acts > :not(.btn):hover { border-color: var(--overlay1); }
+.sc-note:empty { display: none; }
 .sc-note { margin: 0; padding: 0.75rem 1rem 1rem; font-size: 0.8125rem; color: var(--muted); }
 
 /* Guided tour */
@@ -1898,7 +1899,7 @@ html.touring .tour-fab::after { display: none; }
       <!-- SHELF UPDATE: everything I watch, read, listen to and explore. Newest at the top of each list.
            Add a new item at the top; the Now page shows the first few of each list (data-now) and older ones stay here. -->
       <h1>Shelf</h1>
-      <p class="lede">Everything I've watched, read, listened to and explored, newest first. The <a href="#now">Now page</a> shows the latest few.</p>
+      <p class="lede">Everything I've watched, read, listened to and explored, newest first.</p>
       <nav class="shelf-dir" aria-label="Shelf sections"></nav>
 
       <h2 id="shelf-exploring">Exploring</h2>
@@ -2028,7 +2029,6 @@ html.touring .tour-fab::after { display: none; }
           <div class="we-answer" id="we-answer" hidden></div>
         </div>
       </div>
-      <p class="sub">The run is simulated to show how work moves through the company. Real runs take minutes to hours and leave a full audit trail.</p>
     </section>
 
     <section class="page pg" id="hermes" style="--pg: var(--sky)">
@@ -2073,7 +2073,7 @@ html.touring .tour-fab::after { display: none; }
       </ul>
 
       <h2>On Telegram</h2>
-      <p class="sub">What a normal exchange looks like. Pick an agent. Sample messages, not my real ones.</p>
+      <p class="sub">What a normal exchange looks like. Pick an agent.</p>
       <div class="tg" id="tg">
         <div class="tg-tabs" role="tablist" aria-label="Agents">
           <button type="button" role="tab" data-k="plutus" aria-selected="true">Plutus</button><button type="button" role="tab" data-k="chronos" aria-selected="false">Chronos</button><button type="button" role="tab" data-k="athena" aria-selected="false">Athena</button>
@@ -2111,7 +2111,7 @@ html.touring .tour-fab::after { display: none; }
       <h1>Whiteboard</h1>
       <p class="lede">A hand-drawn whiteboard I built for thinking on a page, modelled on Excalidraw. It saves in this browser and opens Excalidraw files.</p>
       <div class="wb" id="wb"><iframe id="wb-frame" title="Whiteboard" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe></div>
-      <p class="sub wb-open"><a id="wb-open" href="/whiteboard/" target="_blank" rel="noopener">Open in its own tab ↗</a> · Everything stays on this device. Nothing is uploaded.</p>
+      <p class="sub wb-open"><a id="wb-open" href="/whiteboard/" target="_blank" rel="noopener">Open in its own tab ↗</a></p>
       <details class="sub wb-keys"><summary>Keyboard shortcuts</summary><p>Click the board first, then: V select · R rectangle · D diamond · O ellipse · A arrow · L line · P draw · T text · N sticky · E eraser · F frame · K laser · H or Space to pan · Ctrl/⌘ + / for every command · ? for all shortcuts.</p></details>
       <p class="wb-phone">The whiteboard is built for a computer screen. Open this page on a laptop or desktop to use it.</p>
     </section>
@@ -2226,7 +2226,7 @@ html.touring .tour-fab::after { display: none; }
     <section class="page" id="changelog">
       <p class="label">Colophon</p>
       <h1>Changelog</h1>
-      <p class="lede">Every change to this site, newest first. I build it by talking it through with Claude Code, so most entries are one thing I asked for.</p>
+      <p class="lede">Every change to this site, newest first.</p>
       <div class="cl" id="cl" aria-live="polite"><p class="sub">Loading the history from GitHub…</p></div>
       <p class="sub"><a href="https://github.com/MehediIfti/Ifti/commits/main" target="_blank" rel="noopener">Full history on GitHub ↗</a></p>
     </section>
@@ -2334,10 +2334,9 @@ html.touring .tour-fab::after { display: none; }
   </button>
   <div class="cof-card" id="cof-card" role="tooltip">
     <small>Coffee counter</small>
-    <p><b id="cof-big">0</b> cups of black Americano this year, give or take.</p>
+    <p><b id="cof-big">0</b> cups of black Americano this year.</p>
     <div class="cof-bar" aria-hidden="true"><i id="cof-fill"></i></div>
-    <dl><dt>Workdays</dt><dd id="cof-wd">0 of 0</dd><dt>Per workday</dt><dd>2 to 3 big cups</dd><dt>Today</dt><dd id="cof-today">–</dd></dl>
-    <p class="cof-fine">Counts Sunday to Thursday, Dhaka time. It doesn't skip public holidays.</p>
+    <dl><dt>Workdays</dt><dd id="cof-wd">0 of 0</dd><dt>Today</dt><dd id="cof-today">–</dd></dl>
   </div>
 </div>
 <button type="button" class="tour-fab tour-start" aria-label="Take the tour" data-tip="Take the tour"><svg viewBox="0 0 64 64" width="18" height="18" aria-hidden="true"><path d="M32 12v13M32 39v13M12 32h13M39 32h13" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="32" r="4.5" style="fill: var(--green)"/></svg></button>
@@ -2367,7 +2366,7 @@ html.touring .tour-fab::after { display: none; }
     <a id="sc-x" target="_blank" rel="noopener">Post on X ↗</a>
     <a id="sc-li" target="_blank" rel="noopener">LinkedIn ↗</a>
   </div>
-  <p class="sc-note" id="sc-note">The card uses your current theme. LinkedIn shares the link, so download the card and add it to your post.</p>
+  <p class="sc-note" id="sc-note" role="status"></p>
 </dialog>
 
 <button type="button" class="share-pop" id="share-pop" hidden>Share quote</button>
@@ -2772,7 +2771,7 @@ html.touring .tour-fab::after { display: none; }
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
     // Page details come after Right now
-    if (isNote) html += noteMeta(page) + '<section class="m-hide"><h4>Share</h4><p>Select any line to turn it into a card.</p></section>';
+    if (isNote) html += noteMeta(page);
     html += '<section class="m-hide"><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
     meta.innerHTML = html;
     renderSocials(meta);
@@ -4071,7 +4070,8 @@ html.touring .tour-fab::after { display: none; }
   })();
 
   // ============ Coffee counter ============
-  // COFFEE UPDATE: cups per workday (I drink two to three big cups) and the workweek (0 = Sunday ... 6 = Saturday).
+  // COFFEE UPDATE: cups per workday and the workweek (0 = Sunday ... 6 = Saturday). Nothing else to update:
+  // it counts from 1 January to today in Dhaka time on every visit, and refreshes itself while the page is open.
   (function () {
     var CUPS_PER_DAY = 2.5, WORKWEEK = [0, 1, 2, 3, 4], TZ = 'Asia/Dhaka';
     var box = document.getElementById('cof'), pill = document.getElementById('cof-pill');
@@ -4089,13 +4089,13 @@ html.touring .tour-fab::after { display: none; }
         if (before) sofar++; if (today) isWork = true;
       }
       // today's cups: none before 9, the full ration by 6 in the evening
-      var todayCups = isWork ? Math.round(CUPS_PER_DAY * Math.max(0, Math.min(1, (t.h - 9) / 9)) * 2) / 2 : 0;
+      var todayCups = isWork ? Math.round(CUPS_PER_DAY * Math.max(0, Math.min(1, (t.h - 9) / 9))) : 0;
       var cups = Math.round(sofar * CUPS_PER_DAY + todayCups);
       document.getElementById('cof-n').textContent = cups.toLocaleString('en-US');
       document.getElementById('cof-l').textContent = 'cups in ' + t.y;
       document.getElementById('cof-big').textContent = cups.toLocaleString('en-US');
       document.getElementById('cof-wd').textContent = (sofar + (isWork ? 1 : 0)) + ' of ' + total;
-      document.getElementById('cof-today').textContent = isWork ? (todayCups ? todayCups + (todayCups === 1 ? ' cup' : ' cups') + ' so far' : 'first cup soon') : 'Day off';
+      document.getElementById('cof-today').textContent = isWork ? (todayCups ? todayCups + (todayCups === 1 ? ' cup' : ' cups') : 'First cup soon') : 'Day off';
       document.getElementById('cof-fill').style.width = Math.round((sofar + (isWork ? 1 : 0)) / total * 100) + '%';
       pill.setAttribute('aria-label', cups + ' cups of coffee in ' + t.y + '. Show details');
       if (window.placeTourBtn) placeTourBtn();

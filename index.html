@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="midnight-ledger" data-palette="black" data-bg="grid" data-calm="spotlight" data-type="serif" data-layout="3">
+<html lang="en" data-theme="cropmark" data-palette="cropmark" data-bg="plain" data-calm="margins" data-type="sans" data-layout="3">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -36,7 +36,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
 <style>
 html, body { margin: 0; }
 img { max-width: 100%; }
@@ -72,6 +72,7 @@ img { max-width: 100%; }
 :root[data-palette="nord"] { --base: #2e3440; --mantle: #272c36; --surface0: #3b4252; --surface1: #434c5e; --overlay1: #7b88a1; --text: #e5e9f0; --subtext1: #eceff4; --subtext0: #a3abba; --mauve: #b48ead; --maroon: #bf616a; --peach: #d08770; --teal: #8fbcbb; --green: #a3be8c; --yellow: #ebcb8b; --pink: #b48ead; --sky: #88c0d0; --lavender: #81a1c1; color-scheme: dark; }
 :root[data-palette="latte"] { --base: #eff1f5; --mantle: #e6e9ef; --surface0: #ccd0da; --surface1: #bcc0cc; --overlay1: #8c8fa1; --text: #4c4f69; --subtext1: #5c5f77; --subtext0: #6c6f85; --mauve: #8839ef; --maroon: #d20f39; --peach: #fe640b; --teal: #179299; --green: #40a02b; --yellow: #df8e1d; --pink: #ea76cb; --sky: #04a5e5; --lavender: #7287fd; color-scheme: light; }
 :root[data-palette="solarized"] { --base: #fdf6e3; --mantle: #eee8d5; --surface0: #e4ddc8; --surface1: #d3cbb7; --overlay1: #93a1a1; --text: #586e75; --subtext1: #073642; --subtext0: #839496; --mauve: #6c71c4; --maroon: #dc322f; --peach: #cb4b16; --teal: #2aa198; --green: #859900; --yellow: #b58900; --pink: #d33682; --sky: #268bd2; --lavender: #6c71c4; color-scheme: light; }
+:root[data-palette="cropmark"] { --base: #121212; --mantle: #161616; --surface0: #414141; --surface1: #2c2c2c; --overlay1: #6e6e6e; --text: #ededed; --subtext1: #ededed; --subtext0: #a0a0a0; --mauve: #f7cafa; --maroon: #f7cafa; --peach: #d8e495; --teal: #a0a0a0; --green: #a0c0a7; --yellow: #d8e495; --pink: #f7cafa; --sky: #a0c0a7; --lavender: #f7cafa; color-scheme: dark; }
 :root[data-palette="paper"] { --base: #ffffff; --mantle: #f6f6f4; --surface0: #e4e2dd; --surface1: #c9c6bf; --overlay1: #9a968e; --text: #2b2925; --subtext1: #1f1d1a; --subtext0: #6b675f; --mauve: #8c2f2b; --maroon: #8c2f2b; --peach: #3d3a35; --teal: #8a6d3b; --green: #4f7a3a; --yellow: #a87a12; --pink: #9b4f78; --sky: #3f6f8f; --lavender: #6a5f9e; color-scheme: light; }
 
 /* background styles */
@@ -927,7 +928,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .ap-g { display: grid; gap: 0.5rem; }
 .ap-g > span { color: var(--label); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.6875rem; }
 .ap-presets { display: grid; gap: 0.45rem; }
-.ap-preset { font: inherit; text-align: left; cursor: pointer; display: grid; gap: 0.35rem; padding: 0.7rem 0.75rem; border-radius: 9px; color: var(--sw-fg); background: var(--sw-bg); border: 1px solid color-mix(in srgb, var(--sw-fg) 18%, transparent); background-image: var(--sw-pat); background-size: 14px 14px; }
+.ap-preset { font: inherit; text-align: left; cursor: pointer; display: grid; gap: 0.35rem; padding: 0.7rem 0.75rem; border-radius: 9px; color: var(--sw-fg); background: var(--sw-pat), var(--sw-bg); border: 1px solid color-mix(in srgb, var(--sw-fg) 18%, transparent); }
+.ap-preset[data-id="cropmark"] { border-radius: 0; }
 .ap-preset[aria-pressed="true"] { outline: 2px solid var(--mauve); outline-offset: 1px; }
 .ap-preset .pr-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
 .ap-preset b { font-family: var(--display); font-size: 1rem; letter-spacing: 0; color: var(--sw-ac); }
@@ -1038,6 +1040,56 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   75% { transform: translate(-2px, 0); clip-path: inset(0); filter: contrast(1.3); }
   100% { transform: translate(0); clip-path: inset(0); filter: none; }
 }
+
+/* ============ THEME: CROPMARK ============
+   Built on the design language of a design-tools database: near-black, hairline rules, square corners,
+   grey mono labels, pastel pink for whatever is selected, and printer's crop marks on every card. */
+:root[data-theme="cropmark"] {
+  --display: "Inter Tight", system-ui, sans-serif; --sans: "Inter Tight", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+  --h1: var(--text); --h2: var(--text); --label: var(--subtext0); --accent: #f7cafa; --sel: #f7cafa; --sel-ink: #121212;
+  --mark: color-mix(in srgb, #f7cafa 22%, transparent);
+  --cm-c: var(--overlay1);
+  --cm: linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c));
+  --cm-pos: left 3px top 7px, left 7px top 3px, right 3px bottom 7px, right 7px bottom 3px, right 3px top 3px, left 3px bottom 3px;
+  --cm-size: 9px 1px, 1px 9px, 9px 1px, 1px 9px, 3px 3px, 3px 3px;
+}
+:root[data-theme="cropmark"] *, :root[data-theme="cropmark"] *::before, :root[data-theme="cropmark"] *::after { border-radius: 0 !important; }
+:root[data-theme="cropmark"] ::selection { background: var(--sel); color: var(--sel-ink); }
+/* type: light, tight headlines; grey lede; small mono labels */
+:root[data-theme="cropmark"] h1 { font-weight: 400; letter-spacing: -0.025em; line-height: 1.2; }
+:root[data-theme="cropmark"] h2, :root[data-theme="cropmark"] h3 { font-weight: 500; letter-spacing: -0.015em; }
+:root[data-theme="cropmark"] h2::before { content: "▪ "; font-size: 0.6em; color: var(--sel); vertical-align: 0.2em; }
+:root[data-theme="cropmark"] .lede { color: var(--subtext0); }
+:root[data-theme="cropmark"] .label, :root[data-theme="cropmark"] dt { letter-spacing: 0.06em; }
+:root[data-theme="cropmark"] .r-index dd { font-weight: 500; }
+:root[data-theme="cropmark"] a { text-decoration-thickness: 1px; text-underline-offset: 3px; }
+/* cards get crop marks */
+:root[data-theme="cropmark"] :is(.r-index, .hx-map, .sub-box, .tg, .hm-loop, .offclock li, .pg-cards li, .edu-card, .pp, .radar, .we, .pg-term, .page.obs) {
+  background-image: var(--cm); background-repeat: no-repeat; background-position: var(--cm-pos); background-size: var(--cm-size); border-color: var(--surface0);
+}
+:root[data-theme="cropmark"] .r-index > div { background: transparent; box-shadow: -1px -1px 0 var(--surface0); }
+:root[data-theme="cropmark"] .r-index { overflow: hidden; }
+:root[data-theme="cropmark"] .r-index { background-color: var(--paper); }
+/* buttons: pink block, black mono caps, a square bullet */
+:root[data-theme="cropmark"] :is(.btn, .pg-btn:not(.ghost)) { background: var(--sel); color: var(--sel-ink); border-color: var(--sel); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+:root[data-theme="cropmark"] :is(.btn, .pg-btn:not(.ghost))::before { content: "▪ "; }
+:root[data-theme="cropmark"] :is(.btn, .pg-btn):hover { filter: none; background: #fbe0fc; }
+:root[data-theme="cropmark"] .pg-btn.ghost, :root[data-theme="cropmark"] .soc { border-color: var(--surface0); }
+:root[data-theme="cropmark"] .pg-btn.ghost:hover { border-color: var(--sel); color: var(--sel); background: none; }
+:root[data-theme="cropmark"] .cta-2 { text-transform: uppercase; letter-spacing: 0.04em; }
+/* selection: whatever is picked turns pink with black text */
+:root[data-theme="cropmark"] :is(.ap-seg, .hm-views, .tg-tabs, .hm-steps, .rd-legend, .kinds) button[aria-pressed="true"],
+:root[data-theme="cropmark"] :is(.hm-views, .tg-tabs, .hm-steps) button[aria-selected="true"],
+:root[data-theme="cropmark"] .kinds input:checked + span { background: var(--sel); color: var(--sel-ink); border-color: var(--sel); }
+:root[data-theme="cropmark"] .hm-views button[aria-selected="true"] svg { color: var(--sel-ink); }
+:root[data-theme="cropmark"] .hm-steps button[aria-selected="true"] span { background: var(--sel-ink); color: var(--sel); }
+:root[data-theme="cropmark"] .ap-preset[aria-pressed="true"], :root[data-theme="cropmark"] .ap-themes button[aria-pressed="true"] { outline-color: var(--sel); }
+/* inputs: hairline boxes */
+:root[data-theme="cropmark"] :is(input[type="text"], input[type="email"], textarea) { background: transparent; border: 1px solid var(--surface0); }
+:root[data-theme="cropmark"] :is(input[type="text"], input[type="email"], textarea):focus { outline: 1px solid var(--sel); outline-offset: 0; border-color: var(--sel); }
+/* icons: thinner strokes */
+:root[data-theme="cropmark"] .offclock svg { stroke: var(--text); stroke-width: 1.25; }
+:root[data-theme="cropmark"] .hm-arc { stroke: var(--yellow); }
 </style>
 <script>
   // Decide before first paint whether this visit gets the intro, so the page never flashes in first.
@@ -1865,6 +1917,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <button type="button" id="th-nord" data-val="nord" style="--sw-bg:#2e3440;--sw-fg:#e5e9f0"><span class="sw"><i style="background:#b48ead"></i><i style="background:#d08770"></i><i style="background:#8fbcbb"></i></span>Nord</button>
       <button type="button" id="th-latte" data-val="latte" style="--sw-bg:#eff1f5;--sw-fg:#4c4f69"><span class="sw"><i style="background:#8839ef"></i><i style="background:#fe640b"></i><i style="background:#179299"></i></span>Latte</button>
       <button type="button" id="th-solarized" data-val="solarized" style="--sw-bg:#fdf6e3;--sw-fg:#586e75"><span class="sw"><i style="background:#6c71c4"></i><i style="background:#cb4b16"></i><i style="background:#2aa198"></i></span>Solarized</button>
+      <button type="button" id="th-cropmark" data-val="cropmark" style="--sw-bg:#121212;--sw-fg:#ededed"><span class="sw"><i style="background:#f7cafa"></i><i style="background:#d8e495"></i><i style="background:#a0c0a7"></i></span>Cropmark</button>
       <button type="button" id="th-paper" data-val="paper" style="--sw-bg:#ffffff;--sw-fg:#2b2925"><span class="sw"><i style="background:#8c2f2b"></i><i style="background:#3d3a35"></i><i style="background:#8a6d3b"></i></span>Paper</button>
     </div>
   </div>
@@ -2465,9 +2518,12 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   // THEME UPDATE: add next week's theme at the top of THEMES. The first one is what new visitors get.
   // `sw` is how its card looks in the picker: background, text, accent, and the background pattern.
   var THEMES = [
+    { id: 'cropmark', name: 'Cropmark', week: 'Week 43', note: 'Hairline rules, square corners, pink selections and crop marks on every card.',
+      set: { palette: 'cropmark', bg: 'plain', calm: 'margins', layout: '3', type: 'sans' },
+      sw: { bg: '#121212', fg: '#ededed', ac: '#f7cafa', pat: 'linear-gradient(#6e6e6e, #6e6e6e) left 6px top 10px / 9px 1px no-repeat, linear-gradient(#6e6e6e, #6e6e6e) left 10px top 6px / 1px 9px no-repeat, linear-gradient(#6e6e6e, #6e6e6e) right 6px bottom 10px / 9px 1px no-repeat, linear-gradient(#6e6e6e, #6e6e6e) right 10px bottom 6px / 1px 9px no-repeat' } },
     { id: 'midnight-ledger', name: 'Midnight Ledger', week: 'Week 42', note: 'Black ink, a drafting grid and a spotlight on the page.',
       set: { palette: 'black', bg: 'grid', calm: 'spotlight', layout: '3', type: 'serif' },
-      sw: { bg: '#0c0d10', fg: '#d4d4d8', ac: '#cba6f7', pat: 'linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)' } }
+      sw: { bg: '#0c0d10', fg: '#d4d4d8', ac: '#cba6f7', pat: 'linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px) 0 0 / 14px 14px, linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px) 0 0 / 14px 14px' } }
   ];
   var THEME_KEYS = ['palette', 'bg', 'calm', 'layout', 'type'];
   var AP_GLOBAL = { mnav: 'tabs' };

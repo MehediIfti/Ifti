@@ -34,7 +34,7 @@ img { max-width: 100%; }
   --sans: "Figtree", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --body: var(--serif);
-  --s-0: 0.8125rem; --s-1: 1.0625rem; --s-2: 1.5rem; --s-3: 2.5rem;
+  --s-0: 0.8125rem; --s-1: 1rem; --s-2: 1.3rem; --s-3: 2.125rem;   /* inner pages; the index keeps its larger scale below */
 }
 /* themes (bare :root = default) */
 :root, :root[data-palette="black"] { --base: #0c0d10; --mantle: #14151a; --surface0: #23252c; --surface1: #30323b; --overlay1: #6b6b73; --text: #d4d4d8; --subtext1: #e4e4e7; --subtext0: #8e8e96; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
@@ -51,7 +51,7 @@ img { max-width: 100%; }
 :root[data-bg="plain"] { --pattern: none; }
 /* text styles */
 :root[data-type="sans"] { --body: var(--sans); }
-:root[data-type="mono"] { --body: var(--mono); --s-1: 0.96875rem; }
+:root[data-type="mono"] { --body: var(--mono); --s-1: 0.9375rem; }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -118,7 +118,11 @@ h3 { font-size: var(--s-1); }
 .page > h2 { margin-top: 3.5rem; }
 .page > h1 + * { margin-top: 1rem; }
 p { margin: 0; }
-.lede { font-size: 1.3rem; line-height: 1.5; color: var(--subtext1); }
+.lede { font-size: 1.15rem; line-height: 1.5; color: var(--subtext1); }
+/* the home page keeps the original, larger type */
+#index { --s-1: 1.0625rem; --s-2: 1.5rem; --s-3: 2.5rem; font-size: var(--s-1); }
+:root[data-type="mono"] #index { --s-1: 0.96875rem; }
+#index .lede { font-size: 1.3rem; }
 .label { font-family: var(--mono); font-size: var(--s-0); color: var(--label); letter-spacing: 0.04em; text-transform: uppercase; }
 hl, mark { background: var(--mark); color: inherit; padding: 0 0.15em; }
 
@@ -818,7 +822,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   .rail a.nav kbd, .rail .stamp { display: none; }
   footer.colophon { grid-column: 1; }
   h1 { font-size: 1.75rem; }
-  .lede { font-size: 1.2rem; }
+  .lede { font-size: 1.1rem; }
+  #index .lede { font-size: 1.2rem; }
   .entries a { grid-template-columns: 3.5rem minmax(0, 1fr); }
   .entries .d { display: none; }
   dl.facts { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }

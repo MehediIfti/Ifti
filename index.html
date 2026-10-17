@@ -2103,10 +2103,6 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
     var words = (page.innerText || page.textContent).trim().split(/\s+/).length;
     var isNote = id.indexOf('n-') === 0;
-    if (isNote) html += noteMeta(page);
-    else html += '<section><h4>Page</h4><dl><dt>path</dt><dd>/' + (id === 'index' ? '' : id) + '</dd>' +
-      '<dt>words</dt><dd>' + words + '</dd><dt>read</dt><dd>' + Math.max(1, Math.round(words / 230)) + ' min</dd>' +
-      '<dt>updated</dt><dd>' + esc(document.querySelector('.rail .stamp').textContent.replace('Updated', '').trim()) + '</dd></dl></section>';
     var now = document.getElementById('now');
     var pick = function (h2text) {
       var h = Array.prototype.find.call(now.querySelectorAll('h2'), function (x) { return x.textContent === h2text; });
@@ -2120,6 +2116,11 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
+    // Page details come after Right now
+    if (isNote) html += noteMeta(page);
+    else html += '<section><h4>Page</h4><dl><dt>path</dt><dd>/' + (id === 'index' ? '' : id) + '</dd>' +
+      '<dt>words</dt><dd>' + words + '</dd><dt>read</dt><dd>' + Math.max(1, Math.round(words / 230)) + ' min</dd>' +
+      '<dt>updated</dt><dd>' + esc(document.querySelector('.rail .stamp').textContent.replace('Updated', '').trim()) + '</dd></dl></section>';
     html += '<section><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
     html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>9</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
     meta.innerHTML = html;

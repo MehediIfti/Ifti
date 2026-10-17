@@ -1144,6 +1144,21 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .shelf-dir span { color: var(--muted); margin-left: 0.3rem; }
 .log-more { margin-top: 0.6rem; font-size: 0.9375rem; }
 
+/* Move things around: floating buttons, section grips, drop line */
+.ap-tab.free { border-left: 1px solid var(--surface0); border-radius: 10px; transition: color 0.15s ease; }
+.ap-tab.free:hover { padding-left: 0.5rem; }
+.ap-tab.free.tight { padding: 0.55rem 0.5rem; }
+[data-float].dragging { cursor: grabbing; box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: none; transition: none; }
+.sec-grip { position: absolute; z-index: 25; width: 22px; height: 24px; padding: 0; border: 0; border-radius: 4px; background: transparent; cursor: grab; color: var(--overlay1);
+  background-image: radial-gradient(currentColor 1.2px, transparent 1.4px); background-size: 6px 6px; background-position: 5px 3px; background-repeat: repeat; clip-path: inset(3px 5px 3px 5px); }
+.sec-grip:hover { color: var(--text); }
+.is-dragging, .is-dragging * { cursor: grabbing !important; user-select: none; }
+.sec-lift { opacity: 0.35; }
+.sec-moved { animation: sec-moved 0.7s ease; }
+@keyframes sec-moved { from { background: color-mix(in srgb, var(--accent) 14%, transparent); } to { background: transparent; } }
+.drop-line { position: absolute; z-index: 40; height: 2px; margin-top: -1px; background: var(--accent); pointer-events: none; }
+@media (max-width: 760px), (pointer: coarse) { .sec-grip, .drop-line { display: none !important; } }
+
 /* ============ THEME: LIGHTS OUT ============
    Formula 1, Red Bull colours. Navy, F1 red and yellow, Titillium Web (the classic F1 typeface), slanted headlines,
    parallelogram buttons, corner-cut cards and diagonal speed lines. A start-light sequence plays when you switch to it. */
@@ -2120,7 +2135,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   </div>
 </div>
 
-<button type="button" class="ap-tab" id="ap-tab" aria-expanded="false" aria-controls="ap-panel" title="Change theme (T)">
+<button type="button" class="ap-tab" id="ap-tab" data-float="ap-tab" aria-expanded="false" aria-controls="ap-panel" title="Change theme (T). Drag to move.">
   <span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Theme</span>
 </button>
 <aside class="ap-panel" id="ap-panel" aria-label="Appearance" hidden>
@@ -2173,7 +2188,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 
 <div class="pop" id="pop" hidden><div class="pop-card" role="dialog" aria-modal="true" aria-labelledby="pop-t"><button type="button" class="ap-x" id="pop-x" aria-label="Close">×</button><div id="pop-body"></div></div></div>
 <div class="peek" id="peek" aria-hidden="true"></div>
-<button type="button" class="term-fab term-open" aria-label="Open terminal (press ~)" title="Terminal · press ~"><b>&gt;_</b><span class="lbl">Terminal</span><kbd>~</kbd></button>
+<button type="button" class="term-fab term-open" data-float="term-fab" aria-label="Open terminal (press ~)" title="Terminal · press ~. Drag to move."><b>&gt;_</b><span class="lbl">Terminal</span><kbd>~</kbd></button>
 <div class="term" id="term" role="dialog" aria-label="Terminal" hidden>
   <div class="term-bar"><span><i>●</i> ifti@notebook: ~ · type <b>help</b></span><button type="button" id="term-x" aria-label="Close terminal">esc ×</button></div>
   <div class="term-out" id="term-out" aria-live="polite"></div>
@@ -2541,9 +2556,11 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   var tocItems = [];
   function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
   // Every page ends by pointing to the next one, so the site reads in order
-  var ORDER = ['index', 'now', 'notes', 'work', 'shelf', 'paperclip', 'hermes', 'whiteboard', 'research', 'education'];
   function pageNext(page, id) {
-    var i = ORDER.indexOf(id); if (i < 0 || page.querySelector('.page-next')) return;
+    // page order is the rail's order, so dragging rail links changes Previous/Next too
+    var ORDER = Array.prototype.map.call(document.querySelectorAll('.rail a.nav'), function (a) { return a.getAttribute('href').slice(1); });
+    var old = page.querySelector(':scope > .page-next'); if (old) old.remove();
+    var i = ORDER.indexOf(id); if (i < 0) return;
     var name = function (k) { var a = document.querySelector('.rail a.nav[href="#' + k + '"]'); return a ? a.textContent.replace(/^\d/, '').trim() : k; };
     var prev = ORDER[i - 1], next = ORDER[i + 1];
     page.insertAdjacentHTML('beforeend', '<nav class="page-next" aria-label="Keep reading">' +
@@ -2880,9 +2897,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   window.placeApTab = function () {
     cancelAnimationFrame(tabRaf);
     tabRaf = requestAnimationFrame(function () {
+      if (tab.classList.contains('free')) return;
       if (matchMedia('(max-width: 760px)').matches || !railEl.offsetHeight) { tab.classList.remove('tight'); tab.style.top = ''; return; }
       var gap = 20, top = railEl.getBoundingClientRect().bottom + gap;
-      var fab = document.querySelector('.term-fab'), floor = fab && fab.offsetHeight ? fab.getBoundingClientRect().top - 12 : window.innerHeight - gap;
+      var fab = document.querySelector('.term-fab'), floor = fab && fab.offsetHeight && !fab.classList.contains('free') ? fab.getBoundingClientRect().top - 12 : window.innerHeight - gap;
       tab.classList.remove('tight');
       if (top + tab.offsetHeight > floor) tab.classList.add('tight');
       tab.style.top = Math.max(gap, Math.min(top, floor - tab.offsetHeight)) + 'px';
@@ -3537,6 +3555,151 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     });
     set(0);
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(function () { if (document.getElementById('hermes').classList.contains('on')) set((cur + 1) % 4); }, 2800);
+  })();
+
+  // MOVE THINGS AROUND (computer only).
+  // The Theme tab and Terminal button can be dragged anywhere; the spot is saved in this browser.
+  // Drop one back near its old spot to put it home. Sections and rail links can be dragged too;
+  // that isn't saved, so a reload puts everything back.
+  (function () {
+    var wide = matchMedia('(min-width: 761px)'), touch = matchMedia('(pointer: coarse)');
+    var desk = { get matches() { return wide.matches && !touch.matches; }, addEventListener: function (t, f) { if (wide.addEventListener) { wide.addEventListener(t, f); touch.addEventListener(t, f); } } };
+    var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+    var fixedOrder = function () { var p = document.querySelector('.page.on'); if (p) { buildMeta(p, p.id); pageNext(p, p.id); } };
+
+    // floating buttons
+    document.querySelectorAll('[data-float]').forEach(function (el) {
+      var k = 'pos-' + el.getAttribute('data-float'), id = null, sx, sy, ox, oy, moved = false, endAt = 0;
+      function saved() { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+      function save(v) { try { if (v) localStorage.setItem(k, JSON.stringify(v)); else localStorage.removeItem(k); } catch (e) {} }
+      function apply() {
+        var v = saved();
+        if (!v || !desk.matches) {
+          el.classList.remove('free'); el.style.left = el.style.right = el.style.bottom = '';
+          if (el === tab) { el.style.top = ''; placeApTab(); } else el.style.top = '';
+          if (el !== tab) placeApTab();
+          return;
+        }
+        el.classList.add('free'); el.classList.remove('tight');
+        el.style.right = el.style.bottom = 'auto';
+        el.style.left = clamp(v.x * innerWidth, 8, innerWidth - el.offsetWidth - 8) + 'px';
+        el.style.top = clamp(v.y * innerHeight, 8, innerHeight - el.offsetHeight - 8) + 'px';
+        placeApTab();
+      }
+      el.addEventListener('pointerdown', function (e) {
+        if (!desk.matches || e.button !== 0) return;
+        id = e.pointerId; sx = e.clientX; sy = e.clientY; moved = false;
+        var r = el.getBoundingClientRect(); ox = sx - r.left; oy = sy - r.top;
+      });
+      window.addEventListener('pointermove', function (e) {
+        if (e.pointerId !== id) return;
+        if (!moved) {
+          if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < 6) return;
+          moved = true; el.classList.add('free', 'dragging'); el.classList.remove('tight');
+          el.style.right = el.style.bottom = 'auto';
+        }
+        el.style.left = clamp(e.clientX - ox, 8, innerWidth - el.offsetWidth - 8) + 'px';
+        el.style.top = clamp(e.clientY - oy, 8, innerHeight - el.offsetHeight - 8) + 'px';
+      });
+      function end(e) {
+        if (e.pointerId !== id) return; id = null;
+        if (!moved) return;
+        el.classList.remove('dragging'); endAt = Date.now();
+        var r = el.getBoundingClientRect();
+        // home: the left edge for the Theme tab, the bottom-left corner for the Terminal button
+        var home = el === tab ? r.left < 48 : r.left < 64 && innerHeight - r.bottom < 64;
+        save(home ? null : { x: r.left / innerWidth, y: r.top / innerHeight });
+        apply();
+      }
+      window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);
+      el.addEventListener('click', function (e) { if (Date.now() - endAt < 250) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+      window.addEventListener('resize', apply);
+      if (desk.addEventListener) desk.addEventListener('change', apply);
+      apply();
+    });
+
+    // a drop line shared by sections and rail links
+    var line = document.createElement('div'); line.className = 'drop-line'; line.hidden = true; document.body.appendChild(line);
+    function showLine(y, r) { line.hidden = false; line.style.top = (y + scrollY) + 'px'; line.style.left = (r.left + scrollX) + 'px'; line.style.width = r.width + 'px'; }
+    function nearest(slots, y) { var best = 0, d = Infinity; slots.forEach(function (s, i) { var dd = Math.abs(s.y - y); if (dd < d) { d = dd; best = i; } }); return best; }
+
+    // sections: a grip beside each h2 that has sibling h2s
+    var grip = document.createElement('button'); grip.type = 'button'; grip.className = 'sec-grip'; grip.hidden = true;
+    grip.setAttribute('aria-label', 'Drag to move this section'); grip.title = 'Drag to move this section';
+    document.body.appendChild(grip);
+    var hover = null, drag = null;
+    var heads = function (h) { return Array.prototype.filter.call(h.parentElement.children, function (c) { return c.tagName === 'H2'; }); };
+    function block(h) {
+      var out = [h], n = h.nextElementSibling;
+      while (n && n.tagName !== 'H2' && !n.matches('.page-next, .note-next, script')) { out.push(n); n = n.nextElementSibling; }
+      return out;
+    }
+    document.addEventListener('mouseover', function (e) {
+      if (!desk.matches || drag || e.target === grip) return;
+      var h = e.target.closest && e.target.closest('.page.on h2');
+      if (!h || heads(h).length < 2) { if (!(e.target.closest && e.target.closest('.sec-grip'))) grip.hidden = true; return; }
+      hover = h; var r = h.getBoundingClientRect();
+      grip.style.top = (r.top + scrollY + r.height / 2 - 12) + 'px'; grip.style.left = (r.left + scrollX - 30) + 'px'; grip.hidden = false;
+    });
+    function slotsFor(h) {
+      var hs = heads(h), last = block(hs[hs.length - 1]), end = last[last.length - 1];
+      return hs.map(function (x) { return { y: x.getBoundingClientRect().top - 8, ref: x }; })
+        .concat([{ y: end.getBoundingClientRect().bottom + 8, ref: end.nextSibling }]);
+    }
+    grip.addEventListener('pointerdown', function (e) {
+      if (!hover || e.button !== 0) return;
+      e.preventDefault(); grip.setPointerCapture(e.pointerId);
+      drag = { h: hover, nodes: block(hover) };
+      drag.nodes.forEach(function (n) { n.classList.add('sec-lift'); });
+      document.documentElement.classList.add('is-dragging');
+    });
+    grip.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      if (e.clientY < 70) scrollBy(0, -14); else if (e.clientY > innerHeight - 70) scrollBy(0, 14);
+      var slots = slotsFor(drag.h); drag.slot = slots[nearest(slots, e.clientY)];
+      showLine(drag.slot.y, drag.h.parentElement.getBoundingClientRect());
+      var r = drag.h.getBoundingClientRect(); grip.style.top = (e.clientY + scrollY - 12) + 'px'; grip.style.left = (r.left + scrollX - 30) + 'px';
+    });
+    function secEnd() {
+      if (!drag) return;
+      var d = drag; drag = null; line.hidden = true; grip.hidden = true;
+      document.documentElement.classList.remove('is-dragging');
+      d.nodes.forEach(function (n) { n.classList.remove('sec-lift'); });
+      var ref = d.slot && d.slot.ref;
+      if (!d.slot || ref === d.h || d.nodes.indexOf(ref) >= 0 || ref === d.nodes[d.nodes.length - 1].nextElementSibling && ref && ref.tagName === 'H2') return;
+      var parent = d.h.parentElement;
+      d.nodes.forEach(function (n) { parent.insertBefore(n, ref); });
+      d.nodes.forEach(function (n) { n.classList.add('sec-moved'); setTimeout(function () { n.classList.remove('sec-moved'); }, 700); });
+      fixedOrder();
+    }
+    grip.addEventListener('pointerup', secEnd); grip.addEventListener('pointercancel', secEnd);
+
+    // rail: drag a page link to reorder the pages
+    var rail = document.querySelector('.rail'), rd = null, railEnd = 0;
+    rail.addEventListener('dragstart', function (e) { if (e.target.closest && e.target.closest('a.nav')) e.preventDefault(); });
+    rail.addEventListener('pointerdown', function (e) {
+      var a = e.target.closest('a.nav'); if (!a || !desk.matches || e.button !== 0) return;
+      rd = { li: a.parentElement, a: a, id: e.pointerId, y: e.clientY, on: false };
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!rd || e.pointerId !== rd.id) return;
+      if (!rd.on) { if (Math.abs(e.clientY - rd.y) < 6) return; rd.on = true; rd.li.classList.add('sec-lift'); document.documentElement.classList.add('is-dragging'); }
+      var lis = Array.prototype.filter.call(rail.querySelectorAll('ol > li'), function (l) { return l.offsetHeight; });
+      var slots = [];
+      lis.forEach(function (l) { var r = l.getBoundingClientRect(); slots.push({ y: r.top, ref: l, ol: l.parentElement }); });
+      lis.forEach(function (l, i) { if (!lis[i + 1] || lis[i + 1].parentElement !== l.parentElement) { var r = l.getBoundingClientRect(); slots.push({ y: r.bottom, ref: null, ol: l.parentElement }); } });
+      rd.slot = slots[nearest(slots, e.clientY)];
+      showLine(rd.slot.y, rd.slot.ol.getBoundingClientRect());
+    });
+    function railStop(e) {
+      if (!rd || e.pointerId !== rd.id) return;
+      var d = rd; rd = null; if (!d.on) return;
+      line.hidden = true; railEnd = Date.now();
+      document.documentElement.classList.remove('is-dragging'); d.li.classList.remove('sec-lift');
+      if (d.slot && d.slot.ref !== d.li) { d.slot.ol.insertBefore(d.li, d.slot.ref); d.li.classList.add('sec-moved'); setTimeout(function () { d.li.classList.remove('sec-moved'); }, 700); fixedOrder(); placeApTab(); }
+    }
+    window.addEventListener('pointerup', railStop); window.addEventListener('pointercancel', railStop);
+    rail.addEventListener('click', function (e) { if (Date.now() - railEnd < 250) { e.preventDefault(); e.stopImmediatePropagation(); } }, true);
   })();
 
   document.querySelectorAll('.copy').forEach(function (b) {

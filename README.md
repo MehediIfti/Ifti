@@ -31,3 +31,9 @@ Single static file (`index.html`), served with GitHub Pages.
 **CV:** `cv.pdf`, one A4 page, linked from the homepage and the Work page.
 
 **Themes:** current themes are Cropmark (week 43, the default) and Midnight Ledger (week 42). Cropmark's extra styling lives in the `THEME: CROPMARK` block at the end of the CSS. The list is the `THEME UPDATE` list (`THEMES`) in the script. Each theme is a named bundle of colours, background, pattern, layout and text. The first entry is what new visitors get, so add each week's theme at the top. Visitors can edit any theme with the controls under it; edits are saved per theme on their device, and Reset puts that theme back to how it shipped. For styling beyond the panel's options, target `:root[data-theme="<id>"]` in the CSS. Also update the `data-*` attributes on `<html>` to match the new default so there's no flash on load.
+
+**Off the clock pop-ups:** each card with `data-pop` opens a pop-up built in `POPS` in the script. The F1 numbers live in the `F1 UPDATE` block (standings, career stats, records). Refresh them after each race and change `asOf`.
+
+**Terminal:** press `~` (or use "Open terminal" in the footer). Commands live in `CMDS` in the script: `help`, `ls`, `cd`, `cat`, `whoami`, `now`, `f1`, `theme`, `book`, `email`, `cv`, `socials`, `clear`, `exit`, plus `sudo hire ifti`.
+
+**Hover previews:** on a desktop, hovering any link to another page or note shows its title and first lines. Nothing to update; it reads the page itself.

@@ -20,15 +20,15 @@ img { max-width: 100%; }
   --ink: var(--text);
   --muted: var(--subtext0);
   --rule: var(--surface0);
-  --dot: var(--surface1);
+  --dot: color-mix(in srgb, var(--surface1) 50%, var(--overlay1));
   --line: color-mix(in srgb, var(--surface1) 55%, transparent);
   --accent: var(--maroon);                  /* links */
   --h1: var(--mauve);
   --h2: var(--peach);
   --label: var(--teal);
   --mark: color-mix(in srgb, var(--yellow) 28%, transparent);
-  --pattern: radial-gradient(circle, var(--dot) 1.1px, transparent 1.5px);
-  --pattern-size: 22px 22px;
+  --pattern: radial-gradient(circle, var(--dot) 0.8px, transparent 1.2px);
+  --pattern-size: 14px 14px;
   --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --serif: "Literata", Georgia, "Times New Roman", serif;
   --sans: "Figtree", "Segoe UI", system-ui, sans-serif;
@@ -37,7 +37,7 @@ img { max-width: 100%; }
   --s-0: 0.8125rem; --s-1: 1.0625rem; --s-2: 1.5rem; --s-3: 2.5rem;
 }
 /* themes (bare :root = default) */
-:root, :root[data-palette="black"] { --base: #000000; --mantle: #0c0c0d; --surface0: #222225; --surface1: #2c2c30; --overlay1: #6b6b73; --text: #d4d4d8; --subtext1: #e4e4e7; --subtext0: #8e8e96; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
+:root, :root[data-palette="black"] { --base: #0c0d10; --mantle: #14151a; --surface0: #23252c; --surface1: #30323b; --overlay1: #6b6b73; --text: #d4d4d8; --subtext1: #e4e4e7; --subtext0: #8e8e96; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
 :root[data-palette="mocha"] { --base: #1e1e2e; --mantle: #181825; --surface0: #313244; --surface1: #45475a; --overlay1: #7f849c; --text: #cdd6f4; --subtext1: #bac2de; --subtext0: #a6adc8; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
 :root[data-palette="gruvbox"] { --base: #282828; --mantle: #1d2021; --surface0: #3c3836; --surface1: #504945; --overlay1: #928374; --text: #ebdbb2; --subtext1: #fbf1c7; --subtext0: #a89984; --mauve: #d3869b; --maroon: #fb4934; --peach: #fe8019; --teal: #8ec07c; --green: #b8bb26; --yellow: #fabd2f; --pink: #d3869b; --sky: #83a598; --lavender: #83a598; color-scheme: dark; }
 :root[data-palette="nord"] { --base: #2e3440; --mantle: #272c36; --surface0: #3b4252; --surface1: #434c5e; --overlay1: #7b88a1; --text: #e5e9f0; --subtext1: #eceff4; --subtext0: #a3abba; --mauve: #b48ead; --maroon: #bf616a; --peach: #d08770; --teal: #8fbcbb; --green: #a3be8c; --yellow: #ebcb8b; --pink: #b48ead; --sky: #88c0d0; --lavender: #81a1c1; color-scheme: dark; }
@@ -57,15 +57,20 @@ img { max-width: 100%; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   background-color: var(--paper);
-  background-image: var(--pattern);
-  background-size: var(--pattern-size);
-  background-attachment: fixed;
   color: var(--ink);
   font: 400 var(--s-1)/1.65 var(--body);
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 0;
 }
+/* background pattern: its own fixed layer, brightest behind the reading column and fading toward the edges */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: var(--pattern); background-size: var(--pattern-size);
+  -webkit-mask-image: radial-gradient(ellipse 55% 75% at 50% 35%, #000 25%, transparent 90%);
+  mask-image: radial-gradient(ellipse 55% 75% at 50% 35%, #000 25%, transparent 90%);
+}
+.shell { position: relative; z-index: 1; }
 ::selection { background: var(--mark); color: var(--ink); }
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
@@ -716,7 +721,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <div class="ap-head"><b>Appearance</b><button type="button" class="ap-x" id="ap-close" aria-label="Close">×</button></div>
   <div class="ap-g"><span>Theme</span>
     <div class="ap-themes" data-attr="palette">
-      <button type="button" id="th-black" data-val="black" style="--sw-bg:#000000;--sw-fg:#d4d4d8"><span class="sw"><i style="background:#cba6f7"></i><i style="background:#fab387"></i><i style="background:#94e2d5"></i></span>Black</button>
+      <button type="button" id="th-black" data-val="black" style="--sw-bg:#0c0d10;--sw-fg:#d4d4d8"><span class="sw"><i style="background:#cba6f7"></i><i style="background:#fab387"></i><i style="background:#94e2d5"></i></span>Black</button>
       <button type="button" id="th-mocha" data-val="mocha" style="--sw-bg:#1e1e2e;--sw-fg:#cdd6f4"><span class="sw"><i style="background:#cba6f7"></i><i style="background:#fab387"></i><i style="background:#94e2d5"></i></span>Mocha</button>
       <button type="button" id="th-gruvbox" data-val="gruvbox" style="--sw-bg:#282828;--sw-fg:#ebdbb2"><span class="sw"><i style="background:#d3869b"></i><i style="background:#fe8019"></i><i style="background:#8ec07c"></i></span>Gruvbox</button>
       <button type="button" id="th-nord" data-val="nord" style="--sw-bg:#2e3440;--sw-fg:#e5e9f0"><span class="sw"><i style="background:#b48ead"></i><i style="background:#d08770"></i><i style="background:#8fbcbb"></i></span>Nord</button>

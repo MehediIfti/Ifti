@@ -4,6 +4,7 @@
 - **Facts only:** never invent clients, quotes, numbers or stories. Ask Ifti if something is missing.
 - **Structure:** single file, `index.html`. The README lists every `UPDATE` block and how themes work.
 - **Location:** Dhaka everywhere.
+- **Notes from podcasts, videos and books:** summarise what was said, attributed to the speakers. Do not add a "What I'm taking into client work" section or tie the note back to client work unless Ifti asks for it. Not everything he listens to is about work.
 - **Changelog:** when a change adds a page, a note, a feature or a redesign, add one entry to the `CHANGELOG UPDATE` block in the same commit. Skip copy edits, fixes and small tweaks.
 
 ## Daily routine: "next issue"

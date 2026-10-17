@@ -16,7 +16,7 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Share cards:** select any line in a note and a "Share quote" button appears. It draws a card in the current theme (wide or square) to download, copy or share, with links to post on X or LinkedIn.
 
-**Tour:** "Take the tour" on the homepage (or in search) walks through the site in a few stops. Steps that aren't on screen, like the right rail on phones, are skipped. The steps live in `STEPS` in the script.
+**Tour:** the square button beside the Terminal button (or "Take the tour" in search) walks through the site in a few stops. The button follows the Terminal button wherever it is dragged, and is hidden on phones, where search starts the tour. Steps that aren't on screen, like the right rail on phones, are skipped. The steps live in `STEPS` in the script.
 
 **Print:** printing any page gives just that page, black on white, with my name, email and the page link at the top. The Work page prints as a CV. Add `class="no-print"` to anything that shouldn't print.
 

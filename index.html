@@ -1297,6 +1297,13 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
 .term-fab:hover, .term-fab:focus-visible { border-color: var(--label); transform: translateY(-1px); outline: none; }
 .term-fab b { font-weight: 500; color: var(--label); }
 .term-fab kbd { font: inherit; font-size: 0.6875rem; color: var(--muted); background: var(--surface0); border-radius: 3px; padding: 0 0.3rem; }
+.tour-fab { position: fixed; z-index: 29; left: calc(env(safe-area-inset-left, 0px) + 147px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); display: grid; place-items: center; padding: 0; color: var(--label); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s, color 0.15s, transform 0.15s; }
+.tour-fab:hover, .tour-fab:focus-visible { color: var(--text); border-color: var(--label); transform: translateY(-1px); outline: none; }
+.tour-fab::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(3px); white-space: nowrap; padding: 0.3rem 0.55rem; font: 500 0.6875rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 5px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); opacity: 0; pointer-events: none; transition: opacity 0.12s, transform 0.12s; }
+.tour-fab:hover::after, .tour-fab:focus-visible::after { opacity: 1; transform: translateX(-50%); }
+.tour-fab.tip-below::after { bottom: auto; top: calc(100% + 8px); }
+html.touring .tour-fab::after { display: none; }
+@media (max-width: 760px) { .tour-fab { display: none; } }
 @media (max-width: 760px) {
   .term-fab { padding: 0.45rem 0.55rem; } .term-fab .lbl, .term-fab kbd { display: none; }
   .term-fab { left: auto; right: calc(env(safe-area-inset-right, 0px) + 12px); }
@@ -1478,7 +1485,7 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
         <p class="label">Global sales &amp; partnerships · Musemind</p>
         <h1>Ifti</h1>
         <p class="lede">I turn first conversations into partnerships that last. Most of my week is calls with founders and enterprise teams. The job is to find out what's actually broken before anyone pitches a fix.</p>
-        <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><a class="cta-2" href="#writing-h">Read my notes ↓</a><button type="button" class="cta-2 tour-start">Take the tour</button></div>
+        <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><a class="cta-2" href="#writing-h">Read my notes ↓</a></div>
         <figure class="hx-map" id="hero" data-mode="map" aria-label="Where I work: Dhaka and five cities I work with most, linked on a world map">
           <div class="hm-bar">
             <span class="hm-title"><b>Where I work</b><small>Based in Dhaka. Working with teams in five more cities.</small></span>
@@ -2295,6 +2302,7 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
 
 <div class="pop" id="pop" hidden><div class="pop-card" role="dialog" aria-modal="true" aria-labelledby="pop-t"><button type="button" class="ap-x" id="pop-x" aria-label="Close">×</button><div id="pop-body"></div></div></div>
 <div class="peek" id="peek" aria-hidden="true"></div>
+<button type="button" class="tour-fab tour-start" aria-label="Take the tour" data-tip="Take the tour"><svg viewBox="0 0 64 64" width="18" height="18" aria-hidden="true"><path d="M32 12v13M32 39v13M12 32h13M39 32h13" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="32" r="4.5" style="fill: var(--green)"/></svg></button>
 <button type="button" class="term-fab term-open" data-float="term-fab" aria-label="Open terminal (press ~)" title="Terminal · press ~. Drag to move."><b>&gt;_</b><span class="lbl">Terminal</span><kbd>~</kbd></button>
 <div class="term" id="term" role="dialog" aria-label="Terminal" hidden>
   <div class="term-bar"><span><i>●</i> ifti@notebook: ~ · type <b>help</b></span><button type="button" id="term-x" aria-label="Close terminal">esc ×</button></div>
@@ -3913,7 +3921,7 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
       { el: ['#meta'], h: 'The margin', p: 'It changes with the page: what\'s on it, and what I\'m watching, reading and listening to right now.' },
       { el: ['#ap-tab', '.m-theme-top'], h: 'Change the look', p: 'Pick a theme. On a computer you can drag this tab to any edge, and it stays there.' },
       { el: ['.rail-search', '.m-top .pal-open'], h: 'Find anything', p: 'Press ' + palKey + ' to search every page, note, book and theme.' },
-      { el: ['.term-fab'], h: 'A terminal', p: 'If you like typing. Try help, now, or whoami.' },
+      { el: ['.term-fab'], h: 'A terminal', p: 'If you like typing. Try help, now, or whoami. The square button beside it replays this tour.' },
       { el: ['#index .hero .cta .btn'], h: 'When you want to talk', p: 'Book a call. Or just keep reading. That\'s the tour.' }
     ];
     var steps = [], i = 0;
@@ -4112,6 +4120,22 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
       if (desk.addEventListener) desk.addEventListener('change', apply);
       apply();
     });
+
+    // the tour button rides beside the Terminal button: on its right, or its left when the terminal sits on the right edge
+    var fab = document.querySelector('.term-fab'), tb = document.querySelector('.tour-fab');
+    window.placeTourBtn = function () {
+      if (!fab || !tb || !fab.offsetWidth) return;
+      var r = fab.getBoundingClientRect(), sz = Math.round(r.height), W = document.documentElement.clientWidth;
+      tb.style.width = tb.style.height = sz + 'px';
+      var left = fab.classList.contains('edge-r') || r.right + 8 + sz > W - 8 ? r.left - 8 - sz : r.right + 8;
+      tb.style.left = Math.round(left) + 'px'; tb.style.top = Math.round(r.top) + 'px'; tb.style.bottom = 'auto';
+      tb.classList.toggle('tip-below', r.top < 48);
+    };
+    var settle = function () { placeTourBtn(); setTimeout(placeTourBtn, 260); };
+    addEventListener('resize', settle); addEventListener('pointermove', function () { if (fab.classList.contains('dragging')) placeTourBtn(); }, { passive: true });
+    addEventListener('pointerup', settle);
+    if (document.fonts) document.fonts.ready.then(settle);
+    settle();
 
     // a drop line shared by sections and rail links
     var line = document.createElement('div'); line.className = 'drop-line'; line.hidden = true; document.body.appendChild(line);

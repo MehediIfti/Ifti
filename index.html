@@ -1155,6 +1155,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .ap-tab:is(.edge-t, .edge-b) .lbl { writing-mode: horizontal-tb; transform: none; }
 .ap-tab:is(.edge-t, .edge-b) .ap-dots { grid-auto-flow: column; }
 .ap-tab.dragging { border: 1px solid var(--surface0); border-radius: 10px; }
+.ap-tab.edge-line { border: 1px solid var(--surface0); border-radius: 16px; padding: 0.8rem 0.5rem 0.9rem; }
+.ap-tab.edge-line:hover { padding-left: 0.5rem; border-color: var(--overlay1); }
 [data-float].dragging { cursor: grabbing; box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: none; transition: none; }
 .sec-grip { position: absolute; z-index: 25; width: 22px; height: 24px; padding: 0; border: 0; border-radius: 4px; background: transparent; cursor: grab; color: var(--overlay1);
   background-image: radial-gradient(currentColor 1.2px, transparent 1.4px); background-size: 6px 6px; background-position: 5px 3px; background-repeat: repeat; clip-path: inset(3px 5px 3px 5px); }
@@ -2904,7 +2906,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   window.placeApTab = function () {
     cancelAnimationFrame(tabRaf);
     tabRaf = requestAnimationFrame(function () {
-      if (tab.classList.contains('free')) return;
+      if (tab.classList.contains('free')) { if (tab.classList.contains('edge-line') && tab._apply) tab._apply(); return; }
       if (matchMedia('(max-width: 760px)').matches || !railEl.offsetHeight) { tab.classList.remove('tight'); tab.style.top = ''; return; }
       var gap = 20, top = railEl.getBoundingClientRect().bottom + gap;
       var fab = document.querySelector('.term-fab'), floor = fab && fab.offsetHeight && !fab.classList.contains('free') ? fab.getBoundingClientRect().top - 12 : window.innerHeight - gap;
@@ -2915,7 +2917,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   };
   window.addEventListener('scroll', placeApTab, { passive: true });
   window.addEventListener('resize', placeApTab);
-  if (window.ResizeObserver) new ResizeObserver(placeApTab).observe(railEl);
+  if (window.ResizeObserver) { var ro = new ResizeObserver(placeApTab); ro.observe(railEl); ro.observe(document.getElementById('meta')); }
   placeApTab();
   document.querySelectorAll('.ap-open').forEach(function (b) {
     b.addEventListener('click', function () { sheetOpen(false); apOpen(panel.hidden); });
@@ -3574,6 +3576,15 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
     var fixedOrder = function () { var p = document.querySelector('.page.on'); if (p) { buildMeta(p, p.id); pageNext(p, p.id); } };
 
+    // the column lines beside the left rail and the right rail; the Theme tab can sit in the gap next to either
+    function lines() {
+      var out = [], shell = document.querySelector('.shell'), half = (parseFloat(getComputedStyle(shell).columnGap) || 40) / 2;
+      var rl = document.querySelector('.rail'), me = document.getElementById('meta');
+      if (rl.offsetWidth && parseFloat(getComputedStyle(rl).borderRightWidth) > 0) { var a = rl.getBoundingClientRect(); out.push({ e: 'rail', x: a.right + half, top: a.top, bottom: a.bottom, alt: 'l' }); }
+      if (me && me.offsetWidth && parseFloat(getComputedStyle(me).borderLeftWidth) > 0) { var b = me.getBoundingClientRect(); out.push({ e: 'meta', x: b.left - half, top: b.top, bottom: b.bottom, alt: 'r' }); }
+      return out;
+    }
+
     // floating buttons
     document.querySelectorAll('[data-float]').forEach(function (el) {
       var k = 'pos-' + el.getAttribute('data-float'), id = null, sx, sy, ox, oy, moved = false, endAt = 0;
@@ -3582,20 +3593,29 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       function apply() {
         var v = saved();
         if (!v || !desk.matches) {
-          el.classList.remove('free', 'edge-l', 'edge-r', 'edge-t', 'edge-b'); el.style.left = el.style.right = el.style.bottom = '';
+          el.classList.remove('free', 'edge-l', 'edge-r', 'edge-t', 'edge-b', 'edge-line'); el.style.left = el.style.right = el.style.bottom = '';
           if (el === tab) { el.style.top = ''; placeApTab(); } else el.style.top = '';
           if (el !== tab) placeApTab();
           return;
         }
         if (!v.e) { save(null); return apply(); } // an old free-floating spot: start again from home
-        el.classList.add('free'); el.classList.remove('tight', 'edge-l', 'edge-r', 'edge-t', 'edge-b'); el.classList.add('edge-' + v.e);
+        var e = v.e, ln = null;
+        if (e === 'rail' || e === 'meta') { ln = lines().filter(function (x) { return x.e === e; })[0]; if (!ln) e = e === 'rail' ? 'l' : 'r'; }
+        el.classList.add('free'); el.classList.remove('tight', 'edge-l', 'edge-r', 'edge-t', 'edge-b', 'edge-line'); el.classList.add(ln ? 'edge-line' : 'edge-' + e);
         el.style.right = el.style.bottom = 'auto';
         var w = el.offsetWidth, h = el.offsetHeight, m = el === tab ? 0 : 12, W = document.documentElement.clientWidth, H = innerHeight;
+        if (ln) {
+          el.style.left = Math.round(ln.x - w / 2) + 'px';
+          var lo = Math.max(8, ln.top), hi = Math.min(H - 8, ln.bottom) - h;
+          el.style.top = (hi > lo ? clamp(v.t * H - h / 2, lo, hi) : clamp(v.t * H - h / 2, 8, H - h - 8)) + 'px';
+          return;
+        }
+        v = { e: e, t: v.t };
         // pinned to the edge itself (right/bottom too), so hover padding never opens a gap
         el.style.left = el.style.top = 'auto';
         if (v.e === 'l' || v.e === 'r') { el.style[v.e === 'l' ? 'left' : 'right'] = m + 'px'; el.style.top = clamp(v.t * H - h / 2, 8, H - h - 8) + 'px'; }
         else { el.style[v.e === 't' ? 'top' : 'bottom'] = m + 'px'; el.style.left = clamp(v.t * W - w / 2, 8, W - w - 8) + 'px'; }
-        placeApTab();
+        if (el !== tab) placeApTab();
       }
       el.addEventListener('pointerdown', function (e) {
         if (!desk.matches || e.button !== 0) return;
@@ -3619,8 +3639,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         // snap to the nearest edge of the screen, keeping the spot along that edge
         var r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, W = document.documentElement.clientWidth, H = innerHeight;
         var d = { l: cx, r: W - cx, t: cy, b: H - cy }, e = 'l';
+        // the Theme tab can also sit beside a column line
+        if (el === tab) lines().forEach(function (x) { d[x.e] = Math.abs(cx - x.x); });
         Object.keys(d).forEach(function (k) { if (d[k] < d[e]) e = k; });
-        var t = e === 'l' || e === 'r' ? cy / H : cx / W;
+        var t = e === 't' || e === 'b' ? cx / W : cy / H;
         // home: the left edge for the Theme tab, the bottom-left corner for the Terminal button
         var home = el === tab ? e === 'l' : (e === 'b' && cx < 220) || (e === 'l' && cy > H - 160);
         save(home ? null : { e: e, t: t });
@@ -3629,6 +3651,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);
       el.addEventListener('click', function (e) { if (Date.now() - endAt < 250) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
       window.addEventListener('resize', apply);
+      el._apply = apply;
       if (desk.addEventListener) desk.addEventListener('change', apply);
       apply();
     });

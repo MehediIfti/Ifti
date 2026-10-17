@@ -12,6 +12,16 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Moving things around (computer only):** drag the Theme tab or the Terminal button anywhere on screen; the spot is saved in that browser, and dropping it back at its old edge or corner puts it home. Hover a section heading and drag the dotted grip to move that section within the page, or drag a link in the left rail to reorder the pages (Previous/Next follows the rail). The Theme tab and Terminal button snap to the nearest screen edge when let go; the Theme tab can also snap beside the column line next to either rail (three-column layout). Section and page order are not saved: a reload puts them back. The code is the `MOVE THINGS AROUND` block in the script.
 
+**Search (Ctrl K / ⌘K):** finds pages, sections, notes, Shelf items, themes and a few actions (book a call, copy email, tour, terminal, print, random note). It indexes the page as it is, so new content shows up on its own. Also the Search button in the rail and the search icon on phones.
+
+**Share cards:** select any line in a note and a "Share quote" button appears. It draws a card in the current theme (wide or square) to download, copy or share, with links to post on X or LinkedIn.
+
+**Tour:** "Take the tour" on the homepage (or in search) walks through the site in a few stops. Steps that aren't on screen, like the right rail on phones, are skipped. The steps live in `STEPS` in the script.
+
+**Print:** printing any page gives just that page, black on white, with my name, email and the page link at the top. The Work page prints as a CV. Add `class="no-print"` to anything that shouldn't print.
+
+**Changelog:** the `#changelog` page (linked in the footer) reads the commit history from the GitHub API when it opens. Commit subjects become entries, so write them for people. Co-author and session lines are hidden.
+
 **Stats radar:** edit the `STATS UPDATE` array in the script at the bottom of `index.html`. Each row is `[chart label, full name, strength, interest]`, scored 0–100. OVR, MVP and Grinding are calculated from it.
 
 **Calendar activity:** the `ACTIVITY UPDATE` block holds meetings per day from the calendar (counts only, no titles). `from` is the first day (a Sunday); each row of `counts` is one week.

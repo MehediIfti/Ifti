@@ -1168,6 +1168,93 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .drop-line { position: absolute; z-index: 40; height: 2px; margin-top: -1px; background: var(--accent); pointer-events: none; }
 @media (max-width: 760px), (pointer: coarse) { .sec-grip, .drop-line { display: none !important; } }
 
+/* Search palette */
+.rail-search { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; width: 100%; margin-top: 1.6rem; padding: 0.4rem 0.55rem; font: inherit; color: var(--subtext0); background: none; border: 1px solid var(--rule); border-radius: 6px; cursor: pointer; }
+.rail-search:hover { color: var(--text); border-color: var(--overlay1); }
+.rail-search kbd, .pal kbd { font: 500 0.6875rem var(--mono); color: var(--muted); background: var(--surface0); border-radius: 3px; padding: 0.05rem 0.35rem; }
+.rail-search + .stamp { margin-top: 1.25rem; }
+.pal { width: min(36rem, calc(100vw - 24px)); margin-top: 12vh; padding: 0; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); }
+.pal::backdrop, .sc::backdrop { background: rgba(0,0,0,0.55); }
+.pal-in { display: flex; align-items: center; gap: 0.6rem; padding: 0.85rem 1rem; border-bottom: 1px solid var(--surface0); color: var(--muted); }
+.pal-in input, .pal-in input:focus, .pal-in input:focus-visible { outline: none !important; box-shadow: none !important; border: 0 !important; background: none !important; padding: 0 !important; border-radius: 0 !important; }
+.pal-in input { flex: 1; min-width: 0; font: inherit; font-size: 1rem; color: var(--ink); background: none; border: 0; outline: none; }
+.pal-list { list-style: none; margin: 0; padding: 0.4rem; max-height: min(24rem, 55vh); overflow-y: auto; }
+.pal-list li { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); align-items: baseline; column-gap: 0.75rem; padding: 0.5rem 0.65rem; border-radius: 6px; cursor: pointer; }
+.pal-list li[aria-selected="true"] { background: var(--surface0); }
+.pal-list .pk { font: 500 0.625rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
+.pal-list b { font-weight: 500; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pal-list small { grid-column: 2; font-size: 0.8125rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pal-list .pal-none { display: block; color: var(--muted); cursor: default; }
+.pal-foot { display: flex; gap: 1rem; margin: 0; padding: 0.55rem 1rem; border-top: 1px solid var(--surface0); font: 0.6875rem var(--mono); color: var(--muted); }
+.pal-foot kbd { margin-right: 0.2rem; }
+@media (max-width: 760px) { .pal { margin-top: 8vh; } .pal-foot { display: none; } }
+.pal-flash { animation: sec-moved 1.2s ease; }
+
+/* Share cards */
+.share-pop { position: fixed; z-index: 46; padding: 0.4rem 0.7rem; font: 500 0.75rem var(--mono); color: var(--base); background: var(--accent); border: 0; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.35); cursor: pointer; }
+.sc { width: min(44rem, calc(100vw - 24px)); padding: 0; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); }
+.sc-head { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--surface0); }
+.sc-head b { flex: 1; font-family: var(--mono); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--label); }
+.sc canvas { display: block; width: calc(100% - 2rem); height: auto; margin: 1rem; border: 1px solid var(--surface0); }
+.sc-acts { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0 1rem; }
+.sc-acts > :not(.btn) { font: 500 0.75rem var(--mono); padding: 0.5rem 0.75rem; color: var(--text); background: none; border: 1px solid var(--surface0); border-radius: 5px; text-decoration: none; cursor: pointer; }
+.sc-acts > :not(.btn):hover { border-color: var(--overlay1); }
+.sc-note { margin: 0; padding: 0.75rem 1rem 1rem; font-size: 0.8125rem; color: var(--muted); }
+
+/* Guided tour */
+button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; }
+.tour { position: fixed; inset: 0; z-index: 60; }
+.tour-hole { position: fixed; border-radius: 8px; box-shadow: 0 0 0 200vmax rgba(0,0,0,0.62); transition: left 0.25s ease, top 0.25s ease, width 0.25s ease, height 0.25s ease; pointer-events: none; outline: 2px solid var(--accent); outline-offset: 2px; }
+.tour-card { position: fixed; width: min(20rem, calc(100vw - 24px)); padding: 1rem 1.1rem; display: grid; gap: 0.4rem; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.45); }
+.tour-card small { font: 500 0.625rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--label); }
+.tour-card b { font-family: var(--display); font-size: 1.1rem; font-weight: 500; color: var(--ink); }
+.tour-card p { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--subtext0); }
+.tour-acts { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
+.tour-acts button:not(.btn) { font: 500 0.75rem var(--mono); color: var(--muted); background: none; border: 0; cursor: pointer; padding: 0.4rem 0; }
+@media (prefers-reduced-motion: reduce) { .tour-hole { transition: none; } }
+
+/* Changelog */
+.cl .cl-d { font-size: 1rem; margin-top: 2.25rem; }
+.cl .cl-d:first-child { margin-top: 1.5rem; }
+.cl-list li { align-items: baseline; }
+.cl-list .t { font-weight: 500; }
+.cl-sha { margin-left: auto; font: 0.6875rem var(--mono); color: var(--muted); text-decoration: none; }
+.cl-sha:hover { color: var(--accent); }
+.cl-list p { flex-basis: 100%; }
+.cl-more { margin-top: 1.25rem; }
+
+/* Print: just the page, black on white. The Work page reads as a CV. */
+.print-head { display: none; }
+@media print {
+  @page { margin: 14mm 15mm 16mm; }
+  html:root { --base: #fff !important; --mantle: #fff !important; --crust: #fff !important; --surface0: #ddd !important; --surface1: #ccc !important; --overlay1: #777 !important;
+    --text: #111 !important; --ink: #111 !important; --subtext1: #222 !important; --subtext0: #444 !important; --muted: #555 !important; --label: #555 !important;
+    --mauve: #333 !important; --pink: #333 !important; --peach: #333 !important; --green: #333 !important; --yellow: #333 !important; --sky: #333 !important; --teal: #333 !important; --maroon: #333 !important; --lavender: #333 !important;
+    --accent: #111 !important; --rule: #ccc !important; --h1: #111 !important; --h2: #111 !important; --mark: #eee !important; --sel: #eee !important; color-scheme: light; }
+  html, body { background: #fff !important; color: #111 !important; }
+  body::before, body::after, main::before, main::after { display: none !important; }
+  * { box-shadow: none !important; text-shadow: none !important; animation: none !important; transition: none !important; }
+  .rail, .meta, .m-top, .m-tabs, .m-sheet, .ap-tab, .ap-panel, .term-fab, .term, .peek, .page-next, .note-next, .sec-grip, .drop-line, .share-pop, .tour, dialog,
+  footer.colophon, .no-print, .obs-tabs, .obs-nav, .obs-status, .obs-menu, .hx-map, .radar, .we, .tg, .hm-loop, .wb, .wb-open, iframe, form, .suggest-d, .sub-box, .cta, .pg-links, .shelf-dir, .log-more, .r-src, .edu-more, .cl-more, .copy, .tour-start { display: none !important; }
+  .shell { display: block !important; max-width: none !important; padding: 0 !important; margin: 0 !important; }
+  main { display: block !important; padding: 0 !important; }
+  .page:not(.on) { display: none !important; }
+  .page { max-width: none !important; width: auto !important; }
+  .page.obs, .page.obs .obs-view { border: 0 !important; padding: 0 !important; margin: 0 !important; max-width: none !important; background: none !important; }
+  .page.obs::before, .page.obs::after { display: none !important; }
+  .print-head { display: flex; flex-wrap: wrap; gap: 0.15rem 1.25rem; align-items: baseline; padding-bottom: 0.6rem; margin-bottom: 1.25rem; border-bottom: 1px solid #bbb; font: 9pt var(--mono); color: #555; }
+  .print-head b { font: 600 13pt var(--display); color: #111; width: 100%; }
+  body { font-size: 10.5pt; }
+  h1 { font-size: 20pt !important; } h2 { font-size: 13pt !important; margin-top: 1.4rem !important; padding-top: 0 !important; border-top: 0 !important; }
+  h2, h3 { break-after: avoid; } li, .job, .card, .edu-card, dl, tr, .record > * { break-inside: avoid; }
+  a { color: inherit !important; text-decoration: none !important; }
+  .page p a[href^="http"]::after, .page li a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; word-break: break-all; }
+  .tag { border: 1px solid #bbb !important; background: none !important; color: #333 !important; }
+  .sn { float: none !important; display: block !important; width: auto !important; margin: 0.3rem 0 0.6rem !important; color: #444 !important; font-size: 0.9em; }
+  :root[data-print="work"] .page.on > h1 { display: none; }
+  :root[data-print="work"] .page.on > h1 + .lede { font-size: 11pt; margin-top: 0; }
+}
+
 /* ============ THEME: LIGHTS OUT ============
    Formula 1, Red Bull colours. Navy, F1 red and yellow, Titillium Web (the classic F1 typeface), slanted headlines,
    parallelogram buttons, corner-cut cards and diagonal speed lines. A start-light sequence plays when you switch to it. */
@@ -1350,6 +1437,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 <header class="m-top" id="m-top">
   <a class="who" href="#index">Ifti</a>
   <span class="path" id="m-path">~/</span>
+  <button type="button" class="m-btn pal-open" aria-label="Search the site"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></g></svg></button>
   <button type="button" class="m-btn m-theme-top ap-open" aria-label="Change theme"><span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
   <button type="button" class="m-btn m-menu" id="m-menu" aria-expanded="false" aria-controls="m-sheet"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>Index</button>
 </header>
@@ -1379,6 +1467,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <li><a class="nav" href="#education"><kbd>0</kbd>Education</a></li>
       </ol>
     </div>
+    <button type="button" class="pal-open rail-search" aria-label="Search the site">Search <kbd class="pal-key">Ctrl K</kbd></button>
     <p class="stamp">Updated<br>17 Oct 2026</p>
   </nav>
 
@@ -1389,7 +1478,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <p class="label">Global sales &amp; partnerships · Musemind</p>
         <h1>Ifti</h1>
         <p class="lede">I turn first conversations into partnerships that last. Most of my week is calls with founders and enterprise teams. The job is to find out what's actually broken before anyone pitches a fix.</p>
-        <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><a class="cta-2" href="#writing-h">Read my notes ↓</a></div>
+        <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><a class="cta-2" href="#writing-h">Read my notes ↓</a><button type="button" class="cta-2 tour-start">Take the tour</button></div>
         <figure class="hx-map" id="hero" data-mode="map" aria-label="Where I work: Dhaka and five cities I work with most, linked on a world map">
           <div class="hm-bar">
             <span class="hm-title"><b>Where I work</b><small>Based in Dhaka. Working with teams in five more cities.</small></span>
@@ -1653,7 +1742,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <dt>Role</dt><dd>Manager, Global Sales &amp; Partnerships</dd>
         <dt>Company</dt><dd><a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency</dd>
         <dt>Team</dt><dd>I lead the inbound team: every lead from first reply to signed deal</dd>
-        <dt>CV</dt><dd><a href="cv.pdf" download>Download the one-page PDF ↓</a></dd>
+        <dt class="no-print">CV</dt><dd class="no-print"><a href="cv.pdf" download>Download the one-page PDF ↓</a></dd>
       </dl>
       <p>My job is the relationship. I find out what the client's business actually needs, keep every stakeholder pointed the same way, and steer the work toward a result someone can measure.</p>
       <p>Trust compounds. I'd rather earn the second project than squeeze the first.</p>
@@ -1743,8 +1832,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <dt>Writing</dt><dd><a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a><span>LinkedIn</span></dd>
       </dl>
 
-      <h2>Post-match stats</h2>
-      <p class="sub">Scored like the end of a ranked match. Strength is today. Interest is where I'm putting the hours.</p>
+      <h2 class="no-print">Post-match stats</h2>
+      <p class="sub no-print">Scored like the end of a ranked match. Strength is today. Interest is where I'm putting the hours.</p>
       <figure class="radar" id="radar">
         <div class="rd-hud"><span>Season 2026 · Key accounts</span><span class="ovr">OVR<b id="rd-ovr"></b></span></div>
         <div class="rd-body">
@@ -2100,11 +2189,20 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       </ol>
       <p><a class="back" href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">All research on ResearchGate ↗</a></p>
     </section>
+
+    <!-- CHANGELOG: filled from the GitHub commit history when the page opens. Nothing to update by hand. -->
+    <section class="page" id="changelog">
+      <p class="label">Colophon</p>
+      <h1>Changelog</h1>
+      <p class="lede">Every change to this site, newest first. I build it by talking it through with Claude Code, so most entries are one thing I asked for.</p>
+      <div class="cl" id="cl" aria-live="polite"><p class="sub">Loading the history from GitHub…</p></div>
+      <p class="sub"><a href="https://github.com/MehediIfti/Ifti/commits/main" target="_blank" rel="noopener">Full history on GitHub ↗</a></p>
+    </section>
   </main>
 
   <aside class="meta" id="meta" aria-label="Page details"></aside>
 
-  <footer class="colophon">Built by talking it through with Claude Code. No tracking, no cookies.</footer>
+  <footer class="colophon">Built by talking it through with Claude Code. <a href="#changelog">See every change</a>. No tracking, no cookies.</footer>
 </div>
 
 <nav class="m-tabs" aria-label="Sections">
@@ -2203,6 +2301,32 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   <div class="term-out" id="term-out" aria-live="polite"></div>
   <form class="term-in" id="term-form" autocomplete="off"><label for="term-i" id="term-ps">~ $</label><input id="term-i" spellcheck="false" autocapitalize="off" aria-label="Command"></form>
 </div>
+
+<dialog class="pal" id="pal" aria-label="Search">
+  <div class="pal-in"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></g></svg><input id="pal-q" type="text" placeholder="Search pages, notes, books, themes…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="pal-list" aria-autocomplete="list"><kbd>esc</kbd></div>
+  <ul class="pal-list" id="pal-list" role="listbox" aria-label="Results"></ul>
+  <p class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>enter</kbd> open</span><span><kbd>esc</kbd> close</span></p>
+</dialog>
+
+<dialog class="sc" id="sc" aria-label="Share a quote">
+  <div class="sc-head"><b>Share a quote</b>
+    <div class="ap-seg" role="group" aria-label="Card size"><button type="button" data-size="wide" aria-pressed="true">Wide</button><button type="button" data-size="square" aria-pressed="false">Square</button></div>
+    <button type="button" class="ap-x" id="sc-close" aria-label="Close">×</button>
+  </div>
+  <canvas id="sc-cv" width="1200" height="630" aria-label="Quote card preview"></canvas>
+  <div class="sc-acts">
+    <button type="button" class="btn" id="sc-dl">Download</button>
+    <button type="button" id="sc-copy">Copy image</button>
+    <button type="button" id="sc-share" hidden>Share…</button>
+    <a id="sc-x" target="_blank" rel="noopener">Post on X ↗</a>
+    <a id="sc-li" target="_blank" rel="noopener">LinkedIn ↗</a>
+  </div>
+  <p class="sc-note" id="sc-note">The card uses your current theme. LinkedIn shares the link, so download the card and add it to your post.</p>
+</dialog>
+
+<button type="button" class="share-pop" id="share-pop" hidden>Share quote</button>
+<div class="tour" id="tour" hidden><div class="tour-hole" id="tour-hole"></div><div class="tour-card" id="tour-card" role="dialog" aria-live="polite" aria-label="Tour"></div></div>
+<div class="print-head" id="print-head" aria-hidden="true"></div>
 
 <dialog class="gv" id="gv" aria-label="Graph view">
   <div class="gv-head"><b>Graph view</b>
@@ -2602,7 +2726,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
     // Page details come after Right now
-    if (isNote) html += noteMeta(page);
+    if (isNote) html += noteMeta(page) + '<section class="m-hide"><h4>Share</h4><p>Select any line to turn it into a card.</p></section>';
     html += '<section class="m-hide"><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
     meta.innerHTML = html;
     renderSocials(meta);
@@ -3031,6 +3155,21 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       if (txt) txt.querySelectorAll('.sn, .sn-ref').forEach(function (x) { x.remove(); });
       return '<span class="pk-k">' + esc(k) + '</span><b>' + esc(h ? h.textContent : page.id) + '</b>' + (txt ? '<p>' + esc(txt.textContent.trim()) + '</p>' : '') + (tags ? '<span class="pk-tags">' + esc(tags) + '</span>' : '');
     }
+    // a link to a section inside a page: the page, the heading, and a taste of what's under it
+    function secSummary(page, sec) {
+      var h1 = page.querySelector('h1'), head = sec.matches('h2, h3') ? sec : sec.querySelector('h2, h3') || sec;
+      var k = 'Section · /' + page.id + ' › ' + (h1 ? h1.textContent.trim() : page.id);
+      var n = head.nextElementSibling, body = '';
+      while (n && !body && !n.matches('h2')) {
+        if (n.matches('ul, ol')) {
+          var li = Array.prototype.slice.call(n.children), names = li.slice(0, 3).map(function (x) { var t = x.querySelector('.t, b'); return t ? t.childNodes[0].textContent.trim() : x.textContent.trim().slice(0, 40); });
+          body = names.join(' · ') + (li.length > 3 ? ' and ' + (li.length - 3) + ' more' : '');
+        } else if (n.matches('p') && n.textContent.trim().length > 20) body = n.textContent.trim();
+        else if (n.matches('details')) body = (n.querySelector('summary') || n).textContent.trim();
+        n = n.nextElementSibling;
+      }
+      return '<span class="pk-k">' + esc(k) + '</span><b>' + esc(head.textContent.trim()) + '</b>' + (body ? '<p>' + esc(body) + '</p>' : '');
+    }
     function place(a) {
       var r = a.getBoundingClientRect(), w = peek.offsetWidth, h = peek.offsetHeight;
       var x = Math.min(Math.max(12, r.left), innerWidth - w - 12), y = r.bottom + 8;
@@ -3044,9 +3183,12 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       hide();
       if (!a || a.closest('.rail, .m-tabs, .m-sheet, .obs-tabs, .ap-panel, .term, .meta .toc')) return;
       var id = a.getAttribute('href').slice(1), page = document.getElementById(id);
-      if (!page || !page.classList.contains('page') || page.classList.contains('on')) return;
+      if (!page) return;
+      var sec = null;
+      if (!page.classList.contains('page')) { sec = page; page = sec.closest('.page'); if (!page) return; }
+      if (page.classList.contains('on')) return;
       link = a;
-      timer = setTimeout(function () { peek.innerHTML = summary(page); place(a); peek.classList.add('on'); }, 280);
+      timer = setTimeout(function () { peek.innerHTML = sec ? secSummary(page, sec) : summary(page); place(a); peek.classList.add('on'); }, 280);
     });
     document.addEventListener('scroll', hide, { passive: true });
     document.addEventListener('click', hide);
@@ -3564,6 +3706,321 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     });
     set(0);
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(function () { if (document.getElementById('hermes').classList.contains('on')) set((cur + 1) % 4); }, 2800);
+  })();
+
+  var SITE = 'https://mehediifti.github.io/Ifti/';
+  var cssVar = function (k) { return getComputedStyle(document.documentElement).getPropertyValue(k).trim(); };
+
+  // ============ Share cards: select a line in a note, get an image of it in the current theme ============
+  (function () {
+    var pop = document.getElementById('share-pop'), dlg = document.getElementById('sc'), cv = document.getElementById('sc-cv');
+    var note = document.getElementById('sc-note'), NOTE_TXT = note.textContent;
+    var q = null, size = 'wide', timer = 0;
+    function selInNote() {
+      var sel = getSelection(); if (!sel || sel.isCollapsed || !sel.rangeCount) return null;
+      var r = sel.getRangeAt(0), n = r.commonAncestorContainer; n = n.nodeType === 1 ? n : n.parentElement;
+      var art = n && n.closest('article.page.on[id^="n-"]'); if (!art || n.closest('.note-head, .obs-tabs, .note-next')) return null;
+      var text = sel.toString().replace(/\s+/g, ' ').trim().replace(/^["“”'‘]+|["“”'’]+$/g, '').trim();
+      if (text.length < 12) return null;
+      return { text: text, art: art, rect: r.getBoundingClientRect() };
+    }
+    function check() {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        var s = selInNote(); if (!s) { pop.hidden = true; return; }
+        q = s; pop.hidden = false;
+        var x = Math.min(innerWidth - pop.offsetWidth - 8, Math.max(8, s.rect.left + s.rect.width / 2 - pop.offsetWidth / 2));
+        var y = s.rect.top - pop.offsetHeight - 10; if (y < 8) y = s.rect.bottom + 10;
+        pop.style.left = x + 'px'; pop.style.top = y + 'px';
+      }, 120);
+    }
+    document.addEventListener('selectionchange', check);
+    addEventListener('scroll', function () { if (!pop.hidden) check(); }, { passive: true });
+    pop.addEventListener('mousedown', function (e) { e.preventDefault(); }); // keep the selection
+    pop.addEventListener('click', function () { if (q) open(q); });
+
+    function wrap(ctx, text, maxW) {
+      var words = text.split(' '), lines = [], line = '';
+      words.forEach(function (w) { var t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
+      if (line) lines.push(line); return lines;
+    }
+    function draw() {
+      var W = size === 'wide' ? 1200 : 1080, H = size === 'wide' ? 630 : 1080, ctx = cv.getContext('2d');
+      cv.width = W; cv.height = H;
+      var bg = cssVar('--base') || '#111', ink = cssVar('--ink') || cssVar('--text') || '#eee', acc = cssVar('--accent') || '#f7cafa';
+      var lab = cssVar('--label') || '#888', mut = cssVar('--muted') || '#999', rule = cssVar('--rule') || '#333', mark = cssVar('--overlay1') || '#666';
+      var h1 = q.art.querySelector('h1'), title = h1 ? h1.textContent.trim() : '', no = 'N°' + q.art.id.slice(2);
+      var fBody = getComputedStyle(q.art.querySelector('p') || document.body).fontFamily, fDisp = getComputedStyle(h1 || document.body).fontFamily, fMono = cssVar('--mono') || 'monospace';
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+      var pad = size === 'wide' ? 72 : 88;
+      // hairline frame with crop marks, like the cards on the site
+      ctx.strokeStyle = rule; ctx.lineWidth = 2; ctx.strokeRect(pad / 2, pad / 2, W - pad, H - pad);
+      ctx.strokeStyle = mark; ctx.lineWidth = 2;
+      [[pad / 2, pad / 2, 1, 1], [W - pad / 2, pad / 2, -1, 1], [pad / 2, H - pad / 2, 1, -1], [W - pad / 2, H - pad / 2, -1, -1]].forEach(function (c) {
+        ctx.beginPath(); ctx.moveTo(c[0] - 12 * c[2], c[1]); ctx.lineTo(c[0] + 12 * c[2], c[1]); ctx.moveTo(c[0], c[1] - 12 * c[3]); ctx.lineTo(c[0], c[1] + 12 * c[3]); ctx.stroke();
+      });
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = lab; ctx.font = '500 22px ' + fMono;
+      ctx.fillText(("IFTI'S NOTEBOOK · " + no).toUpperCase(), pad, pad + 40);
+      // quote: biggest size that fits the box
+      var text = q.text.length > 320 ? q.text.slice(0, 317).replace(/\s+\S*$/, '') + '…' : q.text;
+      var boxW = W - pad * 2, top = pad + 96, bottom = H - pad - 92, fs = size === 'wide' ? 58 : 72, lines, lh;
+      for (; fs > 24; fs -= 2) { ctx.font = '400 ' + fs + 'px ' + fBody; lh = fs * 1.3; lines = wrap(ctx, '“' + text + '”', boxW); if (lines.length * lh <= bottom - top) break; }
+      ctx.fillStyle = ink; ctx.font = '400 ' + fs + 'px ' + fBody;
+      var y0 = top + fs;
+      lines.forEach(function (l, i) { ctx.fillText(l, pad, y0 + i * lh); });
+      // footer: note title on the left, link on the right
+      ctx.fillStyle = acc; ctx.fillRect(pad, H - pad - 64, 40, 3);
+      ctx.fillStyle = mut; ctx.font = '500 26px ' + fDisp;
+      var tl = title; while (ctx.measureText(tl).width > boxW * 0.62 && tl.length > 4) tl = tl.slice(0, -2).trim() + '…';
+      ctx.fillText(tl, pad, H - pad - 20);
+      ctx.fillStyle = acc; ctx.font = '500 22px ' + fMono; ctx.textAlign = 'right';
+      ctx.fillText('mehediifti.github.io/Ifti', W - pad, H - pad - 20); ctx.textAlign = 'left';
+    }
+    function url() { return SITE + '#' + q.art.id; }
+    function open(s) {
+      q = { text: s.text, art: s.art }; pop.hidden = true; note.textContent = NOTE_TXT;
+      var tweet = '“' + (q.text.length > 200 ? q.text.slice(0, 197).replace(/\s+\S*$/, '') + '…' : q.text) + '”';
+      document.getElementById('sc-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '&url=' + encodeURIComponent(url());
+      document.getElementById('sc-li').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url());
+      var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+      fonts.then(function () { draw(); if (!dlg.open) dlg.showModal(); });
+    }
+    function blob(cb) { cv.toBlob(cb, 'image/png'); }
+    function fname() { return 'ifti-' + q.art.id + '-quote.png'; }
+    document.getElementById('sc-dl').addEventListener('click', function () {
+      blob(function (b) { var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = fname(); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000); });
+    });
+    document.getElementById('sc-copy').addEventListener('click', function () {
+      blob(function (b) {
+        try { navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]).then(function () { note.textContent = 'Copied. Paste it into your post.'; }, function () { note.textContent = "Couldn't copy. Download it instead."; }); }
+        catch (e) { note.textContent = "Couldn't copy. Download it instead."; }
+      });
+    });
+    var shareBtn = document.getElementById('sc-share');
+    if (navigator.canShare) shareBtn.hidden = false;
+    shareBtn.addEventListener('click', function () {
+      blob(function (b) {
+        var f = new File([b], fname(), { type: 'image/png' }), data = { files: [f], text: '“' + q.text + '”', url: url() };
+        if (navigator.canShare && navigator.canShare(data)) navigator.share(data).catch(function () {});
+        else note.textContent = "This browser can't share images. Download it instead.";
+      });
+    });
+    dlg.querySelectorAll('[data-size]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        size = b.getAttribute('data-size');
+        dlg.querySelectorAll('[data-size]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        draw();
+      });
+    });
+    document.getElementById('sc-close').addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    window.shareQuote = function (text, art) { open({ text: text, art: art }); };
+  })();
+
+  // ============ Command palette: Ctrl/⌘ + K finds any page, section, note, book or theme ============
+  (function () {
+    var dlg = document.getElementById('pal'), input = document.getElementById('pal-q'), list = document.getElementById('pal-list');
+    var mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+    document.querySelectorAll('.pal-key').forEach(function (k) { k.textContent = mac ? '⌘K' : 'Ctrl K'; });
+    var items = [], hits = [], sel = 0;
+    var slug = function (t) { return t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40); };
+    var title = function (pg) { var h = pg.querySelector('h1'); return h ? h.textContent.trim() : pg.id; };
+    function flash(el) { if (!el) return; el.classList.remove('pal-flash'); void el.offsetWidth; el.classList.add('pal-flash'); }
+    function build() {
+      items = [];
+      var rail = Array.prototype.map.call(document.querySelectorAll('.rail a.nav'), function (a) { return a.getAttribute('href').slice(1); });
+      rail.concat(['changelog']).forEach(function (id) {
+        var pg = document.getElementById(id); if (!pg) return;
+        var a = document.querySelector('.rail a.nav[href="#' + id + '"]');
+        items.push({ k: 'Page', t: a ? a.textContent.replace(/^\d/, '').trim() : title(pg), x: title(pg), go: '#' + id });
+      });
+      document.querySelectorAll('article.page[id^="n-"]').forEach(function (n) {
+        items.push({ k: 'Note', t: title(n), x: 'N°' + n.id.slice(2) + ' ' + (n.getAttribute('data-tags') || ''), go: '#' + n.id });
+      });
+      document.querySelectorAll('.page h2').forEach(function (h) {
+        var pg = h.closest('.page'); if (!pg) return;
+        if (!h.id) h.id = 's-' + pg.id + '-' + slug(h.textContent);
+        items.push({ k: 'Section', t: h.textContent.trim(), x: 'in ' + title(pg), go: '#' + h.id });
+      });
+      document.querySelectorAll('#shelf [data-shelf] > li').forEach(function (li) {
+        var t = li.querySelector('.t'), tag = li.querySelector('.tag'), sec = li.parentElement.getAttribute('data-shelf');
+        items.push({ k: tag ? tag.textContent : 'Shelf', t: t.childNodes[0].textContent.trim(), x: (t.querySelector('.by') ? t.querySelector('.by').textContent.replace('·', '').trim() + ' ' : '') + 'shelf ' + sec, go: '#shelf-' + sec, el: li });
+      });
+      THEMES.forEach(function (th) { items.push({ k: 'Theme', t: th.name || th.id, x: th.note || '', run: function () { apTheme(th.id); } }); });
+      var book = document.querySelector('[data-book]');
+      items.push(
+        { k: 'Action', t: 'Book a call', x: 'calendar meeting', run: function () { window.open(book.href, '_blank', 'noopener'); } },
+        { k: 'Action', t: 'Copy my email', x: 'mail contact', run: function () { var e = 'mh.hasan884@gmail.com'; if (navigator.clipboard) navigator.clipboard.writeText(e); } },
+        { k: 'Action', t: 'Take the tour', x: 'guide help new', run: function () { window.startTour(); } },
+        { k: 'Action', t: 'Open the terminal', x: 'command line', run: function () { document.querySelector('.term-open').click(); } },
+        { k: 'Action', t: 'Change theme', x: 'appearance colours look', run: function () { apOpen(true); } },
+        { k: 'Action', t: 'Print this page', x: 'pdf save cv', run: function () { setTimeout(function () { window.print(); }, 60); } },
+        { k: 'Action', t: 'Open a random note', x: 'surprise', run: function () { var n = document.querySelectorAll('article.page[id^="n-"]'); location.hash = n[Math.floor(Math.random() * n.length)].id; } }
+      );
+    }
+    function score(it, words) {
+      var t = it.t.toLowerCase(), hay = (t + ' ' + it.k + ' ' + (it.x || '')).toLowerCase(), s = 0;
+      for (var i = 0; i < words.length; i++) {
+        var w = words[i]; if (hay.indexOf(w) < 0) return -1;
+        s += t.indexOf(w) === 0 ? 30 : (' ' + t).indexOf(' ' + w) >= 0 ? 20 : t.indexOf(w) >= 0 ? 10 : 2;
+      }
+      return s + ({ Page: 6, Note: 5, Action: 4, Section: 3 }[it.k] || 1);
+    }
+    function render() {
+      var v = input.value.trim().toLowerCase(), words = v.split(/\s+/).filter(Boolean);
+      if (!words.length) hits = items.filter(function (it) { return it.k === 'Page' || it.k === 'Action'; });
+      else hits = items.map(function (it) { return { it: it, s: score(it, words) }; }).filter(function (h) { return h.s >= 0; })
+        .sort(function (a, b) { return b.s - a.s; }).slice(0, 30).map(function (h) { return h.it; });
+      sel = Math.min(sel, Math.max(0, hits.length - 1));
+      list.innerHTML = hits.length ? hits.map(function (it, i) {
+        return '<li role="option" id="pal-' + i + '" aria-selected="' + (i === sel) + '" data-i="' + i + '"><span class="pk">' + esc(it.k) + '</span><b>' + esc(it.t) + '</b>' + (it.k === 'Section' || it.k === 'Note' ? '<small>' + esc(it.k === 'Note' ? it.x.split(' ')[0] : it.x) + '</small>' : '') + '</li>';
+      }).join('') : '<li class="pal-none">Nothing matches. Try a shorter word.</li>';
+      input.setAttribute('aria-activedescendant', hits.length ? 'pal-' + sel : '');
+      var on = list.querySelector('[aria-selected="true"]'); if (on) on.scrollIntoView({ block: 'nearest' });
+    }
+    function run(it) {
+      dlg.close(); if (!it) return;
+      if (it.run) return it.run();
+      if (location.hash === it.go) show(); else location.hash = it.go;
+      if (it.el) setTimeout(function () { it.el.scrollIntoView({ block: 'center' }); flash(it.el); }, 60);
+      else if (it.k === 'Section') setTimeout(function () { flash(document.getElementById(it.go.slice(1))); }, 60);
+    }
+    window.openPalette = function () { build(); input.value = ''; sel = 0; render(); if (!dlg.open) dlg.showModal(); input.focus(); };
+    document.querySelectorAll('.pal-open').forEach(function (b) { b.addEventListener('click', function () { sheetOpen(false); openPalette(); }); });
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && !e.altKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); dlg.open ? dlg.close() : openPalette(); }
+    });
+    input.addEventListener('input', function () { sel = 0; render(); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); sel = Math.min(hits.length - 1, sel + 1); render(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); sel = Math.max(0, sel - 1); render(); }
+      else if (e.key === 'Enter') { e.preventDefault(); run(hits[sel]); }
+    });
+    list.addEventListener('mousemove', function (e) { var li = e.target.closest('[data-i]'); if (li && +li.getAttribute('data-i') !== sel) { sel = +li.getAttribute('data-i'); render(); } });
+    list.addEventListener('click', function (e) { var li = e.target.closest('[data-i]'); if (li) run(hits[+li.getAttribute('data-i')]); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+  })();
+
+  // ============ Guided tour: a spotlight walk through the site, about a minute ============
+  (function () {
+    var box = document.getElementById('tour'), hole = document.getElementById('tour-hole'), card = document.getElementById('tour-card');
+    var palKey = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent) ? '⌘K' : 'Ctrl K';
+    var STEPS = [
+      { el: ['#index .hero h1'], h: 'This is my notebook', p: 'What I do, what I think about client work, and what I\'m into. It takes about a minute.' },
+      { el: ['.rail', '.m-tabs'], h: 'Every page lives here', p: 'Notes, work, the shelf and the Playground. On a keyboard, 1 to 9 and 0 jump straight to a page.' },
+      { el: ['#index .entries'], h: 'Writing', p: 'Short notes from client work: negotiation, scope, stakeholders. Select any line in a note to turn it into a card.' },
+      { el: ['#meta'], h: 'The margin', p: 'It changes with the page: what\'s on it, and what I\'m watching, reading and listening to right now.' },
+      { el: ['#ap-tab', '.m-theme-top'], h: 'Change the look', p: 'Pick a theme. On a computer you can drag this tab to any edge, and it stays there.' },
+      { el: ['.rail-search', '.m-top .pal-open'], h: 'Find anything', p: 'Press ' + palKey + ' to search every page, note, book and theme.' },
+      { el: ['.term-fab'], h: 'A terminal', p: 'If you like typing. Try help, now, or whoami.' },
+      { el: ['#index .hero .cta .btn'], h: 'When you want to talk', p: 'Book a call. Or just keep reading. That\'s the tour.' }
+    ];
+    var steps = [], i = 0;
+    var vis = function (sel) { var e = document.querySelector(sel); return e && e.offsetWidth && e.offsetHeight && getComputedStyle(e).visibility !== 'hidden' ? e : null; };
+    function target(st) { for (var k = 0; k < st.el.length; k++) { var e = vis(st.el[k]); if (e) return e; } return null; }
+    function place() {
+      var st = steps[i]; if (!st) return;
+      var r = st.t.getBoundingClientRect(), pad = 8;
+      hole.style.left = (r.left - pad) + 'px'; hole.style.top = (r.top - pad) + 'px'; hole.style.width = (r.width + pad * 2) + 'px'; hole.style.height = (r.height + pad * 2) + 'px';
+      var cw = card.offsetWidth, ch = card.offsetHeight, x, y;
+      if (r.right + 16 + cw < innerWidth - 12) { x = r.right + 16; y = r.top; }
+      else if (r.bottom + 16 + ch < innerHeight - 12) { x = r.left; y = r.bottom + 16; }
+      else if (r.top - 16 - ch > 12) { x = r.left; y = r.top - 16 - ch; }
+      else { x = r.left - 16 - cw; y = r.top; }
+      card.style.left = Math.max(12, Math.min(x, innerWidth - cw - 12)) + 'px';
+      card.style.top = Math.max(12, Math.min(y, innerHeight - ch - 12)) + 'px';
+    }
+    function go(n) {
+      i = n; var st = steps[i]; if (!st) return end();
+      card.innerHTML = '<small>' + (i + 1) + ' of ' + steps.length + '</small><b>' + esc(st.h) + '</b><p>' + esc(st.p) + '</p><div class="tour-acts">' +
+        (i ? '<button type="button" data-t="back">Back</button>' : '<button type="button" data-t="end">Skip</button>') +
+        '<button type="button" class="btn" data-t="next">' + (i === steps.length - 1 ? 'Done' : 'Next') + '</button></div>';
+      var r = st.t.getBoundingClientRect();
+      if (r.top < 60 || r.bottom > innerHeight - 60) st.t.scrollIntoView({ block: r.height > innerHeight * 0.7 ? 'start' : 'center' });
+      requestAnimationFrame(place);
+      card.querySelector('[data-t="next"]').focus();
+    }
+    function end() { box.hidden = true; document.documentElement.classList.remove('touring'); removeEventListener('resize', place); removeEventListener('scroll', place); }
+    window.startTour = function () {
+      if (location.hash && location.hash !== '#index') location.hash = 'index';
+      setTimeout(function () {
+        window.scrollTo(0, 0);
+        steps = STEPS.map(function (st) { return { h: st.h, p: st.p, t: target(st) }; }).filter(function (st) { return st.t; });
+        box.hidden = false; document.documentElement.classList.add('touring');
+        addEventListener('resize', place); addEventListener('scroll', place, { passive: true });
+        go(0);
+      }, 80);
+    };
+    card.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-t]'); if (!b) return;
+      var t = b.getAttribute('data-t'); if (t === 'next') go(i + 1); else if (t === 'back') go(i - 1); else end();
+    });
+    box.addEventListener('click', function (e) { if (e.target === box || e.target === hole) end(); });
+    document.addEventListener('keydown', function (e) {
+      if (box.hidden) return;
+      if (e.key === 'Escape') end(); else if (e.key === 'ArrowRight') go(i + 1); else if (e.key === 'ArrowLeft' && i) go(i - 1);
+    });
+    document.querySelectorAll('.tour-start').forEach(function (b) { b.addEventListener('click', function () { window.startTour(); }); });
+  })();
+
+  // ============ Print: any page prints clean; the Work page prints as a CV ============
+  (function () {
+    var head = document.getElementById('print-head'), opened = [];
+    addEventListener('beforeprint', function () {
+      var pg = document.querySelector('.page.on'), id = pg ? pg.id : 'index';
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Dhaka' });
+      head.innerHTML = '<b>Mehedi Hasan Ifti</b><span>' + (id === 'work' ? 'Manager, Global Sales &amp; Partnerships · Musemind · Dhaka' : "Ifti's Notebook") + '</span>' +
+        '<span>mh.hasan884@gmail.com · ' + esc(SITE.replace('https://', '') + (id === 'index' ? '' : '#' + id)) + '</span><span>Printed ' + esc(date) + '</span>';
+      document.body.insertBefore(head, document.body.firstChild);
+      document.documentElement.setAttribute('data-print', id);
+      opened = Array.prototype.filter.call(document.querySelectorAll('.page.on details:not([open])'), function (d) { d.open = true; return true; });
+    });
+    addEventListener('afterprint', function () { opened.forEach(function (d) { d.open = false; }); opened = []; document.documentElement.removeAttribute('data-print'); });
+  })();
+
+  // ============ Changelog: the GitHub commit history, loaded when the page opens ============
+  (function () {
+    var box = document.getElementById('cl'), REPO = 'MehediIfti/Ifti', loaded = false, pageN = 1;
+    var day = function (d) { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Dhaka' }); };
+    function clean(msg) {
+      var lines = msg.split('\n').filter(function (l) { return !/^(Co-Authored-By|Claude-Session|Signed-off-by):/i.test(l) && !/Generated with/.test(l) && !/claude\.ai\/code\/session_/.test(l); });
+      var subject = lines.shift() || '', body = lines.join('\n').trim().split(/\n\s*\n/)[0] || '';
+      body = body.replace(/\s*\n\s*/g, ' ').trim(); if (body.length > 260) body = body.slice(0, 257).replace(/\s+\S*$/, '') + '…';
+      return { s: subject, b: body };
+    }
+    function render(commits, more) {
+      var groups = [], last = null;
+      commits.forEach(function (c) {
+        if (c.parents && c.parents.length > 1) return; // skip merge commits
+        var d = day(c.commit.author.date); if (d !== last) { groups.push({ d: d, list: [] }); last = d; }
+        groups[groups.length - 1].list.push(c);
+      });
+      var html = groups.map(function (g) {
+        return '<h2 class="cl-d">' + esc(g.d) + '</h2><ul class="log cl-list">' + g.list.map(function (c) {
+          var m = clean(c.commit.message);
+          return '<li><span class="t">' + esc(m.s) + '</span><a class="cl-sha" href="' + esc(c.html_url) + '" target="_blank" rel="noopener">' + esc(c.sha.slice(0, 7)) + '</a>' + (m.b ? '<p>' + esc(m.b) + '</p>' : '') + '</li>';
+        }).join('') + '</ul>';
+      }).join('');
+      var old = box.querySelector('.cl-more'); if (old) old.remove();
+      box.insertAdjacentHTML('beforeend', html + (more ? '<p class="cl-more"><button type="button" class="cta-2">Load older changes</button></p>' : ''));
+      var btn = box.querySelector('.cl-more button'); if (btn) btn.addEventListener('click', function () { btn.textContent = 'Loading…'; fetchPage(++pageN); });
+    }
+    function fetchPage(n) {
+      var key = 'cl-' + n, cached = null;
+      try { cached = JSON.parse(sessionStorage.getItem(key) || 'null'); } catch (e) {}
+      var done = function (data) { if (n === 1) box.innerHTML = ''; render(data, data.length === 50); };
+      if (cached) return done(cached);
+      fetch('https://api.github.com/repos/' + REPO + '/commits?sha=main&per_page=50&page=' + n, { headers: { Accept: 'application/vnd.github+json' } })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (data) { try { sessionStorage.setItem(key, JSON.stringify(data.map(function (c) { return { sha: c.sha, html_url: c.html_url, parents: c.parents, commit: { message: c.commit.message, author: { date: c.commit.author.date } } }; }))); } catch (e) {} done(data); })
+        .catch(function () {
+          if (n === 1) box.innerHTML = '<p class="sub">Couldn\'t load the history from GitHub. It may be busy; try again in a minute, or read it <a href="https://github.com/' + REPO + '/commits/main" target="_blank" rel="noopener">on GitHub ↗</a>.</p>';
+          else { var b = box.querySelector('.cl-more button'); if (b) b.textContent = "Couldn't load. Try again"; pageN--; }
+        });
+    }
+    function maybe() { if (!loaded && location.hash === '#changelog') { loaded = true; fetchPage(1); } }
+    addEventListener('hashchange', maybe); maybe();
   })();
 
   // MOVE THINGS AROUND (computer only).

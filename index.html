@@ -152,6 +152,58 @@ ul.plain li::marker { color: var(--muted); }
 .shelf p { color: var(--muted); font-size: 0.95em; margin-top: 0.15rem; }
 
 .note-head { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* note pages: a reading view modelled on Obsidian. A tab strip, back/forward and breadcrumbs, a properties block, callouts and a status bar. Tags live in each article's data-tags. */
+.page.obs { padding: 0; border: 1px solid var(--surface0); border-radius: 10px; background: var(--paper); overflow: hidden; }
+.page.obs > * { margin-top: 0; }
+.obs-tabs { display: flex; align-items: flex-end; gap: 2px; padding: 6px 8px 0; background: var(--mantle); border-bottom: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.8125rem; }
+.obs-tab { display: flex; align-items: center; gap: 0.5rem; min-width: 0; max-width: 22rem; margin-bottom: -1px; padding: 0.4rem 0.4rem 0.45rem 0.7rem; background: var(--paper); color: var(--text); border: 1px solid var(--surface0); border-bottom-color: var(--paper); border-radius: 8px 8px 0 0; }
+.obs-tab > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.obs svg.i { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.obs-tab svg.i { color: var(--subtext0); }
+.obs-x, .obs-new, .obs-arrow { display: inline-flex; align-items: center; justify-content: center; color: var(--subtext0); text-decoration: none; border-radius: 4px; }
+.obs-x { width: 1.3rem; height: 1.3rem; font-size: 1rem; line-height: 1; }
+.obs-new { padding: 0.35rem 0.5rem 0.5rem; color: var(--overlay1); }
+.obs-x:hover, .obs-arrow:hover { color: var(--text); background: var(--surface0); }
+.obs-nav { display: flex; align-items: center; gap: 0.15rem; padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.8125rem; color: var(--subtext0); }
+.obs-arrow { width: 1.6rem; height: 1.6rem; }
+.obs-arrow[aria-disabled="true"] { opacity: 0.3; pointer-events: none; }
+.obs-crumb { flex: 1; min-width: 0; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.obs-crumb a { color: inherit; text-decoration: none; } .obs-crumb a:hover { color: var(--text); }
+.obs-crumb i { font-style: normal; color: var(--overlay1); margin: 0 0.35rem; }
+.obs-crumb b { color: var(--text); font-weight: 600; }
+.obs-mode { font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); padding-right: 0.25rem; }
+.obs-view { padding: 2.25rem 2.5rem 2.5rem; }
+.obs-view > * + * { margin-top: 1.25rem; }
+.obs-view > h1 + * { margin-top: 1.25rem; }
+.obs-props { padding-bottom: 1.1rem; border-bottom: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.875rem; }
+.obs-props h5 { margin: 0 0 0.35rem; font: 600 0.8125rem/1.4 var(--sans); color: var(--subtext1); }
+.obs-props dl { display: grid; grid-template-columns: 8rem minmax(0, 1fr); margin: 0; }
+.obs-props dt, .obs-props dd { margin: 0; padding: 0.28rem 0.4rem; }
+.obs-props dt { display: flex; align-items: center; gap: 0.5rem; color: var(--subtext0); }
+.obs-props dd { color: var(--text); }
+.obs-tag { display: inline-block; margin: 0 0.3rem 0.15rem 0; padding: 0 0.55rem; font-size: 0.8125rem; line-height: 1.6; color: var(--mauve); background: color-mix(in srgb, var(--mauve) 14%, transparent); border-radius: 999px; text-decoration: none; }
+.obs-tag:hover { background: color-mix(in srgb, var(--mauve) 24%, transparent); }
+.obs-view .sn { float: none; display: block; width: auto; margin: 0.9rem 0 0.2rem; padding: 0.7rem 0.9rem; border: 0; border-radius: 6px; background: color-mix(in srgb, var(--sky) 10%, transparent); font-family: var(--sans); font-size: 0.9rem; line-height: 1.55; color: var(--text); }
+.obs-view .sn::before { content: "Note " counter(sn); display: block; margin-bottom: 0.15rem; font-weight: 600; color: var(--sky); }
+.obs-view .sn-ref::after { color: var(--sky); }
+.obs-status { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 0.25rem 1.1rem; padding: 0.35rem 0.75rem; background: var(--mantle); border-top: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.75rem; color: var(--subtext0); }
+.meta .graph { display: block; width: 100%; height: auto; overflow: visible; }
+.graph line { stroke: var(--surface1); stroke-width: 1; }
+.graph circle { fill: var(--overlay1); }
+.graph .tag circle { fill: var(--teal); }
+.graph .me circle { fill: var(--mauve); }
+.graph text { font-family: var(--mono); font-size: 9px; fill: var(--subtext0); }
+.graph .me text { fill: var(--text); }
+.graph a:hover circle { fill: var(--text); } .graph a:hover text { fill: var(--text); }
+.meta .mentions { display: grid; gap: 0.6rem; }
+.meta .mentions a { text-decoration: none; color: var(--accent); font-family: var(--body); font-size: 0.875rem; }
+.meta .mentions small { display: block; color: var(--overlay1); }
+@media (max-width: 760px) {
+  .obs-view { padding: 1.5rem 1.1rem 1.75rem; }
+  .obs-props dl { grid-template-columns: 6.5rem minmax(0, 1fr); }
+  .obs-mode, .obs-new { display: none; }
+}
 .back { font-family: var(--mono); font-size: var(--s-0); text-decoration: none; }
 
 .contact { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-family: var(--mono); font-size: var(--s-0); }
@@ -633,7 +685,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       </ul>
     </section>
 
-    <article class="page" id="n-004">
+    <article class="page" id="n-004" data-tags="positioning sales">
       <div class="note-head"><span class="label">N°004</span><span class="label">12 Oct 2026</span></div>
       <h1>Founders buy speed, enterprises buy safety</h1>
       <p>Same proposal, two buyers. Each reads the first paragraph looking for one thing.</p>
@@ -646,7 +698,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
 
-    <article class="page" id="n-003">
+    <article class="page" id="n-003" data-tags="scope kickoff stakeholders">
       <div class="note-head"><span class="label">N°003</span><span class="label">28 Sep 2026</span></div>
       <h1>Scope creep starts at kickoff</h1>
       <p>Most scope fights trace back to week one. Someone assumed something, and nobody said it out loud.</p>
@@ -661,7 +713,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
 
-    <article class="page" id="n-002">
+    <article class="page" id="n-002" data-tags="communication scope stakeholders">
       <div class="note-head"><span class="label">N°002</span><span class="label">14 Sep 2026</span></div>
       <h1>The recap email is the contract people read</h1>
       <p>Nobody rereads the statement of work. Everyone rereads the email you sent after the call.</p>
@@ -676,7 +728,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
 
-    <article class="page" id="n-001">
+    <article class="page" id="n-001" data-tags="meta">
       <div class="note-head"><span class="label">N°001</span><span class="label">1 Sep 2026</span></div>
       <h1>Why this notebook exists</h1>
       <p>I spend my days with founders and enterprise teams, working out what design is worth to their business. I learn something most weeks. Then I forget most of it.</p>
@@ -902,6 +954,84 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     });
   });
 
+  // Notes open like a note in Obsidian: a tab, back/forward, breadcrumbs, a properties block, callouts and a status bar.
+  var ICON = {
+    file: '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6"/>',
+    calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    hash: '<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
+    tags: '<path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+    clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+    left: '<path d="m15 18-6-6 6-6"/>',
+    right: '<path d="m9 18 6-6-6-6"/>'
+  };
+  function icon(n) { return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + ICON[n] + '</svg>'; }
+  var noteEls = Array.prototype.slice.call(document.querySelectorAll('article.page[id^="n-"]'));
+  function tagsOf(n) { return (n.getAttribute('data-tags') || '').split(/\s+/).filter(Boolean); }
+  function related(n) {
+    var mine = tagsOf(n);
+    return noteEls.filter(function (o) { return o !== n; })
+      .map(function (o) { return { note: o, shared: tagsOf(o).filter(function (t) { return mine.indexOf(t) >= 0; }) }; })
+      .filter(function (r) { return r.shared.length; });
+  }
+  function noteTitle(n) { return n.querySelector('h1').textContent; }
+  noteEls.forEach(function (a, i) {
+    var labels = a.querySelectorAll('.note-head .label');
+    var no = labels[0].textContent.replace('N°', ''), date = labels[1].textContent, title = noteTitle(a), tags = tagsOf(a);
+    var back = a.querySelector('.back'); if (back) back.parentNode.remove();
+    a.querySelector('.note-head').remove();
+    var view = document.createElement('div'); view.className = 'obs-view';
+    while (a.firstChild) view.appendChild(a.firstChild);
+    var text = view.textContent.replace(/\s+/g, ' ').trim(), words = text.split(' ').length;
+    var row = function (ic, k, v) { return '<dt>' + icon(ic) + k + '</dt><dd>' + v + '</dd>'; };
+    view.querySelector('h1').insertAdjacentHTML('afterend', '<div class="obs-props"><h5>Properties</h5><dl>' +
+      row('calendar', 'created', esc(date)) + row('hash', 'number', esc(no)) +
+      row('tags', 'tags', tags.map(function (t) { return '<a class="obs-tag" href="#notes">#' + esc(t) + '</a>'; }).join('')) +
+      row('clock', 'reading', Math.max(1, Math.round(words / 230)) + ' min') + '</dl></div>');
+    var older = noteEls[i + 1], newer = noteEls[i - 1];
+    var arrow = function (n, ic, label) {
+      return n ? '<a class="obs-arrow" href="#' + n.id + '" title="' + label + ': ' + esc(noteTitle(n)) + '" aria-label="' + label + ' note">' + icon(ic) + '</a>'
+               : '<span class="obs-arrow" aria-disabled="true">' + icon(ic) + '</span>';
+    };
+    var links = related(a).length;
+    a.innerHTML =
+      '<div class="obs-tabs"><div class="obs-tab">' + icon('file') + '<span>' + esc(title) + '</span><a class="obs-x" href="#notes" aria-label="Close note, back to all notes" title="Close">×</a></div><span class="obs-new" aria-hidden="true">+</span></div>' +
+      '<div class="obs-nav">' + arrow(older, 'left', 'Older') + arrow(newer, 'right', 'Newer') +
+      '<span class="obs-crumb"><a href="#index">Notebook</a><i>/</i><a href="#notes">Notes</a><i>/</i><b>' + esc(title) + '</b></span><span class="obs-mode">reading</span></div>';
+    a.appendChild(view);
+    a.insertAdjacentHTML('beforeend', '<div class="obs-status"><span>' + links + (links === 1 ? ' linked note' : ' linked notes') + '</span><span>' + words + ' words</span><span>' + text.length + ' characters</span></div>');
+    a.classList.add('obs');
+  });
+  // Local graph for the right column: this note, its tags, and the notes that share them.
+  function graphSVG(n) {
+    var tags = tagsOf(n), rel = related(n), cx = 110, cy = 96, ang = {}, lines = '', nodes = '';
+    var pos = function (a, r) { return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; };
+    var xy = function (p, k) { return k + 'x="' + p[0].toFixed(1) + '" ' + k + 'y="' + p[1].toFixed(1) + '"'; };
+    var line = function (p, q) { return '<line x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) + '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"/>'; };
+    // label centred on its node, above it in the top half and below it in the bottom half, so it stays inside the column
+    var label = function (p, t) { return '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] < cy ? p[1] - 8 : p[1] + 15).toFixed(1) + '" text-anchor="middle">' + t + '</text>'; };
+    tags.forEach(function (t, k) {
+      var a = -Math.PI / 2 + (k + 0.5) * 2 * Math.PI / tags.length - Math.PI / tags.length; ang[t] = a;
+      lines += line([cx, cy], pos(a, 44));
+      nodes += '<g class="tag"><circle ' + xy(pos(a, 44), 'c') + ' r="3.5"/>' + label(pos(a, 44), '#' + esc(t)) + '</g>';
+    });
+    rel.forEach(function (r, k) {
+      // sits between the tags it shares (circular mean of their angles)
+      var vx = 0, vy = 0; r.shared.forEach(function (t) { vx += Math.cos(ang[t]); vy += Math.sin(ang[t]); });
+      var a = Math.atan2(vy, vx) + (rel.length > 1 ? (k % 2 ? 0.3 : -0.3) : 0), p = pos(a, 80);
+      r.shared.forEach(function (t) { lines += line(pos(ang[t], 44), p); });
+      nodes += '<a href="#' + r.note.id + '"><title>' + esc(noteTitle(r.note)) + '</title><circle ' + xy(p, 'c') + ' r="4.5"/>' + label(p, 'N°' + r.note.id.slice(2)) + '</a>';
+    });
+    nodes += '<g class="me"><circle cx="' + cx + '" cy="' + cy + '" r="6"/><text x="' + cx + '" y="' + (cy + 18) + '" text-anchor="middle">N°' + n.id.slice(2) + '</text></g>';
+    return '<svg class="graph" viewBox="0 0 220 200" role="img" aria-label="Local graph: this note, its tags and ' + rel.length + ' related notes">' + lines + nodes + '</svg>';
+  }
+  function noteMeta(n) {
+    var rel = related(n);
+    return '<section><h4>Local graph</h4>' + graphSVG(n) + '</section>' +
+      '<section><h4>Linked mentions</h4>' + (rel.length ? '<div class="mentions">' + rel.map(function (r) {
+        return '<a href="#' + r.note.id + '">' + esc(noteTitle(r.note)) + '<small>via ' + r.shared.map(function (t) { return '#' + esc(t); }).join(' ') + '</small></a>';
+      }).join('') + '</div>' : '<p>No linked notes yet.</p>') + '</section>';
+  }
+
   // Right column: contents, page details, what I'm on right now, prev/next note.
   var meta = document.getElementById('meta');
   var tocItems = [];
@@ -916,18 +1046,10 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     }
     var words = (page.innerText || page.textContent).trim().split(/\s+/).length;
     var isNote = id.indexOf('n-') === 0;
-    var labels = page.querySelectorAll('.note-head .label');
-    html += '<section><h4>' + (isNote ? 'Note' : 'Page') + '</h4><dl>' +
-      (isNote ? '<dt>no.</dt><dd>' + esc(labels[0].textContent.replace('N°', '')) + '</dd><dt>written</dt><dd>' + esc(labels[1].textContent) + '</dd>'
-              : '<dt>path</dt><dd>/' + (id === 'index' ? '' : id) + '</dd>') +
+    if (isNote) html += noteMeta(page);
+    else html += '<section><h4>Page</h4><dl><dt>path</dt><dd>/' + (id === 'index' ? '' : id) + '</dd>' +
       '<dt>words</dt><dd>' + words + '</dd><dt>read</dt><dd>' + Math.max(1, Math.round(words / 230)) + ' min</dd>' +
       '<dt>updated</dt><dd>' + esc(document.querySelector('.rail .stamp').textContent.replace('Updated', '').trim()) + '</dd></dl></section>';
-    if (isNote) {
-      var notes = Array.prototype.slice.call(document.querySelectorAll('article.page[id^="n-"]'));
-      var i = notes.indexOf(page), newer = notes[i - 1], older = notes[i + 1];
-      var link = function (n, dir) { return n ? '<a href="#' + n.id + '"><small>' + dir + '</small>' + esc(n.querySelector('h1').textContent) + '</a>' : ''; };
-      html += '<section><h4>More notes</h4><div class="pn">' + link(older, '← older') + link(newer, 'newer →') + '</div></section>';
-    }
     var now = document.getElementById('now');
     var pick = function (h2text) {
       var h = Array.prototype.find.call(now.querySelectorAll('h2'), function (x) { return x.textContent === h2text; });
@@ -935,7 +1057,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       var t = el && el.querySelector('.t');
       return t ? t.childNodes[0].textContent.trim() : '';
     };
-    if (id !== 'now') {
+    if (id !== 'now' && !isNote) {
       html += '<section><h4>Right now</h4><ul class="cur">' +
         [['reading', pick('Reading')], ['watching', pick('Watching')], ['exploring', pick('Exploring')]].filter(function (r) { return r[1]; })
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +

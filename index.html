@@ -393,6 +393,24 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 @media (max-width: 760px) { .keys-line { display: none; } footer.colophon { margin-top: 2.5rem; } }
 @media (max-width: 760px) { .ap-g.mobile-only { display: grid; } }
 
+/* pattern switcher: small card in the lower left, folds down to its title */
+.calm {
+  position: fixed; z-index: 29; left: calc(env(safe-area-inset-left, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  display: grid; gap: 0.5rem; width: 15rem; padding: 0.75rem;
+  background: var(--mantle); color: var(--text); border: 1px solid var(--surface0); border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-family: var(--mono); font-size: 0.6875rem;
+}
+.calm-h { font: inherit; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; background: none; border: 0; padding: 0; color: var(--subtext0); cursor: pointer; text-align: left; }
+.calm-h b { color: var(--label); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+.calm.min { width: auto; } .calm.min > :not(.calm-h) { display: none; }
+.calm .ap-seg button { font-size: 0.6875rem; }
+.calm label { display: grid; grid-template-columns: auto 1fr 2.5rem; align-items: center; gap: 0.5rem; color: var(--subtext0); }
+.calm input { width: 100%; accent-color: var(--mauve); }
+.calm output { text-align: right; color: var(--text); }
+:root:not([data-calm="halo"]) .calm label, :root:not([data-bg="dots"]) .calm label { display: none; }
+.calm .note { color: var(--overlay1); }
+@media (max-width: 760px) { .calm { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + 8px); left: auto; right: 8px; width: 13.5rem; } }
+
 /* appearance panel: edge tab + slide-out drawer */
 .ap-tab {
   position: fixed; z-index: 30; top: 50%; right: env(safe-area-inset-right, 0px); transform: translateY(-50%);
@@ -441,10 +459,6 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .ap-seg button + button { border-left: 1px solid var(--surface0); }
 .ap-seg button:hover { color: var(--text); }
 .ap-seg button[aria-pressed="true"] { background: var(--surface0); color: var(--text); }
-.ap-range { display: grid; grid-template-columns: auto 1fr 2.5rem; align-items: center; gap: 0.6rem; color: var(--subtext0); }
-.ap-range input { width: 100%; accent-color: var(--mauve); }
-.ap-range output { text-align: right; color: var(--text); }
-:root:not([data-calm="halo"]) .ap-range, :root:not([data-bg="dots"]) .ap-range { display: none; }
 .ap-foot { display: flex; justify-content: space-between; gap: 0.5rem; color: var(--subtext0); font-size: 0.6875rem; }
 .ap-foot button { font: inherit; background: none; border: 0; color: var(--accent); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
 @media (prefers-reduced-motion: no-preference) {
@@ -810,12 +824,6 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <button type="button" id="bg-dots" data-val="dots">Dots</button><button type="button" id="bg-grid" data-val="grid">Grid</button><button type="button" id="bg-lines" data-val="lines">Lines</button><button type="button" id="bg-plain" data-val="plain">Plain</button>
     </div>
   </div>
-  <div class="ap-g"><span>Pattern near text</span>
-    <div class="ap-seg" data-attr="calm">
-      <button type="button" id="calm-margins" data-val="margins">Margins</button><button type="button" id="calm-halo" data-val="halo">Halo</button><button type="button" id="calm-spotlight" data-val="spotlight">Spotlight</button>
-    </div>
-    <label class="ap-range">Clearance <input type="range" id="halo-pad" min="0" max="36" step="2" value="10"><output id="halo-pad-v">10px</output></label>
-  </div>
   <div class="ap-g"><span>Layout</span>
     <div class="ap-seg" data-attr="layout">
       <button type="button" id="ly-2" data-val="2">2 columns</button><button type="button" id="ly-3" data-val="3">3 columns</button>
@@ -1114,7 +1122,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   })();
 
   // Appearance: theme, background and text style, remembered per visitor.
-  var AP_DEFAULTS = { palette: 'black', bg: 'dots', calm: 'margins', type: 'serif', layout: '3', mnav: 'tabs' };
+  var AP_DEFAULTS = { palette: 'black', bg: 'dots', type: 'serif', layout: '3', mnav: 'tabs' };
   var tab = document.getElementById('ap-tab');
   var panel = document.getElementById('ap-panel');
   var groups = document.querySelectorAll('#ap-panel [data-attr]');
@@ -1185,6 +1193,12 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 })();
 </script>
 <canvas id="halo-dots" aria-hidden="true"></canvas>
+<div class="calm" id="calm" role="group" aria-label="Pattern near text">
+  <button type="button" class="calm-h" id="calm-h" aria-expanded="true"><b>Pattern near text</b><span aria-hidden="true">–</span></button>
+  <div class="ap-seg" id="calm-seg"><button type="button" data-val="margins">Margins</button><button type="button" data-val="halo">Halo</button><button type="button" data-val="spotlight">Spotlight</button></div>
+  <label>Clearance <input type="range" id="halo-pad" min="0" max="36" step="2" value="10"><output id="halo-pad-v">10px</output></label>
+  <span class="note" id="calm-note"></span>
+</div>
 <script>
 // Halo: the dot grid drawn on a canvas so it fades out around every line of text and stays in the empty space.
 (function () {
@@ -1201,7 +1215,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       var p = n.parentNode.nodeName; return /\S/.test(n.nodeValue) && p !== 'SCRIPT' && p !== 'STYLE' ? 1 : 3; } });
     var push = function (r) { if (r.width && r.bottom > -40 && r.top < vh + 40) out.push(r); };
     while (w.nextNode()) { range.selectNodeContents(w.currentNode); Array.prototype.forEach.call(range.getClientRects(), push); }
-    document.querySelectorAll('svg, .act-g, .radar, .suggest, input, textarea, button, img, .ap-panel').forEach(function (el) { push(el.getBoundingClientRect()); });
+    document.querySelectorAll('svg, .act-g, .radar, .suggest, input, textarea, button, img, .ap-panel, .calm').forEach(function (el) { push(el.getBoundingClientRect()); });
     return out;
   }
   function draw() {
@@ -1234,8 +1248,32 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     soon();
   }
   slider.addEventListener('input', function () { setPad(+slider.value, true); });
+
+  // Margins by default; the visitor's pick is remembered on this device.
+  var box = document.getElementById('calm'), head = document.getElementById('calm-h');
+  var NOTES = { margins: 'No pattern behind the reading column.', halo: 'Dots fade out around each line of text.', spotlight: 'Pattern brightest behind the text.' };
+  function setMode(m, save) {
+    root.setAttribute('data-calm', m);
+    box.querySelectorAll('#calm-seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-val') === m)); });
+    document.getElementById('calm-note').textContent = NOTES[m] + (m === 'halo' && root.getAttribute('data-bg') !== 'dots' ? ' Needs the Dots background.' : '');
+    if (save) { try { localStorage.setItem('ap-calm', m); } catch (e) {} }
+  }
+  document.getElementById('calm-seg').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setMode(b.getAttribute('data-val'), true); });
+  new MutationObserver(function () { setMode(root.getAttribute('data-calm'), false); }).observe(root, { attributes: true, attributeFilter: ['data-bg'] });
+  var mode = 'margins'; try { mode = localStorage.getItem('ap-calm') || mode; } catch (e) {}
+  setMode(NOTES[mode] ? mode : 'margins', false);
+
+  function fold(min, save) {
+    box.classList.toggle('min', min); head.setAttribute('aria-expanded', String(!min)); head.lastChild.textContent = min ? '+' : '–';
+    if (save) { try { localStorage.setItem('ap-calm-min', min ? '1' : '0'); } catch (e) {} }
+  }
+  head.addEventListener('click', function () { fold(!box.classList.contains('min'), true); });
+  var min = matchMedia('(max-width: 760px)').matches; try { var f = localStorage.getItem('ap-calm-min'); if (f) min = f === '1'; } catch (e) {}
+  fold(min, false);
+
   document.getElementById('ap-reset').addEventListener('click', function () {
-    setPad(10, false); try { localStorage.removeItem('ap-halo-pad'); } catch (e) {}
+    setPad(10, false); setMode('margins', false);
+    try { localStorage.removeItem('ap-halo-pad'); localStorage.removeItem('ap-calm'); } catch (e) {}
   });
   addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
   addEventListener('hashchange', function () { setTimeout(soon, 30); });

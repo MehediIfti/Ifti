@@ -22,7 +22,7 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Print:** printing any page gives just that page, black on white, with my name, email and the page link at the top. The Work page prints as a CV. Add `class="no-print"` to anything that shouldn't print.
 
-**Changelog:** the `#changelog` page (linked in the footer) reads the commit history from the GitHub API when it opens. Commit subjects become entries, so write them for people. Co-author and session lines are hidden.
+**Changelog:** the `CHANGELOG UPDATE` block (the `#changelog` page, linked in the footer). Written by hand, newest first, one heading per day. Only what a visitor would notice goes in: a new page, a new note, a new feature or a redesign. Copy edits, fixes and small tweaks stay out. Tag each entry Page, Note, Feature or Design.
 
 **Stats radar:** edit the `STATS UPDATE` array in the script at the bottom of `index.html`. Each row is `[chart label, full name, strength, interest]`, scored 0–100. OVR, MVP and Grinding are calculated from it.
 

@@ -1215,14 +1215,10 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
 @media (prefers-reduced-motion: reduce) { .tour-hole { transition: none; } }
 
 /* Changelog */
-.cl .cl-d { font-size: 1rem; margin-top: 2.25rem; }
-.cl .cl-d:first-child { margin-top: 1.5rem; }
+#changelog .cl-d { font-size: 1rem; }
 .cl-list li { align-items: baseline; }
 .cl-list .t { font-weight: 500; }
-.cl-sha { margin-left: auto; font: 0.6875rem var(--mono); color: var(--muted); text-decoration: none; }
-.cl-sha:hover { color: var(--accent); }
 .cl-list p { flex-basis: 100%; }
-.cl-more { margin-top: 1.25rem; }
 
 /* Print: just the page, black on white. The Work page reads as a CV. */
 .print-head { display: none; }
@@ -1236,7 +1232,7 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
   body::before, body::after, main::before, main::after { display: none !important; }
   * { box-shadow: none !important; text-shadow: none !important; animation: none !important; transition: none !important; }
   .rail, .meta, .m-top, .m-tabs, .m-sheet, .ap-tab, .ap-panel, .term-fab, .term, .peek, .page-next, .note-next, .sec-grip, .drop-line, .share-pop, .tour, dialog,
-  footer.colophon, .no-print, .cof, .tour-fab, .obs-tabs, .obs-nav, .obs-status, .obs-menu, .hx-map, .radar, .we, .tg, .hm-loop, .wb, .wb-open, iframe, form, .suggest-d, .sub-box, .cta, .pg-links, .shelf-dir, .log-more, .r-src, .edu-more, .cl-more, .copy, .tour-start { display: none !important; }
+  footer.colophon, .no-print, .cof, .tour-fab, .obs-tabs, .obs-nav, .obs-status, .obs-menu, .hx-map, .radar, .we, .tg, .hm-loop, .wb, .wb-open, iframe, form, .suggest-d, .sub-box, .cta, .pg-links, .shelf-dir, .log-more, .r-src, .edu-more, .copy, .tour-start { display: none !important; }
   .shell { display: block !important; max-width: none !important; padding: 0 !important; margin: 0 !important; }
   main { display: block !important; padding: 0 !important; }
   .page:not(.on) { display: none !important; }
@@ -2222,13 +2218,43 @@ html.touring .tour-fab::after { display: none; }
       <p><a class="back" href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">All research on ResearchGate ↗</a></p>
     </section>
 
-    <!-- CHANGELOG: filled from the GitHub commit history when the page opens. Nothing to update by hand. -->
+    <!-- CHANGELOG UPDATE: newest first, one <h2> per day (Dhaka time). Only things a visitor would notice:
+         a new page, a new note, a new feature or a redesign. Not copy edits, fixes or small tweaks.
+         Tag each entry Page, Note, Feature or Design. -->
     <section class="page" id="changelog">
       <p class="label">Colophon</p>
       <h1>Changelog</h1>
-      <p class="lede">Every change to this site, newest first.</p>
-      <div class="cl" id="cl" aria-live="polite"><p class="sub">Loading the history from GitHub…</p></div>
-      <p class="sub"><a href="https://github.com/MehediIfti/Ifti/commits/main" target="_blank" rel="noopener">Full history on GitHub ↗</a></p>
+      <p class="lede">New pages, notes and features, newest first.</p>
+      <h2 class="cl-d">18 Oct 2026</h2>
+      <ul class="log cl-list">
+        <li><span class="t">Coffee counter</span><span class="tag t-tool">Feature</span><p>A running count of the black Americanos I drink on workdays this year. It sits above the terminal button.</p></li>
+        <li><span class="t">Search</span><span class="tag t-tool">Feature</span><p>Press Ctrl K, or ⌘K on a Mac, to find any page, section, note, book or theme.</p></li>
+        <li><span class="t">Share cards</span><span class="tag t-tool">Feature</span><p>Select a line in any note and turn it into an image for LinkedIn or X.</p></li>
+        <li><span class="t">Tour</span><span class="tag t-tool">Feature</span><p>A one-minute walk through the site. Start it from the square button beside the terminal.</p></li>
+        <li><span class="t">Print</span><span class="tag t-tool">Feature</span><p>Any page prints clean. The <a href="#work">Work</a> page prints as a CV.</p></li>
+        <li><span class="t">Changelog</span><span class="tag t-series">Page</span><p>This page. New pages, notes and features only.</p></li>
+        <li><span class="t">Move things around</span><span class="tag t-tool">Feature</span><p>Drag the theme tab and the terminal to any edge of the screen. Drag sections and rail links to reorder them.</p></li>
+        <li><span class="t">The Shelf is now the archive</span><span class="tag t-design">Design</span><p>Everything I watch, read, listen to and explore lives on the <a href="#shelf">Shelf</a>. The <a href="#now">Now</a> page shows the latest.</p></li>
+        <li><span class="t">A cleaner site</span><span class="tag t-design">Design</span><p>The homepage tells one story from top to bottom, and every page ends with a link to the next one.</p></li>
+        <li><span class="t">Whiteboard</span><span class="tag t-series">Page</span><p>A hand-drawn whiteboard I built, modelled on Excalidraw. It lives in the <a href="#whiteboard">Playground</a>.</p></li>
+        <li><span class="t">Lights Out theme</span><span class="tag t-design">Design</span><p>An F1 theme. Pick it and the start lights run.</p></li>
+        <li><span class="t">Terminal</span><span class="tag t-tool">Feature</span><p>Press ~ and type help.</p></li>
+        <li><span class="t">Cropmark theme</span><span class="tag t-design">Design</span><p>Hairline rules, square corners and crop marks. It's the default look.</p></li>
+        <li><span class="t">N°005 Trust is the product</span><span class="tag t-book">Note</span><p>Notes on Meta's Muse agent, and what it means for selling to people who don't want the tech. <a href="#n-005">Read it</a>.</p></li>
+        <li><span class="t">Book a call</span><span class="tag t-tool">Feature</span><p>A calendar link on the homepage, the Work page and in the terminal.</p></li>
+        <li><span class="t">A map of where I work</span><span class="tag t-design">Design</span><p>The homepage opens with Dhaka and the five cities I work with most, as a map, a globe or clocks.</p></li>
+        <li><span class="t">Hermes Agent</span><span class="tag t-series">Page</span><p>How I run three Hermes agents from Telegram. <a href="#hermes">See it</a>.</p></li>
+        <li><span class="t">Work history</span><span class="tag t-design">Design</span><p>A timeline of every role on the <a href="#work">Work</a> page.</p></li>
+      </ul>
+      <h2 class="cl-d">17 Oct 2026</h2>
+      <ul class="log cl-list">
+        <li><span class="t">Paperclip</span><span class="tag t-series">Page</span><p>My company of AI agents, Wayne Enterprises. Give it a task and watch the work move. <a href="#paperclip">Try it</a>.</p></li>
+        <li><span class="t">Education</span><span class="tag t-series">Page</span><p>Where I studied, under Academia. <a href="#education">See it</a>.</p></li>
+        <li><span class="t">Research</span><span class="tag t-series">Page</span><p>Five papers, most on text mining and bibliometrics, with links to each. <a href="#research">See them</a>.</p></li>
+        <li><span class="t">Reading view</span><span class="tag t-tool">Feature</span><p>Notes open in tabs, with properties, linked notes and a graph of how they connect.</p></li>
+        <li><span class="t">Themes</span><span class="tag t-tool">Feature</span><p>An appearance panel. Pick a theme, or change colours, background and type yourself.</p></li>
+        <li><span class="t">Launch</span><span class="tag t-series">Page</span><p>Ifti's Notebook goes live with the <a href="#now">Now</a>, <a href="#work">Work</a> and <a href="#shelf">Shelf</a> pages and notes N°001 to N°004.</p></li>
+      </ul>
     </section>
   </main>
 
@@ -4025,49 +4051,6 @@ html.touring .tour-fab::after { display: none; }
     addEventListener('afterprint', function () { opened.forEach(function (d) { d.open = false; }); opened = []; document.documentElement.removeAttribute('data-print'); });
   })();
 
-  // ============ Changelog: the GitHub commit history, loaded when the page opens ============
-  (function () {
-    var box = document.getElementById('cl'), REPO = 'MehediIfti/Ifti', loaded = false, pageN = 1;
-    var day = function (d) { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Dhaka' }); };
-    function clean(msg) {
-      var lines = msg.split('\n').filter(function (l) { return !/^(Co-Authored-By|Claude-Session|Signed-off-by):/i.test(l) && !/Generated with/.test(l) && !/claude\.ai\/code\/session_/.test(l); });
-      var subject = lines.shift() || '', body = lines.join('\n').trim().split(/\n\s*\n/)[0] || '';
-      body = body.replace(/\s*\n\s*/g, ' ').trim(); if (body.length > 260) body = body.slice(0, 257).replace(/\s+\S*$/, '') + '…';
-      return { s: subject, b: body };
-    }
-    function render(commits, more) {
-      var groups = [], last = null;
-      commits.forEach(function (c) {
-        if (c.parents && c.parents.length > 1) return; // skip merge commits
-        var d = day(c.commit.author.date); if (d !== last) { groups.push({ d: d, list: [] }); last = d; }
-        groups[groups.length - 1].list.push(c);
-      });
-      var html = groups.map(function (g) {
-        return '<h2 class="cl-d">' + esc(g.d) + '</h2><ul class="log cl-list">' + g.list.map(function (c) {
-          var m = clean(c.commit.message);
-          return '<li><span class="t">' + esc(m.s) + '</span><a class="cl-sha" href="' + esc(c.html_url) + '" target="_blank" rel="noopener">' + esc(c.sha.slice(0, 7)) + '</a>' + (m.b ? '<p>' + esc(m.b) + '</p>' : '') + '</li>';
-        }).join('') + '</ul>';
-      }).join('');
-      var old = box.querySelector('.cl-more'); if (old) old.remove();
-      box.insertAdjacentHTML('beforeend', html + (more ? '<p class="cl-more"><button type="button" class="cta-2">Load older changes</button></p>' : ''));
-      var btn = box.querySelector('.cl-more button'); if (btn) btn.addEventListener('click', function () { btn.textContent = 'Loading…'; fetchPage(++pageN); });
-    }
-    function fetchPage(n) {
-      var key = 'cl-' + n, cached = null;
-      try { cached = JSON.parse(sessionStorage.getItem(key) || 'null'); } catch (e) {}
-      var done = function (data) { if (n === 1) box.innerHTML = ''; render(data, data.length === 50); };
-      if (cached) return done(cached);
-      fetch('https://api.github.com/repos/' + REPO + '/commits?sha=main&per_page=50&page=' + n, { headers: { Accept: 'application/vnd.github+json' } })
-        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-        .then(function (data) { try { sessionStorage.setItem(key, JSON.stringify(data.map(function (c) { return { sha: c.sha, html_url: c.html_url, parents: c.parents, commit: { message: c.commit.message, author: { date: c.commit.author.date } } }; }))); } catch (e) {} done(data); })
-        .catch(function () {
-          if (n === 1) box.innerHTML = '<p class="sub">Couldn\'t load the history from GitHub. It may be busy; try again in a minute, or read it <a href="https://github.com/' + REPO + '/commits/main" target="_blank" rel="noopener">on GitHub ↗</a>.</p>';
-          else { var b = box.querySelector('.cl-more button'); if (b) b.textContent = "Couldn't load. Try again"; pageN--; }
-        });
-    }
-    function maybe() { if (!loaded && location.hash === '#changelog') { loaded = true; fetchPage(1); } }
-    addEventListener('hashchange', maybe); maybe();
-  })();
 
   // ============ Coffee counter ============
   // COFFEE UPDATE: cups per workday and the workweek (0 = Sunday ... 6 = Saturday). Nothing else to update:

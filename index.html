@@ -167,6 +167,8 @@ ul.plain li::marker { color: var(--muted); }
 .pp-m { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.9rem; margin-top: 0.25rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
 .pp-m .pp-tag { margin-right: -0.5rem; }
 .pp-go { margin-left: auto; color: var(--accent); }
+.pp-alt { margin: 0.35rem 0 0 1.1rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
+.pp-alt a { text-decoration: none; }
 @media (max-width: 760px) { .r-index { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pp-go { margin-left: 0; flex-basis: 100%; } }
 .shelf { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 1.1rem; }
 .shelf b { font-weight: 600; color: var(--subtext1); }
@@ -886,74 +888,86 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     </section>
 
     <!-- ============ RESEARCH ============ -->
-    <!-- RESEARCH UPDATE: one <li> per paper, newest first. Titles link to the paper through its DOI. Counts in the index are from Crossref; update them by hand. -->
+    <!-- RESEARCH UPDATE: one <li> per paper, newest first. Titles link to the paper through its DOI. The index numbers are copied from ResearchGate; update them by hand. -->
     <section class="page" id="research">
       <h1>Research</h1>
+      <p class="label">Business and Technology Management · Islamic University of Technology, Bangladesh</p>
       <p class="lede">Papers I've co-authored. Most use text mining and bibliometric analysis to map what a field already knows and where it's heading.</p>
-      <p>Each title opens the paper itself. The full list, with reads and the Research Interest score, is on my <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate profile</a>.</p>
+      <p>Each title opens the paper itself. The same list, with reads and full texts, is on my <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate profile</a>.</p>
 
       <h2>Research index</h2>
       <dl class="r-index">
-        <div><dt>Publications</dt><dd>5</dd></div>
-        <div><dt>Citations</dt><dd>5</dd></div>
+        <div><dt>Research Interest</dt><dd>22.5</dd></div>
+        <div><dt>Citations</dt><dd>10</dd></div>
         <div><dt>h-index</dt><dd>2</dd></div>
+        <div><dt>Published papers</dt><dd>5</dd></div>
+        <div><dt>Preprints</dt><dd>1</dd></div>
         <div><dt>First author</dt><dd>2</dd></div>
-        <div><dt>Co-authors</dt><dd>10</dd></div>
-        <div><dt>Active</dt><dd>2022–26</dd></div>
       </dl>
-      <p class="sub">Citation counts and h-index from Crossref, October 2026. ResearchGate and Google Scholar count differently and may show more.</p>
-      <div class="r-topics"><span class="pp-tag">Corporate finance</span><span class="pp-tag">Text mining</span><span class="pp-tag">Bibliometrics</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Policy</span><span class="pp-tag">Agriculture</span><span class="pp-tag">Sentiment analysis</span><span class="pp-tag">Machine learning</span></div>
+      <p class="sub">Research Interest, citations and h-index from ResearchGate, October 2026. ResearchGate lists 7 items because the agricultural review appears once per published version.</p>
+      <div class="r-topics"><span class="pp-tag">Corporate finance</span><span class="pp-tag">Text mining</span><span class="pp-tag">Bibliometrics</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Agriculture</span><span class="pp-tag">Policy</span><span class="pp-tag">Sentiment analysis</span><span class="pp-tag">Machine learning</span></div>
 
       <h2>Papers</h2>
       <ol class="papers">
         <li>
           <a class="pp" href="https://doi.org/10.64064/1658-4236.1019" target="_blank" rel="noopener">
-            <span class="pp-y">2026</span>
+            <span class="pp-y">2026 · Article</span>
             <span class="pp-t">Literature Review of Zero-Leverage Firms: A Text-Mining Approach</span>
             <span class="pp-v">Journal of King Abdulaziz University: Economics and Administration · 40(1), 68–87</span>
             <span class="pp-a">Md. Abul Kalam Azad, Paolo Saona, Laura Muro, <b>Mehedi Hasan Ifti</b>, Chowdhury Noushin Novera</span>
             <span class="pp-s">The first review of the zero-leverage puzzle: why some firms carry no debt. Combines bibliometric analysis and text mining across 56 Web of Science papers to map the research streams and where the field goes next.</span>
-            <span class="pp-m"><span>0 citations</span><span>author 4 of 5</span><span class="pp-tag">Corporate finance</span><span class="pp-tag">Text mining</span><span class="pp-tag">Bibliometrics</span><span class="pp-go">doi.org/10.64064/1658-4236.1019 ↗</span></span>
+            <span class="pp-m"><span>author 4 of 5</span><span class="pp-tag">Corporate finance</span><span class="pp-tag">Text mining</span><span class="pp-tag">Bibliometrics</span><span class="pp-go">doi.org/10.64064/1658-4236.1019 ↗</span></span>
           </a>
         </li>
         <li>
           <a class="pp" href="https://doi.org/10.26493/1854-6935.22.231-251" target="_blank" rel="noopener">
-            <span class="pp-y">2024</span>
+            <span class="pp-y">2024 · Article</span>
             <span class="pp-t">Research Synthesizes in Pro-environmental Behavior in Education: A Text Mining Approach</span>
             <span class="pp-v">Managing Global Transitions · 22(3), 231–251</span>
             <span class="pp-a">Chowdhury Noushin Novera, <b>Mehedi Hasan Ifti</b>, Anh Ngoc Quang Huynh, Ijaj Sadiq, Abul Kalam Azad</span>
             <span class="pp-s">Bibliometric networks plus LDA topic modelling on the literature about education and environmentally friendly behaviour. Finds 12 distinct research topics and the role of social welfare in raising environmental awareness.</span>
-            <span class="pp-m"><span>2 citations</span><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Text mining</span><span class="pp-go">doi.org/10.26493/1854-6935.22.231-251 ↗</span></span>
+            <span class="pp-m"><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Text mining</span><span class="pp-go">doi.org/10.26493/1854-6935.22.231-251 ↗</span></span>
           </a>
         </li>
         <li>
-          <a class="pp" href="https://doi.org/10.1177/0193841x231176869" target="_blank" rel="noopener">
-            <span class="pp-y">2023</span>
-            <span class="pp-t">Promoting Pro-Environmental Behavior in Policymaking: A Text-Mining Approach for Literature Review</span>
-            <span class="pp-v">Evaluation Review · 48(2), 370–398</span>
-            <span class="pp-a">Md. Abul Kalam Azad, <b>Mehedi Hasan Ifti</b>, Chowdhury Noushin Novera, Anh Ngoc Quang Huynh, Esra Sipahi Döngül</span>
-            <span class="pp-s">The first text-mining study of pro-environmental behaviour where policymaking is a central factor. Analyses 30 Scopus publications in R to surface the main research themes and gaps for future work.</span>
-            <span class="pp-m"><span>3 citations</span><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Policy</span><span class="pp-tag">Text mining</span><span class="pp-go">doi.org/10.1177/0193841x231176869 ↗</span></span>
+          <a class="pp" href="https://www.researchgate.net/publication/375828222_Research_Synthesis_in_Pro-environmental_Behaviour_in_Education_A_Text_Mining_Approach" target="_blank" rel="noopener">
+            <span class="pp-y">2023 · Preprint</span>
+            <span class="pp-t">Research Synthesis in Pro-environmental Behaviour in Education: A Text Mining Approach</span>
+            <span class="pp-v">Preprint · November 2023</span>
+            <span class="pp-a">Chowdhury Noushin Novera, <b>Mehedi Hasan Ifti</b>, Anh Ngoc Quang Huynh, Ijaj Sadiq, Abul Kalam Azad</span>
+            <span class="pp-s">The preprint of the Managing Global Transitions paper above, shared before peer review.</span>
+            <span class="pp-m"><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Text mining</span><span class="pp-go">researchgate.net ↗</span></span>
           </a>
         </li>
         <li>
           <a class="pp" href="https://doi.org/10.1504/ijaitg.2023.136908" target="_blank" rel="noopener">
-            <span class="pp-y">2023</span>
+            <span class="pp-y">2023 · Article</span>
             <span class="pp-t">Pro-environmental Behaviour in Agricultural Studies: A Bibliometric and Text Mining Review</span>
             <span class="pp-v">International Journal of Agriculture Innovation, Technology and Globalisation · 3(3), 273–293</span>
             <span class="pp-a"><b>Mehedi Hasan Ifti</b>, Chowdhury Noushin Novera, Md. Abul Kalam Azad</span>
             <span class="pp-s">A bibliometric and text-mining review of research on pro-environmental behaviour in agriculture, mapping who studies it and the themes the field returns to.</span>
-            <span class="pp-m"><span>0 citations</span><span>first author</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Agriculture</span><span class="pp-tag">Bibliometrics</span><span class="pp-go">doi.org/10.1504/ijaitg.2023.136908 ↗</span></span>
+            <span class="pp-m"><span>first author</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Agriculture</span><span class="pp-tag">Bibliometrics</span><span class="pp-go">doi.org/10.1504/ijaitg.2023.136908 ↗</span></span>
+          </a>
+          <p class="pp-alt">Also published as an <a href="https://doi.org/10.1504/ijaitg.2023.10062297" target="_blank" rel="noopener">early-access version, 2023 ↗</a></p>
+        </li>
+        <li>
+          <a class="pp" href="https://doi.org/10.1177/0193841x231176869" target="_blank" rel="noopener">
+            <span class="pp-y">2023 · Literature review</span>
+            <span class="pp-t">Promoting Pro-Environmental Behavior in Policymaking: A Text-Mining Approach for Literature Review</span>
+            <span class="pp-v">Evaluation Review · 48(2), 370–398</span>
+            <span class="pp-a">Md. Abul Kalam Azad, <b>Mehedi Hasan Ifti</b>, Chowdhury Noushin Novera, Anh Ngoc Quang Huynh, Esra Sipahi Döngül</span>
+            <span class="pp-s">The first text-mining study of pro-environmental behaviour where policymaking is a central factor. Analyses 30 Scopus publications in R to surface the main research themes and gaps for future work.</span>
+            <span class="pp-m"><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Policy</span><span class="pp-tag">Text mining</span><span class="pp-go">doi.org/10.1177/0193841x231176869 ↗</span></span>
           </a>
         </li>
         <li>
           <a class="pp" href="https://doi.org/10.52805/bjit.v17i2.244" target="_blank" rel="noopener">
-            <span class="pp-y">2022</span>
+            <span class="pp-y">2022 · Article</span>
             <span class="pp-t">Student Engagement in Online Classes During COVID-19: A Sentiment Analysis</span>
             <span class="pp-v">Bangladesh Journal of Integrated Thoughts · 17(2)</span>
             <span class="pp-a"><b>Mehedi Hasan Ifti</b>, Paolo Saona, Muhammad Tofazzel Hossain, Shahnur Azad Chowdhury, Md. Abul Kalam Azad</span>
             <span class="pp-s">How students engaged with online classes during the pandemic, measured by running sentiment analysis (Azure Machine Learning) on their written responses.</span>
-            <span class="pp-m"><span>0 citations</span><span>first author</span><span class="pp-tag">Education</span><span class="pp-tag">Sentiment analysis</span><span class="pp-tag">Machine learning</span><span class="pp-go">doi.org/10.52805/bjit.v17i2.244 ↗</span></span>
+            <span class="pp-m"><span>first author</span><span class="pp-tag">Education</span><span class="pp-tag">Sentiment analysis</span><span class="pp-tag">Machine learning</span><span class="pp-go">doi.org/10.52805/bjit.v17i2.244 ↗</span></span>
           </a>
         </li>
       </ol>

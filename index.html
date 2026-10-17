@@ -170,7 +170,7 @@ ul.plain li::marker { color: var(--muted); }
 .pg-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .pg-chips span { font-family: var(--mono); font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; color: var(--pg); background: color-mix(in srgb, var(--pg) 13%, transparent); }
 /* paperclip: Wayne Enterprises dashboard */
-#paperclip.page { max-width: 46rem; }
+#paperclip.page, #hermes.page { max-width: 46rem; }
 .pg-code { font-family: var(--mono); font-size: 0.8125rem; font-weight: 400; color: var(--text); }
 .we { display: grid; gap: 1.1rem; padding: 1.1rem; border: 1px solid var(--rule); border-radius: 12px; background: var(--mantle); }
 .we-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem 1.5rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--surface0); }
@@ -250,6 +250,52 @@ ul.plain li::marker { color: var(--muted); }
   .we-rts small { margin-left: 0; flex-basis: 100%; }
   .we-row { width: 100%; }
   .we-input { flex-direction: column; }
+}
+/* hermes: my three agents and a Telegram-style preview */
+.hx-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.hx-step { display: grid; padding: 0.5rem 0.75rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+.hx-step b { font-family: var(--sans); font-weight: 600; font-size: 0.875rem; color: var(--ink); }
+.hx-step small { font-family: var(--mono); font-size: 0.625rem; color: var(--muted); }
+.hx-step:first-child { border-color: var(--pg); }
+.hx-arr { font-family: var(--mono); color: var(--pg); }
+.hx-agents { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
+.hx-a { display: grid; align-content: start; gap: 0.6rem; padding: 0.85rem 0.9rem; border: 1px solid var(--rule); border-top: 2px solid var(--pg); border-radius: 6px; background: var(--paper); }
+.hx-h { display: flex; align-items: center; gap: 0.55rem; }
+.hx-h > span:last-child { display: grid; line-height: 1.25; }
+.hx-h b { font-family: var(--display); font-size: 1rem; color: var(--ink); }
+.hx-h small { font-family: var(--mono); font-size: 0.625rem; color: var(--muted); }
+.hx-av { flex: none; display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; font: 700 0.8rem var(--sans); color: var(--base); background: var(--pg); }
+.hx-a ul { margin: 0; padding-left: 1rem; display: grid; gap: 0.3rem; font-size: 0.9rem; line-height: 1.45; color: var(--text); }
+.hx-a ul li::marker { color: var(--pg); }
+.hx-s { margin: 0; padding-top: 0.55rem; border-top: 1px dashed var(--rule); font-size: 0.85rem; color: var(--muted); }
+.hx-s span { display: block; font-family: var(--mono); font-size: 0.5938rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.tg { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1rem; align-items: start; }
+.tg-tabs { display: grid; gap: 0.4rem; }
+.tg-tabs button { font-family: var(--mono); font-size: 0.75rem; text-align: left; padding: 0.5rem 0.7rem; border-radius: 6px; cursor: pointer; color: var(--muted); background: var(--paper); border: 1px solid var(--surface0); }
+.tg-tabs button[aria-selected="true"] { color: var(--ink); border-color: var(--pg); }
+.tg-phone { max-width: 26rem; border: 1px solid var(--surface0); border-radius: 14px; overflow: hidden; background: var(--mantle); }
+.tg-bar { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--surface0); background: var(--paper); }
+.tg-bar > span:last-child { display: grid; line-height: 1.3; }
+.tg-bar b { font-family: var(--sans); font-size: 0.875rem; color: var(--ink); }
+.tg-bar small { font-family: var(--sans); font-size: 0.6875rem; color: var(--pg); }
+.tg-chat { display: flex; flex-direction: column; gap: 0.4rem; min-height: 19rem; padding: 0.9rem 0.8rem; }
+.tg-m { max-width: 82%; padding: 0.45rem 0.65rem 0.35rem; border-radius: 12px; font-family: var(--sans); font-size: 0.8438rem; line-height: 1.45; }
+.tg-m time { display: block; text-align: right; font-size: 0.625rem; opacity: 0.6; margin-top: 0.1rem; }
+.tg-m.me { align-self: flex-end; color: var(--base); background: var(--pg); border-bottom-right-radius: 4px; }
+.tg-m.bot { align-self: flex-start; color: var(--text); background: var(--surface0); border-bottom-left-radius: 4px; }
+.tg-m.sys { align-self: center; max-width: none; padding: 0.15rem 0.6rem; font-family: var(--mono); font-size: 0.625rem; color: var(--pg); background: color-mix(in srgb, var(--pg) 12%, transparent); border-radius: 999px; }
+.tg-m .ph { display: block; margin-bottom: 0.3rem; padding: 0.9rem 0; text-align: center; font-family: var(--mono); font-size: 0.6875rem; border-radius: 8px; background: color-mix(in srgb, var(--base) 25%, transparent); }
+.tg-typing { align-self: flex-start; display: flex; gap: 3px; padding: 0.6rem 0.7rem; border-radius: 12px; background: var(--surface0); }
+.tg-typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--overlay1); }
+@media (prefers-reduced-motion: no-preference) {
+  .tg-m { animation: we-in 0.25s ease-out; }
+  .tg-typing i { animation: we-blink 1s ease-in-out infinite; } .tg-typing i:nth-child(2) { animation-delay: 0.15s; } .tg-typing i:nth-child(3) { animation-delay: 0.3s; }
+}
+.tg-input { padding: 0.55rem 0.8rem; border-top: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.8125rem; color: var(--overlay1); background: var(--paper); }
+@media (max-width: 760px) {
+  .hx-agents { grid-template-columns: minmax(0, 1fr); }
+  .hx-arr { transform: rotate(90deg); } .hx-flow { flex-direction: column; align-items: stretch; } .hx-arr { align-self: center; }
+  .tg { grid-template-columns: minmax(0, 1fr); } .tg-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); } .tg-tabs button { text-align: center; }
 }
 /* hermes learning loop */
 .hm-loop { display: grid; gap: 0.9rem; padding: 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--mantle); }
@@ -1135,21 +1181,59 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p class="label">Playground · Personal agent</p>
       <h1>Hermes Agent</h1>
       <p class="pg-quote">“The agent that grows with you.”</p>
-      <p class="lede">An open-source agent from Nous Research that gets better the more you use it. When it solves something, it saves how as a skill, and it carries its memory across sessions and every app you talk to it from.</p>
+      <p class="lede">An open-source agent from Nous Research that gets better the more you use it. When it solves something, it saves how as a skill, and it remembers across sessions and every app you talk to it from.</p>
       <div class="pg-links">
         <a class="pg-btn" href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener">hermes-agent.nousresearch.com ↗</a>
         <a class="pg-btn ghost" href="https://hermes-agent.nousresearch.com/docs" target="_blank" rel="noopener">Docs ↗</a>
         <a class="pg-btn ghost" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
-      <div class="pg-term"><span class="pg-term-p" aria-hidden="true">$</span><code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code><button class="copy" type="button" data-copy="curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash">copy</button></div>
       <dl class="pg-facts">
         <div><dt>Licence</dt><dd>MIT</dd></div>
         <div><dt>By</dt><dd>Nous Research</dd></div>
         <div><dt>Runs</dt><dd>Your machine</dd></div>
       </dl>
 
-      <h2>The learning loop</h2>
-      <p class="sub">Tap a step, or watch it go round.</p>
+      <h2>How I run it</h2>
+      <p class="sub">Three Hermes agents, each with its own job and its own memory. I reach all of them from Telegram. This is a high-level overview of my setup, simplified.</p>
+      <div class="hx-flow" aria-label="Setup: Telegram to the Hermes gateway on my machine, then to three agents">
+        <span class="hx-step"><b>Telegram</b><small>where I talk to them</small></span><span class="hx-arr" aria-hidden="true">→</span>
+        <span class="hx-step"><b>Hermes gateway</b><small>on my machine</small></span><span class="hx-arr" aria-hidden="true">→</span>
+        <span class="hx-step hx-three"><b>Plutus · Chronos · Athena</b><small>memory and skills each</small></span>
+      </div>
+      <ul class="hx-agents">
+          <li class="hx-a" data-k="plutus">
+            <div class="hx-h"><span class="hx-av">P</span><span><b>Plutus</b><small>Finances</small></span></div>
+            <ul><li>Logs spending from a photo of a receipt</li><li>Tracks budgets and subscriptions</li><li>Flags bills before they are due</li></ul>
+            <p class="hx-s"><span>On a schedule</span>Sunday evening spending summary</p>
+          </li>
+          <li class="hx-a" data-k="chronos">
+            <div class="hx-h"><span class="hx-av">C</span><span><b>Chronos</b><small>Personal projects &amp; schedule</small></span></div>
+            <ul><li>Keeps my side projects moving, task by task</li><li>Moves things around my calendar</li><li>Reminders that land at the right time</li></ul>
+            <p class="hx-s"><span>On a schedule</span>7:30 morning brief, every day</p>
+          </li>
+          <li class="hx-a" data-k="athena">
+            <div class="hx-h"><span class="hx-av">A</span><span><b>Athena</b><small>Work</small></span></div>
+            <ul><li>Preps me before client calls</li><li>Drafts follow-ups and recaps after them</li><li>Keeps a running list of open commitments</li></ul>
+            <p class="hx-s"><span>On a schedule</span>8:45 brief on weekdays: calls and follow-ups due</p>
+          </li>
+      </ul>
+
+      <h2>On Telegram</h2>
+      <p class="sub">What a normal exchange looks like. Pick an agent.</p>
+      <div class="tg" id="tg">
+        <div class="tg-tabs" role="tablist" aria-label="Agents">
+          <button type="button" role="tab" data-k="plutus" aria-selected="true">Plutus</button><button type="button" role="tab" data-k="chronos" aria-selected="false">Chronos</button><button type="button" role="tab" data-k="athena" aria-selected="false">Athena</button>
+        </div>
+        <div class="tg-phone">
+          <div class="tg-bar"><span class="hx-av" id="tg-av">P</span><span><b id="tg-name">Plutus</b><small>bot · online</small></span></div>
+          <div class="tg-chat" id="tg-chat" role="log" aria-live="polite"></div>
+          <div class="tg-input" aria-hidden="true"><span>Message</span></div>
+        </div>
+      </div>
+      <p class="sub">Sample messages, not my real ones.</p>
+
+      <h2>Why they get better</h2>
+      <p class="sub">Every agent runs the same loop. Tap a step, or watch it go round.</p>
       <div class="hm-loop" id="hm-loop">
         <ol class="hm-steps" role="tablist" aria-label="Learning loop">
           <li><button type="button" role="tab" data-i="0"><span>1</span>You ask</button></li>
@@ -1158,31 +1242,13 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
           <li><button type="button" role="tab" data-i="3"><span>4</span>It reuses it</button></li>
         </ol>
         <div class="hm-panel" role="tabpanel" aria-live="polite">
-          <p data-i="0">You send it a task from wherever you are: Telegram, Slack, WhatsApp, email or the terminal.</p>
+          <p data-i="0">I send a message on Telegram: a receipt, a reminder, a call to prep for.</p>
           <p data-i="1">It uses its tools to get it done: web search, a browser, vision, a terminal, and subagents that each work in their own sandbox.</p>
           <p data-i="2">Once it has solved the problem, it writes down how as a reusable skill.</p>
-          <p data-i="3">Next time something similar comes up, it starts from that skill. Memory and skills persist across sessions and every app.</p>
+          <p data-i="3">Next time something similar comes up, it starts from that skill. That's why Plutus now files a receipt from a single photo.</p>
         </div>
       </div>
 
-      <ul class="pg-cards">
-        <li><b>Persistent memory</b><p>Conversations, memories and skills carry over between sessions, with one shared memory across every app.</p></li>
-        <li><b>Scheduled jobs</b><p>Describe a recurring job in plain language, like a report, backup or briefing, and it runs unattended.</p></li>
-        <li><b>Subagents</b><p>Splits a task across isolated subagents, each with its own conversation and terminal.</p></li>
-        <li><b>Any model</b><p>Bring your own provider, or use Nous Portal for 200+ models.</p></li>
-      </ul>
-
-      <h2>Where it lives</h2>
-      <div class="hm-where">
-        <div><h3>Talk to it from</h3><div class="pg-chips"><span>Telegram</span><span>Discord</span><span>Slack</span><span>WhatsApp</span><span>Signal</span><span>Email</span><span>CLI</span></div></div>
-        <div><h3>It runs in</h3><div class="pg-chips"><span>Local</span><span>Docker</span><span>SSH</span><span>Singularity</span><span>Modal</span></div></div>
-      </div>
-
-      <h2>How I use it</h2>
-      <div class="pg-soon">
-        <span class="pg-dot" aria-hidden="true"></span>
-        <div><b>Coming next</b><p>My own setup and the workflows I run on it.</p></div>
-      </div>
       <p class="sub">Hermes is one agent that learns. To run a whole team of agents, Hermes included, see <a href="#paperclip">Paperclip</a>.</p>
     </section>
 
@@ -2113,6 +2179,61 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       ans.innerHTML = '<h4>Rocket · Not one of my demo runs</h4><ul><li>This demo plays four set tasks. Pick one of the prompts above, or ask about a call, closing deals, the pipeline or a scope request.</li></ul>';
     });
     function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+  })();
+  // Hermes: Telegram-style preview. Picking an agent replays a short sample exchange.
+  (function () {
+    var tg = document.getElementById('tg'); if (!tg) return;
+    // [who, text, time]; who: me | bot | sys. A photo message starts with [photo].
+    var CHATS = {
+      plutus: ['P', 'Plutus', [
+        ['me', '[photo] Lunch with a client', '13:42'],
+        ['bot', 'Logged 145 under client meals. You\'re at 62% of this month\'s eating-out budget.', '13:42'],
+        ['me', 'What am I paying for subscriptions right now?', '13:45'],
+        ['bot', 'Seven subscriptions, 4,350 a month. Two haven\'t been opened in 60 days: a design tool and a streaming app. Cancel both?', '13:45'],
+        ['sys', 'Saved skill: subscription audit']]],
+      chronos: ['C', 'Chronos', [
+        ['bot', 'Morning. Today: gym at 6, the portfolio site\'s Research page, and call the bank before 3.', '07:30'],
+        ['me', 'Move the gym to 7 and remind me about the bank at lunch', '07:41'],
+        ['bot', 'Done. Gym is at 19:00. Bank reminder at 13:00.', '07:41'],
+        ['me', 'Where am I on the website?', '07:42'],
+        ['bot', '9 of 12 tasks done. Next up: the Hermes page.', '07:42']]],
+      athena: ['A', 'Athena', [
+        ['bot', 'Weekday brief: 2 client calls today, 3 follow-ups due, 1 proposal waiting on legal.', '08:45'],
+        ['me', 'Prep me for the 3pm call', '14:20'],
+        ['bot', 'Last three touchpoints, the proposal we sent on the 9th, and their open worry: timeline. Suggested opener: confirm what changed since the proposal.', '14:21'],
+        ['me', 'Draft the recap after the call', '16:05'],
+        ['bot', 'Draft ready: decisions, owners, dates and 2 open questions. Want it sent from your email?', '16:06'],
+        ['sys', 'Saved skill: call recap']]]
+    };
+    var chat = document.getElementById('tg-chat'), timers = [];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+    function bubble(m) {
+      if (m[0] === 'sys') return '<div class="tg-m sys">' + esc(m[1]) + '</div>';
+      var photo = m[1].indexOf('[photo]') === 0, text = photo ? m[1].slice(8) : m[1];
+      return '<div class="tg-m ' + m[0] + '">' + (photo ? '<span class="ph">receipt.jpg</span>' : '') + esc(text) + '<time>' + m[2] + '</time></div>';
+    }
+    function show(k) {
+      timers.forEach(clearTimeout); timers = [];
+      var c = CHATS[k];
+      tg.querySelectorAll('[role="tab"]').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-k') === k)); });
+      document.getElementById('tg-av').textContent = c[0]; document.getElementById('tg-name').textContent = c[1];
+      chat.innerHTML = '';
+      if (still) { chat.innerHTML = c[2].map(bubble).join(''); return; }
+      var t = 0;
+      c[2].forEach(function (m) {
+        if (m[0] === 'bot') {
+          timers.push(setTimeout(function () { chat.insertAdjacentHTML('beforeend', '<div class="tg-typing"><i></i><i></i><i></i></div>'); }, t));
+          t += 700;
+        }
+        timers.push(setTimeout(function () { var ty = chat.querySelector('.tg-typing'); if (ty) ty.remove(); chat.insertAdjacentHTML('beforeend', bubble(m)); }, t));
+        t += m[0] === 'me' ? 650 : 900;
+      });
+    }
+    tg.querySelectorAll('[role="tab"]').forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-k')); }); });
+    var started = false;
+    window.addEventListener('hashchange', function () { if (location.hash === '#hermes') show('plutus'); });
+    if (location.hash === '#hermes') show('plutus'); else chat.innerHTML = CHATS.plutus[2].map(bubble).join('');
   })();
   // Hermes: learning loop, auto-advances until the visitor picks a step
   (function () {

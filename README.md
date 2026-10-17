@@ -37,3 +37,10 @@ Single static file (`index.html`), served with GitHub Pages.
 **Terminal:** press `~`, or click the `>_ Terminal` button in the bottom-left corner (bottom-right on phones). Commands live in `CMDS` in the script: `help`, `ls`, `cd`, `cat`, `whoami`, `now`, `f1`, `theme`, `book`, `email`, `cv`, `socials`, `clear`, `exit`, plus `sudo hire ifti`.
 
 **Hover previews:** on a desktop, hovering any link to another page or note shows its title and first lines. Nothing to update; it reads the page itself.
+
+**Speed:** keep it fast by following these rules.
+- Fonts are self-hosted in `fonts/` (Latin only, `font-display: swap`). Don't add Google Fonts links. To add a font, download its Latin woff2 into `fonts/` and add an `@font-face` at the top of the `<style>`. Only the default theme's fonts are preloaded.
+- A tiny script in `<head>` shows only the page being opened and applies the visitor's saved theme before the first paint. Keep it small.
+- Homepage blocks below the fold use `content-visibility: auto`. Add new long homepage sections to that rule.
+- Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
+- No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.

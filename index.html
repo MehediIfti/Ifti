@@ -1012,7 +1012,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 @media (prefers-reduced-motion: no-preference) { .hitmark { animation: hit 0.32s ease-out forwards; } @keyframes hit { from { opacity: 1; transform: scale(0.7); } to { opacity: 0; transform: scale(1.35); } } }
 
 /* intro: once per visit, a short "breach" in a terminal, then the page glitches into place. Skipped for reduced motion. */
-.boot { display: none; }
+.boot { display: none; --base: #0c0d10; --green: #a6e3a1; --text: #d4d4d8; --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; } /* always the original Midnight Ledger look, whatever the theme */
 html.intro .boot { display: grid; position: fixed; inset: 0; z-index: 110; place-content: center; padding: 1rem; background: var(--base); color: var(--green); font-family: var(--mono); font-size: 0.875rem; line-height: 1.7; }
 html.intro .shell, html.intro .m-top, html.intro .m-tabs, html.intro .ap-tab { visibility: hidden; }
 .boot p { margin: 0; opacity: 0; white-space: pre; }
@@ -1132,7 +1132,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .f1-rig { display: flex; gap: clamp(10px, 2.4vw, 22px); padding: clamp(12px, 2vw, 18px) clamp(14px, 2.6vw, 24px); background: #111; border: 2px solid #222; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
 .f1-rig span { display: grid; gap: 8px; padding: 8px; background: #050505; border-radius: 8px; }
 .f1-rig i { display: block; width: clamp(26px, 6vw, 52px); aspect-ratio: 1; border-radius: 50%; background: #2a0606; box-shadow: inset 0 0 0 2px #1a0303; }
-.f1-rig span.on i:last-child, .f1-rig span.on i:nth-last-child(2) { background: radial-gradient(circle at 40% 35%, #ff6b5e, #e10600 60%, #8f0400); box-shadow: 0 0 22px 4px rgba(225, 6, 0, 0.65); }
+.f1-rig span.on i { background: radial-gradient(circle at 40% 35%, #ff6b5e, #e10600 60%, #8f0400); box-shadow: 0 0 22px 4px rgba(225, 6, 0, 0.65); }
 
 /* ============ terminal button ============ */
 .term-fab { position: fixed; z-index: 29; left: calc(env(safe-area-inset-left, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem 0.45rem 0.7rem; font: 500 0.75rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
@@ -2656,14 +2656,15 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var old = document.querySelector('.f1-lights'); if (old) old.remove();
     var o = document.createElement('div'); o.className = 'f1-lights'; o.setAttribute('aria-hidden', 'true');
-    o.innerHTML = '<div class="f1-rig">' + '<span><i></i><i></i><i></i><i></i></span>'.repeat(5) + '</div>';
+    o.innerHTML = '<div class="f1-rig">' + '<span><i></i><i></i></span>'.repeat(5) + '</div>';
     document.body.appendChild(o);
     var cols = o.querySelectorAll('.f1-rig span'), timers = [];
-    // Like a real start: five reds come on one per beat, hold, then all go out together.
+    // Like a real start: five sets of reds come on one per beat, a random hold, then all go out together. No green.
     function end() { timers.forEach(clearTimeout); o.classList.add('out'); setTimeout(function () { o.remove(); }, 260); }
     cols.forEach(function (c, i) { timers.push(setTimeout(function () { c.classList.add('on'); }, 150 + i * 280)); });
-    timers.push(setTimeout(function () { cols.forEach(function (c) { c.classList.remove('on'); }); }, 150 + 5 * 280 + 450));
-    timers.push(setTimeout(end, 150 + 5 * 280 + 450 + 350));
+    var hold = 150 + 5 * 280 + 200 + Math.round(Math.random() * 500);
+    timers.push(setTimeout(function () { cols.forEach(function (c) { c.classList.remove('on'); }); }, hold));
+    timers.push(setTimeout(end, hold + 350));
     o.addEventListener('click', end);
   }
   function edits(id) { try { return JSON.parse(read('ap-t-' + id) || '{}') || {}; } catch (e) { return {}; } }

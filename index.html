@@ -282,33 +282,34 @@ ul.plain li::marker { color: var(--muted); }
   .we-input { flex-direction: column; }
 }
 /* hermes: my three agents and a Telegram-style preview */
-.hx-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
-.hx-step { display: grid; padding: 0.5rem 0.75rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
-.hx-step b { font-family: var(--sans); font-weight: 600; font-size: 0.875rem; color: var(--ink); }
-.hx-step small { font-family: var(--mono); font-size: 0.625rem; color: var(--muted); }
-.hx-step:first-child { border-color: var(--pg); }
+.hx-flow { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1rem; margin: 1.25rem 0 0.5rem; }
+.hx-step { display: grid; gap: 0.1rem; }
+.hx-step b { font-family: var(--sans); font-weight: 600; font-size: 0.9375rem; color: var(--ink); }
+.hx-step small { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
 .hx-arr { font-family: var(--mono); color: var(--pg); }
-.hx-agents { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
-.hx-a { display: grid; align-content: start; gap: 0.6rem; padding: 0.85rem 0.9rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
-.hx-h { display: flex; align-items: center; gap: 0.55rem; }
+.hx-agents { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; border-top: 1px solid var(--rule); }
+.hx-a { display: grid; grid-template-columns: 12rem minmax(0, 1fr); grid-template-areas: "h l" "h s"; gap: 0.6rem 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--rule); }
+.hx-a .hx-h { grid-area: h; align-self: start; } .hx-a ul { grid-area: l; } .hx-a .hx-s { grid-area: s; }
+.hx-h { display: flex; align-items: center; gap: 0.7rem; }
 .hx-h > span:last-child { display: grid; line-height: 1.25; }
 .hx-h b { font-family: var(--display); font-size: 1rem; color: var(--ink); }
-.hx-h small { font-family: var(--mono); font-size: 0.625rem; color: var(--muted); }
-.hx-av { flex: none; display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; font: 700 0.8rem var(--sans); color: var(--base); background: var(--pg); }
-.hx-a ul { margin: 0; padding-left: 1rem; display: grid; gap: 0.3rem; font-size: 0.9rem; line-height: 1.45; color: var(--text); }
+.hx-h small { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
+.hx-av { flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; font: 700 0.8rem var(--sans); color: var(--base); background: var(--pg); }
+.hx-a ul { margin: 0; padding-left: 1rem; display: grid; gap: 0.35rem; line-height: 1.5; color: var(--text); }
 .hx-a ul li::marker { color: var(--pg); }
-.hx-s { margin: 0; padding-top: 0.55rem; border-top: 1px dashed var(--rule); font-size: 0.85rem; color: var(--muted); }
-.hx-s span { display: block; font-family: var(--mono); font-size: 0.5938rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
-.tg { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1rem; align-items: start; }
-.tg-tabs { display: grid; gap: 0.4rem; }
-.tg-tabs button { font-family: var(--mono); font-size: 0.75rem; text-align: left; padding: 0.5rem 0.7rem; border-radius: 6px; cursor: pointer; color: var(--muted); background: var(--paper); border: 1px solid var(--surface0); }
-.tg-tabs button[aria-selected="true"] { color: var(--ink); border-color: var(--pg); }
-.tg-phone { max-width: 26rem; border: 1px solid var(--surface0); border-radius: 14px; overflow: hidden; background: var(--mantle); }
+.hx-s { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; font-size: 0.9rem; color: var(--muted); }
+.hx-s span { font-family: var(--mono); font-size: 0.5938rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.tg { display: grid; justify-items: center; gap: 1rem; padding: 1.5rem 1rem; border: 1px solid var(--rule); border-radius: 12px; background: color-mix(in srgb, var(--mantle) 70%, transparent); }
+.tg-tabs { display: inline-flex; gap: 0.25rem; padding: 0.25rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+.tg-tabs button { font-family: var(--mono); font-size: 0.75rem; padding: 0.4rem 0.9rem; border-radius: 6px; cursor: pointer; color: var(--muted); background: transparent; border: 0; }
+.tg-tabs button[aria-selected="true"] { color: var(--ink); background: var(--surface0); }
+.tg + .sub { margin-top: 0.6rem; font-size: 0.85rem; }
+.tg-phone { width: 100%; max-width: 24rem; border: 1px solid var(--surface0); border-radius: 14px; overflow: hidden; background: var(--mantle); }
 .tg-bar { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--surface0); background: var(--paper); }
 .tg-bar > span:last-child { display: grid; line-height: 1.3; }
 .tg-bar b { font-family: var(--sans); font-size: 0.875rem; color: var(--ink); }
 .tg-bar small { font-family: var(--sans); font-size: 0.6875rem; color: var(--pg); }
-.tg-chat { display: flex; flex-direction: column; gap: 0.4rem; min-height: 19rem; padding: 0.9rem 0.8rem; }
+.tg-chat { display: flex; flex-direction: column; gap: 0.4rem; min-height: 16rem; padding: 0.9rem 0.8rem; }
 .tg-m { max-width: 82%; padding: 0.45rem 0.65rem 0.35rem; border-radius: 12px; font-family: var(--sans); font-size: 0.8438rem; line-height: 1.45; }
 .tg-m time { display: block; text-align: right; font-size: 0.625rem; opacity: 0.6; margin-top: 0.1rem; }
 .tg-m.me { align-self: flex-end; color: var(--base); background: var(--pg); border-bottom-right-radius: 4px; }
@@ -323,19 +324,19 @@ ul.plain li::marker { color: var(--muted); }
 }
 .tg-input { padding: 0.55rem 0.8rem; border-top: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.8125rem; color: var(--overlay1); background: var(--paper); }
 @media (max-width: 760px) {
-  .hx-agents { grid-template-columns: minmax(0, 1fr); }
-  .hx-arr { transform: rotate(90deg); } .hx-flow { flex-direction: column; align-items: stretch; } .hx-arr { align-self: center; }
-  .tg { grid-template-columns: minmax(0, 1fr); } .tg-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); } .tg-tabs button { text-align: center; }
+  .hx-a { grid-template-columns: minmax(0, 1fr); grid-template-areas: "h" "l" "s"; padding: 1rem 0; }
+  .hx-flow { flex-direction: column; align-items: flex-start; gap: 0.35rem; } .hx-arr { transform: rotate(90deg); margin-left: 0.25rem; }
+  .tg { padding: 1rem 0.75rem; }
 }
 /* hermes learning loop */
-.hm-loop { display: grid; gap: 0.9rem; padding: 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--mantle); }
-.hm-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.4rem; counter-reset: none; }
+.hm-loop { display: grid; gap: 1.25rem; padding: 1.25rem 1.25rem 1.4rem; border: 1px solid var(--rule); border-radius: 12px; background: color-mix(in srgb, var(--mantle) 70%, transparent); }
+.hm-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; counter-reset: none; }
 .hm-steps li { position: relative; }
-.hm-steps li:not(:last-child)::after { content: "→"; position: absolute; right: -0.45rem; top: 50%; transform: translate(50%, -50%); font-family: var(--mono); font-size: 0.75rem; color: var(--overlay1); z-index: 1; }
-.hm-steps button { width: 100%; height: 100%; display: grid; justify-items: center; gap: 0.3rem; padding: 0.7rem 0.4rem; font-family: var(--mono); font-size: 0.75rem; line-height: 1.3; color: var(--muted); background: var(--paper); border: 1px solid var(--surface0); border-radius: 8px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+.hm-steps button { width: 100%; height: 100%; display: grid; justify-items: start; gap: 0.5rem; padding: 0.75rem 0.85rem; font-family: var(--mono); font-size: 0.75rem; line-height: 1.3; text-align: left; color: var(--muted); background: transparent; border: 1px solid var(--rule); border-radius: 8px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
 .hm-steps button span { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; font-size: 0.75rem; color: var(--pg); background: color-mix(in srgb, var(--pg) 14%, transparent); }
 .hm-steps button[aria-selected="true"] { color: var(--ink); border-color: var(--pg); }
 .hm-steps button[aria-selected="true"] span { color: var(--base); background: var(--pg); }
+.hm-panel { padding-top: 1.1rem; border-top: 1px solid var(--rule); }
 .hm-panel p { margin: 0; color: var(--text); }
 .hm-panel p:not(.on) { display: none; }
 .hm-where { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
@@ -343,7 +344,7 @@ ul.plain li::marker { color: var(--muted); }
 @media (max-width: 760px) {
   .pg-cards, .hm-where { grid-template-columns: minmax(0, 1fr); }
   .pc-row { gap: 0.4rem; } .pc-node { min-width: 0; padding: 0.5rem 0.55rem; }
-  .hm-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hm-steps li::after { display: none; }
+  .hm-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hm-steps { gap: 0.5rem; }
 }
 .pg-soon { display: flex; gap: 0.9rem; align-items: flex-start; padding: 1.1rem 1.2rem; border: 1px dashed color-mix(in srgb, var(--mauve) 45%, var(--rule)); border-radius: 8px; }
 .pg-soon b { font-family: var(--mono); font-size: var(--s-0); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
@@ -1075,7 +1076,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     <!-- ============ INDEX ============ -->
     <section class="page" id="index">
       <header class="hero">
-        <p class="label">Sales &amp; partnerships · Dhaka</p>
+        <p class="label">Global sales &amp; partnerships · Musemind</p>
         <h1>Ifti</h1>
         <p class="lede">I turn first conversations into partnerships that last. Most of my week is calls with founders and enterprise teams, finding out what's actually broken before anyone pitches a fix.</p>
         <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><a class="cta-2" href="#writing-h">Read my notes ↓</a></div>

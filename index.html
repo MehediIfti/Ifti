@@ -63,13 +63,21 @@ body {
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 0;
 }
-/* background pattern: its own fixed layer, brightest behind the reading column and fading toward the edges */
+/* background pattern: its own fixed layer, kept out from behind the reading column so text sits on clean paper and the pattern lives in the margins */
 body::after {
   content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background-image: var(--pattern); background-size: var(--pattern-size);
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(50% - 30rem), transparent calc(50% - 21rem), transparent calc(50% + 21rem), #000 calc(50% + 30rem));
+  mask-image: linear-gradient(90deg, #000 calc(50% - 30rem), transparent calc(50% - 21rem), transparent calc(50% + 21rem), #000 calc(50% + 30rem));
+}
+/* visitor's choice in the panel: Spotlight puts the pattern behind the column, Halo clears it around each line of text (dots only; other patterns keep Margins) */
+:root[data-calm="spotlight"] body::after {
   -webkit-mask-image: radial-gradient(ellipse 55% 75% at 50% 35%, #000 25%, transparent 90%);
   mask-image: radial-gradient(ellipse 55% 75% at 50% 35%, #000 25%, transparent 90%);
 }
+:root[data-calm="halo"][data-bg="dots"] body::after { display: none; }
+#halo-dots { position: fixed; inset: 0; z-index: 0; pointer-events: none; width: 100%; height: 100%; display: none; }
+:root[data-calm="halo"][data-bg="dots"] #halo-dots { display: block; }
 .shell { position: relative; z-index: 1; }
 ::selection { background: var(--mark); color: var(--ink); }
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
@@ -433,6 +441,10 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .ap-seg button + button { border-left: 1px solid var(--surface0); }
 .ap-seg button:hover { color: var(--text); }
 .ap-seg button[aria-pressed="true"] { background: var(--surface0); color: var(--text); }
+.ap-range { display: grid; grid-template-columns: auto 1fr 2.5rem; align-items: center; gap: 0.6rem; color: var(--subtext0); }
+.ap-range input { width: 100%; accent-color: var(--mauve); }
+.ap-range output { text-align: right; color: var(--text); }
+:root:not([data-calm="halo"]) .ap-range, :root:not([data-bg="dots"]) .ap-range { display: none; }
 .ap-foot { display: flex; justify-content: space-between; gap: 0.5rem; color: var(--subtext0); font-size: 0.6875rem; }
 .ap-foot button { font: inherit; background: none; border: 0; color: var(--accent); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
 @media (prefers-reduced-motion: no-preference) {
@@ -798,6 +810,12 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <button type="button" id="bg-dots" data-val="dots">Dots</button><button type="button" id="bg-grid" data-val="grid">Grid</button><button type="button" id="bg-lines" data-val="lines">Lines</button><button type="button" id="bg-plain" data-val="plain">Plain</button>
     </div>
   </div>
+  <div class="ap-g"><span>Pattern near text</span>
+    <div class="ap-seg" data-attr="calm">
+      <button type="button" id="calm-margins" data-val="margins">Margins</button><button type="button" id="calm-halo" data-val="halo">Halo</button><button type="button" id="calm-spotlight" data-val="spotlight">Spotlight</button>
+    </div>
+    <label class="ap-range">Clearance <input type="range" id="halo-pad" min="0" max="36" step="2" value="10"><output id="halo-pad-v">10px</output></label>
+  </div>
   <div class="ap-g"><span>Layout</span>
     <div class="ap-seg" data-attr="layout">
       <button type="button" id="ly-2" data-val="2">2 columns</button><button type="button" id="ly-3" data-val="3">3 columns</button>
@@ -1096,7 +1114,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   })();
 
   // Appearance: theme, background and text style, remembered per visitor.
-  var AP_DEFAULTS = { palette: 'black', bg: 'dots', type: 'serif', layout: '3', mnav: 'tabs' };
+  var AP_DEFAULTS = { palette: 'black', bg: 'dots', calm: 'margins', type: 'serif', layout: '3', mnav: 'tabs' };
   var tab = document.getElementById('ap-tab');
   var panel = document.getElementById('ap-panel');
   var groups = document.querySelectorAll('#ap-panel [data-attr]');
@@ -1164,6 +1182,67 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     var r = document.createRange(); r.selectNodeContents(node);
     var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
   }
+})();
+</script>
+<canvas id="halo-dots" aria-hidden="true"></canvas>
+<script>
+// Halo: the dot grid drawn on a canvas so it fades out around every line of text and stays in the empty space.
+(function () {
+  var root = document.documentElement, cv = document.getElementById('halo-dots'), ctx = cv.getContext('2d');
+  var slider = document.getElementById('halo-pad'), readout = document.getElementById('halo-pad-v');
+  var pad = 10, FEATHER = 18, GAP = 14, R = 0.8, queued = false;
+  try { pad = +(localStorage.getItem('ap-halo-pad') || pad); } catch (e) {}
+  var probe = document.createElement('span'); probe.style.cssText = 'position:absolute;visibility:hidden;color:var(--dot)'; document.body.appendChild(probe);
+  function on() { return root.getAttribute('data-calm') === 'halo' && root.getAttribute('data-bg') === 'dots'; }
+
+  function rects() {
+    var out = [], vh = innerHeight, range = document.createRange();
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: function (n) {
+      var p = n.parentNode.nodeName; return /\S/.test(n.nodeValue) && p !== 'SCRIPT' && p !== 'STYLE' ? 1 : 3; } });
+    var push = function (r) { if (r.width && r.bottom > -40 && r.top < vh + 40) out.push(r); };
+    while (w.nextNode()) { range.selectNodeContents(w.currentNode); Array.prototype.forEach.call(range.getClientRects(), push); }
+    document.querySelectorAll('svg, .act-g, .radar, .suggest, input, textarea, button, img, .ap-panel').forEach(function (el) { push(el.getBoundingClientRect()); });
+    return out;
+  }
+  function draw() {
+    queued = false;
+    if (!on()) return;
+    var dpr = devicePixelRatio || 1, W = innerWidth, H = innerHeight;
+    if (cv.width !== W * dpr || cv.height !== H * dpr) { cv.width = W * dpr; cv.height = H * dpr; }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = getComputedStyle(probe).color;
+    var rs = rects(), reach = pad + FEATHER;
+    for (var y = GAP / 2; y < H; y += GAP) {
+      var row = rs.filter(function (r) { return r.top - reach < y && r.bottom + reach > y; });
+      for (var x = GAP / 2; x < W; x += GAP) {
+        var d = Infinity;
+        for (var i = 0; i < row.length; i++) {
+          var r = row[i], dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom);
+          var dd = Math.sqrt(dx * dx + dy * dy); if (dd < d) d = dd;
+        }
+        var a = Math.min(Math.max((d - pad) / FEATHER, 0), 1);
+        if (a <= 0) continue;
+        ctx.globalAlpha = a; ctx.beginPath(); ctx.arc(x, y, R, 0, 6.2832); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  function soon() { if (!queued && on()) { queued = true; requestAnimationFrame(draw); } }
+  function setPad(v, save) {
+    pad = v; slider.value = v; readout.textContent = v + 'px';
+    if (save) { try { localStorage.setItem('ap-halo-pad', v); } catch (e) {} }
+    soon();
+  }
+  slider.addEventListener('input', function () { setPad(+slider.value, true); });
+  document.getElementById('ap-reset').addEventListener('click', function () {
+    setPad(10, false); try { localStorage.removeItem('ap-halo-pad'); } catch (e) {}
+  });
+  addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
+  addEventListener('hashchange', function () { setTimeout(soon, 30); });
+  new MutationObserver(soon).observe(root, { attributes: true });
+  new MutationObserver(soon).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'class'] });
+  if (document.fonts) document.fonts.ready.then(soon);
+  setPad(pad, false);
 })();
 </script>
 </body>

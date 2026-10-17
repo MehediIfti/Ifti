@@ -182,13 +182,19 @@ ul.plain li::marker { color: var(--muted); }
 .we-kpis b { font-family: var(--display); font-size: 1.05rem; color: var(--ink); margin-right: 0.15rem; }
 .we-org { display: grid; justify-items: center; }
 .we-row { display: flex; justify-content: center; gap: 0.6rem; }
-.we-team { position: relative; padding-top: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; }
+.we-team { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.6rem; width: 100%; padding-top: 14px; }
 .we-team::before { content: ""; position: absolute; top: 0; left: 12.5%; right: 12.5%; height: 14px; border: 1px solid var(--surface1); border-bottom: 0; border-radius: 6px 6px 0 0; }
-.we-team > .we-node::before { content: ""; position: absolute; top: -15px; left: 50%; width: 2px; height: 14px; margin-left: -1px; background: transparent; }
+.we-col { display: grid; justify-items: stretch; }
+.we-col .we-v { justify-self: center; }
+.we-node.head::before { content: ""; position: absolute; top: -15px; left: 50%; width: 2px; height: 14px; margin-left: -1px; background: transparent; }
 .we-v { width: 1px; height: 18px; background: var(--surface1); }
-.we-v.on, .we-team > .we-node.link::before { background: repeating-linear-gradient(to bottom, var(--pg) 0 4px, transparent 4px 7px); width: 2px; }
+.we-v.on, .we-node.head.link::before { background: repeating-linear-gradient(to bottom, var(--pg) 0 4px, transparent 4px 7px); width: 2px; }
+.we-row { position: relative; }
+.we-legend { margin: 0.7rem 0 0; font-family: var(--mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--overlay1); text-align: center; }
+.we-legend span { color: var(--pg); }
 .we-node { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.15rem 0.55rem; min-width: 0; padding: 0.55rem 0.65rem; background: var(--paper); border: 1px solid var(--surface0); border-radius: 9px; transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s; }
-.we-row:not(.we-team) .we-node { min-width: 13rem; }
+.we-row .we-node { min-width: 13rem; }
+.we-node.head { border-color: color-mix(in srgb, var(--pg) 35%, var(--surface0)); }
 .we-av { grid-row: span 2; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; font: 700 0.9rem var(--display); color: var(--pg); background: color-mix(in srgb, var(--pg) 15%, transparent); }
 .we-node.board .we-av { color: var(--base); background: var(--mauve); }
 .we-node.ceo .we-av { color: var(--base); background: var(--pg); }
@@ -203,11 +209,11 @@ ul.plain li::marker { color: var(--muted); }
 .we[data-busy="true"] .we-node:not(.working):not(.done):not(.board) { opacity: 0.55; }
 @media (prefers-reduced-motion: no-preference) {
   .we-node.working .we-st::before { animation: we-blink 0.9s ease-in-out infinite; }
-  .we-v.on, .we-team > .we-node.link::before { animation: we-flow 0.6s linear infinite; }
+  .we-v.on, .we-node.head.link::before { animation: we-flow 0.6s linear infinite; }
   @keyframes we-blink { 50% { opacity: 0.25; } }
   @keyframes we-flow { to { background-position: 0 7px; } }
 }
-.we-ask { display: grid; gap: 0.5rem; }
+.we-ask { display: grid; gap: 0.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--surface0); }
 .we-ask label { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
 .we-input { display: flex; gap: 0.5rem; }
 .we-input input { flex: 1; min-width: 0; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--paper); border: 1px solid var(--surface0); border-radius: 7px; padding: 0.55rem 0.75rem; }
@@ -233,10 +239,10 @@ ul.plain li::marker { color: var(--muted); }
 .we-answer ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.25rem; font-size: 0.92rem; }
 @media (max-width: 760px) {
   .we { padding: 0.8rem; }
-  .we-team { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: 0; gap: 0.5rem; }
-  .we-team::before, .we-team > .we-node::before { display: none; }
-  .we-row:not(.we-team) .we-node { min-width: 0; width: 100%; }
-  .we-row:not(.we-team) { width: 100%; }
+  .we-team { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: 0; gap: 0.9rem 0.5rem; }
+  .we-team::before, .we-node.head::before { display: none; }
+  .we-row .we-node { min-width: 0; width: 100%; }
+  .we-row { width: 100%; }
   .we-input { flex-direction: column; }
 }
 /* hermes learning loop */
@@ -1064,20 +1070,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <div class="we" id="we" data-busy="false">
         <div class="we-top">
           <div class="we-co"><span class="we-logo" aria-hidden="true">W</span><span><b>Wayne Enterprises</b><small>Mission: keep every key account moving</small></span></div>
-          <div class="we-kpis"><span><b>5</b> agents</span><span><b id="we-busy">0</b> working</span><span><b id="we-done">0</b> tickets closed</span></div>
-        </div>
-
-        <div class="we-org" role="group" aria-label="Wayne Enterprises org chart">
-          <div class="we-row"><div class="we-node board" data-a="ifti"><span class="we-av">I</span><span class="we-who"><b>Ifti</b><small>The board</small></span><span class="we-st">idle</span></div></div>
-          <span class="we-v" data-l="ifti-rocket" aria-hidden="true"></span>
-          <div class="we-row"><div class="we-node ceo" data-a="rocket"><span class="we-av">R</span><span class="we-who"><b>Rocket</b><small>CEO · plans and delegates</small></span><span class="we-st">idle</span></div></div>
-          <span class="we-v" data-l="rocket-team" aria-hidden="true"></span>
-          <div class="we-row we-team">
-            <div class="we-node" data-a="alfred"><span class="we-av">A</span><span class="we-who"><b>Alfred</b><small>Records & CRM</small></span><span class="we-st">idle</span></div>
-            <div class="we-node" data-a="oracle"><span class="we-av">O</span><span class="we-who"><b>Oracle</b><small>Cross-functional</small></span><span class="we-st">idle</span></div>
-            <div class="we-node" data-a="robin"><span class="we-av">R</span><span class="we-who"><b>Robin</b><small>Proposals (jr)</small></span><span class="we-st">idle</span></div>
-            <div class="we-node" data-a="lucius"><span class="we-av">L</span><span class="we-who"><b>Lucius</b><small>Business analyst</small></span><span class="we-st">idle</span></div>
-          </div>
+          <div class="we-kpis"><span><b>9</b> agents</span><span><b id="we-busy">0</b> working</span><span><b id="we-done">0</b> tickets closed</span></div>
         </div>
 
         <form class="we-ask" id="we-ask" autocomplete="off">
@@ -1090,6 +1083,36 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
             <button type="button" data-s="align">Get design, dev and finance aligned on a scope change</button>
           </div>
         </form>
+
+        <div class="we-org" role="group" aria-label="Wayne Enterprises org chart: board, CEO, four department heads and four specialists">
+          <div class="we-row"><div class="we-node board" data-a="ifti"><span class="we-av">I</span><span class="we-who"><b>Ifti</b><small>The board</small></span><span class="we-st">idle</span></div></div>
+          <span class="we-v" data-e="rocket" aria-hidden="true"></span>
+          <div class="we-row"><div class="we-node ceo" data-a="rocket"><span class="we-av">R</span><span class="we-who"><b>Rocket</b><small>CEO · plans and delegates</small></span><span class="we-st">idle</span></div></div>
+          <span class="we-v" data-e="trunk" aria-hidden="true"></span>
+          <div class="we-team">
+            <div class="we-col">
+              <div class="we-node head" data-a="alfred"><span class="we-av">A</span><span class="we-who"><b>Alfred</b><small>Records & CRM</small></span><span class="we-st">idle</span></div>
+              <span class="we-v" data-e="jarvis" aria-hidden="true"></span>
+              <div class="we-node" data-a="jarvis"><span class="we-av">J</span><span class="we-who"><b>Jarvis</b><small>Call notes</small></span><span class="we-st">idle</span></div>
+            </div>
+            <div class="we-col">
+              <div class="we-node head" data-a="fury"><span class="we-av">F</span><span class="we-who"><b>Fury</b><small>Sales & proposals</small></span><span class="we-st">idle</span></div>
+              <span class="we-v" data-e="robin" aria-hidden="true"></span>
+              <div class="we-node" data-a="robin"><span class="we-av">R</span><span class="we-who"><b>Robin</b><small>Proposals (jr)</small></span><span class="we-st">idle</span></div>
+            </div>
+            <div class="we-col">
+              <div class="we-node head" data-a="oracle"><span class="we-av">O</span><span class="we-who"><b>Oracle</b><small>Cross-functional</small></span><span class="we-st">idle</span></div>
+              <span class="we-v" data-e="friday" aria-hidden="true"></span>
+              <div class="we-node" data-a="friday"><span class="we-av">F</span><span class="we-who"><b>Friday</b><small>Scheduling</small></span><span class="we-st">idle</span></div>
+            </div>
+            <div class="we-col">
+              <div class="we-node head" data-a="lucius"><span class="we-av">L</span><span class="we-who"><b>Lucius</b><small>Analytics</small></span><span class="we-st">idle</span></div>
+              <span class="we-v" data-e="shuri" aria-hidden="true"></span>
+              <div class="we-node" data-a="shuri"><span class="we-av">S</span><span class="we-who"><b>Shuri</b><small>Data & charts</small></span><span class="we-st">idle</span></div>
+            </div>
+          </div>
+          <p class="we-legend">Four layers: board <span>→</span> CEO <span>→</span> department heads <span>→</span> specialists</p>
+        </div>
 
         <div class="we-run" id="we-run" hidden>
           <div class="we-run-h"><span>Run log</span><span id="we-ticket"></span><span class="we-sim">simulated</span></div>
@@ -1966,34 +1989,43 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   // Paperclip: Wayne Enterprises. A preset task plays out as a simulated run through the org chart.
   (function () {
     var we = document.getElementById('we'); if (!we) return;
-    var AG = { ifti: ['I', 'Ifti'], rocket: ['R', 'Rocket'], alfred: ['A', 'Alfred'], oracle: ['O', 'Oracle'], robin: ['R', 'Robin'], lucius: ['L', 'Lucius'] };
+    var AG = { ifti: ['I', 'Ifti'], rocket: ['R', 'Rocket'], alfred: ['A', 'Alfred'], fury: ['F', 'Fury'], oracle: ['O', 'Oracle'], lucius: ['L', 'Lucius'],
+               jarvis: ['J', 'Jarvis'], robin: ['R', 'Robin'], friday: ['F', 'Friday'], shuri: ['S', 'Shuri'] };
+    var UP = { rocket: 'ifti', alfred: 'rocket', fury: 'rocket', oracle: 'rocket', lucius: 'rocket', jarvis: 'alfred', robin: 'fury', friday: 'oracle', shuri: 'lucius' };
     // each step: [agent, handed to (or ''), what happens]
     var RUNS = {
       crm: { q: "Clean up the CRM after this week's calls", steps: [
         ['ifti', 'rocket', 'Opens a ticket: tidy the CRM after this week\'s client calls.'],
-        ['rocket', 'alfred', 'Scopes it as a records job and assigns it to Alfred.'],
-        ['alfred', '', 'Matches 9 call notes to their accounts and logs each as an activity.'],
+        ['rocket', 'alfred', 'Scopes it as a records job and hands it to Alfred.'],
+        ['alfred', 'jarvis', 'Asks Jarvis to match this week\'s call notes to their accounts.'],
+        ['jarvis', 'alfred', 'Logs 9 calls as activities, with the next step pulled from each note.'],
         ['alfred', '', 'Merges 4 duplicate contacts, fills 11 missing fields, moves 3 deals to the right stage.'],
-        ['alfred', 'rocket', 'Flags 2 deals with no next step and hands back.'],
+        ['alfred', 'fury', 'Tells Fury that 2 deals have no next step.'],
+        ['fury', 'rocket', 'Adds a follow-up to both and reports back.'],
         ['rocket', 'ifti', 'Reviews the changes and closes the ticket.']],
-        answer: ['CRM is current', ['9 calls logged against the right accounts', '4 duplicate contacts merged, 11 fields filled', '3 deals moved to their real stage', '2 deals need a next step from you: listed in the ticket']] },
+        answer: ['CRM is current', ['9 calls logged against the right accounts', '4 duplicate contacts merged, 11 fields filled', '3 deals moved to their real stage', '2 stalled deals now have a follow-up: listed in the ticket']] },
       proposal: { q: 'Draft a proposal for a fintech discovery call', steps: [
         ['ifti', 'rocket', 'Opens a ticket: proposal for the fintech founder I met on Tuesday.'],
-        ['rocket', 'lucius', 'Asks Lucius for context before anyone writes a word.'],
-        ['lucius', 'rocket', 'Pulls the call notes, comparable past projects and their actual budgets.'],
-        ['rocket', 'robin', 'Briefs Robin: three options, founder-speed framing, priced from Lucius\'s numbers.'],
+        ['rocket', 'fury', 'Routes it to Fury, who owns sales and proposals.'],
+        ['fury', 'lucius', 'Asks analytics for context before anyone writes a word.'],
+        ['lucius', 'shuri', 'Has Shuri pull comparable past projects and their real budgets.'],
+        ['shuri', 'fury', 'Sends back 4 comparables with scope, weeks and final fee.'],
+        ['fury', 'robin', 'Briefs Robin: three options, founder-speed framing, priced from the comparables.'],
         ['robin', '', 'Drafts the proposal: Discovery sprint, MVP design, Full product.'],
-        ['robin', 'oracle', 'Sends the timeline to Oracle to check it with design and dev.'],
+        ['robin', 'oracle', 'Sends the timeline to Oracle to check with design and dev.'],
         ['oracle', 'robin', 'Design and dev leads confirm capacity. Week 3 moves to week 4.'],
-        ['robin', 'rocket', 'Revises and submits for review.'],
+        ['robin', 'fury', 'Revises and submits.'],
+        ['fury', 'rocket', 'Signs off on pricing and positioning.'],
         ['rocket', 'ifti', 'Approves and hands you the draft.']],
         answer: ['Proposal draft ready for your review', ['Three options, from a 2-week discovery sprint up to the full product', 'Pricing based on 4 comparable past projects', 'Timeline checked with design and dev capacity', 'Opening paragraph written for a founder: speed first']] },
       report: { q: 'Build the monthly management report', steps: [
         ['ifti', 'rocket', 'Opens a ticket: management report for this month.'],
-        ['rocket', 'alfred', 'Asks Alfred for a clean pipeline export first.'],
+        ['rocket', 'lucius', 'Hands it to Lucius in analytics.'],
+        ['lucius', 'alfred', 'Asks records for a clean pipeline export first.'],
         ['alfred', 'lucius', 'Exports pipeline, renewals and activity, already de-duplicated.'],
         ['lucius', '', 'Crunches it: revenue by account, win rate, pipeline coverage, renewals at risk.'],
-        ['lucius', '', 'Builds the charts and a one-page summary.'],
+        ['lucius', 'shuri', 'Has Shuri turn the numbers into charts.'],
+        ['shuri', 'lucius', 'Builds the charts and a one-page summary.'],
         ['lucius', 'rocket', 'Hands over the deck with three things management should decide.'],
         ['rocket', 'ifti', 'Checks the numbers against last month and closes the ticket.']],
         answer: ['Management report ready', ['Revenue, win rate and pipeline coverage, month on month', '2 renewals flagged at risk, with the reason for each', 'One-page summary on top, charts behind it', 'Three decisions for management, written as questions']] },
@@ -2001,9 +2033,11 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
         ['ifti', 'rocket', 'Opens a ticket: the client wants two new screens without moving the date.'],
         ['rocket', 'oracle', 'Routes it to Oracle: this is a people problem first.'],
         ['oracle', '', 'Collects what design, dev and finance each need to say yes.'],
-        ['oracle', 'lucius', 'Asks Lucius to cost the change.'],
+        ['oracle', 'lucius', 'Asks analytics to cost the change.'],
         ['lucius', 'oracle', 'Two extra screens: +6 design days, +4 dev days, about 9% on the fee.'],
-        ['oracle', 'rocket', 'Drafts two options: same date with a smaller scope, or the full scope a week later.'],
+        ['oracle', 'friday', 'Asks Friday to get the three leads in one room.'],
+        ['friday', 'oracle', 'Books a 20-minute call for tomorrow, 11:00, and sends the agenda.'],
+        ['oracle', 'rocket', 'Two options agreed: same date with a smaller scope, or the full scope a week later.'],
         ['rocket', 'ifti', 'Sends you both options and the recap email to send.']],
         answer: ['Two options, everyone on the same page', ['Option A: same date, one screen now, one in the next phase', 'Option B: both screens, launch moves by one week, +9% fee', 'Design, dev and finance have agreed to both', 'Recap email drafted for the client']] }
     };
@@ -2018,14 +2052,18 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       timers.forEach(clearTimeout); timers = [];
       Object.keys(nodes).forEach(function (k) { nodes[k].classList.remove('working', 'done', 'link'); nodes[k].querySelector('.we-st').textContent = 'idle'; });
       we.querySelectorAll('.we-v').forEach(function (v) { v.classList.remove('on'); });
+      we.querySelectorAll('.we-node.head').forEach(function (n) { n.classList.remove('link'); });
     }
     function status(a, st) { var n = nodes[a]; n.classList.toggle('working', st === 'working'); n.classList.toggle('done', st === 'done'); n.querySelector('.we-st').textContent = st; }
+    // light the edges between two agents: everything on their paths up the chart that they don't share
+    function path(x) { var p = []; while (UP[x]) { p.push(x); x = UP[x]; } return p; }
     function links(a, b) {
-      var pair = [a, b].sort().join('-'), team = ['alfred', 'oracle', 'robin', 'lucius'];
-      we.querySelector('[data-l="ifti-rocket"]').classList.toggle('on', pair === 'ifti-rocket');
-      var t = team.filter(function (x) { return x === a || x === b; });
-      we.querySelector('[data-l="rocket-team"]').classList.toggle('on', t.length > 0);
-      team.forEach(function (x) { nodes[x].classList.toggle('link', t.indexOf(x) >= 0); });
+      var pa = path(a), pb = b ? path(b) : [], on = pa.filter(function (e) { return pb.indexOf(e) < 0; }).concat(pb.filter(function (e) { return pa.indexOf(e) < 0; }));
+      we.querySelectorAll('.we-v[data-e]').forEach(function (v) {
+        var e = v.getAttribute('data-e');
+        v.classList.toggle('on', e === 'trunk' ? on.some(function (x) { return UP[x] === 'rocket'; }) : on.indexOf(e) >= 0);
+      });
+      ['alfred', 'fury', 'oracle', 'lucius'].forEach(function (h) { nodes[h].classList.toggle('link', on.indexOf(h) >= 0); });
     }
     function play(key) {
       var r = RUNS[key]; reset();

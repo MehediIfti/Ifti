@@ -36,7 +36,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Titillium+Web:ital,wght@0,400;0,600;0,700;1,700;1,900&family=DM+Mono:wght@400;500&display=swap">
 <style>
 html, body { margin: 0; }
 img { max-width: 100%; }
@@ -73,6 +73,7 @@ img { max-width: 100%; }
 :root[data-palette="latte"] { --base: #eff1f5; --mantle: #e6e9ef; --surface0: #ccd0da; --surface1: #bcc0cc; --overlay1: #8c8fa1; --text: #4c4f69; --subtext1: #5c5f77; --subtext0: #6c6f85; --mauve: #8839ef; --maroon: #d20f39; --peach: #fe640b; --teal: #179299; --green: #40a02b; --yellow: #df8e1d; --pink: #ea76cb; --sky: #04a5e5; --lavender: #7287fd; color-scheme: light; }
 :root[data-palette="solarized"] { --base: #fdf6e3; --mantle: #eee8d5; --surface0: #e4ddc8; --surface1: #d3cbb7; --overlay1: #93a1a1; --text: #586e75; --subtext1: #073642; --subtext0: #839496; --mauve: #6c71c4; --maroon: #dc322f; --peach: #cb4b16; --teal: #2aa198; --green: #859900; --yellow: #b58900; --pink: #d33682; --sky: #268bd2; --lavender: #6c71c4; color-scheme: light; }
 :root[data-palette="cropmark"] { --base: #121212; --mantle: #161616; --surface0: #414141; --surface1: #2c2c2c; --overlay1: #6e6e6e; --text: #ededed; --subtext1: #ededed; --subtext0: #a0a0a0; --mauve: #f7cafa; --maroon: #f7cafa; --peach: #d8e495; --teal: #a0a0a0; --green: #a0c0a7; --yellow: #d8e495; --pink: #f7cafa; --sky: #a0c0a7; --lavender: #f7cafa; color-scheme: dark; }
+:root[data-palette="lightsout"] { --base: #0b0e1a; --mantle: #10152a; --surface0: #262e4f; --surface1: #313a60; --overlay1: #5d6584; --text: #e9ecf5; --subtext1: #ffffff; --subtext0: #9098b3; --mauve: #ffc906; --maroon: #ff5a52; --peach: #ff5a52; --teal: #ffc906; --green: #3ddc84; --yellow: #ffc906; --pink: #ff5a52; --sky: #4f7cff; --lavender: #4f7cff; color-scheme: dark; }
 :root[data-palette="paper"] { --base: #ffffff; --mantle: #f6f6f4; --surface0: #e4e2dd; --surface1: #c9c6bf; --overlay1: #9a968e; --text: #2b2925; --subtext1: #1f1d1a; --subtext0: #6b675f; --mauve: #8c2f2b; --maroon: #8c2f2b; --peach: #3d3a35; --teal: #8a6d3b; --green: #4f7a3a; --yellow: #a87a12; --pink: #9b4f78; --sky: #3f6f8f; --lavender: #6a5f9e; color-scheme: light; }
 
 /* background styles */
@@ -1096,6 +1097,56 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .term-open { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .term { transition: none; } }
 
+/* ============ THEME: LIGHTS OUT ============
+   Formula 1, Red Bull colours. Navy, F1 red and yellow, Titillium Web (the classic F1 typeface), slanted headlines,
+   parallelogram buttons, corner-cut cards and diagonal speed lines. A start-light sequence plays when you switch to it. */
+:root[data-theme="lightsout"] {
+  --display: "Titillium Web", system-ui, sans-serif; --sans: "Titillium Web", system-ui, sans-serif;
+  --h1: #ffffff; --h2: #ffffff; --label: #ffc906; --accent: #ff5a52; --sel: #e10600; --sel-ink: #ffffff;
+  --mark: rgba(255, 201, 6, 0.24);
+}
+:root[data-theme="lightsout"][data-bg="lines"] { --pattern: repeating-linear-gradient(-62deg, transparent 0 34px, var(--line) 34px 35px); --pattern-size: auto; }
+:root[data-theme="lightsout"] ::selection { background: var(--sel); color: #fff; }
+:root[data-theme="lightsout"] h1 { font-style: italic; font-weight: 900; text-transform: uppercase; letter-spacing: 0.005em; line-height: 1.05; }
+:root[data-theme="lightsout"] h2, :root[data-theme="lightsout"] h3 { font-style: italic; font-weight: 700; letter-spacing: 0; }
+:root[data-theme="lightsout"] h2::before { content: ""; display: inline-block; width: 0.42em; height: 0.78em; margin-right: 0.5em; background: var(--sel); transform: skewX(-20deg); vertical-align: -0.04em; }
+:root[data-theme="lightsout"] .label { font-weight: 500; }
+:root[data-theme="lightsout"] .r-index dd, :root[data-theme="lightsout"] .pop-stats dd { font-style: italic; font-weight: 700; }
+:root[data-theme="lightsout"] :is(.hx-map, .sub-box, .hm-loop, .offclock li, .pg-cards li, .edu-card, .tg, .pop-card) {
+  border-radius: 4px; clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  background-image: linear-gradient(to bottom left, transparent calc(50% - 0.75px), var(--surface0) calc(50% - 0.75px) calc(50% + 0.75px), transparent calc(50% + 0.75px));
+  background-position: top right; background-size: 16px 16px; background-repeat: no-repeat;
+}
+:root[data-theme="lightsout"] :is(.btn, .pg-btn:not(.ghost)) { background: var(--sel); color: #fff; border-color: var(--sel); border-radius: 0; font-family: var(--display); font-style: italic; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding-inline: 1.3rem; clip-path: polygon(9px 0, 100% 0, calc(100% - 9px) 100%, 0 100%); }
+:root[data-theme="lightsout"] :is(.btn, .pg-btn):hover { filter: none; background: #ff1e14; }
+:root[data-theme="lightsout"] :is(.ap-seg, .hm-views, .tg-tabs, .hm-steps, .rd-legend, .kinds) button[aria-pressed="true"],
+:root[data-theme="lightsout"] :is(.hm-views, .tg-tabs, .hm-steps) button[aria-selected="true"],
+:root[data-theme="lightsout"] .kinds input:checked + span { background: var(--sel); color: #fff; border-color: var(--sel); }
+:root[data-theme="lightsout"] .hm-views button[aria-selected="true"] svg { color: #fff; }
+:root[data-theme="lightsout"] .ap-preset[aria-pressed="true"], :root[data-theme="lightsout"] .ap-themes button[aria-pressed="true"] { outline-color: var(--sel); }
+:root[data-theme="lightsout"] footer.colophon { border-top: 0; background: repeating-conic-gradient(var(--text) 0 25%, transparent 0 50%) 0 0 / 8px 8px repeat-x; padding-top: 1.6rem; }
+:root[data-theme="lightsout"] .offclock svg { stroke: #ffc906; }
+/* start lights */
+.f1-lights { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: rgba(5, 7, 14, 0.82); backdrop-filter: blur(2px); cursor: pointer; transition: opacity 0.35s; }
+.f1-lights.out { opacity: 0; }
+.f1-rig { display: flex; gap: clamp(10px, 2.4vw, 22px); padding: clamp(12px, 2vw, 18px) clamp(14px, 2.6vw, 24px); background: #111; border: 2px solid #222; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.f1-rig span { display: grid; gap: 8px; padding: 8px; background: #050505; border-radius: 8px; }
+.f1-rig i { display: block; width: clamp(26px, 6vw, 52px); aspect-ratio: 1; border-radius: 50%; background: #2a0606; box-shadow: inset 0 0 0 2px #1a0303; }
+.f1-rig span.on i:last-child, .f1-rig span.on i:nth-last-child(2) { background: radial-gradient(circle at 40% 35%, #ff6b5e, #e10600 60%, #8f0400); box-shadow: 0 0 22px 4px rgba(225, 6, 0, 0.65); }
+.f1-go { position: absolute; bottom: 18%; left: 0; right: 0; text-align: center; font: italic 900 clamp(1.4rem, 4vw, 2.4rem) "Titillium Web", sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: #fff; opacity: 0; transition: opacity 0.2s; }
+.f1-lights.go .f1-go { opacity: 1; }
+
+/* ============ terminal button ============ */
+.term-fab { position: fixed; z-index: 29; left: calc(env(safe-area-inset-left, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem 0.45rem 0.7rem; font: 500 0.75rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
+.term-fab:hover, .term-fab:focus-visible { border-color: var(--label); transform: translateY(-1px); outline: none; }
+.term-fab b { font-weight: 500; color: var(--label); }
+.term-fab kbd { font: inherit; font-size: 0.6875rem; color: var(--muted); background: var(--surface0); border-radius: 3px; padding: 0 0.3rem; }
+@media (max-width: 760px) {
+  .term-fab { padding: 0.45rem 0.55rem; } .term-fab .lbl, .term-fab kbd { display: none; }
+  .term-fab { left: auto; right: calc(env(safe-area-inset-right, 0px) + 12px); }
+  :root[data-mnav="tabs"] .term-fab { bottom: calc(env(safe-area-inset-bottom, 0px) + 5.1rem); }
+}
+
 /* ============ THEME: CROPMARK ============
    Built on the design language of a design-tools database: near-black, hairline rules, square corners,
    grey mono labels, pastel pink for whatever is selected, and printer's crop marks on every card. */
@@ -1915,7 +1966,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   <footer class="colophon">
     Set in Bricolage Grotesque, Literata and IBM Plex Mono. Built by talking it through with Claude Code. No tracking, no cookies.<br>
     <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://x.com/mehedi_ifti" target="_blank" rel="noopener">X</a> · <a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a> · <a href="https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka" target="_blank" rel="noopener">Spotify</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a><br>
-    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 paperclip · 7 hermes · 8 research · 9 education · T theme · ~ terminal</span> <button type="button" class="term-open">Open terminal</button>
+    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 paperclip · 7 hermes · 8 research · 9 education · T theme · ~ terminal</span>
   </footer>
 </div>
 
@@ -1973,6 +2024,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <button type="button" id="th-latte" data-val="latte" style="--sw-bg:#eff1f5;--sw-fg:#4c4f69"><span class="sw"><i style="background:#8839ef"></i><i style="background:#fe640b"></i><i style="background:#179299"></i></span>Latte</button>
       <button type="button" id="th-solarized" data-val="solarized" style="--sw-bg:#fdf6e3;--sw-fg:#586e75"><span class="sw"><i style="background:#6c71c4"></i><i style="background:#cb4b16"></i><i style="background:#2aa198"></i></span>Solarized</button>
       <button type="button" id="th-cropmark" data-val="cropmark" style="--sw-bg:#121212;--sw-fg:#ededed"><span class="sw"><i style="background:#f7cafa"></i><i style="background:#d8e495"></i><i style="background:#a0c0a7"></i></span>Cropmark</button>
+      <button type="button" id="th-lightsout" data-val="lightsout" style="--sw-bg:#0b0e1a;--sw-fg:#e9ecf5"><span class="sw"><i style="background:#e10600"></i><i style="background:#ffc906"></i><i style="background:#4f7cff"></i></span>Lights Out</button>
       <button type="button" id="th-paper" data-val="paper" style="--sw-bg:#ffffff;--sw-fg:#2b2925"><span class="sw"><i style="background:#8c2f2b"></i><i style="background:#3d3a35"></i><i style="background:#8a6d3b"></i></span>Paper</button>
     </div>
   </div>
@@ -2007,6 +2059,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 
 <div class="pop" id="pop" hidden><div class="pop-card" role="dialog" aria-modal="true" aria-labelledby="pop-t"><button type="button" class="ap-x" id="pop-x" aria-label="Close">×</button><div id="pop-body"></div></div></div>
 <div class="peek" id="peek" aria-hidden="true"></div>
+<button type="button" class="term-fab term-open" aria-label="Open terminal (press ~)" title="Terminal · press ~"><b>&gt;_</b><span class="lbl">Terminal</span><kbd>~</kbd></button>
 <div class="term" id="term" role="dialog" aria-label="Terminal" hidden>
   <div class="term-bar"><span><i>●</i> ifti@notebook: ~ · type <b>help</b></span><button type="button" id="term-x" aria-label="Close terminal">esc ×</button></div>
   <div class="term-out" id="term-out" aria-live="polite"></div>
@@ -2584,10 +2637,14 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     { id: 'cropmark', name: 'Cropmark', week: 'Week 43', note: 'Hairline rules, square corners, pink selections and crop marks on every card.',
       set: { palette: 'cropmark', bg: 'plain', calm: 'margins', layout: '3', type: 'sans' },
       sw: { bg: '#121212', fg: '#ededed', ac: '#f7cafa', pat: 'linear-gradient(#6e6e6e, #6e6e6e) left 6px top 10px / 9px 1px no-repeat, linear-gradient(#6e6e6e, #6e6e6e) left 10px top 6px / 1px 9px no-repeat, linear-gradient(#6e6e6e, #6e6e6e) right 6px bottom 10px / 9px 1px no-repeat, linear-gradient(#6e6e6e, #6e6e6e) right 10px bottom 6px / 1px 9px no-repeat' } },
+    { id: 'lightsout', name: 'Lights Out', week: 'Race week', note: 'Red Bull navy, F1 red and yellow, slanted type and a start-light sequence.',
+      set: { palette: 'lightsout', bg: 'lines', calm: 'margins', layout: '3', type: 'sans' },
+      sw: { bg: '#0b0e1a', fg: '#e9ecf5', ac: '#ffc906', pat: 'linear-gradient(90deg, #e10600 0 34%, #ffc906 34% 46%, transparent 46%) left bottom / 100% 3px no-repeat, repeating-linear-gradient(-62deg, transparent 0 14px, rgba(255,255,255,.05) 14px 15px)' } },
     { id: 'midnight-ledger', name: 'Midnight Ledger', week: 'Week 42', note: 'Black ink, a drafting grid and a spotlight on the page.',
       set: { palette: 'black', bg: 'grid', calm: 'spotlight', layout: '3', type: 'serif' },
       sw: { bg: '#0c0d10', fg: '#d4d4d8', ac: '#cba6f7', pat: 'linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px) 0 0 / 14px 14px, linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px) 0 0 / 14px 14px' } }
   ];
+  var THEME_DEFAULT = 'cropmark'; // what new visitors get
   var THEME_KEYS = ['palette', 'bg', 'calm', 'layout', 'type'];
   var AP_GLOBAL = { mnav: 'tabs' };
   var tab = document.getElementById('ap-tab');
@@ -2596,7 +2653,20 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   var presets = document.getElementById('ap-presets');
   function store(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
   function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function themeById(id) { return THEMES.filter(function (t) { return t.id === id; })[0] || THEMES[0]; }
+  function themeById(id) { var f = function (x) { return THEMES.filter(function (t) { return t.id === x; })[0]; }; return f(id) || f(THEME_DEFAULT) || THEMES[0]; }
+  function lightsOut() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var old = document.querySelector('.f1-lights'); if (old) old.remove();
+    var o = document.createElement('div'); o.className = 'f1-lights'; o.setAttribute('aria-hidden', 'true');
+    o.innerHTML = '<div class="f1-rig">' + '<span><i></i><i></i><i></i><i></i></span>'.repeat(5) + '</div><div class="f1-go">Lights out and away we go</div>';
+    document.body.appendChild(o);
+    var cols = o.querySelectorAll('.f1-rig span'), timers = [];
+    function end() { timers.forEach(clearTimeout); o.classList.add('out'); setTimeout(function () { o.remove(); }, 360); }
+    cols.forEach(function (c, i) { timers.push(setTimeout(function () { c.classList.add('on'); }, 350 + i * 520)); });
+    timers.push(setTimeout(function () { cols.forEach(function (c) { c.classList.remove('on'); }); o.classList.add('go'); }, 350 + 5 * 520 + 500));
+    timers.push(setTimeout(end, 350 + 5 * 520 + 1500));
+    o.addEventListener('click', end);
+  }
   function edits(id) { try { return JSON.parse(read('ap-t-' + id) || '{}') || {}; } catch (e) { return {}; } }
   var cur = themeById(read('ap-theme')).id;
   ['palette', 'bg', 'calm', 'type', 'layout'].forEach(function (k) { store('ap-' + k, null); }); // settings saved before themes existed
@@ -2620,7 +2690,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   }).join('');
   presets.addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
-    apTheme(b.getAttribute('data-id')); store('ap-theme', cur);
+    var was = cur; apTheme(b.getAttribute('data-id')); store('ap-theme', cur); if (cur === 'lightsout' && was !== cur) lightsOut();
   });
   groups.forEach(function (g) {
     var attr = g.getAttribute('data-attr');
@@ -2833,7 +2903,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         if (!a) { print(THEMES.map(function (t) { return (t.id === cur ? '<span class="g">* ' : '  ') + t.id + (t.id === cur ? '</span>' : '') + '  <span class="c">' + esc(t.week + ' · ' + t.note) + '</span>'; }).join('\n') + '\n<span class="c">theme &lt;name&gt; to switch</span>'); return; }
         var t = THEMES.filter(function (x) { return x.id === a || x.name.toLowerCase() === a.toLowerCase(); })[0];
         if (!t) { line('theme: no theme ' + a + '. Try theme.', 'r'); return; }
-        apTheme(t.id); store('ap-theme', t.id); line('Switched to ' + t.name + '.', 'g');
+        var was = cur; apTheme(t.id); store('ap-theme', t.id); line('Switched to ' + t.name + '.', 'g'); if (t.id === 'lightsout' && was !== t.id) { close(); setTimeout(lightsOut, 250); }
       },
       book: function () { window.open(bookHref, '_blank', 'noopener'); line('Opening my calendar in a new tab.', 'g'); },
       email: function () {

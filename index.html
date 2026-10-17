@@ -2099,6 +2099,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         return '<li><button type="button" data-i="' + i + '">' + esc(h.textContent) + '</button></li>';
       }).join('') + '</ol></section>';
     }
+    // calendar activity sits high on the index so it gets seen
+    if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
     var words = (page.innerText || page.textContent).trim().split(/\s+/).length;
     var isNote = id.indexOf('n-') === 0;
     if (isNote) html += noteMeta(page);
@@ -2120,7 +2122,6 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     }
     html += '<section><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
     html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>9</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
-    if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
     meta.innerHTML = html;
     renderSocials(meta);
     tocItems = heads;

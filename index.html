@@ -160,7 +160,7 @@ ul.plain li::marker { color: var(--muted); }
 .pg-term .copy { flex: none; }
 .pg-term-p { color: var(--pg); }
 .pg-term code { flex: 1; min-width: 0; overflow-wrap: anywhere; color: var(--text); }
-.pg-facts { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin: 0; }
+.pg-facts { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin-inline: 0; margin-bottom: 0; }
 .pg-facts dt { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
 .pg-facts dd { margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--ink); }
 .pg-cards { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
@@ -347,7 +347,7 @@ ul.plain li::marker { color: var(--muted); }
   .edu-when::after, .edu-when::before { display: none; }
 }
 /* research: index tiles and paper cards; each card is one link to the paper's DOI */
-.r-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 0; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.r-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-inline: 0; margin-bottom: 0; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
 .r-index > div { padding: 0.8rem 0.9rem; background: var(--paper); }
 .r-index dt { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
 .r-index dd { margin: 0.15rem 0 0; font-family: var(--display); font-size: 1.75rem; line-height: 1.1; color: var(--ink); font-variant-numeric: tabular-nums; }

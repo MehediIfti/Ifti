@@ -346,6 +346,17 @@ ul.plain li::marker { color: var(--muted); }
   .edu-when { display: flex; gap: 0.4rem; padding-top: 0; } .edu-when span + span::before { content: "– "; }
   .edu-when::after, .edu-when::before { display: none; }
 }
+/* work history: the education timeline, with roles nested inside a company */
+.edu-card h3.edu-co { margin: 0; font-family: var(--display); font-size: 1.3rem; font-weight: 700; text-transform: none; letter-spacing: 0; color: var(--subtext1); }
+.job-index { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.page > .job-index + .jobs { margin-top: 1.5rem; }
+.job-roles { list-style: none; padding: 0; margin: 0.25rem 0 0; display: grid; gap: 0.75rem; border-left: 1px solid var(--rule); padding-left: 0.9rem; }
+.job-rh { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.1rem 1rem; align-items: baseline; }
+.job-rh b { font-weight: 600; color: var(--ink); }
+.job-rh span { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); }
+.job-roles ul { margin: 0.25rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.2rem; font-size: 0.95em; color: var(--text); }
+.job-roles ul li::marker { color: var(--muted); }
+@media (max-width: 760px) { .job-index { grid-template-columns: repeat(3, minmax(0, 1fr)); } .job-index dd { font-size: 1.35rem; } }
 /* research: index tiles and paper cards; each card is one link to the paper's DOI */
 .r-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-inline: 0; margin-bottom: 0; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
 .r-index > div { padding: 0.8rem 0.9rem; background: var(--paper); }
@@ -1082,6 +1093,68 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
         <li><b>What are you trying to move?</b> Revenue, retention or time saved, and by when.</li>
         <li><b>Who signs off?</b> Who decides, who pays, and who can say no.</li>
       </ul>
+
+      <!-- WORK HISTORY UPDATE: one <li> per company, newest first. From LinkedIn. -->
+      <h2>Work history</h2>
+      <p class="sub">Sales and partnerships, from founder calls to enterprise accounts.</p>
+      <dl class="r-index job-index">
+        <div><dt>Founders worked with</dt><dd>200+</dd></div>
+        <div><dt>Markets</dt><dd>15+</dd></div>
+        <div><dt>Startups onboarded</dt><dd>140+</dd></div>
+      </dl>
+      <ol class="edu jobs">
+        <li>
+          <div class="edu-when"><span>Feb 2026</span><span>Now</span></div>
+          <div class="edu-card">
+            <p class="edu-k">Partnerships</p>
+            <h3 class="edu-co">Musemind</h3>
+            <p class="edu-f">Manager, Global Partnerships · Full-time · Dhaka, on-site</p>
+            <p>I build partnerships with companies whose product works but isn't yet loved by the people using it. I start with honest conversations about what's actually broken, then shape the engagement around it.</p>
+            <div class="edu-skills"><span class="pp-tag">Partnerships</span><span class="pp-tag">Key accounts</span><span class="pp-tag">UX</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="edu-when"><span>Sep 2023</span><span>Feb 2026</span></div>
+          <div class="edu-card">
+            <p class="edu-k">Sales → customer success</p>
+            <h3 class="edu-co">Airwork AI</h3>
+            <p class="edu-f">Full-time · 2 yrs 6 mos · Remote</p>
+            <p>Helped founders build remote engineering teams with vetted talent from emerging economies.</p><ol class="job-roles"><li><div class="job-rh"><b>Senior Customer Success Manager</b><span>Jan 2025 – Feb 2026</span></div><ul><li>Led success for 45+ clients across about 15 countries</li><li>Helped founders build, scale and keep distributed engineering teams</li><li>Drove upsells and expansion, and watched account health to prevent churn</li></ul></li><li><div class="job-rh"><b>Customer Success Manager</b><span>Jul 2024 – Jan 2025</span></div><ul><li>Managed 50+ startup relationships from idea to launch</li><li>Built a structured feedback loop to improve product-market fit</li><li>Raised retention by reworking onboarding and support</li></ul></li><li><div class="job-rh"><b>B2B Sales Specialist</b><span>Sep 2023 – Jul 2024</span></div><ul><li>Closed deals with early-stage startups</li><li>Expanded reach to 15+ countries and onboarded 140+ startups</li></ul></li></ol>
+            <div class="edu-skills"><span class="pp-tag">B2B sales</span><span class="pp-tag">Customer success</span><span class="pp-tag">Retention</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="edu-when"><span>Jan 2023</span><span>Apr 2023</span></div>
+          <div class="edu-card">
+            <p class="edu-k">Brand partnerships</p>
+            <h3 class="edu-co">Daraz</h3>
+            <p class="edu-f">Marketing Intern · Full-time · Dhaka, on-site</p>
+            <p>South Asia's leading e-commerce marketplace. I onboarded brands after the pitch, walked them through their MoUs and spend, and kept local, regional and finance teams aligned so issues got solved and brands got paid on time.</p>
+            <div class="edu-skills"><span class="pp-tag">Onboarding</span><span class="pp-tag">Stakeholder alignment</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="edu-when"><span>Aug 2022</span><span>Jun 2023</span></div>
+          <div class="edu-card">
+            <p class="edu-k">Community</p>
+            <h3 class="edu-co">Beyond The Metrics</h3>
+            <p class="edu-f">Co-founder, Vice President Administration · Gazipur</p>
+            <p>A university event and community we co-founded. We brought in speakers and ran sessions on zero budget. Getting people to show up was harder than any of the content, and leading people who aren't paid takes a different approach.</p>
+            <div class="edu-skills"><span class="pp-tag">Leadership</span><span class="pp-tag">Events</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="edu-when"><span>May 2021</span><span>Jan 2023</span></div>
+          <div class="edu-card">
+            <p class="edu-k">Founder</p>
+            <h3 class="edu-co">Grey Nebula</h3>
+            <p class="edu-f">Co-founder · Self-employed · Dhaka</p>
+            <p>A blog about how technology shows up in daily life. We reached 36,000 impressions a day through SEO and five marketing channels, and broke even within six months.</p>
+            <div class="edu-skills"><span class="pp-tag">SEO</span><span class="pp-tag">Digital marketing</span></div>
+          </div>
+        </li>
+      </ol>
+      <p><a class="back" href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">Full history on LinkedIn ↗</a></p>
     </section>
 
     <!-- ============ SHELF ============ -->

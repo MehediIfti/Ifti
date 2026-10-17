@@ -154,26 +154,41 @@ ul.plain li::marker { color: var(--muted); }
 .note-head { display: flex; gap: 1rem; flex-wrap: wrap; }
 
 /* note pages: a reading view modelled on Obsidian. A tab strip, back/forward and breadcrumbs, a properties block, callouts and a status bar. Tags live in each article's data-tags. */
-.page.obs { padding: 0; border: 1px solid var(--surface0); border-radius: 10px; background: var(--paper); overflow: hidden; }
+.page.obs { max-width: 50rem; padding: 0; border: 1px solid var(--surface0); border-radius: 10px; background: var(--paper); }
 .page.obs > * { margin-top: 0; }
-.obs-tabs { display: flex; align-items: flex-end; gap: 2px; padding: 6px 8px 0; background: var(--mantle); border-bottom: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.8125rem; }
-.obs-tab { display: flex; align-items: center; gap: 0.5rem; min-width: 0; max-width: 22rem; margin-bottom: -1px; padding: 0.4rem 0.4rem 0.45rem 0.7rem; background: var(--paper); color: var(--text); border: 1px solid var(--surface0); border-bottom-color: var(--paper); border-radius: 8px 8px 0 0; }
-.obs-tab > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.obs-tabs { position: relative; display: flex; align-items: flex-end; gap: 2px; padding: 6px 8px 0; background: var(--mantle); border-bottom: 1px solid var(--surface0); border-radius: 10px 10px 0 0; font-family: var(--sans); font-size: 0.8125rem; }
+.obs-tab { display: flex; align-items: center; gap: 0.15rem; flex: 0 1 15rem; min-width: 0; margin-bottom: -1px; padding: 0.4rem 0.35rem 0.45rem 0.65rem; color: var(--subtext0); border: 1px solid transparent; border-bottom: 0; border-radius: 8px 8px 0 0; }
+.obs-tab:hover { color: var(--text); background: color-mix(in srgb, var(--surface0) 55%, transparent); }
+.obs-tab.on { background: var(--paper); color: var(--text); border-color: var(--surface0); border-bottom: 1px solid var(--paper); }
+.obs-tab > a { display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 0; color: inherit; text-decoration: none; }
+.obs-tab > a span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .obs svg.i { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .obs-tab svg.i { color: var(--subtext0); }
 .obs-x, .obs-new, .obs-arrow { display: inline-flex; align-items: center; justify-content: center; color: var(--subtext0); text-decoration: none; border-radius: 4px; }
-.obs-x { width: 1.3rem; height: 1.3rem; font-size: 1rem; line-height: 1; }
-.obs-new { padding: 0.35rem 0.5rem 0.5rem; color: var(--overlay1); }
-.obs-x:hover, .obs-arrow:hover { color: var(--text); background: var(--surface0); }
+.obs-x, .obs-new { font: inherit; background: none; border: 0; cursor: pointer; }
+.obs-x { flex: none; width: 1.3rem; height: 1.3rem; font-size: 1rem; line-height: 1; }
+.obs-new { flex: none; width: 1.7rem; height: 1.7rem; margin: 0 0 0.2rem 0.15rem; font-size: 1.1rem; line-height: 1; }
+.obs-new:disabled { opacity: 0.35; cursor: default; }
+.obs-x:hover, .obs-arrow:hover, .obs-new:not(:disabled):hover, .obs-new[aria-expanded="true"] { color: var(--text); background: var(--surface0); }
+.obs-menu { position: absolute; z-index: 5; top: calc(100% + 4px); left: var(--mx, 8px); width: min(20rem, calc(100% - 16px)); padding: 0.35rem; display: grid; gap: 1px; background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 12px 32px rgba(0,0,0,0.35); }
+.obs-menu h6 { margin: 0; padding: 0.35rem 0.5rem 0.3rem; font: 500 0.6875rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--label); }
+.obs-menu a { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) auto; gap: 0.5rem; align-items: baseline; padding: 0.4rem 0.5rem; border-radius: 5px; color: var(--text); text-decoration: none; }
+.obs-menu a:hover, .obs-menu a:focus-visible { background: var(--surface0); outline: none; }
+.obs-menu a span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.obs-menu small { font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); }
+.obs-menu p { margin: 0; padding: 0.3rem 0.5rem 0.2rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); }
 .obs-nav { display: flex; align-items: center; gap: 0.15rem; padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.8125rem; color: var(--subtext0); }
 .obs-arrow { width: 1.6rem; height: 1.6rem; }
+.obs-graph { font: inherit; background: none; border: 0; cursor: pointer; }
 .obs-arrow[aria-disabled="true"] { opacity: 0.3; pointer-events: none; }
 .obs-crumb { flex: 1; min-width: 0; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .obs-crumb a { color: inherit; text-decoration: none; } .obs-crumb a:hover { color: var(--text); }
 .obs-crumb i { font-style: normal; color: var(--overlay1); margin: 0 0.35rem; }
 .obs-crumb b { color: var(--text); font-weight: 600; }
 .obs-mode { font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); padding-right: 0.25rem; }
-.obs-view { padding: 2.25rem 2.5rem 2.5rem; }
+/* wide pane, readable line length: content centred in the middle like Obsidian's reading view */
+.obs-view { padding: 2.5rem 2.5rem 2.75rem; }
+.obs-view > * { max-width: 40rem; margin-inline: auto; }
 .obs-view > * + * { margin-top: 1.25rem; }
 .obs-view > h1 + * { margin-top: 1.25rem; }
 .obs-props { padding-bottom: 1.1rem; border-bottom: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.875rem; }
@@ -187,8 +202,47 @@ ul.plain li::marker { color: var(--muted); }
 .obs-view .sn { float: none; display: block; width: auto; margin: 0.9rem 0 0.2rem; padding: 0.7rem 0.9rem; border: 0; border-radius: 6px; background: color-mix(in srgb, var(--sky) 10%, transparent); font-family: var(--sans); font-size: 0.9rem; line-height: 1.55; color: var(--text); }
 .obs-view .sn::before { content: "Note " counter(sn); display: block; margin-bottom: 0.15rem; font-weight: 600; color: var(--sky); }
 .obs-view .sn-ref::after { color: var(--sky); }
-.obs-status { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 0.25rem 1.1rem; padding: 0.35rem 0.75rem; background: var(--mantle); border-top: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.75rem; color: var(--subtext0); }
+.obs-status { border-radius: 0 0 10px 10px; display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 0.25rem 1.1rem; padding: 0.35rem 0.75rem; background: var(--mantle); border-top: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.75rem; color: var(--subtext0); }
 .meta .graph { display: block; width: 100%; height: auto; overflow: visible; }
+.graph-open { position: relative; display: block; width: 100%; padding: 0; background: none; border: 1px solid transparent; border-radius: 8px; cursor: zoom-in; }
+.graph-open:hover { border-color: var(--surface0); background: color-mix(in srgb, var(--surface0) 35%, transparent); }
+.graph-open .hint { position: absolute; right: 6px; bottom: 6px; font-family: var(--mono); font-size: 0.625rem; color: var(--overlay1); }
+.graph-open:hover .hint { color: var(--text); }
+/* graph view: pop-up with the full or local graph and a preview of the selected note */
+.gv { width: min(60rem, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); }
+.gv::backdrop { background: rgba(0,0,0,0.55); }
+.gv-head { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 0.8rem 0.7rem 1.1rem; border-bottom: 1px solid var(--surface0); font-family: var(--mono); font-size: 0.75rem; }
+.gv-head b { font-family: var(--display); font-size: 1.05rem; color: var(--h1); margin-right: auto; }
+.gv-head .ap-seg { width: 13rem; }
+.gv-body { display: grid; grid-template-columns: minmax(0, 1fr) 17rem; min-height: 26rem; }
+.gv-svg { display: block; width: 100%; height: 100%; min-height: 26rem; background: var(--paper); border-radius: 0 0 0 12px; }
+.gv-svg line { stroke: var(--surface1); stroke-width: 1.2; transition: opacity 0.15s; }
+.gv-svg .n { cursor: pointer; transition: opacity 0.15s; }
+.gv-svg .n circle { fill: var(--overlay1); stroke: var(--paper); stroke-width: 2; }
+.gv-svg .n.tag circle { fill: var(--teal); }
+.gv-svg .n.me circle { fill: var(--mauve); }
+.gv-svg .n.sel circle { stroke: var(--text); }
+.gv-svg .n text { font-family: var(--mono); font-size: 11px; fill: var(--subtext0); pointer-events: none; }
+.gv-svg .n.note text { font-family: var(--sans); font-size: 12px; fill: var(--text); }
+.gv-svg.hov .dim { opacity: 0.15; }
+.gv-svg .n:focus, .gv-svg .n:focus-visible { outline: none; } .gv-svg .n:focus-visible circle { stroke: var(--accent); stroke-width: 3; }
+.gv-peek { display: grid; align-content: start; gap: 0.75rem; padding: 1.1rem; border-left: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.875rem; line-height: 1.55; overflow-y: auto; max-height: calc(100vh - 6rem); }
+.gv-peek .k { font-family: var(--mono); font-size: 0.6875rem; color: var(--label); text-transform: uppercase; letter-spacing: 0.08em; }
+.gv-peek h3 { font-family: var(--display); font-size: 1.15rem; color: var(--h1); }
+.gv-peek p { margin: 0; color: var(--subtext0); }
+.gv-peek .acts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.gv-peek .acts a, .gv-peek .acts button { font-family: var(--mono); font-size: 0.75rem; padding: 0.4rem 0.7rem; border-radius: 5px; text-decoration: none; cursor: pointer; border: 1px solid var(--surface0); background: none; color: var(--text); }
+.gv-peek .acts a.go { background: var(--mauve); border-color: var(--mauve); color: var(--base); }
+.gv-peek .acts button:disabled { opacity: 0.4; cursor: default; }
+.gv-peek ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.gv-peek ul a { color: var(--accent); text-decoration: none; }
+.gv-foot { padding: 0 0 0 0; }
+@media (max-width: 760px) {
+  .gv-body { grid-template-columns: minmax(0, 1fr); }
+  .gv-svg { min-height: 18rem; border-radius: 0; }
+  .gv-peek { border-left: 0; border-top: 1px solid var(--surface0); max-height: none; }
+  .gv-head .ap-seg { width: auto; }
+}
 .graph line { stroke: var(--surface1); stroke-width: 1; }
 .graph circle { fill: var(--overlay1); }
 .graph .tag circle { fill: var(--teal); }
@@ -202,7 +256,8 @@ ul.plain li::marker { color: var(--muted); }
 @media (max-width: 760px) {
   .obs-view { padding: 1.5rem 1.1rem 1.75rem; }
   .obs-props dl { grid-template-columns: 6.5rem minmax(0, 1fr); }
-  .obs-mode, .obs-new { display: none; }
+  .obs-mode { display: none; }
+  .obs-tab { flex-basis: 9rem; }
 }
 .back { font-family: var(--mono); font-size: var(--s-0); text-decoration: none; }
 
@@ -887,6 +942,13 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <div class="ap-foot"><span>Press T · saved on this device</span><button type="button" id="ap-reset">Reset</button></div>
 </aside>
 
+<dialog class="gv" id="gv" aria-label="Graph view">
+  <div class="gv-head"><b>Graph view</b>
+    <div class="ap-seg"><button type="button" data-scope="local">This note</button><button type="button" data-scope="all">All notes</button></div>
+    <button type="button" class="ap-x gv-close" aria-label="Close graph view">×</button>
+  </div>
+  <div class="gv-body"><svg class="gv-svg" id="gv-svg" role="group" aria-label="Notes and tags"></svg><aside class="gv-peek" id="gv-peek" aria-live="polite"></aside></div>
+</dialog>
 <script>
 (function () {
   var root = document.documentElement;
@@ -962,6 +1024,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     tags: '<path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
     clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
     left: '<path d="m15 18-6-6 6-6"/>',
+    graph: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="8" r="2.5"/><circle cx="10" cy="18" r="2.5"/><path d="M8.4 6.5l7.2.9M6.9 8.4l2.2 7.2M16.5 10.1l-4.9 6.1"/>',
     right: '<path d="m9 18 6-6-6-6"/>'
   };
   function icon(n) { return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + ICON[n] + '</svg>'; }
@@ -994,13 +1057,74 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     };
     var links = related(a).length;
     a.innerHTML =
-      '<div class="obs-tabs"><div class="obs-tab">' + icon('file') + '<span>' + esc(title) + '</span><a class="obs-x" href="#notes" aria-label="Close note, back to all notes" title="Close">×</a></div><span class="obs-new" aria-hidden="true">+</span></div>' +
+      '<div class="obs-tabs" role="tablist" aria-label="Open notes"></div>' +
       '<div class="obs-nav">' + arrow(older, 'left', 'Older') + arrow(newer, 'right', 'Newer') +
-      '<span class="obs-crumb"><a href="#index">Notebook</a><i>/</i><a href="#notes">Notes</a><i>/</i><b>' + esc(title) + '</b></span><span class="obs-mode">reading</span></div>';
+      '<span class="obs-crumb"><a href="#index">Notebook</a><i>/</i><a href="#notes">Notes</a><i>/</i><b>' + esc(title) + '</b></span><span class="obs-mode">reading</span><button type="button" class="obs-arrow obs-graph" data-graph="' + a.id + '" title="Graph view" aria-label="Open graph view">' + icon('graph') + '</button></div>';
     a.appendChild(view);
     a.insertAdjacentHTML('beforeend', '<div class="obs-status"><span>' + links + (links === 1 ? ' linked note' : ' linked notes') + '</span><span>' + words + ' words</span><span>' + text.length + ' characters</span></div>');
     a.classList.add('obs');
   });
+  // Tabs: a note opens in the current tab; + opens another note in a new tab, up to MAX_TABS. Kept for this browser session.
+  var MAX_TABS = 4, tabs = [], activeTab = null;
+  try { tabs = JSON.parse(sessionStorage.getItem('obs-tabs')) || []; } catch (e) {}
+  tabs = tabs.filter(function (id) { return /^n-/.test(id) && document.getElementById(id); }).slice(0, MAX_TABS);
+  function saveTabs() { try { sessionStorage.setItem('obs-tabs', JSON.stringify(tabs)); } catch (e) {} }
+  function openInTab(id) {
+    if (tabs.indexOf(id) < 0) {
+      var i = tabs.indexOf(activeTab);
+      if (i < 0) { if (tabs.length >= MAX_TABS) tabs.pop(); tabs.push(id); } else tabs[i] = id;
+    }
+    activeTab = id; saveTabs();
+  }
+  function newTab(id) {
+    if (tabs.indexOf(id) < 0) {
+      if (tabs.length >= MAX_TABS) return;
+      tabs.splice(tabs.indexOf(activeTab) + 1, 0, id); saveTabs();
+    }
+    location.hash = id;
+  }
+  function renderTabs(a) {
+    var bar = a.querySelector('.obs-tabs');
+    bar.innerHTML = tabs.map(function (id) {
+      var n = document.getElementById(id), on = id === a.id;
+      return '<div class="obs-tab' + (on ? ' on' : '') + '"><a href="#' + id + '" role="tab" aria-selected="' + on + '" title="' + esc(noteTitle(n)) + '">' + icon('file') + '<span>' + esc(noteTitle(n)) + '</span></a>' +
+        '<button type="button" class="obs-x" data-close="' + id + '" aria-label="Close ' + esc(noteTitle(n)) + '" title="Close">×</button></div>';
+    }).join('') +
+      '<button type="button" class="obs-new" aria-haspopup="true" aria-expanded="false"' + (tabs.length >= MAX_TABS ? ' disabled title="Up to ' + MAX_TABS + ' tabs. Close one to open another."' : ' title="Open another note in a new tab"') + ' aria-label="New tab">+</button>';
+  }
+  function tabMenu(bar, btn) {
+    var old = bar.querySelector('.obs-menu');
+    if (old) { old.remove(); btn.setAttribute('aria-expanded', 'false'); return; }
+    var list = noteEls.map(function (n) {
+      var open = tabs.indexOf(n.id) >= 0;
+      return '<a href="#' + n.id + '" data-new="' + n.id + '" role="menuitem"><small>N°' + n.id.slice(2) + '</small><span>' + esc(noteTitle(n)) + '</span><small>' + (open ? 'open' : '') + '</small></a>';
+    }).join('');
+    bar.insertAdjacentHTML('beforeend', '<div class="obs-menu" role="menu"><h6>Open in new tab</h6>' + list + '<p>' + tabs.length + ' of ' + MAX_TABS + ' tabs open</p></div>');
+    var m = bar.querySelector('.obs-menu');
+    m.style.setProperty('--mx', Math.max(8, Math.min(btn.offsetLeft, bar.clientWidth - m.offsetWidth - 8)) + 'px');
+    btn.setAttribute('aria-expanded', 'true');
+    m.querySelector('a').focus();
+  }
+  document.addEventListener('click', function (e) {
+    var bar = e.target.closest && e.target.closest('.obs-tabs');
+    document.querySelectorAll('.obs-menu').forEach(function (m) { if (!bar || !bar.contains(m)) { m.remove(); } });
+    if (!bar) return;
+    var plus = e.target.closest('.obs-new'), close = e.target.closest('[data-close]'), pick = e.target.closest('[data-new]');
+    if (plus && !plus.disabled) tabMenu(bar, plus);
+    if (pick) { e.preventDefault(); newTab(pick.getAttribute('data-new')); }
+    if (close) {
+      var id = close.getAttribute('data-close'), i = tabs.indexOf(id);
+      tabs.splice(i, 1); saveTabs();
+      if (id === activeTab) { activeTab = null; location.hash = tabs[i] || tabs[i - 1] || 'notes'; }
+      else renderTabs(document.getElementById(activeTab));
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var m = document.querySelector('.obs-menu'); if (!m) return;
+    var btn = m.parentNode.querySelector('.obs-new'); m.remove(); btn.setAttribute('aria-expanded', 'false'); btn.focus();
+  });
+
   // Local graph for the right column: this note, its tags, and the notes that share them.
   function graphSVG(n) {
     var tags = tagsOf(n), rel = related(n), cx = 110, cy = 96, ang = {}, lines = '', nodes = '';
@@ -1019,18 +1143,122 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       var vx = 0, vy = 0; r.shared.forEach(function (t) { vx += Math.cos(ang[t]); vy += Math.sin(ang[t]); });
       var a = Math.atan2(vy, vx) + (rel.length > 1 ? (k % 2 ? 0.3 : -0.3) : 0), p = pos(a, 80);
       r.shared.forEach(function (t) { lines += line(pos(ang[t], 44), p); });
-      nodes += '<a href="#' + r.note.id + '"><title>' + esc(noteTitle(r.note)) + '</title><circle ' + xy(p, 'c') + ' r="4.5"/>' + label(p, 'N°' + r.note.id.slice(2)) + '</a>';
+      nodes += '<g><circle ' + xy(p, 'c') + ' r="4.5"/>' + label(p, 'N°' + r.note.id.slice(2)) + '</g>';
     });
     nodes += '<g class="me"><circle cx="' + cx + '" cy="' + cy + '" r="6"/><text x="' + cx + '" y="' + (cy + 18) + '" text-anchor="middle">N°' + n.id.slice(2) + '</text></g>';
     return '<svg class="graph" viewBox="0 0 220 200" role="img" aria-label="Local graph: this note, its tags and ' + rel.length + ' related notes">' + lines + nodes + '</svg>';
   }
   function noteMeta(n) {
     var rel = related(n);
-    return '<section><h4>Local graph</h4>' + graphSVG(n) + '</section>' +
+    return '<section><h4>Local graph</h4><button type="button" class="graph-open" data-graph="' + n.id + '" aria-label="Open graph view">' + graphSVG(n) + '<span class="hint">⤢ expand</span></button></section>' +
       '<section><h4>Linked mentions</h4>' + (rel.length ? '<div class="mentions">' + rel.map(function (r) {
         return '<a href="#' + r.note.id + '">' + esc(noteTitle(r.note)) + '<small>via ' + r.shared.map(function (t) { return '#' + esc(t); }).join(' ') + '</small></a>';
       }).join('') + '</div>' : '<p>No linked notes yet.</p>') + '</section>';
   }
+
+  // Graph view pop-up: the whole vault or this note's neighbourhood, laid out with a small force simulation.
+  var gv = document.getElementById('gv'), gvSvg = document.getElementById('gv-svg'), gvPeek = document.getElementById('gv-peek'), gvNote = null, gvScope = 'local';
+  function graphData(scope, n) {
+    var notes = scope === 'all' ? noteEls : [n].concat(related(n).map(function (r) { return r.note; }));
+    var nodes = [], edges = [], seen = {};
+    notes.forEach(function (o) { nodes.push({ id: o.id, kind: 'note' }); seen[o.id] = 1; });
+    notes.forEach(function (o) {
+      tagsOf(o).forEach(function (t) {
+        if (scope === 'local' && o !== n && tagsOf(n).indexOf(t) < 0) return;
+        if (!seen['#' + t]) { nodes.push({ id: '#' + t, kind: 'tag' }); seen['#' + t] = 1; }
+        edges.push([o.id, '#' + t]);
+      });
+    });
+    return { nodes: nodes, edges: edges };
+  }
+  function layout(g, W, H) {
+    var N = g.nodes.length, idx = {};
+    g.nodes.forEach(function (v, i) { idx[v.id] = i; var a = i * 2.39996; v.x = W / 2 + Math.cos(a) * 30 * Math.sqrt(i + 1); v.y = H / 2 + Math.sin(a) * 30 * Math.sqrt(i + 1); });
+    for (var it = 0; it < 400; it++) {
+      var cool = 1 - it / 400;
+      g.nodes.forEach(function (v) { v.fx = (W / 2 - v.x) * 0.01; v.fy = (H / 2 - v.y) * 0.01; });
+      for (var i = 0; i < N; i++) for (var j = i + 1; j < N; j++) {
+        var a = g.nodes[i], b = g.nodes[j], dx = a.x - b.x, dy = a.y - b.y, d2 = Math.max(dx * dx + dy * dy, 25), f = (a.kind === 'note' && b.kind === 'note' ? 30000 : 9000) / d2, d = Math.sqrt(d2);
+        a.fx += dx / d * f; a.fy += dy / d * f; b.fx -= dx / d * f; b.fy -= dy / d * f;
+      }
+      g.edges.forEach(function (e) {
+        var a = g.nodes[idx[e[0]]], b = g.nodes[idx[e[1]]], dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) || 1, f = (d - 110) * 0.05;
+        a.fx += dx / d * f; a.fy += dy / d * f; b.fx -= dx / d * f; b.fy -= dy / d * f;
+      });
+      g.nodes.forEach(function (v) { v.x += Math.max(-20, Math.min(20, v.fx)) * cool; v.y += Math.max(-20, Math.min(20, v.fy)) * cool; });
+    }
+    // fit into the view with room for labels
+    var xs = g.nodes.map(function (v) { return v.x; }), ys = g.nodes.map(function (v) { return v.y; });
+    var x0 = Math.min.apply(0, xs), x1 = Math.max.apply(0, xs), y0 = Math.min.apply(0, ys), y1 = Math.max.apply(0, ys);
+    var k = Math.min((W - 180) / Math.max(x1 - x0, 1), (H - 90) / Math.max(y1 - y0, 1), 1.6);
+    g.nodes.forEach(function (v) { v.x = W / 2 + (v.x - (x0 + x1) / 2) * k; v.y = H / 2 + (v.y - (y0 + y1) / 2) * k; });
+    return idx;
+  }
+  function short(t) { return t.length > 30 ? t.slice(0, 28) + '…' : t; }
+  function drawGraph() {
+    var W = 640, H = 440, g = graphData(gvScope, gvNote), idx = layout(g, W, H);
+    var h = g.edges.map(function (e) { var a = g.nodes[idx[e[0]]], b = g.nodes[idx[e[1]]];
+      return '<line data-a="' + e[0] + '" data-b="' + e[1] + '" x1="' + a.x.toFixed(1) + '" y1="' + a.y.toFixed(1) + '" x2="' + b.x.toFixed(1) + '" y2="' + b.y.toFixed(1) + '"/>'; }).join('');
+    h += g.nodes.map(function (v) {
+      var note = v.kind === 'note', me = v.id === gvNote.id, r = note ? (me ? 10 : 8) : 5;
+      var lbl = note ? short(noteTitle(document.getElementById(v.id))) : v.id;
+      return '<g class="n ' + v.kind + (me ? ' me sel' : '') + '" data-id="' + v.id + '" tabindex="0" role="button" aria-label="' + esc(note ? noteTitle(document.getElementById(v.id)) : 'Tag ' + v.id) + '">' +
+        '<circle cx="' + v.x.toFixed(1) + '" cy="' + v.y.toFixed(1) + '" r="' + r + '"/><text x="' + v.x.toFixed(1) + '" y="' + (v.y + r + 14).toFixed(1) + '" text-anchor="middle">' + esc(lbl) + '</text></g>';
+    }).join('');
+    gvSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    gvSvg.innerHTML = h;
+    gv.querySelectorAll('[data-scope]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-scope') === gvScope)); });
+    peek(gvNote.id);
+  }
+  function peek(id) {
+    gvSvg.querySelectorAll('.n').forEach(function (n) { n.classList.toggle('sel', n.getAttribute('data-id') === id); });
+    if (id.charAt(0) === '#') {
+      var withTag = noteEls.filter(function (n) { return tagsOf(n).indexOf(id.slice(1)) >= 0; });
+      gvPeek.innerHTML = '<span class="k">Tag</span><h3>' + esc(id) + '</h3><p>' + withTag.length + (withTag.length === 1 ? ' note' : ' notes') + ' with this tag.</p><ul>' +
+        withTag.map(function (n) { return '<li><a href="#' + n.id + '" data-go="' + n.id + '">' + esc(noteTitle(n)) + '</a></li>'; }).join('') + '</ul>';
+      return;
+    }
+    var n = document.getElementById(id), view = n.querySelector('.obs-view');
+    var paras = Array.prototype.slice.call(view.querySelectorAll(':scope > p')).map(function (p) {
+      var c = p.cloneNode(true); c.querySelectorAll('.sn, .sn-ref').forEach(function (x) { x.remove(); }); return c.textContent.trim(); }).filter(Boolean);
+    var excerpt = paras.join(' '); if (excerpt.length > 320) excerpt = excerpt.slice(0, 318).replace(/\s+\S*$/, '') + '…';
+    var props = view.querySelectorAll('.obs-props dd');
+    var full = tabs.indexOf(id) < 0 && tabs.length >= MAX_TABS;
+    gvPeek.innerHTML = '<span class="k">N°' + id.slice(2) + ' · ' + esc(props[0].textContent) + '</span><h3>' + esc(noteTitle(n)) + '</h3>' +
+      '<div>' + tagsOf(n).map(function (t) { return '<span class="obs-tag">#' + esc(t) + '</span>'; }).join('') + '</div><p>' + esc(excerpt) + '</p>' +
+      '<div class="acts">' + (id === gvNote.id && tabs.indexOf(id) >= 0 && activeTab === id ? '' : '<a class="go" href="#' + id + '" data-go="' + id + '">Open</a>') +
+      '<button type="button" data-tab="' + id + '"' + (full ? ' disabled title="Up to ' + MAX_TABS + ' tabs"' : '') + '>Open in new tab</button></div>';
+  }
+  function openGraph(id) {
+    gvNote = document.getElementById(id); gvScope = 'local';
+    if (gv.showModal) gv.showModal(); else gv.setAttribute('open', '');
+    drawGraph();
+  }
+  if (gv) {
+    gv.addEventListener('click', function (e) {
+      if (e.target === gv) { gv.close(); return; }
+      var s = e.target.closest('[data-scope]'), node = e.target.closest('.n'), go = e.target.closest('[data-go]'), tb = e.target.closest('[data-tab]'), x = e.target.closest('.gv-close');
+      if (x) gv.close();
+      if (s) { gvScope = s.getAttribute('data-scope'); drawGraph(); }
+      if (node) peek(node.getAttribute('data-id'));
+      if (go) { e.preventDefault(); gv.close(); location.hash = go.getAttribute('data-go'); }
+      if (tb && !tb.disabled) { gv.close(); newTab(tb.getAttribute('data-tab')); }
+    });
+    gvSvg.addEventListener('keydown', function (e) { var node = e.target.closest('.n'); if (node && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); peek(node.getAttribute('data-id')); } });
+    // hover a node to light up its links and fade the rest
+    gvSvg.addEventListener('mouseover', function (e) {
+      var node = e.target.closest('.n'); gvSvg.classList.toggle('hov', !!node); if (!node) return;
+      var id = node.getAttribute('data-id'), near = {}; near[id] = 1;
+      gvSvg.querySelectorAll('line').forEach(function (l) {
+        var hit = l.getAttribute('data-a') === id || l.getAttribute('data-b') === id;
+        if (hit) { near[l.getAttribute('data-a')] = 1; near[l.getAttribute('data-b')] = 1; }
+        l.classList.toggle('dim', !hit);
+      });
+      gvSvg.querySelectorAll('.n').forEach(function (n) { n.classList.toggle('dim', !near[n.getAttribute('data-id')]); });
+    });
+    gvSvg.addEventListener('mouseleave', function () { gvSvg.classList.remove('hov'); });
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-graph]'); if (b) openGraph(b.getAttribute('data-graph')); });
 
   // Right column: contents, page details, what I'm on right now, prev/next note.
   var meta = document.getElementById('meta');
@@ -1183,6 +1411,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     });
     var h = target.querySelector('h1');
     document.title = (id === 'index' ? '' : (h ? h.textContent + ' · ' : '')) + "Ifti's Notebook";
+    if (id.indexOf('n-') === 0) { openInTab(id); renderTabs(target); }
     buildMeta(target, id);
     document.getElementById('m-path').innerHTML = '~/' + (id === 'index' ? '' : id.indexOf('n-') === 0 ? 'notes/<b>' + id.slice(2) + '</b>' : '<b>' + id + '</b>');
     sheetOpen(false);

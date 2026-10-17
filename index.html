@@ -217,6 +217,52 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   :root[data-layout="3"] .rail { border-right: 0; padding-right: 0; }
   :root[data-layout="3"] footer.colophon { grid-column: 1; }
 }
+/* stats radar: a post-match screen for skills. Strength is solid teal, interest is dashed maroon, so identity never rests on colour alone. */
+.radar { --rd-str: var(--teal); --rd-int: var(--maroon); margin-inline: 0; margin-bottom: 0; display: grid; gap: 1rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: color-mix(in srgb, var(--mantle) 75%, transparent); }
+.rd-hud { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-bottom: 0.6rem; border-bottom: 1px dashed var(--rule); font-family: var(--mono); font-size: var(--s-0); color: var(--label); text-transform: uppercase; letter-spacing: 0.08em; }
+.rd-hud .ovr { color: var(--muted); }
+.rd-hud .ovr b { font-family: var(--display); font-size: 1.6rem; color: var(--ink); letter-spacing: 0; margin-left: 0.35rem; vertical-align: -0.12em; }
+.rd-body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 1rem; align-items: center; }
+.rd-svg { display: none; width: 100%; height: auto; overflow: visible; }
+.js .rd-svg { display: block; }
+.rd-ring, .rd-spoke { fill: none; stroke: var(--surface1); stroke-width: 1; }
+.rd-spoke.on { stroke: var(--overlay1); }
+.rd-lbl { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
+.rd-lbl.on { fill: var(--ink); }
+.rd-area { stroke-width: 2; stroke-linejoin: round; transition: opacity 0.2s; }
+.rd-area.rd-str { fill: color-mix(in srgb, var(--rd-str) 22%, transparent); stroke: var(--rd-str); }
+.rd-area.rd-int { fill: color-mix(in srgb, var(--rd-int) 10%, transparent); stroke: var(--rd-int); stroke-dasharray: 5 4; }
+.rd-dot { stroke: var(--paper); stroke-width: 2; pointer-events: none; transition: r 0.15s, opacity 0.2s; }
+.rd-dot.rd-str { fill: var(--rd-str); } .rd-dot.rd-int { fill: var(--rd-int); }
+.rd-dot.on { r: 5.5px; }
+.rd-hit { fill: transparent; }
+.rd-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.1rem; font-family: var(--mono); font-size: var(--s-0); }
+.rd-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 0.75rem; padding: 0.35rem 0.5rem; border-radius: 4px; outline: none; }
+.rd-list li.on { background: var(--surface0); }
+.rd-list .nm { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rd-list .v { color: var(--muted); font-variant-numeric: tabular-nums; }
+.rd-list .v b { font-weight: 500; color: var(--ink); }
+.rd-bars { grid-column: 1 / -1; display: grid; gap: 3px; }
+.rd-bars i { display: block; height: 3px; border-radius: 2px; background: var(--rd-str); transform-origin: left; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s; }
+.rd-bars i.rd-int { background: repeating-linear-gradient(90deg, var(--rd-int) 0 5px, transparent 5px 8px); transition-delay: 0.15s; }
+.radar:not(.in) .rd-bars i { transform: scaleX(0); }
+.radar.hide-str svg .rd-str, .radar.hide-str .rd-bars .rd-str, .radar.hide-int svg .rd-int, .radar.hide-int .rd-bars .rd-int { opacity: 0.07; }
+.rd-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem 1.5rem; }
+.rd-legend { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.rd-legend button { font-family: var(--mono); font-size: var(--s-0); display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.2rem 0.7rem; background: none; color: var(--ink); border: 1px solid var(--rule); border-radius: 999px; cursor: pointer; }
+.rd-legend button[aria-pressed="false"] { color: var(--muted); opacity: 0.6; }
+.rd-legend .k { width: 16px; border-top: 2px solid var(--rd-str); }
+.rd-legend .k.rd-int { border-top: 2px dashed var(--rd-int); }
+.rd-calls { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: 0; font-family: var(--mono); font-size: var(--s-0); }
+.rd-calls dt { color: var(--label); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.rd-calls dd { margin: 0; color: var(--ink); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 560px) {
+  .rd-body { grid-template-columns: minmax(0, 1fr); }
+  .rd-svg { max-width: 22rem; margin-inline: auto; }
+  .radar { padding: 0.9rem; }
+}
+@media (prefers-reduced-motion: reduce) { .rd-bars i, .rd-dot, .rd-area { transition: none; } }
 
 /* appearance panel: edge tab + slide-out drawer */
 .ap-tab {
@@ -329,6 +375,26 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p>Day to day, I run key accounts at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency. I sit between what a client's business needs and what our designers make, and I make sure the work moves a number the client cares about.</p>
       <p>My clients range from enterprise teams with a dozen stakeholders to solo founders with six months of runway. <span class="sn-ref"></span><span class="sn">Different buyers, same question underneath: is this worth it?</span> I've learned that the hard part is rarely the design. It's alignment, timing, and saying the uncomfortable thing early.</p>
       <p>This site is my notebook. I write down what I learn in those rooms, and keep a monthly log of what I'm exploring, watching and reading. <a href="#suggest">Suggestions welcome.</a></p>
+
+      <h2>Post-match stats</h2>
+      <p class="sub">Self-rated, scored like the end of a ranked match. Strength is how good I am. Interest is how much more of it I want.</p>
+      <figure class="radar" id="radar">
+        <div class="rd-hud"><span>Season 2026 · Key accounts</span><span class="ovr">OVR<b id="rd-ovr"></b></span></div>
+        <div class="rd-body">
+          <svg class="rd-svg" viewBox="0 0 400 290" role="img" aria-label="Radar chart of strength and interest across my core skills. The same numbers are listed beside it."></svg>
+          <ol class="rd-list" id="rd-list"></ol>
+        </div>
+        <div class="rd-foot">
+          <div class="rd-legend">
+            <button type="button" aria-pressed="true" data-s="str"><i class="k"></i>Strength</button>
+            <button type="button" aria-pressed="true" data-s="int"><i class="k rd-int"></i>Interest</button>
+          </div>
+          <dl class="rd-calls">
+            <div><dt>MVP</dt><dd id="rd-mvp"></dd></div>
+            <div><dt>Grinding</dt><dd id="rd-grind"></dd></div>
+          </dl>
+        </div>
+      </figure>
 
       <h2>Recent notes</h2>
       <ul class="entries">
@@ -590,6 +656,96 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     meta.querySelectorAll('.toc button').forEach(function (b, i) { b.classList.toggle('on', i === cur); });
   }
   window.addEventListener('scroll', spy, { passive: true });
+  // STATS UPDATE: one row per skill: [chart label, full name, strength, interest], scores 0–100. Five to eight rows read best.
+  var STATS = [
+    ['Negotiation', 'Negotiation', 74, 92],
+    ['Alignment', 'Stakeholder alignment', 88, 78],
+    ['Discovery', 'Discovery & questions', 82, 86],
+    ['Design sense', 'Design literacy', 70, 80],
+    ['Writing', 'Client writing', 80, 72],
+    ['AI tools', 'AI tooling', 58, 95]
+  ];
+  var radarPlay = (function () {
+    var fig = document.getElementById('radar');
+    if (!fig) return null;
+    var svg = fig.querySelector('svg'), list = document.getElementById('rd-list');
+    var n = STATS.length, R = 118, cx = 200, cy = 145;
+    function pt(i, r) { var a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+    function pts(f) { return STATS.map(function (s, i) { return pt(i, f(s)).map(function (v) { return v.toFixed(1); }).join(','); }).join(' '); }
+
+    var h = '';
+    [0.25, 0.5, 0.75, 1].forEach(function (k) { h += '<polygon class="rd-ring" points="' + pts(function () { return R * k; }) + '"/>'; });
+    STATS.forEach(function (s, i) {
+      var e = pt(i, R), l = pt(i, R + 14);
+      var anchor = Math.abs(l[0] - cx) < 4 ? 'middle' : (l[0] > cx ? 'start' : 'end');
+      var dy = l[1] < cy - 4 ? -2 : (l[1] > cy + 4 ? 11 : 4);
+      h += '<line class="rd-spoke" data-i="' + i + '" x1="' + cx + '" y1="' + cy + '" x2="' + e[0].toFixed(1) + '" y2="' + e[1].toFixed(1) + '"/>';
+      h += '<text class="rd-lbl" data-i="' + i + '" x="' + l[0].toFixed(1) + '" y="' + (l[1] + dy).toFixed(1) + '" text-anchor="' + anchor + '">' + s[0] + '</text>';
+    });
+    h += '<polygon class="rd-area rd-int"/><polygon class="rd-area rd-str"/>';
+    STATS.forEach(function (s, i) { h += '<circle class="rd-dot rd-int" data-i="' + i + '" r="3.5"/><circle class="rd-dot rd-str" data-i="' + i + '" r="3.5"/>'; });
+    STATS.forEach(function (s, i) {
+      var a = pt(i - 0.5, R + 36), b = pt(i + 0.5, R + 36);
+      h += '<path class="rd-hit" data-i="' + i + '" d="M' + cx + ',' + cy + 'L' + a.join(',') + 'L' + b.join(',') + 'Z"/>';
+    });
+    svg.innerHTML = h;
+
+    list.innerHTML = STATS.map(function (s, i) {
+      return '<li data-i="' + i + '" tabindex="0"><span class="nm">' + s[1] + '</span>' +
+        '<span class="v"><b>' + s[2] + '</b><span class="vh"> strength,</span> · ' + s[3] + '<span class="vh"> interest</span></span>' +
+        '<span class="rd-bars" aria-hidden="true"><i style="width:' + s[2] + '%"></i><i class="rd-int" style="width:' + s[3] + '%"></i></span></li>';
+    }).join('');
+
+    var best = STATS.reduce(function (a, s) { return s[2] > a[2] ? s : a; });
+    var grind = STATS.reduce(function (a, s) { return s[3] - s[2] > a[3] - a[2] ? s : a; });
+    document.getElementById('rd-ovr').textContent = Math.round(STATS.reduce(function (t, s) { return t + s[2]; }, 0) / n);
+    document.getElementById('rd-mvp').textContent = best[1] + ' ' + best[2];
+    document.getElementById('rd-grind').textContent = grind[1] + ' +' + (grind[3] - grind[2]);
+
+    // hover or focus a skill on either side to light it up on both
+    function setOn(i) {
+      fig.querySelectorAll('[data-i]').forEach(function (el) { el.classList.toggle('on', el.getAttribute('data-i') === String(i)); });
+    }
+    fig.querySelectorAll('.rd-hit, .rd-list li').forEach(function (el) {
+      var i = el.getAttribute('data-i');
+      el.addEventListener('mouseenter', function () { setOn(i); });
+      el.addEventListener('focus', function () { setOn(i); });
+      el.addEventListener('click', function () { setOn(i); });
+    });
+    fig.querySelector('.rd-body').addEventListener('mouseleave', function () { setOn(-1); });
+    list.addEventListener('focusout', function () { setOn(-1); });
+
+    fig.querySelectorAll('.rd-legend button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var on = b.getAttribute('aria-pressed') !== 'true';
+        b.setAttribute('aria-pressed', String(on));
+        fig.classList.toggle('hide-' + b.getAttribute('data-s'), !on);
+      });
+    });
+
+    var area = { str: svg.querySelector('.rd-area.rd-str'), int: svg.querySelector('.rd-area.rd-int') };
+    var dots = { str: svg.querySelectorAll('.rd-dot.rd-str'), int: svg.querySelectorAll('.rd-dot.rd-int') };
+    function draw(key, col, t) {
+      area[key].setAttribute('points', pts(function (s) { return R * s[col] / 100 * t; }));
+      STATS.forEach(function (s, i) {
+        var p = pt(i, R * s[col] / 100 * t);
+        dots[key][i].setAttribute('cx', p[0].toFixed(1)); dots[key][i].setAttribute('cy', p[1].toFixed(1));
+      });
+    }
+    var raf;
+    return function play() {
+      cancelAnimationFrame(raf);
+      fig.classList.remove('in'); void fig.offsetWidth; fig.classList.add('in');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { draw('str', 2, 1); draw('int', 3, 1); return; }
+      var t0 = null, ease = function (x) { x = Math.min(Math.max(x, 0), 1); return 1 - Math.pow(1 - x, 3); };
+      (function step(now) {
+        if (t0 === null) t0 = now;
+        var p = (now - t0) / 1000;
+        draw('str', 2, ease(p / 0.75)); draw('int', 3, ease((p - 0.2) / 0.8));
+        if (p < 1) raf = requestAnimationFrame(step);
+      })(performance.now());
+    };
+  })();
 
   function show() {
     var id = (location.hash || '#index').slice(1);
@@ -604,6 +760,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     var h = target.querySelector('h1');
     document.title = (id === 'index' ? '' : (h ? h.textContent + ' · ' : '')) + "Ifti's Notebook";
     buildMeta(target, id);
+    if (id === 'index' && radarPlay) radarPlay();
     window.scrollTo(0, 0);
     setTimeout(function () { window.scrollTo(0, 0); }, 0);
   }

@@ -1137,6 +1137,13 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   .entries .dek { grid-column: 2; margin-top: -0.6rem; }
 }
 
+/* Shelf: directory chips and Now "more" links */
+.shelf-dir { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.25rem 0 0.5rem; }
+.shelf-dir a { font-family: var(--mono); font-size: var(--s-0); text-decoration: none; color: var(--subtext1); border: 1px solid var(--rule); padding: 0.3rem 0.65rem; }
+.shelf-dir a:hover { color: var(--accent); border-color: currentColor; }
+.shelf-dir span { color: var(--muted); margin-left: 0.3rem; }
+.log-more { margin-top: 0.6rem; font-size: 0.9375rem; }
+
 /* ============ THEME: LIGHTS OUT ============
    Formula 1, Red Bull colours. Navy, F1 red and yellow, Titillium Web (the classic F1 typeface), slanted headlines,
    parallelogram buttons, corner-cut cards and diagonal speed lines. A start-light sequence plays when you switch to it. */
@@ -1444,7 +1451,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     </section>
 
     <!-- ============ NOW ============ -->
-    <!-- MONTHLY UPDATE: edit this section once a month. Change the date in the label, the "Updated" stamp in the sidebar, and the lists below. -->
+    <!-- MONTHLY UPDATE: edit this section once a month. Change the date in the label, the "Updated" stamp in the sidebar, and the facts below. The watching, reading, listening and exploring lists fill in from the Shelf (SHELF UPDATE). -->
     <section class="page" id="now">
       <p class="label">Now · October 2026</p>
       <h1>What I'm up to</h1>
@@ -1457,35 +1464,18 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 
       <h2>Exploring</h2>
       <p class="sub">Mostly AI, and mostly hands-on.</p>
-      <ul class="log">
-        <li><span class="t">Claude Code</span><span class="tag t-ai">AI</span><p>Built this site with it, one conversation at a time.</p></li>
-        <li><span class="t">OpenAI releases</span><span class="tag t-ai">AI</span><p>Keeping up with each launch and what it changes for client work.</p></li>
-        <li><span class="t">Theo <span class="by">· t3.gg</span></span><span class="tag t-tool">YouTube</span><p>My main feed for what's moving in AI and dev tools.</p></li>
-      </ul>
+      <ul class="log" data-from="exploring"></ul>
 
       <h2>On my screen and in my ears</h2>
       <p class="sub">What I'm watching, reading and listening to.</p>
       <h3>Watching</h3>
-      <ul class="log">
-        <li><span class="t">The Mandalorian</span><span class="tag t-series">Series</span></li>
-        <li><span class="t">Mirzapur</span><span class="tag t-series">Series</span></li>
-        <li><span class="t">The Gentlemen</span></li>
-        <li><span class="t">Spider-Man</span><span class="tag t-film">Film</span></li>
-        <li><span class="t">Supergirl</span></li>
-      </ul>
+      <ul class="log" data-from="watching"></ul>
 
       <h3>Reading</h3>
-      <ul class="log">
-        <li><span class="t">Never Split the Difference <span class="by">· Chris Voss</span></span><span class="tag t-book">Book</span><p><a href="#shelf">Books that stuck →</a></p></li>
-      </ul>
+      <ul class="log" data-from="reading"></ul>
 
       <h3>Listening</h3>
-      <ul class="log">
-        <li><span class="t">Huge Conversations <span class="by">· Cleo Abram</span></span><span class="tag t-pod">Podcast</span><p>Alexandr Wang on Muse, Meta's personal agent. <a href="#n-005">My notes</a> · <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Watch ↗</a></p></li>
-        <li><span class="t">Linkin Park</span><span class="tag t-music">Music</span></li>
-        <li><span class="t">The Weeknd</span><span class="tag t-music">Music</span></li>
-        <li><span class="t">Karan Aujla</span><span class="tag t-music">Music</span></li>
-      </ul>
+      <ul class="log" data-from="listening"></ul>
 
       <h2>Off the clock</h2>
       <p class="sub">Everything that isn't client work.</p>
@@ -1760,17 +1750,63 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 
     <!-- ============ SHELF ============ -->
     <section class="page" id="shelf">
+      <!-- SHELF UPDATE: everything I watch, read, listen to and explore. Newest at the top of each list.
+           Add a new item at the top; the Now page shows the first few of each list (data-now) and older ones stay here. -->
       <h1>Shelf</h1>
-      <p class="lede">Books that changed how I work. One line each on why.</p>
-      <ul class="shelf">
-        <li><b>Never Split the Difference</b> <span class="by">· Chris Voss</span><p>Negotiation is mostly listening. Labels and calibrated questions belong in every pricing call.</p></li>
-        <li><b>The Mom Test</b> <span class="by">· Rob Fitzpatrick</span><p>How to ask questions people can't answer politely. Required reading before any discovery call.</p></li>
-        <li><b>High Output Management</b> <span class="by">· Andrew Grove</span><p>Treat work like a production line and find the bottleneck. Still the clearest book on management.</p></li>
-        <li><b>Thinking in Bets</b> <span class="by">· Annie Duke</span><p>Judge a decision by what you knew when you made it. The outcome is a separate question.</p></li>
-        <li><b>The Design of Everyday Things</b> <span class="by">· Don Norman</span><p>Good design explained in plain words. Useful when the audience is a CFO.</p></li>
+      <p class="lede">Everything I've watched, read, listened to and explored, newest first. The <a href="#now">Now page</a> shows the latest few.</p>
+      <nav class="shelf-dir" aria-label="Shelf sections"></nav>
+
+      <h2 id="shelf-exploring">Exploring</h2>
+      <ul class="log" data-shelf="exploring" data-now="3">
+        <li><span class="t">Claude Code</span><span class="tag t-ai">AI</span><p>Built this site with it, one conversation at a time.</p></li>
+        <li><span class="t">OpenAI releases</span><span class="tag t-ai">AI</span><p>Keeping up with each launch and what it changes for client work.</p></li>
+        <li><span class="t">Theo <span class="by">· t3.gg</span></span><span class="tag t-tool">YouTube</span><p>My main feed for what's moving in AI and dev tools.</p></li>
       </ul>
-      <p class="sub"><a href="#suggest">Suggest one on the Now page →</a></p>
+
+      <h2 id="shelf-watching">Watching</h2>
+      <ul class="log" data-shelf="watching" data-now="5">
+        <li><span class="t">The Mandalorian</span><span class="tag t-series">Series</span></li>
+        <li><span class="t">Mirzapur</span><span class="tag t-series">Series</span></li>
+        <li><span class="t">The Gentlemen</span></li>
+        <li><span class="t">Spider-Man</span><span class="tag t-film">Film</span></li>
+        <li><span class="t">Supergirl</span></li>
+      </ul>
+
+      <h2 id="shelf-reading">Reading</h2>
+      <ul class="log" data-shelf="reading" data-now="1">
+        <li><span class="t">Never Split the Difference <span class="by">· Chris Voss</span></span><span class="tag t-book">Book</span><p>Negotiation is mostly listening. Labels and calibrated questions belong in every pricing call.</p></li>
+        <li><span class="t">The Mom Test <span class="by">· Rob Fitzpatrick</span></span><span class="tag t-book">Book</span><p>How to ask questions people can't answer politely. Required reading before any discovery call.</p></li>
+        <li><span class="t">High Output Management <span class="by">· Andrew Grove</span></span><span class="tag t-book">Book</span><p>Treat work like a production line and find the bottleneck. Still the clearest book on management.</p></li>
+        <li><span class="t">Thinking in Bets <span class="by">· Annie Duke</span></span><span class="tag t-book">Book</span><p>Judge a decision by what you knew when you made it. The outcome is a separate question.</p></li>
+        <li><span class="t">The Design of Everyday Things <span class="by">· Don Norman</span></span><span class="tag t-book">Book</span><p>Good design explained in plain words. Useful when the audience is a CFO.</p></li>
+      </ul>
+
+      <h2 id="shelf-listening">Listening</h2>
+      <ul class="log" data-shelf="listening" data-now="4">
+        <li><span class="t">Huge Conversations <span class="by">· Cleo Abram</span></span><span class="tag t-pod">Podcast</span><p>Alexandr Wang on Muse, Meta's personal agent. <a href="#n-005">My notes</a> · <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Watch ↗</a></p></li>
+        <li><span class="t">Linkin Park</span><span class="tag t-music">Music</span></li>
+        <li><span class="t">The Weeknd</span><span class="tag t-music">Music</span></li>
+        <li><span class="t">Karan Aujla</span><span class="tag t-music">Music</span></li>
+      </ul>
+      <p class="sub"><a href="#suggest">Suggest something on the Now page →</a></p>
     </section>
+    <script>
+    // Now page lists come from the Shelf: the first data-now items of each shelf list, plus a link to the rest.
+    (function () {
+      var dir = document.querySelector('.shelf-dir'), links = [];
+      document.querySelectorAll('#shelf [data-shelf]').forEach(function (src) {
+        var k = src.getAttribute('data-shelf'), n = +src.getAttribute('data-now') || 4, items = src.children;
+        var h = document.getElementById('shelf-' + k), name = h ? h.textContent : k;
+        links.push('<a href="#shelf-' + k + '">' + name + ' <span>' + items.length + '</span></a>');
+        var dst = document.querySelector('#now [data-from="' + k + '"]'); if (!dst) return;
+        for (var i = 0; i < Math.min(n, items.length); i++) dst.appendChild(items[i].cloneNode(true));
+        var more = document.createElement('p'); more.className = 'log-more';
+        more.innerHTML = '<a href="#shelf-' + k + '">' + (items.length > n ? 'All ' + items.length + ' in ' + name.toLowerCase() + ' on the shelf →' : name + ' on the shelf →') + '</a>';
+        dst.after(more);
+      });
+      if (dir) dir.innerHTML = links.join('');
+    })();
+    </script>
 
     <!-- ============ PLAYGROUND ============ -->
     <!-- PLAYGROUND: agents and workflows I work with. One page each. -->
@@ -2064,7 +2100,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     <li><a class="nav" href="#now"><span class="n">02</span><span class="t">Now</span><span class="d">this month</span></a></li>
     <li><a class="nav" href="#notes"><span class="n">03</span><span class="t">Notes</span><span class="d" id="m-notecount"></span></a></li>
     <li><a class="nav" href="#work"><span class="n">04</span><span class="t">Work</span><span class="d">Musemind</span></a></li>
-    <li><a class="nav" href="#shelf"><span class="n">05</span><span class="t">Shelf</span><span class="d">books</span></a></li>
+    <li><a class="nav" href="#shelf"><span class="n">05</span><span class="t">Shelf</span><span class="d">archive</span></a></li>
   </ol>
   <p class="grp">Playground</p>
   <ol>

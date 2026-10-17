@@ -8,6 +8,8 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Monthly update:** edit the block marked `MONTHLY UPDATE` in `index.html` and the "Updated" date in the sidebar.
 
+**Shelf and Now lists:** everything watched, read, listened to and explored lives in the `SHELF UPDATE` block, one list per section (Exploring, Watching, Reading, Listening), newest at the top. Add new items at the top. The Now page shows the first few of each list, set by the list's `data-now` count; older items stay on the Shelf, and each Now list links to its section there. The right rail's "Right now", the phone menu and the terminal's `now` read the top item of each.
+
 **Stats radar:** edit the `STATS UPDATE` array in the script at the bottom of `index.html`. Each row is `[chart label, full name, strength, interest]`, scored 0–100. OVR, MVP and Grinding are calculated from it.
 
 **Calendar activity:** the `ACTIVITY UPDATE` block holds meetings per day from the calendar (counts only, no titles). `from` is the first day (a Sunday); each row of `counts` is one week.

@@ -146,6 +146,28 @@ dl.facts dd { margin: 0; }
 ul.plain { margin-inline: 0; margin-bottom: 0; padding-left: 1.1rem; display: grid; gap: 0.6rem; }
 ul.plain li::marker { color: var(--muted); }
 
+/* research: index tiles and paper cards; each card is one link to the paper's DOI */
+.r-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 0; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.r-index > div { padding: 0.8rem 0.9rem; background: var(--paper); }
+.r-index dt { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.r-index dd { margin: 0.15rem 0 0; font-family: var(--display); font-size: 1.75rem; line-height: 1.1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.page > .r-index + .sub { margin-top: 0.5rem; font-size: 0.9em; }
+.r-topics { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.pp-tag { font-family: var(--mono); font-size: 0.6875rem; color: var(--mauve); background: color-mix(in srgb, var(--mauve) 12%, transparent); border-radius: 999px; padding: 0.1rem 0.55rem; }
+.papers { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 0.75rem; }
+.pp { display: grid; gap: 0.35rem; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); color: var(--ink); text-decoration: none; transition: border-color 0.15s; }
+.pp:hover { border-color: var(--accent); }
+.pp:hover .pp-t { color: var(--accent); }
+.pp-y { font-family: var(--mono); font-size: var(--s-0); color: var(--label); }
+.pp-t { font-family: var(--display); font-weight: 700; font-size: 1.15rem; line-height: 1.25; color: var(--subtext1); text-wrap: balance; }
+.pp-v { font-style: italic; color: var(--muted); font-size: 0.95em; }
+.pp-a { font-family: var(--sans); font-size: 0.875rem; color: var(--muted); }
+.pp-a b { color: var(--ink); font-weight: 600; }
+.pp-s { font-size: 0.95em; color: var(--text); }
+.pp-m { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.9rem; margin-top: 0.25rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
+.pp-m .pp-tag { margin-right: -0.5rem; }
+.pp-go { margin-left: auto; color: var(--accent); }
+@media (max-width: 760px) { .r-index { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pp-go { margin-left: 0; flex-basis: 100%; } }
 .shelf { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 1.1rem; }
 .shelf b { font-weight: 600; color: var(--subtext1); }
 .shelf .by { color: var(--muted); }
@@ -440,7 +462,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 
   /* A: bottom tab bar */
   :root[data-mnav="tabs"] .m-tabs {
-    display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
     position: fixed; z-index: 25; left: 0; right: 0; bottom: 0;
     padding: 0.4rem max(8px, env(safe-area-inset-right, 0px)) calc(0.4rem + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
     background: color-mix(in srgb, var(--mantle) 88%, transparent);
@@ -611,6 +633,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <li><a class="nav" href="#notes"><kbd>3</kbd>Notes</a></li>
       <li><a class="nav" href="#work"><kbd>4</kbd>Work</a></li>
       <li><a class="nav" href="#shelf"><kbd>5</kbd>Shelf</a></li>
+      <li><a class="nav" href="#research"><kbd>6</kbd>Research</a></li>
     </ol>
     <p class="stamp">Updated<br>17 Oct 2026</p>
   </nav>
@@ -646,6 +669,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <div class="contact">
         <span>mh.hasan884@gmail.com <button class="copy" type="button" data-copy="mh.hasan884@gmail.com">copy</button></span>
         <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a>
         <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a>
       </div>
 
@@ -860,14 +884,79 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       </ul>
       <p class="sub">Got one that belongs here? <a href="#suggest">Suggest it.</a></p>
     </section>
+
+    <!-- ============ RESEARCH ============ -->
+    <!-- RESEARCH UPDATE: one <li> per paper, newest first. Titles link to the paper through its DOI. Counts in the index are from Crossref; update them by hand. -->
+    <section class="page" id="research">
+      <h1>Research</h1>
+      <p class="lede">Papers I've co-authored. Most use text mining and bibliometric analysis to map what a field already knows and where it's heading.</p>
+      <p>Each title opens the paper itself. The full list, with reads and the Research Interest score, is on my <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate profile</a>.</p>
+
+      <h2>Research index</h2>
+      <dl class="r-index">
+        <div><dt>Publications</dt><dd>4</dd></div>
+        <div><dt>Citations</dt><dd>2</dd></div>
+        <div><dt>h-index</dt><dd>1</dd></div>
+        <div><dt>First author</dt><dd>2</dd></div>
+        <div><dt>Co-authors</dt><dd>9</dd></div>
+        <div><dt>Active</dt><dd>2022–26</dd></div>
+      </dl>
+      <p class="sub">Citation counts and h-index from Crossref, October 2026. ResearchGate and Google Scholar count differently and may show more.</p>
+      <div class="r-topics"><span class="pp-tag">Corporate finance</span><span class="pp-tag">Text mining</span><span class="pp-tag">Bibliometrics</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Agriculture</span><span class="pp-tag">Sentiment analysis</span><span class="pp-tag">Machine learning</span></div>
+
+      <h2>Papers</h2>
+      <ol class="papers">
+        <li>
+          <a class="pp" href="https://doi.org/10.64064/1658-4236.1019" target="_blank" rel="noopener">
+            <span class="pp-y">2026</span>
+            <span class="pp-t">Literature Review of Zero-Leverage Firms: A Text-Mining Approach</span>
+            <span class="pp-v">Journal of King Abdulaziz University: Economics and Administration · 40(1), 68–87</span>
+            <span class="pp-a">Md. Abul Kalam Azad, Paolo Saona, Laura Muro, <b>Mehedi Hasan Ifti</b>, Chowdhury Noushin Novera</span>
+            <span class="pp-s">The first review of the zero-leverage puzzle: why some firms carry no debt. Combines bibliometric analysis and text mining across 56 Web of Science papers to map the research streams and where the field goes next.</span>
+            <span class="pp-m"><span>0 citations</span><span>author 4 of 5</span><span class="pp-tag">Corporate finance</span><span class="pp-tag">Text mining</span><span class="pp-tag">Bibliometrics</span><span class="pp-go">doi.org/10.64064/1658-4236.1019 ↗</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="pp" href="https://doi.org/10.26493/1854-6935.22.231-251" target="_blank" rel="noopener">
+            <span class="pp-y">2024</span>
+            <span class="pp-t">Research Synthesizes in Pro-environmental Behavior in Education: A Text Mining Approach</span>
+            <span class="pp-v">Managing Global Transitions · 22(3), 231–251</span>
+            <span class="pp-a">Chowdhury Noushin Novera, <b>Mehedi Hasan Ifti</b>, Anh Ngoc Quang Huynh, Ijaj Sadiq, Abul Kalam Azad</span>
+            <span class="pp-s">Bibliometric networks plus LDA topic modelling on the literature about education and environmentally friendly behaviour. Finds 12 distinct research topics and the role of social welfare in raising environmental awareness.</span>
+            <span class="pp-m"><span>2 citations</span><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Text mining</span><span class="pp-go">doi.org/10.26493/1854-6935.22.231-251 ↗</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="pp" href="https://doi.org/10.1504/ijaitg.2023.136908" target="_blank" rel="noopener">
+            <span class="pp-y">2023</span>
+            <span class="pp-t">Pro-environmental Behaviour in Agricultural Studies: A Bibliometric and Text Mining Review</span>
+            <span class="pp-v">International Journal of Agriculture Innovation, Technology and Globalisation · 3(3), 273–293</span>
+            <span class="pp-a"><b>Mehedi Hasan Ifti</b>, Chowdhury Noushin Novera, Md. Abul Kalam Azad</span>
+            <span class="pp-s">A bibliometric and text-mining review of research on pro-environmental behaviour in agriculture, mapping who studies it and the themes the field returns to.</span>
+            <span class="pp-m"><span>0 citations</span><span>first author</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Agriculture</span><span class="pp-tag">Bibliometrics</span><span class="pp-go">doi.org/10.1504/ijaitg.2023.136908 ↗</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="pp" href="https://doi.org/10.52805/bjit.v17i2.244" target="_blank" rel="noopener">
+            <span class="pp-y">2022</span>
+            <span class="pp-t">Student Engagement in Online Classes During COVID-19: A Sentiment Analysis</span>
+            <span class="pp-v">Bangladesh Journal of Integrated Thoughts · 17(2)</span>
+            <span class="pp-a"><b>Mehedi Hasan Ifti</b>, Paolo Saona, Muhammad Tofazzel Hossain, Shahnur Azad Chowdhury, Md. Abul Kalam Azad</span>
+            <span class="pp-s">How students engaged with online classes during the pandemic, measured by running sentiment analysis (Azure Machine Learning) on their written responses.</span>
+            <span class="pp-m"><span>0 citations</span><span>first author</span><span class="pp-tag">Education</span><span class="pp-tag">Sentiment analysis</span><span class="pp-tag">Machine learning</span><span class="pp-go">doi.org/10.52805/bjit.v17i2.244 ↗</span></span>
+          </a>
+        </li>
+      </ol>
+      <p><a class="back" href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">All research on ResearchGate ↗</a></p>
+    </section>
   </main>
 
   <aside class="meta" id="meta" aria-label="Page details"></aside>
 
   <footer class="colophon">
     Set in Bricolage Grotesque, Literata and IBM Plex Mono. Built by talking it through with Claude Code. No tracking, no cookies.<br>
-    <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a><br>
-    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · T theme</span>
+    <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a><br>
+    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 research · T theme</span>
   </footer>
 </div>
 
@@ -877,6 +966,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <a class="nav" href="#notes"><span class="n">3</span>Notes</a>
   <a class="nav" href="#work"><span class="n">4</span>Work</a>
   <a class="nav" href="#shelf"><span class="n">5</span>Shelf</a>
+  <a class="nav" href="#research"><span class="n">6</span>Research</a>
   <button type="button" class="ap-open"><span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span>Theme</button>
 </nav>
 
@@ -888,6 +978,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <li><a class="nav" href="#notes"><span class="n">03</span><span class="t">Notes</span><span class="d" id="m-notecount"></span></a></li>
     <li><a class="nav" href="#work"><span class="n">04</span><span class="t">Work</span><span class="d">Musemind</span></a></li>
     <li><a class="nav" href="#shelf"><span class="n">05</span><span class="t">Shelf</span><span class="d">books</span></a></li>
+    <li><a class="nav" href="#research"><span class="n">06</span><span class="t">Research</span><span class="d">papers</span></a></li>
   </ol>
   <div class="now-mini" id="m-nowmini"></div>
   <div class="links">
@@ -1291,7 +1382,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
-    html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>5</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
+    html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>6</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
     if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
     meta.innerHTML = html;
     tocItems = heads;
@@ -1513,7 +1604,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     if (e.key === 'Escape' && !sheet.hidden) sheetOpen(false);
   });
 
-  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf' };
+  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'research' };
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var t = e.target.tagName;

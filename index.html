@@ -264,6 +264,27 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 }
 @media (prefers-reduced-motion: reduce) { .rd-bars i, .rd-dot, .rd-area { transition: none; } }
 
+/* calendar activity: GitHub-style grid of meetings per day. Sits at the foot of the right rail on the index page, inline when the rail is hidden. */
+.act { display: grid; gap: 0.35rem; font-family: var(--mono); }
+.act-m, .act-g { display: grid; grid-template-columns: repeat(var(--w), minmax(0, 1fr)); gap: 2px; }
+.act-m span { font-size: 0.625rem; color: var(--overlay1); white-space: nowrap; overflow: visible; width: 0; }
+.act-g { grid-template-rows: repeat(7, auto); grid-auto-flow: column; }
+.act-g i { display: block; aspect-ratio: 1; border-radius: 2px; background: var(--surface0); }
+.act i.l1 { background: color-mix(in srgb, var(--green) 30%, var(--surface0)); }
+.act i.l2 { background: color-mix(in srgb, var(--green) 55%, var(--surface0)); }
+.act i.l3 { background: color-mix(in srgb, var(--green) 80%, var(--surface0)); }
+.act i.l4 { background: var(--green); }
+.act-g i:hover { outline: 1px solid var(--ink); outline-offset: 1px; }
+.act-k { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.25rem 0.5rem; font-size: 0.6875rem; color: var(--subtext0); }
+.act-r { flex: 1 0 100%; color: var(--text); font-variant-numeric: tabular-nums; }
+.act-l { display: inline-flex; align-items: center; gap: 2px; color: var(--overlay1); }
+.act-l i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--surface0); }
+.act-l i:first-child { margin-left: 0.3rem; } .act-l i:last-child { margin-right: 0.3rem; }
+.act-src { font-size: 0.6875rem; color: var(--overlay1); }
+.act-inline { max-width: 20rem; }
+:root[data-layout="3"] .act-inline { display: none; }
+@media (max-width: 960px) { :root[data-layout="3"] .act-inline { display: block; } }
+
 /* appearance panel: edge tab + slide-out drawer */
 .ap-tab {
   position: fixed; z-index: 30; top: 50%; right: env(safe-area-inset-right, 0px); transform: translateY(-50%);
@@ -376,26 +397,6 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p>My clients range from enterprise teams with a dozen stakeholders to solo founders with six months of runway. <span class="sn-ref"></span><span class="sn">Different buyers, same question underneath: is this worth it?</span> I've learned that the hard part is rarely the design. It's alignment, timing, and saying the uncomfortable thing early.</p>
       <p>This site is my notebook. I write down what I learn in those rooms, and keep a monthly log of what I'm exploring, watching and reading. <a href="#suggest">Suggestions welcome.</a></p>
 
-      <h2>Post-match stats</h2>
-      <p class="sub">Self-rated, scored like the end of a ranked match. Strength is how good I am. Interest is how much more of it I want.</p>
-      <figure class="radar" id="radar">
-        <div class="rd-hud"><span>Season 2026 · Key accounts</span><span class="ovr">OVR<b id="rd-ovr"></b></span></div>
-        <div class="rd-body">
-          <svg class="rd-svg" viewBox="0 0 400 290" role="img" aria-label="Radar chart of strength and interest across my core skills. The same numbers are listed beside it."></svg>
-          <ol class="rd-list" id="rd-list"></ol>
-        </div>
-        <div class="rd-foot">
-          <div class="rd-legend">
-            <button type="button" aria-pressed="true" data-s="str"><i class="k"></i>Strength</button>
-            <button type="button" aria-pressed="true" data-s="int"><i class="k rd-int"></i>Interest</button>
-          </div>
-          <dl class="rd-calls">
-            <div><dt>MVP</dt><dd id="rd-mvp"></dd></div>
-            <div><dt>Grinding</dt><dd id="rd-grind"></dd></div>
-          </dl>
-        </div>
-      </figure>
-
       <h2>Recent notes</h2>
       <ul class="entries">
         <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed. Enterprises buy safety.</span><span class="d">12 Oct</span></a></li>
@@ -410,6 +411,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
         <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a>
       </div>
+
+      <div class="act-inline"><p class="label">Activity</p><div id="act-inline" style="margin-top:0.6rem"></div></div>
     </section>
 
     <!-- ============ NOW ============ -->
@@ -533,6 +536,26 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
         <li><b>Write it down.</b> If it isn't in the recap, it didn't happen.</li>
       </ul>
 
+      <h2>Post-match stats</h2>
+      <p class="sub">Self-rated, scored like the end of a ranked match. Strength is how good I am. Interest is how much more of it I want.</p>
+      <figure class="radar" id="radar">
+        <div class="rd-hud"><span>Season 2026 · Key accounts</span><span class="ovr">OVR<b id="rd-ovr"></b></span></div>
+        <div class="rd-body">
+          <svg class="rd-svg" viewBox="0 0 400 290" role="img" aria-label="Radar chart of strength and interest across my core skills. The same numbers are listed beside it."></svg>
+          <ol class="rd-list" id="rd-list"></ol>
+        </div>
+        <div class="rd-foot">
+          <div class="rd-legend">
+            <button type="button" aria-pressed="true" data-s="str"><i class="k"></i>Strength</button>
+            <button type="button" aria-pressed="true" data-s="int"><i class="k rd-int"></i>Interest</button>
+          </div>
+          <dl class="rd-calls">
+            <div><dt>MVP</dt><dd id="rd-mvp"></dd></div>
+            <div><dt>Grinding</dt><dd id="rd-grind"></dd></div>
+          </dl>
+        </div>
+      </figure>
+
       <h2>Working together</h2>
       <p>If you're building something in the GCC and want a design partner who cares about the numbers, email me at <b>mh.hasan884@gmail.com</b>.</p>
     </section>
@@ -602,6 +625,65 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   var navs = document.querySelectorAll('.rail a.nav');
 
 
+  // ACTIVITY UPDATE: meetings per day from my calendar, oldest first, one row per week starting Sunday.
+  // Counts only: no titles, no names. Declined, all-day and out-of-office events are left out.
+  var ACTIVITY = {
+    from: '2026-06-14',
+    counts: [
+      7, 9, 10, 11, 9, 0, 1,
+      9, 11, 8, 9, 8, 1, 1,
+      5, 10, 8, 5, 14, 1, 0,
+      9, 9, 13, 8, 8, 1, 0,
+      3, 4, 17, 8, 4, 0, 1,
+      4, 6, 6, 14, 3, 0, 0,
+      2, 9, 5, 5, 2, 0, 0,
+      4, 7, 5, 7, 7, 3, 0,
+      5, 7, 13, 3, 10, 1, 0,
+      4, 6, 6, 6, 3, 0, 0,
+      3, 3, 8, 6, 15, 1, 0,
+      3, 5, 6, 5, 3, 3, 0,
+      4, 4, 6, 9, 2, 2, 0,
+      1, 4, 2, 3, 6, 1, 0,
+      2, 6, 5, 7, 5, 1, 0,
+      2, 6, 7, 2, 4, 1, 0,
+      7, 3, 7, 9, 3, 1, 0,
+      6, 13, 4, 2, 1, 1, 0
+    ]
+  };
+  function activityHTML() {
+    var c = ACTIVITY.counts, start = new Date(ACTIVITY.from + 'T00:00:00'), w = Math.ceil(c.length / 7);
+    var day = function (i) { var d = new Date(start); d.setDate(d.getDate() + i); return d; };
+    var fmt = function (d, o) { return d.toLocaleDateString('en-GB', o); };
+    var lvl = function (v) { return v === 0 ? 0 : v <= 2 ? 1 : v <= 5 ? 2 : v <= 8 ? 3 : 4; };
+    var total = c.reduce(function (t, v) { return t + v; }, 0);
+    var months = '', last = -1;
+    for (var k = 0; k < w; k++) {
+      var m = day(k * 7).getMonth();
+      months += '<span>' + (m !== last && k < w - 1 ? 'JanFebMarAprMayJunJulAugSepOctNovDec'.substr(m * 3, 3) : '') + '</span>';
+      last = m;
+    }
+    var cells = c.map(function (v, i) {
+      return '<i class="l' + lvl(v) + '" data-d="' + fmt(day(i), { weekday: 'short', day: 'numeric', month: 'short' }) + '" data-n="' + v + '"></i>';
+    }).join('');
+    var sum = total + ' meetings · ' + w + ' wks';
+    return '<div class="act"><div class="act-m" style="--w:' + w + '" aria-hidden="true">' + months + '</div>' +
+      '<div class="act-g" style="--w:' + w + '" role="img" aria-label="Calendar activity: ' + total + ' meetings over the last ' + w + ' weeks">' + cells + '</div>' +
+      '<div class="act-k"><span class="act-r" data-sum="' + sum + '">' + sum + '</span>' +
+      '<span class="act-l" aria-hidden="true">less<i></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i>more</span></div>' +
+      '<div class="act-src">From my calendar, to ' + fmt(day(c.length - 1), { day: 'numeric', month: 'short' }) + '</div></div>';
+  }
+  document.getElementById('act-inline').innerHTML = activityHTML();
+  // hover a day to read it; leave the grid to see the total again
+  document.addEventListener('mouseover', function (e) {
+    var cell = e.target.closest && e.target.closest('.act-g i');
+    document.querySelectorAll('.act-r').forEach(function (r) {
+      if (cell && r.closest('.act') === cell.closest('.act')) {
+        var n = +cell.getAttribute('data-n');
+        r.textContent = cell.getAttribute('data-d') + ' · ' + n + (n === 1 ? ' meeting' : ' meetings');
+      } else r.textContent = r.getAttribute('data-sum');
+    });
+  });
+
   // Right column: contents, page details, what I'm on right now, prev/next note.
   var meta = document.getElementById('meta');
   var tocItems = [];
@@ -642,6 +724,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
     html += '<section><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>5</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
+    if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
     meta.innerHTML = html;
     tocItems = heads;
     meta.querySelectorAll('.toc button').forEach(function (b) {
@@ -760,7 +843,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     var h = target.querySelector('h1');
     document.title = (id === 'index' ? '' : (h ? h.textContent + ' · ' : '')) + "Ifti's Notebook";
     buildMeta(target, id);
-    if (id === 'index' && radarPlay) radarPlay();
+    if (id === 'work' && radarPlay) radarPlay();
     window.scrollTo(0, 0);
     setTimeout(function () { window.scrollTo(0, 0); }, 0);
   }

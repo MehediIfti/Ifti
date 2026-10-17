@@ -828,9 +828,64 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   .js .page.on { animation: in 0.25s ease-out; }
   @keyframes in { from { opacity: 0.4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 }
+
+/* FPS cursor: a crosshair everywhere, red and tighter over anything you can click, normal I-beam in text fields. Mouse and trackpad only. */
+@media (pointer: fine) {
+  html, html * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 2V11M16 21V30M2 16H11M21 16H30' stroke='%23000' stroke-opacity='.6' stroke-width='4'/%3E%3Cpath d='M16 2V11M16 21V30M2 16H11M21 16H30' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='1.7' fill='%23ffffff' stroke='%23000' stroke-opacity='.6'/%3E%3C/svg%3E") 16 16, crosshair !important; }
+  html a, html button, html [role="tab"], html [role="button"], html label, html summary, html select, html input[type="range"], html input[type="radio"], html input[type="checkbox"], html .graph-open { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 2V13M16 19V30M2 16H13M19 16H30' stroke='%23000' stroke-opacity='.6' stroke-width='4'/%3E%3Cpath d='M16 2V13M16 19V30M2 16H13M19 16H30' stroke='%23ff4d6d' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='1.7' fill='%23ff4d6d' stroke='%23000' stroke-opacity='.6'/%3E%3C/svg%3E") 16 16, pointer !important; }
+  html input[type="text"], html input[type="email"], html input:not([type]), html textarea, html [contenteditable] { cursor: text !important; }
+  html button:disabled { cursor: not-allowed !important; }
+}
+.hitmark { position: fixed; z-index: 120; width: 18px; height: 18px; margin: -9px 0 0 -9px; pointer-events: none; }
+.hitmark::before, .hitmark::after { content: ""; position: absolute; inset: 0; background:
+  linear-gradient(45deg, transparent 46%, #fff 46%, #fff 54%, transparent 54%) top left / 6px 6px no-repeat,
+  linear-gradient(45deg, transparent 46%, #fff 46%, #fff 54%, transparent 54%) bottom right / 6px 6px no-repeat; }
+.hitmark::after { transform: rotate(90deg); }
+@media (prefers-reduced-motion: no-preference) { .hitmark { animation: hit 0.32s ease-out forwards; } @keyframes hit { from { opacity: 1; transform: scale(0.7); } to { opacity: 0; transform: scale(1.35); } } }
+
+/* intro: once per visit, a short "breach" in a terminal, then the page glitches into place. Skipped for reduced motion. */
+.boot { display: none; }
+html.intro .boot { display: grid; position: fixed; inset: 0; z-index: 110; place-content: center; padding: 1rem; background: var(--base); color: var(--green); font-family: var(--mono); font-size: 0.875rem; line-height: 1.7; }
+html.intro .shell, html.intro .m-top, html.intro .m-tabs, html.intro .ap-tab { visibility: hidden; }
+.boot p { margin: 0; opacity: 0; white-space: pre; }
+.boot p.on { opacity: 1; }
+.boot .ok { color: var(--text); font-weight: 500; letter-spacing: 0.2em; }
+.boot .cur { display: inline-block; width: 0.55em; height: 1.05em; margin-left: 0.2em; vertical-align: -0.15em; background: currentColor; animation: we-blink 0.8s steps(1) infinite; }
+.boot::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.25) 0 1px, transparent 1px 3px); }
+html.intro.boot-out .boot { animation: boot-out 0.38s steps(6) forwards; }
+@keyframes boot-out {
+  0% { clip-path: inset(0); transform: none; }
+  20% { clip-path: inset(12% 0 58% 0); transform: translateX(-12px); }
+  40% { clip-path: inset(48% 0 22% 0); transform: translateX(14px); }
+  60% { clip-path: inset(70% 0 6% 0); transform: translateX(-6px); }
+  80% { clip-path: inset(30% 0 52% 0); transform: translateX(8px); }
+  100% { clip-path: inset(50% 0 50% 0); opacity: 0; }
+}
+html.glitch .shell, html.glitch .m-top { animation: glitch 0.55s steps(2) 1; }
+html.glitch body { text-shadow: 2px 0 rgba(255, 0, 80, 0.55), -2px 0 rgba(0, 255, 230, 0.55); }
+html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105; pointer-events: none; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0 1px, transparent 1px 4px); }
+@keyframes glitch {
+  0% { transform: translate(0); clip-path: inset(0); filter: none; }
+  15% { transform: translate(-6px, 1px); clip-path: inset(8% 0 62% 0); filter: hue-rotate(40deg); }
+  30% { transform: translate(5px, -1px); clip-path: inset(42% 0 30% 0); }
+  45% { transform: translate(-3px, 0); clip-path: inset(68% 0 4% 0); filter: hue-rotate(-30deg) saturate(1.6); }
+  60% { transform: translate(4px, 1px); clip-path: inset(20% 0 44% 0); }
+  75% { transform: translate(-2px, 0); clip-path: inset(0); filter: contrast(1.3); }
+  100% { transform: translate(0); clip-path: inset(0); filter: none; }
+}
 </style>
+<script>
+  // Decide before first paint whether this visit gets the intro, so the page never flashes in first.
+  try { if (!sessionStorage.getItem('booted') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(function () { document.documentElement.classList.remove('intro', 'boot-out'); }, 4000); } } catch (e) {}
+</script>
 </head>
 <body>
+<div class="boot" id="boot" aria-hidden="true">
+  <p>&gt; connecting to ifti.notebook</p>
+  <p>&gt; bypassing firewall  [████████████] 100%</p>
+  <p>&gt; decrypting notes, work, playground</p>
+  <p class="ok">ACCESS GRANTED<span class="cur"></span></p>
+</div>
 
 <header class="m-top" id="m-top">
   <a class="who" href="#index">Ifti</a>
@@ -2131,6 +2186,32 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     if (t === 'INPUT' || t === 'TEXTAREA') return;
     if (keys[e.key]) location.hash = keys[e.key];
   });
+
+  // Intro: type the breach lines, glitch the page in, then never again this visit.
+  (function () {
+    if (!root.classList.contains('intro')) return;
+    var lines = document.querySelectorAll('#boot p'), timers = [], done = false;
+    try { sessionStorage.setItem('booted', '1'); } catch (e) {}
+    function finish() {
+      if (done) return; done = true; timers.forEach(clearTimeout);
+      root.classList.add('boot-out');
+      setTimeout(function () {
+        root.classList.remove('intro', 'boot-out'); root.classList.add('glitch');
+        setTimeout(function () { root.classList.remove('glitch'); }, 560);
+      }, 380);
+    }
+    lines.forEach(function (l, i) { timers.push(setTimeout(function () { l.classList.add('on'); }, 90 + i * 170)); });
+    timers.push(setTimeout(finish, 90 + lines.length * 170 + 260));
+    ['click', 'keydown', 'touchstart'].forEach(function (ev) { window.addEventListener(ev, finish, { once: true, passive: true }); });
+  })();
+  // Hit marker where you click, like landing a shot.
+  if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      var m = document.createElement('span'); m.className = 'hitmark'; m.style.left = e.clientX + 'px'; m.style.top = e.clientY + 'px';
+      document.body.appendChild(m); setTimeout(function () { m.remove(); }, 340);
+    });
+  }
 
   // Paperclip: Wayne Enterprises. A preset task plays out as a simulated run through the org chart.
   (function () {

@@ -7,62 +7,61 @@
 <meta name="description" content="Notes on design, clients and the business between them.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Figtree:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 html, body { margin: 0; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
 /* Layout: a pocket notebook on dot-grid paper. Narrow index rail on the left, one reading column, sidenotes in the right margin.
-   Colour: Catppuccin. Latte in light mode, Mocha in dark mode. Headings, links and labels each get their own hue, like syntax highlighting. */
+   Colour: editor-style themes picked by the visitor. Headings, links and labels each get their own hue, like syntax highlighting.
+   Theme tokens follow Catppuccin's names; other themes map their own colours onto the same roles. */
 :root {
-  /* Catppuccin Latte */
-  --base: #eff1f5; --mantle: #e6e9ef; --surface0: #ccd0da; --surface1: #bcc0cc; --overlay1: #8c8fa1;
-  --text: #4c4f69; --subtext1: #5c5f77; --subtext0: #6c6f85;
-  --mauve: #8839ef; --maroon: #d20f39; --peach: #fe640b; --teal: #179299; --green: #40a02b;
-  --yellow: #df8e1d; --pink: #ea76cb; --sky: #04a5e5; --lavender: #7287fd;
-
   --paper: var(--base);
   --ink: var(--text);
   --muted: var(--subtext0);
   --rule: var(--surface0);
   --dot: var(--surface1);
+  --line: color-mix(in srgb, var(--surface1) 55%, transparent);
   --accent: var(--maroon);                  /* links */
   --h1: var(--mauve);
   --h2: var(--peach);
   --label: var(--teal);
   --mark: color-mix(in srgb, var(--yellow) 28%, transparent);
+  --pattern: radial-gradient(circle, var(--dot) 1.1px, transparent 1.5px);
+  --pattern-size: 22px 22px;
   --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --serif: "Literata", Georgia, "Times New Roman", serif;
+  --sans: "Figtree", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --body: var(--serif);
   --s-0: 0.8125rem; --s-1: 1.0625rem; --s-2: 1.5rem; --s-3: 2.5rem;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    /* Catppuccin Mocha */
-    --base: #1e1e2e; --mantle: #181825; --surface0: #313244; --surface1: #45475a; --overlay1: #7f849c;
-    --text: #cdd6f4; --subtext1: #bac2de; --subtext0: #a6adc8;
-    --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1;
-    --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --base: #1e1e2e; --mantle: #181825; --surface0: #313244; --surface1: #45475a; --overlay1: #7f849c;
-  --text: #cdd6f4; --subtext1: #bac2de; --subtext0: #a6adc8;
-  --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1;
-  --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe;
-  color-scheme: dark;
-}
+/* themes (bare :root = default) */
+:root, :root[data-palette="black"] { --base: #000000; --mantle: #0c0c0d; --surface0: #222225; --surface1: #2c2c30; --overlay1: #6b6b73; --text: #d4d4d8; --subtext1: #e4e4e7; --subtext0: #8e8e96; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
+:root[data-palette="mocha"] { --base: #1e1e2e; --mantle: #181825; --surface0: #313244; --surface1: #45475a; --overlay1: #7f849c; --text: #cdd6f4; --subtext1: #bac2de; --subtext0: #a6adc8; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
+:root[data-palette="gruvbox"] { --base: #282828; --mantle: #1d2021; --surface0: #3c3836; --surface1: #504945; --overlay1: #928374; --text: #ebdbb2; --subtext1: #fbf1c7; --subtext0: #a89984; --mauve: #d3869b; --maroon: #fb4934; --peach: #fe8019; --teal: #8ec07c; --green: #b8bb26; --yellow: #fabd2f; --pink: #d3869b; --sky: #83a598; --lavender: #83a598; color-scheme: dark; }
+:root[data-palette="nord"] { --base: #2e3440; --mantle: #272c36; --surface0: #3b4252; --surface1: #434c5e; --overlay1: #7b88a1; --text: #e5e9f0; --subtext1: #eceff4; --subtext0: #a3abba; --mauve: #b48ead; --maroon: #bf616a; --peach: #d08770; --teal: #8fbcbb; --green: #a3be8c; --yellow: #ebcb8b; --pink: #b48ead; --sky: #88c0d0; --lavender: #81a1c1; color-scheme: dark; }
+:root[data-palette="latte"] { --base: #eff1f5; --mantle: #e6e9ef; --surface0: #ccd0da; --surface1: #bcc0cc; --overlay1: #8c8fa1; --text: #4c4f69; --subtext1: #5c5f77; --subtext0: #6c6f85; --mauve: #8839ef; --maroon: #d20f39; --peach: #fe640b; --teal: #179299; --green: #40a02b; --yellow: #df8e1d; --pink: #ea76cb; --sky: #04a5e5; --lavender: #7287fd; color-scheme: light; }
+:root[data-palette="solarized"] { --base: #fdf6e3; --mantle: #eee8d5; --surface0: #e4ddc8; --surface1: #d3cbb7; --overlay1: #93a1a1; --text: #586e75; --subtext1: #073642; --subtext0: #839496; --mauve: #6c71c4; --maroon: #dc322f; --peach: #cb4b16; --teal: #2aa198; --green: #859900; --yellow: #b58900; --pink: #d33682; --sky: #268bd2; --lavender: #6c71c4; color-scheme: light; }
+:root[data-palette="paper"] { --base: #ffffff; --mantle: #f6f6f4; --surface0: #e4e2dd; --surface1: #c9c6bf; --overlay1: #9a968e; --text: #2b2925; --subtext1: #1f1d1a; --subtext0: #6b675f; --mauve: #8c2f2b; --maroon: #8c2f2b; --peach: #3d3a35; --teal: #8a6d3b; --green: #4f7a3a; --yellow: #a87a12; --pink: #9b4f78; --sky: #3f6f8f; --lavender: #6a5f9e; color-scheme: light; }
+
+/* background styles */
+:root[data-bg="grid"]  { --pattern: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); --pattern-size: 24px 24px; }
+:root[data-bg="lines"] { --pattern: linear-gradient(transparent 27px, var(--line) 27px); --pattern-size: 100% 28px; }
+:root[data-bg="plain"] { --pattern: none; }
+/* text styles */
+:root[data-type="sans"] { --body: var(--sans); }
+:root[data-type="mono"] { --body: var(--mono); --s-1: 0.96875rem; }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   background-color: var(--paper);
-  background-image: radial-gradient(circle, var(--dot) 1.1px, transparent 1.5px);
-  background-size: 22px 22px;
+  background-image: var(--pattern);
+  background-size: var(--pattern-size);
   background-attachment: fixed;
   color: var(--ink);
-  font: 400 var(--s-1)/1.65 var(--serif);
+  font: 400 var(--s-1)/1.65 var(--body);
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 0;
@@ -178,6 +177,70 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .btn:disabled { opacity: 0.6; cursor: default; }
 .status { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); }
 @media (max-width: 760px) { .log .st { min-width: 0; text-align: left; } .suggest { padding: 1rem; } }
+
+/* appearance panel: edge tab + slide-out drawer */
+.ap-tab {
+  position: fixed; z-index: 30; top: 50%; right: env(safe-area-inset-right, 0px); transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.55rem;
+  padding: 0.8rem 0.5rem 0.9rem; cursor: pointer;
+  background: var(--mantle); color: var(--subtext0);
+  border: 1px solid var(--surface0); border-right: 0; border-radius: 10px 0 0 10px;
+  font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: padding 0.15s ease, color 0.15s ease;
+}
+.ap-tab:hover { color: var(--text); padding-right: 0.8rem; }
+.ap-tab .lbl { writing-mode: vertical-rl; transform: rotate(180deg); }
+.ap-dots { display: grid; gap: 4px; }
+.ap-dots i { width: 8px; height: 8px; border-radius: 50%; display: block; }
+.ap-dots i:nth-child(1) { background: var(--mauve); }
+.ap-dots i:nth-child(2) { background: var(--peach); }
+.ap-dots i:nth-child(3) { background: var(--teal); }
+.ap-panel {
+  position: fixed; z-index: 31;
+  top: calc(env(safe-area-inset-top, 0px) + 12px); right: calc(env(safe-area-inset-right, 0px) + 12px);
+  width: min(19rem, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow-y: auto;
+  background: var(--mantle); color: var(--text);
+  border: 1px solid var(--surface0); border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+  padding: 1rem; display: grid; gap: 1.1rem;
+  font-family: var(--mono); font-size: 0.75rem;
+}
+.ap-head { display: flex; justify-content: space-between; align-items: center; }
+.ap-head b { font-family: var(--display); font-size: 1.05rem; color: var(--h1); letter-spacing: 0; }
+.ap-x { font: inherit; font-size: 1.1rem; line-height: 1; background: none; border: 0; color: var(--subtext0); cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 4px; }
+.ap-x:hover { color: var(--text); background: var(--surface0); }
+.ap-g { display: grid; gap: 0.5rem; }
+.ap-g > span { color: var(--label); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.6875rem; }
+.ap-themes { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+.ap-themes button {
+  font: inherit; text-align: left; cursor: pointer;
+  background: var(--sw-bg); color: var(--sw-fg);
+  border: 1px solid color-mix(in srgb, var(--sw-fg) 18%, transparent); border-radius: 7px;
+  padding: 0.55rem 0.6rem; display: grid; gap: 0.4rem;
+}
+.ap-themes .sw { display: flex; gap: 4px; }
+.ap-themes .sw i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+.ap-themes button[aria-pressed="true"] { outline: 2px solid var(--mauve); outline-offset: 1px; }
+.ap-seg { display: flex; border: 1px solid var(--surface0); border-radius: 7px; overflow: hidden; }
+.ap-seg button { flex: 1; font: inherit; background: none; border: 0; color: var(--subtext0); padding: 0.45rem 0.3rem; cursor: pointer; }
+.ap-seg button + button { border-left: 1px solid var(--surface0); }
+.ap-seg button:hover { color: var(--text); }
+.ap-seg button[aria-pressed="true"] { background: var(--surface0); color: var(--text); }
+.ap-foot { display: flex; justify-content: space-between; gap: 0.5rem; color: var(--subtext0); font-size: 0.6875rem; }
+.ap-foot button { font: inherit; background: none; border: 0; color: var(--accent); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .ap-panel:not([hidden]) { animation: ap-in 0.2s ease-out; }
+  @keyframes ap-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+}
+@media (max-width: 760px) {
+  .ap-tab { top: auto; transform: none; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); right: calc(env(safe-area-inset-right, 0px) + 16px);
+    flex-direction: row; border: 1px solid var(--surface0); border-radius: 999px; padding: 0.55rem 0.8rem; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+  .ap-tab:hover { padding-right: 0.8rem; }
+  .ap-tab .lbl { writing-mode: horizontal-tb; transform: none; }
+  .ap-dots { grid-auto-flow: column; }
+  .ap-panel { top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); }
+  footer.colophon { margin-bottom: 4rem; }
+}
 
 @media (max-width: 1100px) {
   main { padding-right: 0; }
@@ -385,9 +448,38 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <footer class="colophon">
     Set in Literata and IBM Plex Mono. Hand-written HTML. No tracking, no cookies.<br>
     <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a><br>
-    Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf
+    Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · T theme
   </footer>
 </div>
+
+<button type="button" class="ap-tab" id="ap-tab" aria-expanded="false" aria-controls="ap-panel" title="Change theme (T)">
+  <span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Theme</span>
+</button>
+<aside class="ap-panel" id="ap-panel" aria-label="Appearance" hidden>
+  <div class="ap-head"><b>Appearance</b><button type="button" class="ap-x" id="ap-close" aria-label="Close">×</button></div>
+  <div class="ap-g"><span>Theme</span>
+    <div class="ap-themes" data-attr="palette">
+      <button type="button" id="th-black" data-val="black" style="--sw-bg:#000000;--sw-fg:#d4d4d8"><span class="sw"><i style="background:#cba6f7"></i><i style="background:#fab387"></i><i style="background:#94e2d5"></i></span>Black</button>
+      <button type="button" id="th-mocha" data-val="mocha" style="--sw-bg:#1e1e2e;--sw-fg:#cdd6f4"><span class="sw"><i style="background:#cba6f7"></i><i style="background:#fab387"></i><i style="background:#94e2d5"></i></span>Mocha</button>
+      <button type="button" id="th-gruvbox" data-val="gruvbox" style="--sw-bg:#282828;--sw-fg:#ebdbb2"><span class="sw"><i style="background:#d3869b"></i><i style="background:#fe8019"></i><i style="background:#8ec07c"></i></span>Gruvbox</button>
+      <button type="button" id="th-nord" data-val="nord" style="--sw-bg:#2e3440;--sw-fg:#e5e9f0"><span class="sw"><i style="background:#b48ead"></i><i style="background:#d08770"></i><i style="background:#8fbcbb"></i></span>Nord</button>
+      <button type="button" id="th-latte" data-val="latte" style="--sw-bg:#eff1f5;--sw-fg:#4c4f69"><span class="sw"><i style="background:#8839ef"></i><i style="background:#fe640b"></i><i style="background:#179299"></i></span>Latte</button>
+      <button type="button" id="th-solarized" data-val="solarized" style="--sw-bg:#fdf6e3;--sw-fg:#586e75"><span class="sw"><i style="background:#6c71c4"></i><i style="background:#cb4b16"></i><i style="background:#2aa198"></i></span>Solarized</button>
+      <button type="button" id="th-paper" data-val="paper" style="--sw-bg:#ffffff;--sw-fg:#2b2925"><span class="sw"><i style="background:#8c2f2b"></i><i style="background:#3d3a35"></i><i style="background:#8a6d3b"></i></span>Paper</button>
+    </div>
+  </div>
+  <div class="ap-g"><span>Background</span>
+    <div class="ap-seg" data-attr="bg">
+      <button type="button" id="bg-dots" data-val="dots">Dots</button><button type="button" id="bg-grid" data-val="grid">Grid</button><button type="button" id="bg-lines" data-val="lines">Lines</button><button type="button" id="bg-plain" data-val="plain">Plain</button>
+    </div>
+  </div>
+  <div class="ap-g"><span>Text</span>
+    <div class="ap-seg" data-attr="type">
+      <button type="button" id="ty-serif" data-val="serif">Serif</button><button type="button" id="ty-sans" data-val="sans">Sans</button><button type="button" id="ty-mono" data-val="mono">Mono</button>
+    </div>
+  </div>
+  <div class="ap-foot"><span>Press T · saved on this device</span><button type="button" id="ap-reset">Reset</button></div>
+</aside>
 
 <script>
 (function () {
@@ -432,6 +524,51 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       .then(function (r) { if (!r.ok) throw new Error(); form.reset(); status.textContent = 'Got it. Thank you.'; })
       .catch(function () { status.textContent = "Couldn't send. Try again, or email me."; })
       .then(function () { btn.disabled = false; });
+  });
+
+
+  // Appearance: theme, background and text style, remembered per visitor.
+  var AP_DEFAULTS = { palette: 'black', bg: 'dots', type: 'serif' };
+  var tab = document.getElementById('ap-tab');
+  var panel = document.getElementById('ap-panel');
+  var groups = document.querySelectorAll('#ap-panel [data-attr]');
+  function apSet(attr, val, save) {
+    root.setAttribute('data-' + attr, val);
+    document.querySelectorAll('#ap-panel [data-attr="' + attr + '"] button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-val') === val));
+    });
+    if (save) { try { localStorage.setItem('ap-' + attr, val); } catch (e) {} }
+  }
+  groups.forEach(function (g) {
+    var attr = g.getAttribute('data-attr');
+    var val = AP_DEFAULTS[attr];
+    try { val = localStorage.getItem('ap-' + attr) || val; } catch (e) {}
+    apSet(attr, val, false);
+    g.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (b) apSet(attr, b.getAttribute('data-val'), true);
+    });
+  });
+  function apOpen(open) {
+    panel.hidden = !open; tab.setAttribute('aria-expanded', String(open));
+    if (open) panel.querySelector('[aria-pressed="true"]').focus();
+  }
+  tab.addEventListener('click', function () { apOpen(panel.hidden); });
+  document.getElementById('ap-close').addEventListener('click', function () { apOpen(false); tab.focus(); });
+  document.getElementById('ap-reset').addEventListener('click', function () {
+    Object.keys(AP_DEFAULTS).forEach(function (k) {
+      apSet(k, AP_DEFAULTS[k], false);
+      try { localStorage.removeItem('ap-' + k); } catch (e) {}
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (!panel.hidden && !panel.contains(e.target) && !tab.contains(e.target)) apOpen(false);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA') return;
+    if (e.key === 't' || e.key === 'T') apOpen(panel.hidden);
+    if (e.key === 'Escape' && !panel.hidden) { apOpen(false); tab.focus(); }
   });
 
   var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf' };

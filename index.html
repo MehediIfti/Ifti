@@ -577,7 +577,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .log .tag { --c: var(--lavender); font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); border-radius: 3px; padding: 0.05rem 0.45rem; }
 .tag.t-ai { --c: var(--mauve); } .tag.t-design { --c: var(--pink); } .tag.t-anime { --c: var(--peach); }
 .tag.t-series { --c: var(--green); } .tag.t-film { --c: var(--sky); } .tag.t-book { --c: var(--yellow); } .tag.t-tool { --c: var(--teal); }
-.tag.t-music { --c: var(--maroon); }
+.tag.t-music { --c: var(--maroon); } .tag.t-pod { --c: var(--peach); }
 .log .st { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); min-width: 9rem; text-align: right; }
 .log p { flex-basis: 100%; color: var(--muted); font-size: 0.95em; }
 .suggest { display: grid; gap: 1rem; padding: 1.25rem; border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--rule)); border-radius: 6px; background: var(--paper); }
@@ -1150,9 +1150,9 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <h2 id="writing-h">Writing</h2>
       <p class="sub">Short notes from client rooms here. Longer pieces on <a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a>.</p>
       <ul class="entries">
+        <li><a href="#n-005"><span class="no">N°005</span><span class="t">Trust is the product</span><span class="d">17 Oct 2026</span></a></li>
         <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
         <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep 2026</span></a></li>
-        <li><a href="#n-002"><span class="no">N°002</span><span class="t">The recap email is the contract people read</span><span class="d">14 Sep 2026</span></a></li>
       </ul>
       <p><a class="back" href="#notes">All notes →</a></p>
       <p class="label">On Substack · Life Modules</p>
@@ -1216,8 +1216,9 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <p><a class="back" href="#shelf">Books that stuck →</a></p>
 
       <h2>Listening</h2>
-      <p class="sub">On repeat this month.</p>
+      <p class="sub">Podcasts in my ears, and music on repeat.</p>
       <ul class="log">
+        <li><span class="t">Huge Conversations <span class="by">· Cleo Abram</span></span><span class="tag t-pod">Podcast</span><p>Alexandr Wang on Muse, Meta's personal agent. <a href="#n-005">My notes</a> · <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Watch ↗</a></p></li>
         <li><span class="t">Linkin Park</span><span class="tag t-music">Music</span></li>
         <li><span class="t">The Weeknd</span><span class="tag t-music">Music</span></li>
         <li><span class="t">Karan Aujla</span><span class="tag t-music">Music</span></li>
@@ -1261,12 +1262,29 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <p class="lede">Short notes from client work.</p>
       <p>Negotiation, stakeholder alignment and the business side of design. Each one fits on a phone screen. Numbered in the order I wrote them.</p>
       <ul class="entries">
+        <li><a href="#n-005"><span class="no">N°005</span><span class="t">Trust is the product</span><span class="d">17 Oct 2026</span></a></li>
         <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
         <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep 2026</span></a></li>
         <li><a href="#n-002"><span class="no">N°002</span><span class="t">The recap email is the contract people read</span><span class="d">14 Sep 2026</span></a></li>
         <li><a href="#n-001"><span class="no">N°001</span><span class="t">Why this notebook exists</span><span class="d">1 Sep 2026</span></a></li>
       </ul>
     </section>
+
+    <article class="page" id="n-005" data-tags="ai agents trust positioning">
+      <div class="note-head"><span class="label">N°005</span><span class="label">17 Oct 2026</span></div>
+      <h1>Trust is the product</h1>
+      <p>Listening to Cleo Abram's <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Huge Conversations</a> with Alexandr Wang, Meta's chief AI officer. The topic is Muse, Meta's personal agent: 5 million downloads in 22 days.</p>
+      <p>Muse isn't sold as the smartest agent. It's sold as one you can safely hand your inbox and your card to. Most of the episode is about that.</p>
+      <dl class="facts">
+        <dt>Sandbox</dt><dd>Each agent runs in its own secure virtual machine. Your data stays inside it.</dd>
+        <dt>Sentinel</dt><dd>A second agent checks anything going out, like a form or a call, and blocks card and ID numbers.</dd>
+        <dt>Permission</dt><dd>A new site, or sending data out, needs your yes first.</dd>
+      </dl>
+      <p>The rest of the industry is racing on coding. Wang's bet is the people who "probably never even want to code."<span class="sn-ref"></span><span class="sn">On safety he was blunt: nobody knows yet how to oversee systems much smarter than us.</span></p>
+      <p>The line I kept: <mark>"You're going to have to do your part if you want to make $10,000."</mark> The agent does the work. You still own the outcome.</p>
+      <p>Same in a sales call. Buyers rarely pick the most capable agency. They pick the one they'd trust with access. So I show the guardrails before the portfolio.</p>
+      <p><a class="back" href="#notes">← All notes</a></p>
+    </article>
 
     <article class="page" id="n-004" data-tags="positioning sales">
       <div class="note-head"><span class="label">N°004</span><span class="label">12 Oct 2026</span></div>
@@ -2212,7 +2230,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     };
     if (id !== 'now' && !isNote) {
       html += '<section><h4>Right now</h4><ul class="cur">' +
-        [['reading', pick('Reading')], ['watching', pick('Watching')], ['exploring', pick('Exploring')]].filter(function (r) { return r[1]; })
+        [['reading', pick('Reading')], ['watching', pick('Watching')], ['listening', pick('Listening')], ['exploring', pick('Exploring')]].filter(function (r) { return r[1]; })
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
@@ -2393,7 +2411,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   (function () {
     var rows = document.querySelectorAll('#now .log');
     var mini = document.getElementById('m-nowmini'); var html = '';
-    [['exploring', 0], ['watching', 1], ['reading', 2]].forEach(function (r) {
+    [['exploring', 0], ['watching', 1], ['reading', 2], ['listening', 3]].forEach(function (r) {
       var t = rows[r[1]] && rows[r[1]].querySelector('.t');
       if (t) html += '<div>' + r[0] + '<b>' + esc(t.childNodes[0].textContent.trim()) + '</b></div>';
     });

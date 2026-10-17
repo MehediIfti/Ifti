@@ -1145,9 +1145,16 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .log-more { margin-top: 0.6rem; font-size: 0.9375rem; }
 
 /* Move things around: floating buttons, section grips, drop line */
-.ap-tab.free { border-left: 1px solid var(--surface0); border-radius: 10px; transition: color 0.15s ease; }
-.ap-tab.free:hover { padding-left: 0.5rem; }
-.ap-tab.free.tight { padding: 0.55rem 0.5rem; }
+.ap-tab.free, .term-fab.free { transition: left 0.2s ease, top 0.2s ease, color 0.15s ease, border-color 0.15s; }
+.ap-tab.edge-r { border-left: 1px solid var(--surface0); border-right: 0; border-radius: 10px 0 0 10px; }
+.ap-tab.edge-r:hover { padding-left: 0.5rem; padding-right: 0.8rem; }
+.ap-tab:is(.edge-t, .edge-b) { flex-direction: row; padding: 0.5rem 0.8rem; border: 1px solid var(--surface0); }
+.ap-tab.edge-t { border-top: 0; border-radius: 0 0 10px 10px; }
+.ap-tab.edge-b { border-bottom: 0; border-radius: 10px 10px 0 0; }
+.ap-tab:is(.edge-t, .edge-b):hover { padding-left: 0.8rem; }
+.ap-tab:is(.edge-t, .edge-b) .lbl { writing-mode: horizontal-tb; transform: none; }
+.ap-tab:is(.edge-t, .edge-b) .ap-dots { grid-auto-flow: column; }
+.ap-tab.dragging { border: 1px solid var(--surface0); border-radius: 10px; }
 [data-float].dragging { cursor: grabbing; box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: none; transition: none; }
 .sec-grip { position: absolute; z-index: 25; width: 22px; height: 24px; padding: 0; border: 0; border-radius: 4px; background: transparent; cursor: grab; color: var(--overlay1);
   background-image: radial-gradient(currentColor 1.2px, transparent 1.4px); background-size: 6px 6px; background-position: 5px 3px; background-repeat: repeat; clip-path: inset(3px 5px 3px 5px); }
@@ -1358,16 +1365,16 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     <div class="rail-grp" data-grp="playground">
       <button type="button" class="name grp-t" aria-expanded="true" aria-controls="grp-playground">Playground<i aria-hidden="true"></i></button>
       <ol id="grp-playground">
-        <li><a class="nav" href="#paperclip"><kbd>6</kbd>Paperclip</a></li>
-        <li><a class="nav" href="#hermes"><kbd>7</kbd>Hermes Agent</a></li>
-        <li><a class="nav" href="#whiteboard"><kbd>0</kbd>Whiteboard</a></li>
+        <li><a class="nav" href="#whiteboard"><kbd>6</kbd>Whiteboard</a></li>
+        <li><a class="nav" href="#paperclip"><kbd>7</kbd>Paperclip</a></li>
+        <li><a class="nav" href="#hermes"><kbd>8</kbd>Hermes Agent</a></li>
       </ol>
     </div>
     <div class="rail-grp" data-grp="academia" data-shut>
       <button type="button" class="name grp-t" aria-expanded="true" aria-controls="grp-academia">Academia<i aria-hidden="true"></i></button>
       <ol id="grp-academia">
-        <li><a class="nav" href="#research"><kbd>8</kbd>Research</a></li>
-        <li><a class="nav" href="#education"><kbd>9</kbd>Education</a></li>
+        <li><a class="nav" href="#research"><kbd>9</kbd>Research</a></li>
+        <li><a class="nav" href="#education"><kbd>0</kbd>Education</a></li>
       </ol>
     </div>
     <p class="stamp">Updated<br>17 Oct 2026</p>
@@ -2119,14 +2126,14 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   </ol>
   <p class="grp">Playground</p>
   <ol>
-    <li><a class="nav" href="#paperclip"><span class="n">06</span><span class="t">Paperclip</span><span class="d">agent</span></a></li>
-    <li><a class="nav" href="#hermes"><span class="n">07</span><span class="t">Hermes Agent</span><span class="d">agent</span></a></li>
-    <li class="wb-nav"><a class="nav" href="#whiteboard"><span class="n">00</span><span class="t">Whiteboard</span><span class="d">tool</span></a></li>
+    <li class="wb-nav"><a class="nav" href="#whiteboard"><span class="n">06</span><span class="t">Whiteboard</span><span class="d">tool</span></a></li>
+    <li><a class="nav" href="#paperclip"><span class="n">07</span><span class="t">Paperclip</span><span class="d">agent</span></a></li>
+    <li><a class="nav" href="#hermes"><span class="n">08</span><span class="t">Hermes Agent</span><span class="d">agent</span></a></li>
   </ol>
   <p class="grp">Academia</p>
   <ol>
-    <li><a class="nav" href="#research"><span class="n">08</span><span class="t">Research</span><span class="d">papers</span></a></li>
-    <li><a class="nav" href="#education"><span class="n">09</span><span class="t">Education</span><span class="d">IUT · BBA</span></a></li>
+    <li><a class="nav" href="#research"><span class="n">09</span><span class="t">Research</span><span class="d">papers</span></a></li>
+    <li><a class="nav" href="#education"><span class="n">00</span><span class="t">Education</span><span class="d">IUT · BBA</span></a></li>
   </ol>
   <div class="now-mini" id="m-nowmini"></div>
   <div class="socials" data-socials></div>
@@ -2929,7 +2936,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     if (e.key === 'Escape' && !sheet.hidden) sheetOpen(false);
   });
 
-  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'paperclip', '7': 'hermes', '8': 'research', '9': 'education', '0': 'whiteboard' };
+  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'whiteboard', '7': 'paperclip', '8': 'hermes', '9': 'research', '0': 'education' };
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var t = e.target.tagName;
@@ -3575,15 +3582,19 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       function apply() {
         var v = saved();
         if (!v || !desk.matches) {
-          el.classList.remove('free'); el.style.left = el.style.right = el.style.bottom = '';
+          el.classList.remove('free', 'edge-l', 'edge-r', 'edge-t', 'edge-b'); el.style.left = el.style.right = el.style.bottom = '';
           if (el === tab) { el.style.top = ''; placeApTab(); } else el.style.top = '';
           if (el !== tab) placeApTab();
           return;
         }
-        el.classList.add('free'); el.classList.remove('tight');
+        if (!v.e) { save(null); return apply(); } // an old free-floating spot: start again from home
+        el.classList.add('free'); el.classList.remove('tight', 'edge-l', 'edge-r', 'edge-t', 'edge-b'); el.classList.add('edge-' + v.e);
         el.style.right = el.style.bottom = 'auto';
-        el.style.left = clamp(v.x * innerWidth, 8, innerWidth - el.offsetWidth - 8) + 'px';
-        el.style.top = clamp(v.y * innerHeight, 8, innerHeight - el.offsetHeight - 8) + 'px';
+        var w = el.offsetWidth, h = el.offsetHeight, m = el === tab ? 0 : 12, W = document.documentElement.clientWidth, H = innerHeight;
+        // pinned to the edge itself (right/bottom too), so hover padding never opens a gap
+        el.style.left = el.style.top = 'auto';
+        if (v.e === 'l' || v.e === 'r') { el.style[v.e === 'l' ? 'left' : 'right'] = m + 'px'; el.style.top = clamp(v.t * H - h / 2, 8, H - h - 8) + 'px'; }
+        else { el.style[v.e === 't' ? 'top' : 'bottom'] = m + 'px'; el.style.left = clamp(v.t * W - w / 2, 8, W - w - 8) + 'px'; }
         placeApTab();
       }
       el.addEventListener('pointerdown', function (e) {
@@ -3605,10 +3616,14 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         if (e.pointerId !== id) return; id = null;
         if (!moved) return;
         el.classList.remove('dragging'); endAt = Date.now();
-        var r = el.getBoundingClientRect();
+        // snap to the nearest edge of the screen, keeping the spot along that edge
+        var r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, W = document.documentElement.clientWidth, H = innerHeight;
+        var d = { l: cx, r: W - cx, t: cy, b: H - cy }, e = 'l';
+        Object.keys(d).forEach(function (k) { if (d[k] < d[e]) e = k; });
+        var t = e === 'l' || e === 'r' ? cy / H : cx / W;
         // home: the left edge for the Theme tab, the bottom-left corner for the Terminal button
-        var home = el === tab ? r.left < 48 : r.left < 64 && innerHeight - r.bottom < 64;
-        save(home ? null : { x: r.left / innerWidth, y: r.top / innerHeight });
+        var home = el === tab ? e === 'l' : (e === 'b' && cx < 220) || (e === 'l' && cy > H - 160);
+        save(home ? null : { e: e, t: t });
         apply();
       }
       window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);

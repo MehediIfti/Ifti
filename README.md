@@ -10,7 +10,7 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Shelf and Now lists:** everything watched, read, listened to and explored lives in the `SHELF UPDATE` block, one list per section (Exploring, Watching, Reading, Listening), newest at the top. Add new items at the top. The Now page shows the first few of each list, set by the list's `data-now` count; older items stay on the Shelf, and each Now list links to its section there. The right rail's "Right now", the phone menu and the terminal's `now` read the top item of each.
 
-**Moving things around (computer only):** drag the Theme tab or the Terminal button anywhere on screen; the spot is saved in that browser, and dropping it back at its old edge or corner puts it home. Hover a section heading and drag the dotted grip to move that section within the page, or drag a link in the left rail to reorder the pages (Previous/Next follows the rail). Section and page order are not saved: a reload puts them back. The code is the `MOVE THINGS AROUND` block in the script.
+**Moving things around (computer only):** drag the Theme tab or the Terminal button anywhere on screen; the spot is saved in that browser, and dropping it back at its old edge or corner puts it home. Hover a section heading and drag the dotted grip to move that section within the page, or drag a link in the left rail to reorder the pages (Previous/Next follows the rail). The Theme tab and Terminal button snap to the nearest screen edge when let go. Section and page order are not saved: a reload puts them back. The code is the `MOVE THINGS AROUND` block in the script.
 
 **Stats radar:** edit the `STATS UPDATE` array in the script at the bottom of `index.html`. Each row is `[chart label, full name, strength, interest]`, scored 0–100. OVR, MVP and Grinding are calculated from it.
 
@@ -22,7 +22,7 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Education:** the `EDUCATION UPDATE` block in `index.html`, one `<li>` per school, newest first. It sits under the Academia heading in the left rail with Research.
 
-**Playground:** agent and workflow pages (Paperclip, Hermes Agent), under the Playground heading in the left rail, above Academia. Playground starts open and Academia starts folded (the `data-shut` attribute on its rail group); clicking a heading toggles it, the choice is saved per visitor, and the group holding the current page always opens. The Theme tab snaps to just below the rail's last line (the Updated date) and shrinks to a dots-only pill when the screen is too short. On phones, the tab bar's More button opens the full index with Playground and Academia.
+**Playground:** tool, agent and workflow pages (Whiteboard, Paperclip, Hermes Agent, in that order), under the Playground heading in the left rail, above Academia. Playground starts open and Academia starts folded (the `data-shut` attribute on its rail group); clicking a heading toggles it, the choice is saved per visitor, and the group holding the current page always opens. The Theme tab snaps to just below the rail's last line (the Updated date) and shrinks to a dots-only pill when the screen is too short. On phones, the tab bar's More button opens the full index with Playground and Academia.
 
 **Social links:** the `SOCIALS UPDATE` list in the script. Each profile appears as a pill on the homepage (Let's talk), in the phone index menu, and as an icon tile under "Find me" in the right column. The footer links are plain HTML.
 
@@ -49,4 +49,4 @@ Single static file (`index.html`), served with GitHub Pages.
 - Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
 - No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.
 
-**Whiteboard (Playground, key 0):** the app lives in its own repo, `MehediIfti/whiteboard`, served at `mehediifti.github.io/whiteboard/`. The `#whiteboard` page loads it in a frame (`WB_URL` in the script) the first time the page opens, on computers only; phones see a short note instead. Change the tool in that repo, not here. If the site moves to a custom domain, give the app a subdomain (e.g. `board.yourdomain.com`) and update `WB_URL`, so boards and full screen keep working.
+**Whiteboard (Playground, key 6):** the app lives in its own repo, `MehediIfti/whiteboard`, served at `mehediifti.github.io/whiteboard/`. The `#whiteboard` page loads it in a frame (`WB_URL` in the script) the first time the page opens, on computers only; phones see a short note instead. Change the tool in that repo, not here. If the site moves to a custom domain, give the app a subdomain (e.g. `board.yourdomain.com`) and update `WB_URL`, so boards and full screen keep working.

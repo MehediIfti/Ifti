@@ -192,23 +192,27 @@ ul.plain li::marker { color: var(--muted); }
 .we-row { position: relative; }
 .we-legend { margin: 0.7rem 0 0; font-family: var(--mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--overlay1); text-align: center; }
 .we-legend span { color: var(--pg); }
-.we-node { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.15rem 0.55rem; min-width: 0; padding: 0.55rem 0.65rem; background: var(--paper); border: 1px solid var(--surface0); border-radius: 9px; transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s; }
-.we-row .we-node { min-width: 13rem; }
-.we-node.head { border-color: color-mix(in srgb, var(--pg) 35%, var(--surface0)); }
-.we-av { grid-row: span 2; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; font: 700 0.9rem var(--display); color: var(--pg); background: color-mix(in srgb, var(--pg) 15%, transparent); }
-.we-node.board .we-av { color: var(--base); background: var(--mauve); }
-.we-node.ceo .we-av { color: var(--base); background: var(--pg); }
-.we-who { min-width: 0; display: grid; }
-.we-who b { font-family: var(--display); font-size: 0.95rem; color: var(--ink); }
-.we-who small { font-family: var(--mono); font-size: 0.625rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.we-st { grid-column: 2; justify-self: start; font-family: var(--mono); font-size: 0.5625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--overlay1); }
-.we-st::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 0.3rem; border-radius: 50%; background: var(--surface1); vertical-align: 0.05em; }
-.we-node.working { border-color: var(--pg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pg) 18%, transparent); }
-.we-node.working .we-st { color: var(--pg); } .we-node.working .we-st::before { background: var(--pg); }
-.we-node.done .we-st { color: var(--green); } .we-node.done .we-st::before { background: var(--green); }
+.we-node { --rt: var(--overlay1); position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "n r" "s s"; align-items: baseline; gap: 0 0.5rem; min-width: 0; padding: 0.42rem 0.6rem 0.42rem 0.7rem; background: var(--paper); border: 1px solid var(--surface0); border-left: 3px solid var(--rt); border-radius: 6px; transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s; }
+.we-row .we-node { min-width: 12rem; }
+/* runtimes: colour is a second cue, every node also names its runtime */
+[data-rt="claude"] { --rt: var(--peach); } [data-rt="codex"] { --rt: var(--mauve); } [data-rt="hermes"] { --rt: var(--teal); } [data-rt="human"] { --rt: var(--overlay1); }
+.we-who { display: contents; }
+.we-who b { grid-area: n; min-width: 0; }
+.we-who small { grid-area: s; padding-right: 0.8rem; }
+.we-who b { font-family: var(--sans); font-weight: 600; font-size: 0.8125rem; line-height: 1.3; color: var(--ink); }
+.we-who small { font-family: var(--mono); font-size: 0.5938rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.we-rt { grid-area: r; font-family: var(--mono); font-size: 0.5313rem; letter-spacing: 0.02em; color: var(--rt); white-space: nowrap; }
+.we-st { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.we-node::after { content: ""; position: absolute; right: 0.55rem; bottom: 0.5rem; width: 6px; height: 6px; border-radius: 50%; background: var(--surface1); }
+.we-node.working { border-color: var(--rt); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rt) 16%, transparent); }
+.we-node.working::after { background: var(--rt); }
+.we-node.done::after { background: var(--green); }
+.we-rts { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 1rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--text); }
+.we-rts span::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 0.4rem; border-radius: 2px; background: var(--rt); vertical-align: -0.05em; }
+.we-rts small { margin-left: auto; font-size: 0.625rem; color: var(--overlay1); }
 .we[data-busy="true"] .we-node:not(.working):not(.done):not(.board) { opacity: 0.55; }
 @media (prefers-reduced-motion: no-preference) {
-  .we-node.working .we-st::before { animation: we-blink 0.9s ease-in-out infinite; }
+  .we-node.working::after { animation: we-blink 0.9s ease-in-out infinite; }
   .we-v.on, .we-node.head.link::before { animation: we-flow 0.6s linear infinite; }
   @keyframes we-blink { 50% { opacity: 0.25; } }
   @keyframes we-flow { to { background-position: 0 7px; } }
@@ -228,9 +232,10 @@ ul.plain li::marker { color: var(--muted); }
 .we-run-h #we-ticket { color: var(--muted); }
 .we-sim { margin-left: auto; color: var(--overlay1); }
 .we-log { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
-.we-log li { display: grid; grid-template-columns: 2.6rem 1.5rem minmax(0, 1fr); gap: 0.55rem; align-items: start; font-size: 0.9rem; line-height: 1.45; }
+.we-log li { display: grid; grid-template-columns: 2.6rem 1.4rem minmax(0, 1fr); gap: 0.55rem; align-items: start; font-size: 0.9rem; line-height: 1.45; }
 .we-log time { font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); padding-top: 0.15rem; }
-.we-log .we-av { width: 1.5rem; height: 1.5rem; font-size: 0.7rem; grid-row: auto; }
+.we-log .we-av { display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 4px; font: 700 0.6875rem var(--sans); color: var(--base); background: var(--rt); }
+.we-log .rt { font-family: var(--mono); font-size: 0.625rem; color: var(--rt); margin-left: 0.25rem; }
 .we-log b { font-family: var(--sans); font-weight: 600; color: var(--ink); }
 .we-log .to { font-family: var(--mono); font-size: 0.6875rem; color: var(--pg); }
 @media (prefers-reduced-motion: no-preference) { .we-log li { animation: we-in 0.25s ease-out; } @keyframes we-in { from { opacity: 0; transform: translateY(4px); } } }
@@ -242,6 +247,7 @@ ul.plain li::marker { color: var(--muted); }
   .we-team { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: 0; gap: 0.9rem 0.5rem; }
   .we-team::before, .we-node.head::before { display: none; }
   .we-row .we-node { min-width: 0; width: 100%; }
+  .we-rts small { margin-left: 0; flex-basis: 100%; }
   .we-row { width: 100%; }
   .we-input { flex-direction: column; }
 }
@@ -1075,40 +1081,41 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 
         <form class="we-ask" id="we-ask" autocomplete="off">
           <label for="we-q">Give the company a task</label>
-          <div class="we-input"><input id="we-q" type="text" placeholder="e.g. Build the monthly management report" maxlength="160"><button type="submit" class="pg-btn">Run</button></div>
+          <div class="we-input"><input id="we-q" type="text" placeholder="e.g. Board meeting on Thursday. What does our pipeline look like?" maxlength="160"><button type="submit" class="pg-btn">Run</button></div>
           <div class="we-presets" id="we-presets">
-            <button type="button" data-s="crm">Clean up the CRM after this week's calls</button>
-            <button type="button" data-s="proposal">Draft a proposal for a fintech discovery call</button>
-            <button type="button" data-s="report">Build the monthly management report</button>
-            <button type="button" data-s="align">Get design, dev and finance aligned on a scope change</button>
+            <button type="button" data-s="call">We just had a discovery call. What are the next actions from the recording?</button>
+            <button type="button" data-s="closing">We have four closing calls this week. What's our action plan?</button>
+            <button type="button" data-s="board">Board meeting on Thursday. What does our pipeline look like?</button>
+            <button type="button" data-s="scope">A client wants more scope at the same price. How do we respond?</button>
           </div>
         </form>
 
+        <div class="we-rts" aria-label="Runtimes"><span data-rt="claude">Claude Code</span><span data-rt="codex">Codex</span><span data-rt="hermes">Hermes Agent</span><small>3 runtimes, one org chart</small></div>
         <div class="we-org" role="group" aria-label="Wayne Enterprises org chart: board, CEO, four department heads and four specialists">
-          <div class="we-row"><div class="we-node board" data-a="ifti"><span class="we-av">I</span><span class="we-who"><b>Ifti</b><small>The board</small></span><span class="we-st">idle</span></div></div>
+          <div class="we-row"><div class="we-node board" data-a="ifti" data-rt="human"><span class="we-who"><b>Ifti</b><small>The board</small></span><span class="we-rt">Human</span><span class="we-st">idle</span></div></div>
           <span class="we-v" data-e="rocket" aria-hidden="true"></span>
-          <div class="we-row"><div class="we-node ceo" data-a="rocket"><span class="we-av">R</span><span class="we-who"><b>Rocket</b><small>CEO · plans and delegates</small></span><span class="we-st">idle</span></div></div>
+          <div class="we-row"><div class="we-node ceo" data-a="rocket" data-rt="claude"><span class="we-who"><b>Rocket</b><small>CEO · plans and delegates</small></span><span class="we-rt">Claude Code</span><span class="we-st">idle</span></div></div>
           <span class="we-v" data-e="trunk" aria-hidden="true"></span>
           <div class="we-team">
             <div class="we-col">
-              <div class="we-node head" data-a="alfred"><span class="we-av">A</span><span class="we-who"><b>Alfred</b><small>Records & CRM</small></span><span class="we-st">idle</span></div>
+              <div class="we-node head" data-a="alfred" data-rt="hermes"><span class="we-who"><b>Alfred</b><small>Records & CRM</small></span><span class="we-rt">Hermes</span><span class="we-st">idle</span></div>
               <span class="we-v" data-e="jarvis" aria-hidden="true"></span>
-              <div class="we-node" data-a="jarvis"><span class="we-av">J</span><span class="we-who"><b>Jarvis</b><small>Call notes</small></span><span class="we-st">idle</span></div>
+              <div class="we-node" data-a="jarvis" data-rt="hermes"><span class="we-who"><b>Jarvis</b><small>Call notes</small></span><span class="we-rt">Hermes</span><span class="we-st">idle</span></div>
             </div>
             <div class="we-col">
-              <div class="we-node head" data-a="fury"><span class="we-av">F</span><span class="we-who"><b>Fury</b><small>Sales & proposals</small></span><span class="we-st">idle</span></div>
+              <div class="we-node head" data-a="fury" data-rt="claude"><span class="we-who"><b>Fury</b><small>Sales & proposals</small></span><span class="we-rt">Claude Code</span><span class="we-st">idle</span></div>
               <span class="we-v" data-e="robin" aria-hidden="true"></span>
-              <div class="we-node" data-a="robin"><span class="we-av">R</span><span class="we-who"><b>Robin</b><small>Proposals (jr)</small></span><span class="we-st">idle</span></div>
+              <div class="we-node" data-a="robin" data-rt="codex"><span class="we-who"><b>Robin</b><small>Proposals (jr)</small></span><span class="we-rt">Codex</span><span class="we-st">idle</span></div>
             </div>
             <div class="we-col">
-              <div class="we-node head" data-a="oracle"><span class="we-av">O</span><span class="we-who"><b>Oracle</b><small>Cross-functional</small></span><span class="we-st">idle</span></div>
+              <div class="we-node head" data-a="oracle" data-rt="claude"><span class="we-who"><b>Oracle</b><small>Cross-functional</small></span><span class="we-rt">Claude Code</span><span class="we-st">idle</span></div>
               <span class="we-v" data-e="friday" aria-hidden="true"></span>
-              <div class="we-node" data-a="friday"><span class="we-av">F</span><span class="we-who"><b>Friday</b><small>Scheduling</small></span><span class="we-st">idle</span></div>
+              <div class="we-node" data-a="friday" data-rt="hermes"><span class="we-who"><b>Friday</b><small>Scheduling</small></span><span class="we-rt">Hermes</span><span class="we-st">idle</span></div>
             </div>
             <div class="we-col">
-              <div class="we-node head" data-a="lucius"><span class="we-av">L</span><span class="we-who"><b>Lucius</b><small>Analytics</small></span><span class="we-st">idle</span></div>
+              <div class="we-node head" data-a="lucius" data-rt="codex"><span class="we-who"><b>Lucius</b><small>Analytics</small></span><span class="we-rt">Codex</span><span class="we-st">idle</span></div>
               <span class="we-v" data-e="shuri" aria-hidden="true"></span>
-              <div class="we-node" data-a="shuri"><span class="we-av">S</span><span class="we-who"><b>Shuri</b><small>Data & charts</small></span><span class="we-st">idle</span></div>
+              <div class="we-node" data-a="shuri" data-rt="codex"><span class="we-who"><b>Shuri</b><small>Data & charts</small></span><span class="we-rt">Codex</span><span class="we-st">idle</span></div>
             </div>
           </div>
           <p class="we-legend">Four layers: board <span>→</span> CEO <span>→</span> department heads <span>→</span> specialists</p>
@@ -1994,60 +2001,68 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     var UP = { rocket: 'ifti', alfred: 'rocket', fury: 'rocket', oracle: 'rocket', lucius: 'rocket', jarvis: 'alfred', robin: 'fury', friday: 'oracle', shuri: 'lucius' };
     // each step: [agent, handed to (or ''), what happens]
     var RUNS = {
-      crm: { q: "Clean up the CRM after this week's calls", steps: [
-        ['ifti', 'rocket', 'Opens a ticket: tidy the CRM after this week\'s client calls.'],
-        ['rocket', 'alfred', 'Scopes it as a records job and hands it to Alfred.'],
-        ['alfred', 'jarvis', 'Asks Jarvis to match this week\'s call notes to their accounts.'],
-        ['jarvis', 'alfred', 'Logs 9 calls as activities, with the next step pulled from each note.'],
-        ['alfred', '', 'Merges 4 duplicate contacts, fills 11 missing fields, moves 3 deals to the right stage.'],
-        ['alfred', 'fury', 'Tells Fury that 2 deals have no next step.'],
-        ['fury', 'rocket', 'Adds a follow-up to both and reports back.'],
-        ['rocket', 'ifti', 'Reviews the changes and closes the ticket.']],
-        answer: ['CRM is current', ['9 calls logged against the right accounts', '4 duplicate contacts merged, 11 fields filled', '3 deals moved to their real stage', '2 stalled deals now have a follow-up: listed in the ticket']] },
-      proposal: { q: 'Draft a proposal for a fintech discovery call', steps: [
-        ['ifti', 'rocket', 'Opens a ticket: proposal for the fintech founder I met on Tuesday.'],
-        ['rocket', 'fury', 'Routes it to Fury, who owns sales and proposals.'],
-        ['fury', 'lucius', 'Asks analytics for context before anyone writes a word.'],
-        ['lucius', 'shuri', 'Has Shuri pull comparable past projects and their real budgets.'],
-        ['shuri', 'fury', 'Sends back 4 comparables with scope, weeks and final fee.'],
-        ['fury', 'robin', 'Briefs Robin: three options, founder-speed framing, priced from the comparables.'],
-        ['robin', '', 'Drafts the proposal: Discovery sprint, MVP design, Full product.'],
-        ['robin', 'oracle', 'Sends the timeline to Oracle to check with design and dev.'],
-        ['oracle', 'robin', 'Design and dev leads confirm capacity. Week 3 moves to week 4.'],
-        ['robin', 'fury', 'Revises and submits.'],
-        ['fury', 'rocket', 'Signs off on pricing and positioning.'],
-        ['rocket', 'ifti', 'Approves and hands you the draft.']],
-        answer: ['Proposal draft ready for your review', ['Three options, from a 2-week discovery sprint up to the full product', 'Pricing based on 4 comparable past projects', 'Timeline checked with design and dev capacity', 'Opening paragraph written for a founder: speed first']] },
-      report: { q: 'Build the monthly management report', steps: [
-        ['ifti', 'rocket', 'Opens a ticket: management report for this month.'],
-        ['rocket', 'lucius', 'Hands it to Lucius in analytics.'],
-        ['lucius', 'alfred', 'Asks records for a clean pipeline export first.'],
-        ['alfred', 'lucius', 'Exports pipeline, renewals and activity, already de-duplicated.'],
-        ['lucius', '', 'Crunches it: revenue by account, win rate, pipeline coverage, renewals at risk.'],
-        ['lucius', 'shuri', 'Has Shuri turn the numbers into charts.'],
-        ['shuri', 'lucius', 'Builds the charts and a one-page summary.'],
-        ['lucius', 'rocket', 'Hands over the deck with three things management should decide.'],
-        ['rocket', 'ifti', 'Checks the numbers against last month and closes the ticket.']],
-        answer: ['Management report ready', ['Revenue, win rate and pipeline coverage, month on month', '2 renewals flagged at risk, with the reason for each', 'One-page summary on top, charts behind it', 'Three decisions for management, written as questions']] },
-      align: { q: 'Get design, dev and finance aligned on a scope change', steps: [
-        ['ifti', 'rocket', 'Opens a ticket: the client wants two new screens without moving the date.'],
-        ['rocket', 'oracle', 'Routes it to Oracle: this is a people problem first.'],
-        ['oracle', '', 'Collects what design, dev and finance each need to say yes.'],
+      call: { q: 'We just had a discovery call. What are the next actions from the recording?', steps: [
+        ['ifti', 'rocket', 'Opens a ticket with the call recording attached.'],
+        ['rocket', 'alfred', 'Routes it to records: the call needs to be in the CRM before anyone acts on it.'],
+        ['alfred', 'jarvis', 'Has Jarvis transcribe the recording and tag decisions, objections and asks.'],
+        ['jarvis', 'alfred', 'Finds 3 commitments, 2 objections (budget timing, internal approval) and 4 open questions.'],
+        ['alfred', '', 'Logs the call on the account and moves the deal to discovery complete.'],
+        ['alfred', 'fury', 'Hands the deal summary to sales.'],
+        ['fury', '', 'Turns it into next steps: case study, a scoping workshop with their CTO, a phased budget option.'],
+        ['fury', 'friday', 'Asks Friday to hold workshop slots with the CTO.'],
+        ['friday', 'fury', 'Holds three slots next week and drafts the invite.'],
+        ['fury', 'rocket', 'Submits the action plan and the recap email.'],
+        ['rocket', 'ifti', 'Approves and sends it to you.']],
+        answer: ['Next actions from the call', ['Send the relevant case study within 24 hours', 'Scoping workshop with their CTO: three slots held for next week', 'A phased budget option to answer the timing objection', 'Recap email drafted with decisions, owners, dates and the 4 open questions']] },
+      closing: { q: "We have four closing calls this week. What's our action plan?", steps: [
+        ['ifti', 'rocket', 'Opens a ticket: action plan for this week\'s four closing calls.'],
+        ['rocket', 'fury', 'Hands it to sales.'],
+        ['fury', 'lucius', 'Asks analytics where each deal really stands.'],
+        ['lucius', 'shuri', 'Has Shuri pull stage, value, last contact and the stakeholder map for all four.'],
+        ['shuri', 'lucius', 'Returns a one-line read on each deal, with the risk.'],
+        ['lucius', 'fury', 'Ranks them: two likely, one at risk in procurement, one waiting on legal.'],
+        ['fury', 'robin', 'Asks Robin for a one-page brief per call: objections, give-gets, walk-away point.'],
+        ['robin', 'fury', 'Four briefs ready.'],
+        ['fury', 'oracle', 'Asks Oracle to put the design lead on the at-risk call.'],
+        ['oracle', 'fury', 'Design lead confirmed.'],
+        ['fury', 'rocket', 'Submits the plan.'],
+        ['rocket', 'ifti', 'Signs it off and sends it to you.']],
+        answer: ['Close plan for the week', ['Two likely closes: confirm start dates and send the contract on the call', 'Procurement risk: offer phased payments, hold the price', 'Waiting on legal: send a summary of the redlines a day ahead', 'One brief per call with objections, give-gets and the walk-away point']] },
+      board: { q: 'Board meeting on Thursday. What does our pipeline look like?', steps: [
+        ['ifti', 'rocket', 'Opens a ticket: pipeline view for Thursday\'s board meeting.'],
+        ['rocket', 'lucius', 'Hands it to analytics.'],
+        ['lucius', 'alfred', 'Asks records for a clean CRM snapshot first.'],
+        ['alfred', 'jarvis', 'Has Jarvis backfill activity from last week\'s calls.'],
+        ['jarvis', 'alfred', 'Every open deal now has its latest touch logged.'],
+        ['alfred', 'lucius', 'Snapshot ready: no duplicates, every deal with a stage and a next step.'],
+        ['lucius', '', 'Works out weighted pipeline, coverage against target, stage conversion and slipped deals.'],
+        ['lucius', 'shuri', 'Has Shuri build the board charts.'],
+        ['shuri', 'lucius', 'Charts and a one-page summary done.'],
+        ['lucius', 'rocket', 'Hands over the pack: what changed, what\'s at risk, what we need from the board.'],
+        ['rocket', 'ifti', 'Checks it against last quarter and sends it to you.']],
+        answer: ['Board pipeline pack ready', ['Weighted pipeline and coverage against the quarter\'s target', 'Stage conversion, plus every deal that slipped and why', 'Top five deals with owners and next steps', 'Three asks for the board, one slide each']] },
+      scope: { q: 'A client wants more scope at the same price. How do we respond?', steps: [
+        ['ifti', 'rocket', 'Opens a ticket: client asking for two more screens, same fee, same date.'],
+        ['rocket', 'oracle', 'Routes it to Oracle: design, dev and finance all have a stake.'],
         ['oracle', 'lucius', 'Asks analytics to cost the change.'],
         ['lucius', 'oracle', 'Two extra screens: +6 design days, +4 dev days, about 9% on the fee.'],
-        ['oracle', 'friday', 'Asks Friday to get the three leads in one room.'],
-        ['friday', 'oracle', 'Books a 20-minute call for tomorrow, 11:00, and sends the agenda.'],
-        ['oracle', 'rocket', 'Two options agreed: same date with a smaller scope, or the full scope a week later.'],
-        ['rocket', 'ifti', 'Sends you both options and the recap email to send.']],
-        answer: ['Two options, everyone on the same page', ['Option A: same date, one screen now, one in the next phase', 'Option B: both screens, launch moves by one week, +9% fee', 'Design, dev and finance have agreed to both', 'Recap email drafted for the client']] }
+        ['oracle', 'fury', 'Asks sales for the commercial position.'],
+        ['fury', '', 'Sets the rule: more scope costs time or money. Nothing is added for free.'],
+        ['fury', 'oracle', 'Proposes two options to put to the client.'],
+        ['oracle', 'friday', 'Asks Friday to get the three leads on one call.'],
+        ['friday', 'oracle', 'Books 20 minutes tomorrow and sends the agenda.'],
+        ['oracle', 'rocket', 'All three leads sign off on both options.'],
+        ['rocket', 'ifti', 'Sends you the options and a draft reply to the client.']],
+        answer: ['Response ready', ['Option A: same fee and date, the two screens move to phase two', 'Option B: both screens now, +9% fee, launch one week later', 'Design, dev and finance have signed off on both', 'Reply to the client drafted, leading with Option A']] }
     };
-    var MATCH = [['crm', /crm|record|contact|clean|log|hygiene/i], ['proposal', /proposal|pitch|quote|deck|scope of work|sow/i],
-                 ['report', /report|analy|data|number|metric|presentation|dashboard/i], ['align', /align|team|stakeholder|finance|change|cross/i]];
+    var MATCH = [['call', /call|recording|transcript|meeting notes|discovery|next action/i], ['closing', /clos|deal|negotiat|contract|this week/i],
+                 ['board', /board|pipeline|forecast|quarter|management/i], ['scope', /scope|price|discount|push|change|more work/i]];
     var nodes = {}, timers = [], closed = 0, t0;
     we.querySelectorAll('.we-node').forEach(function (n) { nodes[n.getAttribute('data-a')] = n; });
     var log = document.getElementById('we-log'), ans = document.getElementById('we-answer'), run = document.getElementById('we-run');
     var q = document.getElementById('we-q'), busyEl = document.getElementById('we-busy'), doneEl = document.getElementById('we-done');
-    function av(a) { return '<span class="we-av">' + AG[a][0] + '</span>'; }
+    var RT = { ifti: ['human', 'you'], rocket: ['claude', 'Claude Code'], fury: ['claude', 'Claude Code'], oracle: ['claude', 'Claude Code'], alfred: ['hermes', 'Hermes'], jarvis: ['hermes', 'Hermes'], friday: ['hermes', 'Hermes'], lucius: ['codex', 'Codex'], robin: ['codex', 'Codex'], shuri: ['codex', 'Codex'] };
+    function av(a) { return '<span class="we-av" data-rt="' + RT[a][0] + '">' + AG[a][0] + '</span>'; }
     function reset() {
       timers.forEach(clearTimeout); timers = [];
       Object.keys(nodes).forEach(function (k) { nodes[k].classList.remove('working', 'done', 'link'); nodes[k].querySelector('.we-st').textContent = 'idle'; });
@@ -2079,7 +2094,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
           busyEl.textContent = st[0] === 'ifti' ? 0 : 1;
           var sec = Math.round(i * gap / 1000 * 3);
           log.insertAdjacentHTML('beforeend', '<li><time>' + String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(sec % 60).padStart(2, '0') + '</time>' + av(st[0]) +
-            '<span><b>' + AG[st[0]][1] + '</b> ' + esc(st[2]) + (st[1] ? ' <span class="to">→ ' + AG[st[1]][1] + '</span>' : '') + '</span></li>');
+            '<span data-rt="' + RT[st[0]][0] + '"><b>' + AG[st[0]][1] + '</b><span class="rt">' + RT[st[0]][1] + '</span> ' + esc(st[2]) + (st[1] ? ' <span class="to">→ ' + AG[st[1]][1] + '</span>' : '') + '</span></li>');
         }, i * gap));
       });
       timers.push(setTimeout(function () {
@@ -2095,7 +2110,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       var hit = MATCH.filter(function (m) { return m[1].test(q.value); })[0];
       if (hit) { play(hit[0]); return; }
       reset(); run.hidden = false; ans.hidden = false; log.innerHTML = ''; document.getElementById('we-ticket').textContent = '';
-      ans.innerHTML = '<h4>Rocket · Not one of my demo runs</h4><ul><li>This demo plays four set tasks. Pick one of the prompts above, or mention the CRM, a proposal, a report or a scope change.</li></ul>';
+      ans.innerHTML = '<h4>Rocket · Not one of my demo runs</h4><ul><li>This demo plays four set tasks. Pick one of the prompts above, or ask about a call, closing deals, the pipeline or a scope request.</li></ul>';
     });
     function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
   })();

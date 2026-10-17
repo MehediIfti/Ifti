@@ -138,7 +138,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .rail .name { font-family: var(--display); font-size: 1.35rem; font-weight: 700; color: var(--h1); text-decoration: none; display: block; margin-bottom: 1.5rem; line-height: 1.3; }
 .rail ol + .rail-grp, .rail-grp + .rail-grp { margin-top: 2.25rem; }
 /* Playground and Academia fold away; the chevron points down when open */
-.rail .grp-t { font: inherit; font-family: var(--display); font-size: 1.35rem; font-weight: 700; color: var(--h1); background: none; border: 0; padding: 0; cursor: pointer; width: 100%; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.rail .grp-t { font: inherit; font-family: var(--display); font-size: 1.05rem; font-weight: 700; color: var(--h1); background: none; border: 0; padding: 0; cursor: pointer; width: 100%; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 .rail .grp-t i { width: 0.45rem; height: 0.45rem; border-right: 1.5px solid var(--overlay1); border-bottom: 1.5px solid var(--overlay1); transform: rotate(45deg) translate(-2px, -2px); transition: transform 0.15s ease; flex: none; }
 .rail .grp-t:hover i { border-color: var(--ink); }
 .rail-grp.shut .grp-t { margin-bottom: 0; }
@@ -158,8 +158,6 @@ main { min-width: 0; padding-right: 15rem; }
 .page + .page { margin-top: 5rem; padding-top: 3rem; border-top: 1px dashed var(--rule); }
 .js .page + .page { margin-top: 0; padding-top: 0; border-top: 0; }
 .js .page:not(.on) { display: none; }
-/* skip layout and paint for homepage blocks below the fold until they scroll near */
-#index > :is(.record, .beliefs, .offclock, .entries, .sub-box, .socials) { content-visibility: auto; contain-intrinsic-size: auto 320px; }
 
 h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.15; text-wrap: balance; margin: 0; }
 h1 { font-size: var(--s-3); letter-spacing: -0.02em; color: var(--h1); }
@@ -203,6 +201,9 @@ ul.plain li::marker { color: var(--muted); }
 .pg { --pg: var(--mauve); }
 .pg-quote { font-family: var(--mono); font-size: var(--s-0); color: var(--pg); }
 .page > h1 + .pg-quote { margin-top: 0.5rem; }
+.pg-quote span { color: var(--muted); }
+.wb-keys > summary { cursor: pointer; color: var(--subtext1); width: max-content; }
+.wb-keys > p { margin-top: 0.5rem; }
 .pg-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .pg-btn { font-family: var(--mono); font-size: var(--s-0); padding: 0.45rem 0.85rem; border-radius: 6px; text-decoration: none; background: var(--pg); color: var(--base); border: 1px solid var(--pg); }
 .pg-btn:hover { filter: brightness(1.08); }
@@ -437,7 +438,8 @@ ul.plain li::marker { color: var(--muted); }
 .pp-alt { margin: 0.35rem 0 0 1.1rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
 .pp-alt a { text-decoration: none; }
 @media (max-width: 760px) { .r-index { grid-template-columns: repeat(2, minmax(0, 1fr)); } .r-index > div:last-child:nth-child(odd) { grid-column: 1 / -1; } .pp-go { margin-left: 0; flex-basis: 100%; } }
-.shelf { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 1.1rem; }
+.shelf { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; border-top: 1px solid var(--rule); }
+.shelf li { padding: 0.85rem 0; border-bottom: 1px solid var(--rule); }
 .shelf b { font-weight: 600; color: var(--subtext1); }
 .shelf .by { color: var(--muted); }
 .shelf p { color: var(--muted); font-size: 0.95em; margin-top: 0.15rem; }
@@ -558,13 +560,10 @@ ul.plain li::marker { color: var(--muted); }
 .record span { font-family: var(--mono); font-size: var(--s-0); color: var(--label); padding-top: 0.15rem; font-variant-numeric: tabular-nums; }
 .record p { margin: 0; color: var(--muted); }
 .record b { color: var(--ink); font-weight: 600; }
-.sub-box { display: grid; gap: 0.45rem; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
-.sub-box label { font-family: var(--display); font-weight: 700; color: var(--ink); }
-.sub-box div { display: flex; gap: 0.5rem; }
-.sub-box input { flex: 1; min-width: 0; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--base); border: 1px solid var(--surface0); border-radius: 6px; padding: 0.5rem 0.7rem; }
+.sub-box { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
+.sub-box .back { margin-left: auto; }
+.sub-box input { flex: 1 1 14rem; min-width: 0; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--base); border: 1px solid var(--surface0); border-radius: 6px; padding: 0.5rem 0.7rem; }
 .sub-box input:focus { outline: none; border-color: var(--accent); }
-.sub-box small { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
-@media (max-width: 760px) { .sub-box div { flex-direction: column; } }
 /* calls to action */
 .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; }
 .cta .btn { text-decoration: none; display: inline-block; }
@@ -625,11 +624,11 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 /* three-column layout: index rail | page | page details */
 .meta { display: none; }
 :root[data-layout="3"] .shell { max-width: 80rem; grid-template-columns: 10rem minmax(0, 1fr) 13rem; gap: 2.5rem; }
-:root[data-layout="3"] main { padding-right: 0; display: flex; justify-content: center; }
+:root[data-layout="3"] main { padding-right: 0; display: flex; justify-content: flex-start; }
 :root[data-layout="3"] main > .page { width: 100%; }
 :root[data-layout="3"] .rail { border-right: 1px solid var(--rule); padding-right: 1.5rem; }
-:root[data-layout="3"] .sn { float: none; display: block; width: auto; margin: 0.6rem 0 0.2rem 1rem; padding-left: 0.75rem; border-left: 2px solid var(--rule); }
-:root[data-layout="3"] footer.colophon { grid-column: 2; justify-self: center; width: 100%; }
+:root[data-layout="3"] .sn { float: none; display: block; width: auto; margin: 0.6rem 0 0.2rem; padding-left: 0; border-left: 0; }
+:root[data-layout="3"] footer.colophon { grid-column: 2; justify-self: start; width: 100%; max-width: 46rem; }
 :root[data-layout="3"] .meta {
   display: grid; gap: 1.75rem; align-content: start;
   position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4rem); align-self: start;
@@ -912,6 +911,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   :root[data-mnav="tabs"] .meta section.m-hide, :root[data-mnav="sheet"] .meta section.m-hide,
   :root[data-mnav="tabs"] .act-inline, :root[data-mnav="sheet"] .act-inline { display: none; }
   :root[data-mnav="tabs"] .meta section:has(.pn), :root[data-mnav="sheet"] .meta section:has(.pn) { grid-column: 1 / -1; }
+  :root[data-mnav="tabs"] .meta:not(:has(> section:not(.m-hide, .m-toc))), :root[data-mnav="sheet"] .meta:not(:has(> section:not(.m-hide, .m-toc))) { display: none; }
 }
 .ap-g.mobile-only { display: none; }
 @media (max-width: 760px) { .keys-line { display: none; } footer.colophon { margin-top: 2.5rem; } }
@@ -1002,7 +1002,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 
 @media (max-width: 1100px) {
   main { padding-right: 0; }
-  .sn { float: none; display: block; width: auto; margin: 0.6rem 0 0.2rem 1rem; padding-left: 0.75rem; border-left: 2px solid var(--rule); }
+  .sn { float: none; display: block; width: auto; margin: 0.6rem 0 0.2rem; padding-left: 0; border-left: 0; }
 }
 @media (max-width: 760px) {
   .shell { grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-block: 2rem 2rem; }
@@ -1123,6 +1123,20 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .term-open { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .term { transition: none; } }
 
+/* Now: collapsed suggest form */
+.suggest-d > summary { cursor: pointer; list-style: none; color: var(--subtext1); }
+.suggest-d > summary::-webkit-details-marker { display: none; }
+.suggest-d > summary span { color: var(--accent); white-space: nowrap; }
+.suggest-d[open] > summary span { display: none; }
+.suggest-d[open] > summary { margin-bottom: 1rem; }
+#now h3 { margin-top: 1.75rem; }
+/* Notes list: one-line dek under each title */
+.entries .dek { grid-column: 2 / -1; color: var(--muted); font-size: 0.9375rem; line-height: 1.45; margin-top: -0.6rem; }
+@media (max-width: 760px) {
+  .entries .d { display: block; grid-column: 2; margin-top: -0.75rem; }
+  .entries .dek { grid-column: 2; margin-top: -0.6rem; }
+}
+
 /* ============ THEME: LIGHTS OUT ============
    Formula 1, Red Bull colours. Navy, F1 red and yellow, Titillium Web (the classic F1 typeface), slanted headlines,
    parallelogram buttons, corner-cut cards and diagonal speed lines. A start-light sequence plays when you switch to it. */
@@ -1138,7 +1152,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 :root[data-theme="lightsout"] h2::before { content: ""; display: inline-block; width: 0.42em; height: 0.78em; margin-right: 0.5em; background: var(--sel); transform: skewX(-20deg); vertical-align: -0.04em; }
 :root[data-theme="lightsout"] .label { font-weight: 500; }
 :root[data-theme="lightsout"] .r-index dd, :root[data-theme="lightsout"] .pop-stats dd { font-style: italic; font-weight: 700; }
-:root[data-theme="lightsout"] :is(.hx-map, .sub-box, .hm-loop, .offclock li, .pg-cards li, .edu-card, .tg, .pop-card) {
+:root[data-theme="lightsout"] :is(.hx-map, .hm-loop, .pg-cards li, .edu-card, .tg, .pop-card) {
   border-radius: 4px; clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
   background-image: linear-gradient(to bottom left, transparent calc(50% - 0.75px), var(--surface0) calc(50% - 0.75px) calc(50% + 0.75px), transparent calc(50% + 0.75px));
   background-position: top right; background-size: 16px 16px; background-repeat: no-repeat;
@@ -1178,13 +1192,65 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .wb-phone { display: none; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-radius: 10px; color: var(--muted); }
 .wb-keys { font-size: 0.8125rem; } .wb-keys b { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); margin-right: 0.4rem; }
 @media (max-width: 760px) { .wb, .wb-keys, .wb-open, #whiteboard .sub, .wb-nav { display: none !important; } .wb-phone { display: block; } }
+/* ============ UX pass: hierarchy, grouping, calmer blocks ============ */
+#index .hero h1 { font-size: clamp(2.6rem, 6vw, 3.75rem); line-height: 1.05; }
+#index .hero .lede { color: var(--ink); font-size: 1.2rem; }
+.page > h2.grp { margin-top: 5rem; padding-top: 2.75rem; border-top: 1px solid var(--rule); }
+.page > h2 + .sub { margin-top: 0.4rem; }
+.page > .sub + * { margin-top: 1.25rem; }
+.page > .links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.entries .ext { font-style: normal; font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.04em; color: var(--label); margin-left: 0.5rem; }
+.offclock { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.offclock li { grid-template-columns: auto minmax(0, 1fr); align-items: center; padding: 0.75rem 0.85rem; }
+.offclock li p { display: none; }
+.offclock svg { grid-row: auto; margin: 0; width: 20px; height: 20px; }
+.offclock li[data-pop]::after { top: 50%; transform: translateY(-50%); }
+@media (max-width: 760px) { .offclock { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.topics { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.topics > div { padding: 0.85rem 0.95rem; background: var(--paper); }
+.topics dt { font-family: var(--display); font-weight: 600; font-size: 0.98rem; color: var(--ink); }
+.topics dd { margin: 0.2rem 0 0; font-size: 0.9rem; line-height: 1.45; color: var(--muted); }
+@media (max-width: 760px) { .topics { grid-template-columns: minmax(0, 1fr); } }
+.cta .contact { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); display: inline-flex; align-items: center; gap: 0.5rem; }
+@media (max-width: 760px) { .hm-legend { display: none; } }
+
+/* ============ UX pass: shared ============ */
+.page-next { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 4.5rem !important; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
+.page-next a { display: grid; gap: 0.15rem; text-decoration: none; color: var(--ink); }
+.page-next a.nx { text-align: right; }
+.page-next small { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
+.page-next b { font-family: var(--display); font-weight: 600; font-size: 1.02rem; }
+.page-next a:hover b { color: var(--accent); }
+.note-next { grid-template-columns: 1fr auto 1fr; align-items: end; }
+.note-next .all { text-align: center; }
+.note-next b { font-size: 0.95rem; }
+@media (max-width: 560px) { .note-next { grid-template-columns: 1fr 1fr; } .note-next .all { grid-column: 1 / -1; grid-row: 2; text-align: left; } }
+.page.obs .obs-view .sn { margin: 0.9rem 0 0.25rem; padding: 0; border: 0; border-radius: 0; background: none; font-family: var(--sans); font-size: 0.9rem; line-height: 1.55; color: var(--muted); }
+.page.obs .obs-view .sn::before { font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
+.obs-view .lede mark, .obs-view p > mark { color: var(--h1); }
+.rail a.nav kbd { color: var(--overlay1); }
+:root[data-theme] .edu-card h2::before { content: none !important; }
+@media (max-width: 760px) { .term-fab { display: none; } }
+.obs-view > :is(ul.plain, dl.facts, ol) { margin-inline: auto; }
+
+/* research: one stat line, papers as a list */
+.r-line { display: flex; flex-wrap: wrap; gap: 0.35rem 1.5rem; font-family: var(--mono); font-size: var(--s-0); color: var(--muted); }
+.r-line b { font-family: var(--display); font-size: 1.35rem; font-weight: 600; color: var(--ink); margin-right: 0.3rem; }
+.page > .r-line + .r-src { margin-top: 0.4rem; font-size: 0.85rem; }
+.papers { list-style: none; padding: 0; gap: 0; border-top: 1px solid var(--rule); }
+.papers > li { border-bottom: 1px solid var(--rule); padding: 1.25rem 0; }
+.papers .pp { padding: 0; border: 0; border-radius: 0; background: none; }
+.papers .pp-t { text-wrap: pretty; }
+.papers .pp-go, .papers .pp-m .pp-tag { display: none; }
+.papers .pp-alt { margin: 0.5rem 0 0; }
+
 /* ============ THEME: CROPMARK ============
    Built on the design language of a design-tools database: near-black, hairline rules, square corners,
    grey mono labels, pastel pink for whatever is selected, and printer's crop marks on every card. */
 :root[data-theme="cropmark"] {
   --display: "Inter Tight", system-ui, sans-serif; --sans: "Inter Tight", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
-  --h1: var(--text); --h2: var(--text); --label: var(--subtext0); --accent: #f7cafa; --sel: #f7cafa; --sel-ink: #121212;
-  --mark: color-mix(in srgb, #f7cafa 22%, transparent);
+  --h1: var(--text); --h2: var(--text); --label: var(--subtext0); --accent: var(--mauve); --sel: var(--mauve); --sel-ink: var(--base);
+  --mark: color-mix(in srgb, var(--sel) 22%, transparent);
   --cm-c: var(--overlay1);
   --cm: linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c)), linear-gradient(var(--cm-c), var(--cm-c));
   --cm-pos: left 3px top 7px, left 7px top 3px, right 3px bottom 7px, right 7px bottom 3px, right 3px top 3px, left 3px bottom 3px;
@@ -1195,13 +1261,13 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 /* type: light, tight headlines; grey lede; small mono labels */
 :root[data-theme="cropmark"] h1 { font-weight: 400; letter-spacing: -0.025em; line-height: 1.2; }
 :root[data-theme="cropmark"] h2, :root[data-theme="cropmark"] h3 { font-weight: 500; letter-spacing: -0.015em; }
-:root[data-theme="cropmark"] h2::before { content: "▪ "; font-size: 0.6em; color: var(--sel); vertical-align: 0.2em; }
+:root[data-theme="cropmark"] h2::before { content: "▪ "; font-size: 0.55em; color: var(--overlay1); vertical-align: 0.22em; }
 :root[data-theme="cropmark"] .lede { color: var(--subtext0); }
 :root[data-theme="cropmark"] .label, :root[data-theme="cropmark"] dt { letter-spacing: 0.06em; }
 :root[data-theme="cropmark"] .r-index dd { font-weight: 500; }
 :root[data-theme="cropmark"] a { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 /* cards get crop marks */
-:root[data-theme="cropmark"] :is(.r-index, .hx-map, .sub-box, .tg, .hm-loop, .offclock li, .pg-cards li, .edu-card, .pp, .radar, .we, .pg-term, .page.obs) {
+:root[data-theme="cropmark"] :is(.r-index, .hx-map, .tg, .hm-loop, .pg-cards li, .edu-card, .radar, .we, .pg-term, .page.obs) {
   background-image: var(--cm); background-repeat: no-repeat; background-position: var(--cm-pos); background-size: var(--cm-size); border-color: var(--surface0);
 }
 :root[data-theme="cropmark"] .r-index > div { background: transparent; box-shadow: -1px -1px 0 var(--surface0); }
@@ -1210,7 +1276,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 /* buttons: pink block, black mono caps, a square bullet */
 :root[data-theme="cropmark"] :is(.btn, .pg-btn:not(.ghost)) { background: var(--sel); color: var(--sel-ink); border-color: var(--sel); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
 :root[data-theme="cropmark"] :is(.btn, .pg-btn:not(.ghost))::before { content: "▪ "; }
-:root[data-theme="cropmark"] :is(.btn, .pg-btn):hover { filter: none; background: #fbe0fc; }
+:root[data-theme="cropmark"] :is(.btn, .pg-btn):hover { filter: none; background: color-mix(in srgb, var(--sel) 80%, var(--ink)); }
 :root[data-theme="cropmark"] .pg-btn.ghost, :root[data-theme="cropmark"] .soc { border-color: var(--surface0); }
 :root[data-theme="cropmark"] .pg-btn.ghost:hover { border-color: var(--sel); color: var(--sel); background: none; }
 :root[data-theme="cropmark"] .cta-2 { text-transform: uppercase; letter-spacing: 0.04em; }
@@ -1310,31 +1376,16 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         </figure>
       </header>
       <h2>What I do</h2>
-      <p>I'm Mehedi Hasan Ifti. I lead global sales and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency, including the inbound team. Every lead that comes in, from the first reply to the signed deal, runs through us.</p>
-      <p>I work with everyone from first-time founders to enterprise teams, in 35+ markets. Most of them have the same problem: a product that works and users who don't love it yet. My job is to find out why before anyone sells them anything. Before Musemind I spent two and a half years at Airwork AI, first closing deals, then running 45+ client accounts. That's where I learned that what a client needs and what they say they need are usually different things.</p>
+      <p>I'm Mehedi Hasan Ifti. I lead global sales and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency, including the inbound team. I work with everyone from first-time founders to enterprise teams, in 35+ markets. Most of them have a product that works and users who don't love it yet.</p>
       <dl class="r-index home-stats">
         <div><dt>Markets</dt><dd>35+</dd></div>
-        <div><dt>Companies worked with</dt><dd>200+</dd></div>
-        <div><dt>Client accounts led</dt><dd>45+</dd></div>
+        <div><dt>Companies</dt><dd>200+</dd></div>
+        <div><dt>Accounts led</dt><dd>45+</dd></div>
       </dl>
-      <p class="cta"><a class="back" href="#work">Full work history →</a><a class="back" href="cv.pdf" download>Download CV (PDF) ↓</a></p>
-
-      <h2>My story</h2>
-      <p>I studied business and technology management at IUT. On the side I co-founded a tech blog that broke even in six months, helped start a student community that ran on zero budget, and published research on text mining.</p>
-      <p>My first real sales job was at Airwork AI, selling remote engineering teams to early-stage founders. I went from closing deals to keeping them: customer success, then senior customer success for 45+ clients across about 15 countries.</p>
-      <p>Now I lead global sales and partnerships at Musemind, from Dhaka. On the side I run a small company of AI agents. They do the work I'd rather not.</p>
-
-      <h2>Track record</h2>
-      <ol class="record">
-        <li><span>2026</span><p><b>Leading global sales and partnerships</b> at Musemind, including the inbound team.</p></li>
-        <li><span>2025</span><p><b>45+ client accounts</b> led as senior customer success manager at Airwork AI, across about 15 countries.</p></li>
-        <li><span>2024</span><p><b>140+ startups onboarded</b> across 15+ countries as Airwork's B2B sales specialist.</p></li>
-        <li><span>2022</span><p><b>Published research</b> on text mining: five papers and a preprint so far, 10 citations. <a href="#research">See the research</a>.</p></li>
-        <li><span>2021</span><p><b>Won the ISCEA PTAK Prize</b>, ISCEA Bangladesh's nationwide supply chain case competition, with IUT.</p></li>
-        <li><span>2021</span><p><b>Grey Nebula broke even in six months</b>, reaching 36,000 impressions a day.</p></li>
-      </ol>
+      <p class="links"><a class="back" href="#work">Full work history →</a><a class="back" href="cv.pdf" download>Download CV (PDF) ↓</a></p>
 
       <h2>What I believe</h2>
+      <p class="sub">Four rules I work by.</p>
       <ol class="beliefs">
         <li><span><b>One honest conversation beats ten polished emails.</b></span></li>
         <li><span><b>Proposals should be walked through, not sent.</b> The document is the leave-behind. The conversation is the pitch.</span></li>
@@ -1342,48 +1393,51 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <li><span><b>If it's meant for human eyes, write it yourself.</b> Use AI for the work. Don't use it for the thinking.</span></li>
       </ol>
 
-      <h2>Off the clock</h2>
-      <ul class="offclock">
-        <li data-pop="f1" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15h16M6 15l2-5h7l3 5M8 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><b>Formula 1</b><p>I follow it far too closely for someone who can't drive.</p></li>
-        <li data-pop="music" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b>Music</b><p>Linkin Park, The Weeknd and Karan Aujla, mostly on repeat.</p></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 9l5-5M18 2l4 4M9.5 11.5a4 4 0 0 0-5.6 5.6l1.4 1.4a4 4 0 0 0 5.6-5.6M12 9l3 3M8 15h.01"/></svg><b>Guitar</b><p>I pick it up when nobody's waiting on me.</p></li>
-        <li data-pop="podcasts" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg><b>Podcasts</b><p>Always one in my ears. The current rotation is on the <a href="#now">Now page</a>.</p></li>
-        <li data-pop="football" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 7V3.5M15.5 9.5l3.3-1.2M14.2 13.5l2 3M9.8 13.5l-2 3M8.5 9.5L5.2 8.3"/></svg><b>Football</b><p>Liverpool and Brazil. I used to play; these days I watch.</p></li>
-        <li data-pop="travel" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-10 4 6 2-3 6 7z"/><circle cx="17" cy="6" r="1.6"/></svg><b>Travel</b><p>Bangladesh first: Chattogram, Cox's Bazar, Bhatiari waterfall and Himchari.</p></li>
-      </ul>
+      <h2 class="grp">Story</h2>
+      <p class="sub">From a business degree to leading sales, newest first.</p>
+      <ol class="record">
+        <li><span>2026</span><p><b>Leading global sales and partnerships</b> at Musemind, including the inbound team. On the side I run a small company of AI agents. They do the work I'd rather not.</p></li>
+        <li><span>2025</span><p><b>45+ client accounts</b> as senior customer success manager at Airwork AI, across about 15 countries.</p></li>
+        <li><span>2024</span><p><b>140+ startups onboarded</b> across 15+ countries. My first real sales job: selling remote engineering teams to early-stage founders.</p></li>
+        <li><span>2023</span><p><b>Graduated from IUT</b> in business and technology management.</p></li>
+        <li><span>2022</span><p><b>Published research</b> on text mining: five papers and a preprint so far, 10 citations. <a href="#research">See the research</a>. Co-founded a student community that ran on zero budget.</p></li>
+        <li><span>2021</span><p><b>Co-founded a tech blog</b> that broke even in six months, at 36,000 impressions a day. Won the ISCEA PTAK Prize with IUT.</p></li>
+      </ol>
 
-      <h2>Ask me about</h2>
-      <ul class="plain">
-        <li><b>Inbound sales.</b> What should happen between a form fill and a signed deal, and where most teams lose it.</li>
-        <li><b>Selling design to a CFO.</b> What it costs, what it returns, and how to say both on one page.</li>
-        <li><b>Negotiation.</b> Pricing, scope, and the questions to ask before anyone names a number.</li>
-        <li><b>Building with AI agents.</b> I run a small company of them. See the <a href="#paperclip">Playground</a>.</li>
-      </ul>
-
-      <h2 id="writing-h">Writing</h2>
+      <h2 class="grp" id="writing-h">Writing</h2>
       <p class="sub">Short notes from client rooms here. Longer pieces on <a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a>.</p>
       <ul class="entries">
         <li><a href="#n-005"><span class="no">N°005</span><span class="t">Trust is the product</span><span class="d">17 Oct 2026</span></a></li>
         <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
         <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep 2026</span></a></li>
-      </ul>
-      <p><a class="back" href="#notes">All notes →</a></p>
-      <p class="label">On Substack · Life Modules</p>
-      <ul class="entries">
-        <li><a href="https://mehediifti.substack.com/p/life-module-01-being-out-there" target="_blank" rel="noopener"><span class="no">LM 01</span><span class="t">Being out there</span><span class="d">17 Nov 2025</span></a></li>
+        <li><a href="https://mehediifti.substack.com/p/life-module-01-being-out-there" target="_blank" rel="noopener"><span class="no">LM 01</span><span class="t">Being out there <i class="ext">Substack ↗</i></span><span class="d">17 Nov 2025</span></a></li>
       </ul>
       <form class="sub-box" action="https://mehediifti.substack.com/subscribe" method="get" target="_blank">
-        <label for="sub-email">Get new posts by email</label>
-        <div><input id="sub-email" type="email" name="email" placeholder="you@company.com" required><button class="btn" type="submit">Subscribe</button></div>
-        <small>Free, on Substack. Unsubscribe any time.</small>
+        <label for="sub-email" class="vh">Email for new posts</label>
+        <input id="sub-email" type="email" name="email" placeholder="Get new posts by email" required><button class="btn" type="submit">Subscribe</button>
+        <a class="back" href="#notes">All notes →</a>
       </form>
 
-      <h2>Let's talk</h2>
-      <p>Working on something in product, design or tech? Talk to me before you write the brief. A call usually saves a week of back-and-forth. Book a slot, or email me if that's easier.</p>
-      <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a></div>
-      <div class="contact">
-        <span>mh.hasan884@gmail.com <button class="copy" type="button" data-copy="mh.hasan884@gmail.com">copy</button></span>
-      </div>
+      <h2 class="grp">Off the clock</h2>
+      <p class="sub">Everything that isn't client work. Tap one for more.</p>
+      <ul class="offclock">
+        <li data-pop="f1" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15h16M6 15l2-5h7l3 5M8 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><b>Formula 1</b><p>I follow it far too closely for someone who can't drive.</p></li>
+        <li data-pop="music" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b>Music</b><p>Linkin Park, The Weeknd and Karan Aujla, mostly on repeat.</p></li>
+        <li data-pop="guitar" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 9l5-5M18 2l4 4M9.5 11.5a4 4 0 0 0-5.6 5.6l1.4 1.4a4 4 0 0 0 5.6-5.6M12 9l3 3M8 15h.01"/></svg><b>Guitar</b><p>I pick it up when nobody's waiting on me.</p></li>
+        <li data-pop="podcasts" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg><b>Podcasts</b><p>Always one in my ears. The current rotation is on the <a href="#now">Now page</a>.</p></li>
+        <li data-pop="football" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 7V3.5M15.5 9.5l3.3-1.2M14.2 13.5l2 3M9.8 13.5l-2 3M8.5 9.5L5.2 8.3"/></svg><b>Football</b><p>Liverpool and Brazil. I used to play; these days I watch.</p></li>
+        <li data-pop="travel" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-10 4 6 2-3 6 7z"/><circle cx="17" cy="6" r="1.6"/></svg><b>Travel</b><p>Bangladesh first: Chattogram, Cox's Bazar, Bhatiari waterfall and Himchari.</p></li>
+      </ul>
+
+      <h2 class="grp">Let's talk</h2>
+      <p>Working on something in product, design or tech? Talk to me before you write the brief. A call usually saves a week of back-and-forth.</p>
+      <dl class="topics">
+        <div><dt>Inbound sales</dt><dd>What should happen between a form fill and a signed deal, and where most teams lose it.</dd></div>
+        <div><dt>Selling design to a CFO</dt><dd>What it costs, what it returns, and how to say both on one page.</dd></div>
+        <div><dt>Negotiation</dt><dd>Pricing, scope, and the questions to ask before anyone names a number.</dd></div>
+        <div><dt>Building with AI agents</dt><dd>I run a small company of them. See the <a href="#paperclip">Playground</a>.</dd></div>
+      </dl>
+      <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><span class="contact">or email <a href="mailto:mh.hasan884@gmail.com">mh.hasan884@gmail.com</a> <button class="copy" type="button" data-copy="mh.hasan884@gmail.com">copy</button></span></div>
       <div class="socials home-socials" data-socials></div>
 
       <div class="act-inline"><p class="label">Activity</p><div id="act-inline" style="margin-top:0.6rem"></div></div>
@@ -1397,10 +1451,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <p>This is a <a href="https://nownow.com/about" target="_blank" rel="noopener">now page</a>: what's on my desk, my screen and my headphones this month.</p>
 
       <dl class="facts">
-        <dt>Work</dt><dd>Leading global sales and partnerships at Musemind, including the inbound team.</dd>
         <dt>Practising</dt><dd>Negotiation. Asking better questions before I talk price.</dd>
         <dt>Building</dt><dd>Small things with Claude Code, starting with this site.</dd>
-        <dt>Based in</dt><dd>Dhaka, Bangladesh. Working with teams in the GCC, Europe and the US.</dd>
       </dl>
 
       <h2>Exploring</h2>
@@ -1411,8 +1463,9 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <li><span class="t">Theo <span class="by">· t3.gg</span></span><span class="tag t-tool">YouTube</span><p>My main feed for what's moving in AI and dev tools.</p></li>
       </ul>
 
-      <h2>Watching</h2>
-      <p class="sub">Series and films on my screen lately.</p>
+      <h2>On my screen and in my ears</h2>
+      <p class="sub">What I'm watching, reading and listening to.</p>
+      <h3>Watching</h3>
       <ul class="log">
         <li><span class="t">The Mandalorian</span><span class="tag t-series">Series</span></li>
         <li><span class="t">Mirzapur</span><span class="tag t-series">Series</span></li>
@@ -1421,15 +1474,12 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <li><span class="t">Supergirl</span></li>
       </ul>
 
-      <h2>Reading</h2>
-      <p class="sub">On the list.</p>
+      <h3>Reading</h3>
       <ul class="log">
-        <li><span class="t">Never Split the Difference <span class="by">· Chris Voss</span></span><span class="tag t-book">Book</span></li>
+        <li><span class="t">Never Split the Difference <span class="by">· Chris Voss</span></span><span class="tag t-book">Book</span><p><a href="#shelf">Books that stuck →</a></p></li>
       </ul>
-      <p><a class="back" href="#shelf">Books that stuck →</a></p>
 
-      <h2>Listening</h2>
-      <p class="sub">Podcasts in my ears, and music on repeat.</p>
+      <h3>Listening</h3>
       <ul class="log">
         <li><span class="t">Huge Conversations <span class="by">· Cleo Abram</span></span><span class="tag t-pod">Podcast</span><p>Alexandr Wang on Muse, Meta's personal agent. <a href="#n-005">My notes</a> · <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Watch ↗</a></p></li>
         <li><span class="t">Linkin Park</span><span class="tag t-music">Music</span></li>
@@ -1449,7 +1499,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       </dl>
 
       <h2 id="suggest">Suggest something</h2>
-      <p>Know a show, a film, a book, an album or a tool I should try? Tell me. The good ones end up on this page.</p>
+      <details class="suggest-d">
+      <summary>Know a show, a film, a book, an album or a tool I should try? <span>Tell me →</span></summary>
       <form class="suggest" id="suggest-form" novalidate>
         <input type="hidden" name="_subject" value="New suggestion on Ifti's Notebook">
         <input type="hidden" name="_template" value="table">
@@ -1467,13 +1518,13 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <label class="field"><span>Your name <i>(optional)</i></span><input type="text" id="s-name" name="name" maxlength="80"></label>
         <div class="actions"><button type="submit" class="btn">Send suggestion</button><span class="status" id="s-status" role="status"></span></div>
       </form>
+      </details>
     </section>
 
     <!-- ============ NOTES ============ -->
     <section class="page" id="notes">
       <h1>Notes</h1>
-      <p class="lede">Short notes from client work.</p>
-      <p>Negotiation, scope, stakeholders and the business side of design. Most fit on a phone screen. Numbered in the order I wrote them.</p>
+      <p class="lede">Short notes from client work: negotiation, scope, stakeholders and the business side of design.</p>
       <ul class="entries">
         <li><a href="#n-005"><span class="no">N°005</span><span class="t">Trust is the product</span><span class="d">17 Oct 2026</span></a></li>
         <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
@@ -1589,8 +1640,6 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <dt>Company</dt><dd><a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency</dd>
         <dt>Team</dt><dd>I lead the inbound team: every lead from first reply to signed deal</dd>
         <dt>CV</dt><dd><a href="cv.pdf" download>Download the one-page PDF ↓</a></dd>
-        <dt>Since</dt><dd>February 2026</dd>
-        <dt>Based in</dt><dd>Dhaka, Bangladesh</dd>
       </dl>
       <p>My job is the relationship. I find out what the client's business actually needs, keep every stakeholder pointed the same way, and steer the work toward a result someone can measure.</p>
       <p>Trust compounds. I'd rather earn the second project than squeeze the first.</p>
@@ -1600,50 +1649,6 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <dt>Enterprise</dt><dd>Teams that need design to clear procurement, internal politics and a dozen stakeholders, and still ship something good.</dd>
         <dt>Founders</dt><dd>People who need a product that sells before the runway ends. Fewer meetings, faster decisions.</dd>
       </dl>
-
-      <h2>How I work</h2>
-      <ul class="plain">
-        <li><b>Outcomes before outputs.</b> A screen is a deliverable. Revenue, retention or time saved is a result.</li>
-        <li><b>Say the hard thing early.</b> Bad news gets more expensive every week you wait.</li>
-        <li><b>One owner per decision.</b> If everyone owns it, nobody signs it off.</li>
-        <li><b>Write it down.</b> If it isn't in the recap, it didn't happen.</li>
-      </ul>
-
-      <h2>Post-match stats</h2>
-      <p class="sub">Where I am and where I'm putting the hours, scored like the end of a ranked match. Strength is today. Interest is what I'm investing in next.</p>
-      <figure class="radar" id="radar">
-        <div class="rd-hud"><span>Season 2026 · Key accounts</span><span class="ovr">OVR<b id="rd-ovr"></b></span></div>
-        <div class="rd-body">
-          <svg class="rd-svg" viewBox="0 0 400 290" role="img" aria-label="Radar chart of strength and interest across my core skills. The same numbers are listed beside it."></svg>
-          <ol class="rd-list" id="rd-list"></ol>
-        </div>
-        <div class="rd-foot">
-          <div class="rd-legend">
-            <button type="button" aria-pressed="true" data-s="str"><i class="k"></i>Strength</button>
-            <button type="button" aria-pressed="true" data-s="int"><i class="k rd-int"></i>Interest</button>
-          </div>
-          <dl class="rd-calls">
-            <div><dt>MVP</dt><dd id="rd-mvp"></dd></div>
-            <div><dt>Grinding</dt><dd id="rd-grind"></dd></div>
-          </dl>
-        </div>
-      </figure>
-
-      <h2>Toolkit</h2>
-      <p class="sub">What I actually use, day to day.</p>
-      <dl class="kit">
-        <dt>Selling</dt><dd><span>HubSpot</span><span>Gamma</span><span>Google Calendar</span></dd>
-        <dt>Building</dt><dd><span>Claude Code</span><span>Codex</span><span>Replit</span></dd>
-        <dt>Agents</dt><dd><a href="#paperclip">Paperclip</a><a href="#hermes">Hermes Agent</a><span>Telegram</span></dd>
-        <dt>Writing</dt><dd><a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a><span>LinkedIn</span></dd>
-      </dl>
-
-      <h2>Working together</h2>
-      <p>Building something and want someone who asks the hard questions before quoting a price? Email me at <b>mh.hasan884@gmail.com</b> or find me on <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>. Two questions worth answering before we talk:</p>
-      <ul class="plain">
-        <li><b>What are you trying to move?</b> Revenue, retention or time saved, and by when.</li>
-        <li><b>Who signs off?</b> Who decides, who pays, and who can say no.</li>
-      </ul>
 
       <!-- WORK HISTORY UPDATE: one <li> per company, newest first. From LinkedIn. -->
       <h2>Work history</h2>
@@ -1680,7 +1685,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
             <p class="edu-k">Brand partnerships</p>
             <h3 class="edu-co">Daraz</h3>
             <p class="edu-f">Marketing Intern · Full-time · Dhaka, on-site</p>
-            <p>South Asia's leading e-commerce marketplace. I onboarded brands after the pitch, walked them through their MoUs and spend, and kept local, regional and finance teams aligned so issues got solved and brands got paid on time.</p>
+            <p>An e-commerce marketplace. I onboarded brands after the pitch, walked them through their MoUs and spend, and kept local, regional and finance teams aligned so issues got solved and brands got paid on time.</p>
             <div class="edu-skills"><span class="pp-tag">Onboarding</span><span class="pp-tag">Stakeholder alignment</span></div>
           </div>
         </li>
@@ -1706,6 +1711,51 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         </li>
       </ol>
       <p><a class="back" href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">Full history on LinkedIn ↗</a></p>
+
+      <h2>How I work</h2>
+      <ul class="plain">
+        <li><b>Outcomes before outputs.</b> A screen is a deliverable. Revenue, retention or time saved is a result.</li>
+        <li><b>Say the hard thing early.</b> Bad news gets more expensive every week you wait.</li>
+        <li><b>One owner per decision.</b> If everyone owns it, nobody signs it off.</li>
+        <li><b>Write it down.</b> If it isn't in the recap, it didn't happen.</li>
+      </ul>
+
+      <h2>Toolkit</h2>
+      <p class="sub">What I actually use, day to day.</p>
+      <dl class="kit">
+        <dt>Selling</dt><dd><span>HubSpot</span><span>Gamma</span><span>Google Calendar</span></dd>
+        <dt>Building</dt><dd><span>Claude Code</span><span>Codex</span><span>Replit</span></dd>
+        <dt>Agents</dt><dd><a href="#paperclip">Paperclip</a><a href="#hermes">Hermes Agent</a><span>Telegram</span></dd>
+        <dt>Writing</dt><dd><a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a><span>LinkedIn</span></dd>
+      </dl>
+
+      <h2>Post-match stats</h2>
+      <p class="sub">Scored like the end of a ranked match. Strength is today. Interest is where I'm putting the hours.</p>
+      <figure class="radar" id="radar">
+        <div class="rd-hud"><span>Season 2026 · Key accounts</span><span class="ovr">OVR<b id="rd-ovr"></b></span></div>
+        <div class="rd-body">
+          <svg class="rd-svg" viewBox="0 0 400 290" role="img" aria-label="Radar chart of strength and interest across my core skills. The same numbers are listed beside it."></svg>
+          <ol class="rd-list" id="rd-list"></ol>
+        </div>
+        <div class="rd-foot">
+          <div class="rd-legend">
+            <button type="button" aria-pressed="true" data-s="str"><i class="k"></i>Strength</button>
+            <button type="button" aria-pressed="true" data-s="int"><i class="k rd-int"></i>Interest</button>
+          </div>
+          <dl class="rd-calls">
+            <div><dt>MVP</dt><dd id="rd-mvp"></dd></div>
+            <div><dt>Grinding</dt><dd id="rd-grind"></dd></div>
+          </dl>
+        </div>
+      </figure>
+
+      <h2>Working together</h2>
+      <p>Building something and want someone who asks the hard questions before quoting a price? Two questions worth answering before we talk:</p>
+      <ul class="plain">
+        <li><b>What are you trying to move?</b> Revenue, retention or time saved, and by when.</li>
+        <li><b>Who signs off?</b> Who decides, who pays, and who can say no.</li>
+      </ul>
+      <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><span class="contact">or email <a href="mailto:mh.hasan884@gmail.com">mh.hasan884@gmail.com</a></span></div>
     </section>
 
     <!-- ============ SHELF ============ -->
@@ -1719,7 +1769,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <li><b>Thinking in Bets</b> <span class="by">· Annie Duke</span><p>Judge a decision by what you knew when you made it. The outcome is a separate question.</p></li>
         <li><b>The Design of Everyday Things</b> <span class="by">· Don Norman</span><p>Good design explained in plain words. Useful when the audience is a CFO.</p></li>
       </ul>
-      <p class="sub">Got one that belongs here? <a href="#suggest">Suggest it.</a></p>
+      <p class="sub"><a href="#suggest">Suggest one on the Now page →</a></p>
     </section>
 
     <!-- ============ PLAYGROUND ============ -->
@@ -1727,10 +1777,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     <section class="page pg" id="paperclip" style="--pg: var(--peach)">
       <p class="label">Playground · Agent orchestration</p>
       <h1>Paperclip</h1>
-      <p class="pg-quote">“A team of agents for every person.”</p>
+      <p class="pg-quote">“A team of agents for every person.” <span>— Paperclip</span></p>
       <p class="lede">An open-source control room for running a company of AI agents. Each agent gets a role, a boss, a budget and a ticket queue. You sit above it as the board.</p>
       <div class="pg-links">
-        <a class="pg-btn" href="https://paperclip.ing" target="_blank" rel="noopener">paperclip.ing ↗</a>
+        <a class="pg-btn" href="https://paperclip.ing" target="_blank" rel="noopener">Website ↗</a>
         <a class="pg-btn ghost" href="https://paperclip.ing/docs" target="_blank" rel="noopener">Docs ↗</a>
         <a class="pg-btn ghost" href="https://github.com/paperclipai/paperclip" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
@@ -1741,7 +1791,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       </dl>
 
       <h2>How I run it</h2>
-      <p class="sub">My company inside Paperclip is Wayne Enterprises. This is a high-level overview of my setup, simplified. Yours can look nothing like it: Paperclip lets you design the company around how you work.</p>
+      <p class="sub">My company inside Paperclip is Wayne Enterprises, simplified. Yours can look nothing like it: you design the company around how you work.</p>
 
       <div class="we" id="we" data-busy="false">
         <div class="we-top">
@@ -1797,17 +1847,16 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
           <div class="we-answer" id="we-answer" hidden></div>
         </div>
       </div>
-      <p class="sub">The run is a simulation that shows how work moves through the company. Real runs take minutes to hours and leave a full audit trail in Paperclip.</p>
-      <p class="sub">Paperclip runs a team of agents. For one agent that learns, see <a href="#hermes">Hermes Agent</a>.</p>
+      <p class="sub">The run is simulated to show how work moves through the company. Real runs take minutes to hours and leave a full audit trail.</p>
     </section>
 
     <section class="page pg" id="hermes" style="--pg: var(--sky)">
       <p class="label">Playground · Personal agent</p>
       <h1>Hermes Agent</h1>
-      <p class="pg-quote">“The agent that grows with you.”</p>
+      <p class="pg-quote">“The agent that grows with you.” <span>— Nous Research</span></p>
       <p class="lede">An open-source agent from Nous Research that gets better the more you use it. When it solves something, it saves how as a skill, and it remembers across sessions and every app you talk to it from.</p>
       <div class="pg-links">
-        <a class="pg-btn" href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener">hermes-agent.nousresearch.com ↗</a>
+        <a class="pg-btn" href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener">Website ↗</a>
         <a class="pg-btn ghost" href="https://hermes-agent.nousresearch.com/docs" target="_blank" rel="noopener">Docs ↗</a>
         <a class="pg-btn ghost" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
@@ -1818,11 +1867,11 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       </dl>
 
       <h2>How I run it</h2>
-      <p class="sub">Three Hermes agents, each with its own job and its own memory. I reach all of them from Telegram. This is a high-level overview of my setup, simplified.</p>
+      <p class="sub">Three Hermes agents, each with its own job and its own memory. I reach all of them from Telegram.</p>
       <div class="hx-flow" aria-label="Setup: Telegram to the Hermes gateway on my machine, then to three agents">
         <span class="hx-step"><b>Telegram</b><small>where I talk to them</small></span><span class="hx-arr" aria-hidden="true">→</span>
         <span class="hx-step"><b>Hermes gateway</b><small>on my machine</small></span><span class="hx-arr" aria-hidden="true">→</span>
-        <span class="hx-step hx-three"><b>Plutus · Chronos · Athena</b><small>memory and skills each</small></span>
+        <span class="hx-step hx-three"><b>3 agents</b><small>memory and skills each</small></span>
       </div>
       <ul class="hx-agents">
           <li class="hx-a" data-k="plutus">
@@ -1843,7 +1892,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       </ul>
 
       <h2>On Telegram</h2>
-      <p class="sub">What a normal exchange looks like. Pick an agent.</p>
+      <p class="sub">What a normal exchange looks like. Pick an agent. Sample messages, not my real ones.</p>
       <div class="tg" id="tg">
         <div class="tg-tabs" role="tablist" aria-label="Agents">
           <button type="button" role="tab" data-k="plutus" aria-selected="true">Plutus</button><button type="button" role="tab" data-k="chronos" aria-selected="false">Chronos</button><button type="button" role="tab" data-k="athena" aria-selected="false">Athena</button>
@@ -1854,7 +1903,6 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
           <div class="tg-input" aria-hidden="true"><span>Message</span></div>
         </div>
       </div>
-      <p class="sub">Sample messages, not my real ones.</p>
 
       <h2>Why they get better</h2>
       <p class="sub">Every agent runs the same loop. Tap a step, or watch it go round.</p>
@@ -1880,40 +1928,37 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     <section class="page pg" id="whiteboard" style="--pg: var(--green)">
       <p class="label">Playground · Tool</p>
       <h1>Whiteboard</h1>
-      <p class="lede">A hand-drawn whiteboard I built for thinking on a page, modelled on Excalidraw. Shapes, arrows that stick to them, sticky notes, images, frames, a shape library and separate scenes. It saves in this browser and opens and saves Excalidraw files.</p>
+      <p class="lede">A hand-drawn whiteboard I built for thinking on a page, modelled on Excalidraw. It saves in this browser and opens Excalidraw files.</p>
       <div class="wb" id="wb"><iframe id="wb-frame" title="Whiteboard" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe></div>
-      <p class="sub wb-open"><a id="wb-open" href="/whiteboard/" target="_blank" rel="noopener">Open in its own tab ↗</a> · The app lives in its own repo and loads here.</p>
-      <p class="sub wb-keys"><b>Keys</b> Click the board first, then: V select · R rectangle · D diamond · O ellipse · A arrow · L line · P draw · T text · N sticky · E eraser · F frame · K laser · H or Space to pan · Ctrl/⌘ + / for every command · ? for all shortcuts.</p>
-      <p class="sub">Everything stays on this device. Nothing is uploaded.</p>
+      <p class="sub wb-open"><a id="wb-open" href="/whiteboard/" target="_blank" rel="noopener">Open in its own tab ↗</a> · Everything stays on this device. Nothing is uploaded.</p>
+      <details class="sub wb-keys"><summary>Keyboard shortcuts</summary><p>Click the board first, then: V select · R rectangle · D diamond · O ellipse · A arrow · L line · P draw · T text · N sticky · E eraser · F frame · K laser · H or Space to pan · Ctrl/⌘ + / for every command · ? for all shortcuts.</p></details>
       <p class="wb-phone">The whiteboard is built for a computer screen. Open this page on a laptop or desktop to use it.</p>
     </section>
 
     <!-- ============ EDUCATION ============ -->
     <!-- EDUCATION UPDATE: one <li> per school, newest first. -->
     <section class="page" id="education">
+      <p class="label">Academia</p>
       <h1>Education</h1>
       <p class="lede">A business degree from a technology university, where my research started.</p>
       <ol class="edu">
         <li>
-          <div class="edu-when"><span>2019</span><span>Jun 2023</span></div>
+          <div class="edu-when"><span>2019–2023</span></div>
           <div class="edu-card">
             <p class="edu-k">Bachelor of Business Administration</p>
             <h2>Islamic University of Technology</h2>
             <p class="edu-f">BBA, Business and Technology Management</p>
-            <dl class="edu-facts">
-              <div><dt>Research</dt><dd><a href="#research">5 papers, 1 preprint</a></dd></div>
-            </dl>
-            <p>IUT is an international university run and funded by the Organisation of Islamic Cooperation (OIC), and one of Bangladesh's leading engineering and research schools. The programme trains students to manage in business, industry and services.</p>
+            <p>An international university run and funded by the Organisation of Islamic Cooperation (OIC).</p>
             <h3>Activities</h3>
             <ul class="edu-roles">
               <li><b>Founding Vice President, Administration</b> · Beyond The Metrics</li>
               <li><b>Junior PR Officer</b> · IUT Career and Business Society</li>
             </ul>
-            <div class="edu-skills"><span class="pp-tag">Collaborative leadership</span><span class="pp-tag">Communication</span></div>
+            <p class="edu-more"><a href="#research">Research from these years: 5 papers, 1 preprint →</a></p>
           </div>
         </li>
         <li>
-          <div class="edu-when"><span>2016</span><span>2018</span></div>
+          <div class="edu-when"><span>2016–2018</span></div>
           <div class="edu-card">
             <p class="edu-k">Higher Secondary Certificate</p>
             <h2>Birshreshtha Noor Mohammad Public College</h2>
@@ -1923,7 +1968,6 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
               <li><b>Member</b> · BNMPC Science Club</li>
               <li><b>Cadet</b> · Bangladesh National Cadet Corps (BNCC)</li>
             </ul>
-            <div class="edu-skills"><span class="pp-tag">Communication</span><span class="pp-tag">Cross-functional collaboration</span></div>
           </div>
         </li>
       </ol>
@@ -1931,24 +1975,13 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     </section>
 
     <!-- ============ RESEARCH ============ -->
-    <!-- RESEARCH UPDATE: one <li> per paper, newest first. Titles link to the paper through its DOI. The index numbers are copied from ResearchGate; update them by hand. -->
+    <!-- RESEARCH UPDATE: one <li> per paper, newest first. Titles link to the paper through its DOI. The stat line is copied from ResearchGate; update it by hand. -->
     <section class="page" id="research">
+      <p class="label">Academia · Islamic University of Technology</p>
       <h1>Research</h1>
-      <p class="label">Business and Technology Management · Islamic University of Technology, Bangladesh</p>
-      <p class="lede">Papers I've co-authored. Most use text mining and bibliometric analysis to map what a field already knows and where it's heading.</p>
-      <p>Each title opens the paper itself. The same list, with reads and full texts, is on my <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate profile</a>.</p>
-
-      <h2>Research index</h2>
-      <dl class="r-index">
-        <div><dt>Research Interest</dt><dd>22.5</dd></div>
-        <div><dt>Citations</dt><dd>10</dd></div>
-        <div><dt>h-index</dt><dd>2</dd></div>
-        <div><dt>Published papers</dt><dd>5</dd></div>
-        <div><dt>Preprints</dt><dd>1</dd></div>
-        <div><dt>First author</dt><dd>2</dd></div>
-      </dl>
-      <p class="sub">Research Interest, citations and h-index from ResearchGate, October 2026. ResearchGate lists 7 items because the agricultural review appears once per published version.</p>
-      <div class="r-topics"><span class="pp-tag">Corporate finance</span><span class="pp-tag">Text mining</span><span class="pp-tag">Bibliometrics</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Agriculture</span><span class="pp-tag">Policy</span><span class="pp-tag">Sentiment analysis</span><span class="pp-tag">Machine learning</span></div>
+      <p class="lede">Papers I've co-authored. Most use text mining and bibliometric analysis to map what a field already knows and where it's heading. Each title opens the paper.</p>
+      <p class="r-line"><span><b>5</b> papers</span><span><b>1</b> preprint</span><span><b>10</b> citations</span><span>h-index <b>2</b></span><span>first author on <b>2</b></span></p>
+      <p class="sub r-src">Citations and h-index from <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a>, October 2026.</p>
 
       <h2>Papers</h2>
       <ol class="papers">
@@ -1971,16 +2004,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
             <span class="pp-s">Bibliometric networks plus LDA topic modelling on the literature about education and environmentally friendly behaviour. Finds 12 distinct research topics and the role of social welfare in raising environmental awareness.</span>
             <span class="pp-m"><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Text mining</span><span class="pp-go">doi.org/10.26493/1854-6935.22.231-251 ↗</span></span>
           </a>
-        </li>
-        <li>
-          <a class="pp" href="https://www.researchgate.net/publication/375828222_Research_Synthesis_in_Pro-environmental_Behaviour_in_Education_A_Text_Mining_Approach" target="_blank" rel="noopener">
-            <span class="pp-y">2023 · Preprint</span>
-            <span class="pp-t">Research Synthesis in Pro-environmental Behaviour in Education: A Text Mining Approach</span>
-            <span class="pp-v">Preprint · November 2023</span>
-            <span class="pp-a">Chowdhury Noushin Novera, <b>Mehedi Hasan Ifti</b>, Anh Ngoc Quang Huynh, Ijaj Sadiq, Abul Kalam Azad</span>
-            <span class="pp-s">The preprint of the Managing Global Transitions paper above, shared before peer review.</span>
-            <span class="pp-m"><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Text mining</span><span class="pp-go">researchgate.net ↗</span></span>
-          </a>
+          <p class="pp-alt">Also shared as a <a href="https://www.researchgate.net/publication/375828222_Research_Synthesis_in_Pro-environmental_Behaviour_in_Education_A_Text_Mining_Approach" target="_blank" rel="noopener">preprint, November 2023 ↗</a></p>
         </li>
         <li>
           <a class="pp" href="https://doi.org/10.1504/ijaitg.2023.136908" target="_blank" rel="noopener">
@@ -2020,11 +2044,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 
   <aside class="meta" id="meta" aria-label="Page details"></aside>
 
-  <footer class="colophon">
-    Set in Bricolage Grotesque, Literata and IBM Plex Mono. Built by talking it through with Claude Code. No tracking, no cookies.<br>
-    <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://x.com/mehedi_ifti" target="_blank" rel="noopener">X</a> · <a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a> · <a href="https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka" target="_blank" rel="noopener">Spotify</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a><br>
-    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 paperclip · 7 hermes · 8 research · 9 education · 0 whiteboard · T theme · ~ terminal</span>
-  </footer>
+  <footer class="colophon">Built by talking it through with Claude Code. No tracking, no cookies.</footer>
 </div>
 
 <nav class="m-tabs" aria-label="Sections">
@@ -2090,12 +2110,12 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     <div class="ap-seg" data-attr="bg">
       <button type="button" id="bg-dots" data-val="dots">Dots</button><button type="button" id="bg-grid" data-val="grid">Grid</button><button type="button" id="bg-lines" data-val="lines">Lines</button><button type="button" id="bg-plain" data-val="plain">Plain</button>
     </div>
+  </div>
   <div class="ap-g"><span>Pattern near text</span>
     <div class="ap-seg" data-attr="calm">
       <button type="button" id="calm-margins" data-val="margins">Margins</button><button type="button" id="calm-halo" data-val="halo">Halo</button><button type="button" id="calm-spotlight" data-val="spotlight">Spotlight</button>
     </div>
     <label class="ap-range">Clearance <input type="range" id="halo-pad" min="0" max="36" step="2" value="10"><output id="halo-pad-v">10px</output></label>
-  </div>
   </div>
   <div class="ap-g"><span>Layout</span>
     <div class="ap-seg" data-attr="layout">
@@ -2234,6 +2254,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       row('tags', 'tags', tags.map(function (t) { return '<a class="obs-tag" href="#notes">#' + esc(t) + '</a>'; }).join('')) +
       row('clock', 'reading', Math.max(1, Math.round(words / 230)) + ' min') + '</dl></div>');
     var older = noteEls[i + 1], newer = noteEls[i - 1];
+    view.insertAdjacentHTML('beforeend', '<nav class="page-next note-next" aria-label="More notes">' +
+      (older ? '<a href="#' + older.id + '"><small>Previous note</small><b>← ' + esc(noteTitle(older)) + '</b></a>' : '<span></span>') +
+      '<a class="all" href="#notes"><small>&nbsp;</small><b>All notes</b></a>' +
+      (newer ? '<a class="nx" href="#' + newer.id + '"><small>Next note</small><b>' + esc(noteTitle(newer)) + ' →</b></a>' : '<span></span>') + '</nav>');
     var arrow = function (n, ic, label) {
       return n ? '<a class="obs-arrow" href="#' + n.id + '" title="' + label + ': ' + esc(noteTitle(n)) + '" aria-label="' + label + ' note">' + icon(ic) + '</a>'
                : '<span class="obs-arrow" aria-disabled="true">' + icon(ic) + '</span>';
@@ -2480,38 +2504,44 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   var meta = document.getElementById('meta');
   var tocItems = [];
   function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+  // Every page ends by pointing to the next one, so the site reads in order
+  var ORDER = ['index', 'now', 'notes', 'work', 'shelf', 'paperclip', 'hermes', 'whiteboard', 'research', 'education'];
+  function pageNext(page, id) {
+    var i = ORDER.indexOf(id); if (i < 0 || page.querySelector('.page-next')) return;
+    var name = function (k) { var a = document.querySelector('.rail a.nav[href="#' + k + '"]'); return a ? a.textContent.replace(/^\d/, '').trim() : k; };
+    var prev = ORDER[i - 1], next = ORDER[i + 1];
+    page.insertAdjacentHTML('beforeend', '<nav class="page-next" aria-label="Keep reading">' +
+      (prev ? '<a href="#' + prev + '"><small>Previous</small><b>← ' + esc(name(prev)) + '</b></a>' : '<span></span>') +
+      (next ? '<a class="nx" href="#' + next + '"><small>Next</small><b>' + esc(name(next)) + ' →</b></a>' : '') + '</nav>');
+  }
   function buildMeta(page, id) {
     var html = '';
     var heads = Array.prototype.slice.call(page.querySelectorAll('h2'));
-    if (heads.length > 1) {
-      html += '<section><h4>On this page</h4><ol class="toc">' + heads.map(function (h, i) {
+    if (heads.length >= 3) {
+      html += '<section class="m-toc"><h4>On this page</h4><ol class="toc">' + heads.map(function (h, i) {
         return '<li><button type="button" data-i="' + i + '">' + esc(h.textContent) + '</button></li>';
       }).join('') + '</ol></section>';
     }
     // calendar activity sits high on the index so it gets seen
-    if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
+    if (id === 'index') html += '<section class="m-hide"><h4>Activity</h4>' + activityHTML() + '</section>';
     var words = page.textContent.trim().split(/\s+/).length; // textContent: innerText skips content-visibility sections
     var isNote = id.indexOf('n-') === 0;
     var now = document.getElementById('now');
     var pick = function (h2text) {
-      var h = Array.prototype.find.call(now.querySelectorAll('h2'), function (x) { return x.textContent === h2text; });
+      var h = Array.prototype.find.call(now.querySelectorAll('h2, h3'), function (x) { return x.textContent === h2text; });
       var el = h; while (el && !(el.classList && el.classList.contains('log'))) el = el.nextElementSibling;
       var t = el && el.querySelector('.t');
       return t ? t.childNodes[0].textContent.trim() : '';
     };
     if (id !== 'now' && !isNote) {
-      html += '<section><h4>Right now</h4><ul class="cur">' +
+      html += '<section class="m-hide"><h4>Right now</h4><ul class="cur">' +
         [['reading', pick('Reading')], ['watching', pick('Watching')], ['listening', pick('Listening')], ['exploring', pick('Exploring')]].filter(function (r) { return r[1]; })
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
     // Page details come after Right now
     if (isNote) html += noteMeta(page);
-    else html += '<section><h4>Page</h4><dl><dt>path</dt><dd>/' + (id === 'index' ? '' : id) + '</dd>' +
-      '<dt>words</dt><dd>' + words + '</dd><dt>read</dt><dd>' + Math.max(1, Math.round(words / 230)) + ' min</dd>' +
-      '<dt>updated</dt><dd>' + esc(document.querySelector('.rail .stamp').textContent.replace('Updated', '').trim()) + '</dd></dl></section>';
-    html += '<section><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
-    html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>0</kbd>–<kbd>9</kbd> pages</li><li><kbd>T</kbd> theme</li><li><kbd>~</kbd> terminal</li></ul></section>';
+    html += '<section class="m-hide"><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
     meta.innerHTML = html;
     renderSocials(meta);
     tocItems = heads;
@@ -2648,7 +2678,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     var h = target.querySelector('h1');
     document.title = (id === 'index' ? '' : (h ? h.textContent + ' · ' : '')) + "Ifti's Notebook";
     if (id.indexOf('n-') === 0) { openInTab(id); renderTabs(target); }
-    buildMeta(target, id);
+    buildMeta(target, id); pageNext(target, id);
     document.getElementById('m-path').innerHTML = '~/' + (id === 'index' ? '' : id.indexOf('n-') === 0 ? 'notes/<b>' + id.slice(2) + '</b>' : '<b>' + id + '</b>');
     sheetOpen(false);
     document.querySelectorAll('.m-more').forEach(function (b) { b.classList.toggle('on', ['paperclip', 'hermes', 'whiteboard', 'research', 'education'].indexOf(id) >= 0); });
@@ -2657,6 +2687,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     setTimeout(function () { if (anchor) anchor.scrollIntoView(); else window.scrollTo(0, 0); }, 0);
   }
   window.addEventListener('hashchange', show);
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('load', function () { var t = document.getElementById((location.hash || '#index').slice(1)); if (!t || t.classList.contains('page')) setTimeout(function () { window.scrollTo(0, 0); }, 0); });
   window.addEventListener('load', function () { var a = document.getElementById(location.hash.slice(1)); if (a && !a.classList.contains('page') && a.closest('.page')) a.scrollIntoView(); else window.scrollTo(0, 0); });
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   show();
@@ -2665,6 +2697,21 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   // Suggestion box. Paste your form endpoint (e.g. https://formspree.io/f/xxxx) to receive suggestions by email.
   // Suggestions are emailed to me through FormSubmit. The very first one triggers a one-time confirmation email.
   var SUGGEST_ENDPOINT = 'https://formsubmit.co/ajax/mh.hasan884@gmail.com';
+  // Notes list: first sentence of each note as a one-line dek
+  document.querySelectorAll('#notes .entries a[href^="#n-"]').forEach(function (a) {
+    var n = document.getElementById(a.getAttribute('href').slice(1));
+    var p = n && n.querySelector('h1 ~ p');
+    if (!p) return;
+    var m = p.textContent.trim().match(/^.+?[.?!](?=\s|$)/);
+    var d = document.createElement('span'); d.className = 'dek'; d.textContent = m ? m[0] : p.textContent.trim();
+    a.appendChild(d);
+  });
+  // links to #suggest open the collapsed form
+  document.addEventListener('click', function (e) {
+    var l = e.target.closest && e.target.closest('a[href="#suggest"]');
+    var d = document.querySelector('.suggest-d');
+    if (l && d) d.open = true;
+  });
   var form = document.getElementById('suggest-form');
   var status = document.getElementById('s-status');
   form.addEventListener('submit', function (e) {
@@ -2877,6 +2924,9 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     podcasts: function () {
       return '<p class="pop-k">Podcasts</p><h3 id="pop-t">In my ears right now</h3><p><b>Huge Conversations</b> · Cleo Abram. Alexandr Wang on Muse, Meta\'s personal agent.</p>' +
         '<p><a href="#n-005">My notes on it</a> · <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Watch ↗</a></p><p class="muted">The full rotation is on the <a href="#now">Now page</a>.</p>';
+    },
+    guitar: function () {
+      return '<p class="pop-k">Guitar</p><h3 id="pop-t">Guitar</h3><p>I pick it up when nobody\'s waiting on me.</p>';
     },
     football: function () {
       return '<p class="pop-k">Football</p><h3 id="pop-t">Liverpool and Brazil</h3><p>I used to play, and I used to lift. These days I watch.</p>';
@@ -3347,6 +3397,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     function play(key) {
       var r = RUNS[key]; reset();
       we.setAttribute('data-busy', 'true'); run.hidden = false; ans.hidden = true; log.innerHTML = '';
+      var rr = run.getBoundingClientRect(); if (rr.top > innerHeight - 120) run.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
       q.value = r.q;
       we.querySelectorAll('.we-presets button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-s') === key)); });
       document.getElementById('we-ticket').textContent = 'WE-' + (140 + closed + Object.keys(RUNS).indexOf(key));

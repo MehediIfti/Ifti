@@ -14,7 +14,7 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Note tags:** each note's `<article>` has a `data-tags` attribute (space-separated). Tags show in the note's Properties block, and notes that share a tag link to each other in the right column's local graph and linked mentions.
 
-**Research:** the `RESEARCH UPDATE` block in `index.html`. One `<li>` per paper, newest first; each card links to the paper's DOI. The index tiles (Research Interest, citations, h-index, papers, preprints, first author) are copied from ResearchGate by hand.
+**Research:** the `RESEARCH UPDATE` block in `index.html`. One `<li>` per paper, newest first; each title links to the paper. A preprint of a published paper goes under that paper as a `pp-alt` line. The stat line under the lede (papers, preprints, citations, h-index, first author) is copied from ResearchGate by hand; update the month in the caption too.
 
 **Education:** the `EDUCATION UPDATE` block in `index.html`, one `<li>` per school, newest first. It sits under the Academia heading in the left rail with Research.
 

@@ -5,3 +5,14 @@
 - **Structure:** single file, `index.html`. The README lists every `UPDATE` block and how themes work.
 - **Location:** Dhaka everywhere.
 - **Changelog:** when a change adds a page, a note, a feature or a redesign, add one entry to the `CHANGELOG UPDATE` block in the same commit. Skip copy edits, fixes and small tweaks.
+
+## Daily routine: "next issue"
+
+When Ifti says "next issue":
+1. **Pick** the oldest open issue in the lowest milestone (1, then 2, then 3) that has `20-min` (or `2x20-min` if he says there's time) and neither `needs-info` nor `needs-backend`. Read it with `gh api repos/MehediIfti/Ifti/issues/N` (GraphQL is not available).
+2. **Build** it in about 20 minutes. If it runs long, stop at a working point and comment on the issue with what's left.
+3. **Verify:** `node scripts/check.mjs`, then Playwright screenshots at 1440px and 390px with no page errors, in Cropmark and one other theme.
+4. **Ship** straight to `main` (and mirror to `v2-review`): add a `CHANGELOG UPDATE` entry if it's a page, note, feature or redesign; put `Closes #N` in the commit message.
+5. **Report** in a few lines: what shipped, the live link, and the next issue up.
+
+If an issue needs a fact, ask Ifti instead of guessing, and add `needs-info`.

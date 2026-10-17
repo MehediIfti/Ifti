@@ -1,0 +1,23 @@
+name: Bug
+description: Something on the site is broken or looks wrong
+labels: [bug]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      description: Page link, e.g. https://mehediifti.github.io/Ifti/#work
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      description: e.g. iPhone Safari, Mac Chrome. Theme too, if not the default.

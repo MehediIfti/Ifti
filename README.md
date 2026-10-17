@@ -2,7 +2,17 @@
 
 Personal notebook site: notes, a monthly now page, work and bookshelf.
 
+**Live:** https://mehediifti.github.io/Ifti/
+
 Single static file (`index.html`), served with GitHub Pages.
+
+## How we work
+
+- **Backlog:** ideas live as [issues](https://github.com/MehediIfti/Ifti/issues), grouped into milestones in play order: *1 · Easter eggs & delight*, *2 · Interaction polish*, *3 · Content & pages*, *Later · Needs a backend*. The [project board](https://github.com/MehediIfti/Ifti/projects) shows them as Ready, In progress, Done and Parked.
+- **Labels:** `fun`, `feature`, `design`, `content`, `chore`, `bug` say what it is. `20-min` / `2x20-min` say how long. `needs-info` waits on a fact or decision from me; `needs-backend` waits on a small server.
+- **Daily 20 minutes:** I open a session and say "next issue". The rules are in `CLAUDE.md`.
+- **Safety check:** every push runs `scripts/check.mjs` (GitHub Actions): the scripts must parse and every `#link` must point somewhere. Run it locally with `node scripts/check.mjs`.
+- **New ideas:** use the Idea or Bug template on the New issue page.
 
 **Voice:** all copy follows [VOICE.md](VOICE.md): plain words, the claim first, strong but true, facts only. Read it before adding a page, a note or a button. `CLAUDE.md` points Claude Code at it automatically.
 

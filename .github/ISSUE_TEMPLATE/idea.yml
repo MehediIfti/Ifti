@@ -1,0 +1,38 @@
+name: Idea
+description: Something fun or useful to add to the site
+labels: []
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: What should happen, in a sentence or two.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it's fun
+      description: Why a visitor would enjoy or use it.
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: A short checklist.
+      value: |
+        - [ ] 
+  - type: dropdown
+    id: size
+    attributes:
+      label: Size
+      options:
+        - 20 minutes
+        - Two sessions
+        - Bigger
+  - type: checkboxes
+    id: blockers
+    attributes:
+      label: Blockers
+      options:
+        - label: Needs a fact or decision from Ifti
+        - label: Needs a backend or API key

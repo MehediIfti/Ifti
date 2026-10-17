@@ -928,23 +928,23 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .ap-x:hover { color: var(--text); background: var(--surface0); }
 .ap-g { display: grid; gap: 0.5rem; }
 .ap-g > span { color: var(--label); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.6875rem; }
-.ap-presets { display: grid; gap: 0.45rem; }
-.ap-preset { font: inherit; text-align: left; cursor: pointer; display: grid; gap: 0.35rem; padding: 0.7rem 0.75rem; border-radius: 9px; color: var(--sw-fg); background: var(--sw-pat), var(--sw-bg); border: 1px solid color-mix(in srgb, var(--sw-fg) 18%, transparent); }
+.ap-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.ap-preset { font: inherit; text-align: left; cursor: pointer; display: grid; gap: 0.15rem; padding: 0.5rem 0.6rem; border-radius: 9px; color: var(--sw-fg); background: var(--sw-pat), var(--sw-bg); border: 1px solid color-mix(in srgb, var(--sw-fg) 18%, transparent); }
 .ap-preset[data-id="cropmark"] { border-radius: 0; }
 .ap-preset[aria-pressed="true"] { outline: 2px solid var(--mauve); outline-offset: 1px; }
-.ap-preset .pr-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-.ap-preset b { font-family: var(--display); font-size: 1rem; letter-spacing: 0; color: var(--sw-ac); }
-.ap-preset em { font-style: normal; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
-.ap-preset small { font-size: 0.6875rem; line-height: 1.4; opacity: 0.8; }
+.ap-preset .pr-top { display: grid; gap: 0.1rem; }
+.ap-preset b { font-family: var(--display); font-size: 0.875rem; line-height: 1.2; letter-spacing: 0; color: var(--sw-ac); }
+.ap-preset em { font-style: normal; font-size: 0.5625rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
+.ap-preset small { display: none; }
 .ap-edit { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; padding-top: 0.9rem; border-top: 1px solid var(--surface0); color: var(--subtext0); }
 .ap-edit b { color: var(--text); font-weight: 500; }
 .ap-edit i { font-style: normal; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--peach); }
-.ap-themes { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+.ap-themes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.35rem; }
 .ap-themes button {
   font: inherit; text-align: left; cursor: pointer;
   background: var(--sw-bg); color: var(--sw-fg);
   border: 1px solid color-mix(in srgb, var(--sw-fg) 18%, transparent); border-radius: 7px;
-  padding: 0.55rem 0.6rem; display: grid; gap: 0.4rem;
+  padding: 0.4rem 0.45rem; display: grid; gap: 0.3rem; font-size: 0.6875rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .ap-themes .sw { display: flex; gap: 4px; }
 .ap-themes .sw i { width: 10px; height: 10px; border-radius: 50%; display: block; }
@@ -1128,13 +1128,11 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 :root[data-theme="lightsout"] .offclock svg { stroke: #ffc906; }
 /* start lights */
 .f1-lights { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: rgba(5, 7, 14, 0.82); backdrop-filter: blur(2px); cursor: pointer; transition: opacity 0.35s; }
-.f1-lights.out { opacity: 0; }
+.f1-lights.out { opacity: 0; transition-duration: 0.25s; }
 .f1-rig { display: flex; gap: clamp(10px, 2.4vw, 22px); padding: clamp(12px, 2vw, 18px) clamp(14px, 2.6vw, 24px); background: #111; border: 2px solid #222; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
 .f1-rig span { display: grid; gap: 8px; padding: 8px; background: #050505; border-radius: 8px; }
 .f1-rig i { display: block; width: clamp(26px, 6vw, 52px); aspect-ratio: 1; border-radius: 50%; background: #2a0606; box-shadow: inset 0 0 0 2px #1a0303; }
 .f1-rig span.on i:last-child, .f1-rig span.on i:nth-last-child(2) { background: radial-gradient(circle at 40% 35%, #ff6b5e, #e10600 60%, #8f0400); box-shadow: 0 0 22px 4px rgba(225, 6, 0, 0.65); }
-.f1-go { position: absolute; bottom: 18%; left: 0; right: 0; text-align: center; font: italic 900 clamp(1.4rem, 4vw, 2.4rem) "Titillium Web", sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: #fff; opacity: 0; transition: opacity 0.2s; }
-.f1-lights.go .f1-go { opacity: 1; }
 
 /* ============ terminal button ============ */
 .term-fab { position: fixed; z-index: 29; left: calc(env(safe-area-inset-left, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem 0.45rem 0.7rem; font: 500 0.75rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
@@ -2658,13 +2656,14 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var old = document.querySelector('.f1-lights'); if (old) old.remove();
     var o = document.createElement('div'); o.className = 'f1-lights'; o.setAttribute('aria-hidden', 'true');
-    o.innerHTML = '<div class="f1-rig">' + '<span><i></i><i></i><i></i><i></i></span>'.repeat(5) + '</div><div class="f1-go">Lights out and away we go</div>';
+    o.innerHTML = '<div class="f1-rig">' + '<span><i></i><i></i><i></i><i></i></span>'.repeat(5) + '</div>';
     document.body.appendChild(o);
     var cols = o.querySelectorAll('.f1-rig span'), timers = [];
-    function end() { timers.forEach(clearTimeout); o.classList.add('out'); setTimeout(function () { o.remove(); }, 360); }
-    cols.forEach(function (c, i) { timers.push(setTimeout(function () { c.classList.add('on'); }, 350 + i * 520)); });
-    timers.push(setTimeout(function () { cols.forEach(function (c) { c.classList.remove('on'); }); o.classList.add('go'); }, 350 + 5 * 520 + 500));
-    timers.push(setTimeout(end, 350 + 5 * 520 + 1500));
+    // Like a real start: five reds come on one per beat, hold, then all go out together.
+    function end() { timers.forEach(clearTimeout); o.classList.add('out'); setTimeout(function () { o.remove(); }, 260); }
+    cols.forEach(function (c, i) { timers.push(setTimeout(function () { c.classList.add('on'); }, 150 + i * 280)); });
+    timers.push(setTimeout(function () { cols.forEach(function (c) { c.classList.remove('on'); }); }, 150 + 5 * 280 + 450));
+    timers.push(setTimeout(end, 150 + 5 * 280 + 450 + 350));
     o.addEventListener('click', end);
   }
   function edits(id) { try { return JSON.parse(read('ap-t-' + id) || '{}') || {}; } catch (e) { return {}; } }
@@ -2685,7 +2684,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     document.getElementById('ap-dirty').hidden = !Object.keys(ed).length;
   }
   presets.innerHTML = THEMES.map(function (t) {
-    return '<button type="button" class="ap-preset" data-id="' + t.id + '" style="--sw-bg:' + t.sw.bg + ';--sw-fg:' + t.sw.fg + ';--sw-ac:' + t.sw.ac + ';--sw-pat:' + t.sw.pat + '">' +
+    return '<button type="button" class="ap-preset" title="' + esc(t.note) + '" data-id="' + t.id + '" style="--sw-bg:' + t.sw.bg + ';--sw-fg:' + t.sw.fg + ';--sw-ac:' + t.sw.ac + ';--sw-pat:' + t.sw.pat + '">' +
       '<span class="pr-top"><b>' + esc(t.name) + '</b><em>' + esc(t.week) + '</em></span><small>' + esc(t.note) + '</small></button>';
   }).join('');
   presets.addEventListener('click', function (e) {

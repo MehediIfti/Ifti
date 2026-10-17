@@ -281,6 +281,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 /* calendar activity: GitHub-style grid of meetings per day. Sits at the foot of the right rail on the index page, inline when the rail is hidden. */
 .act { display: grid; gap: 0.35rem; font-family: var(--mono); }
 .act-m, .act-g { display: grid; grid-template-columns: repeat(var(--w), minmax(0, 1fr)); gap: 2px; }
+.act-m { overflow: hidden; }
 .act-m span { font-size: 0.625rem; color: var(--overlay1); white-space: nowrap; overflow: visible; width: 0; }
 .act-g { grid-template-rows: repeat(7, auto); grid-auto-flow: column; }
 .act-g i { display: block; aspect-ratio: 1; border-radius: 2px; background: var(--surface0); }
@@ -393,54 +394,17 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 @media (max-width: 760px) { .keys-line { display: none; } footer.colophon { margin-top: 2.5rem; } }
 @media (max-width: 760px) { .ap-g.mobile-only { display: grid; } }
 
-/* pattern switcher: small card in the lower left, folds down to its title */
-.calm {
-  position: fixed; z-index: 29; left: calc(env(safe-area-inset-left, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
-  display: grid; gap: 0.5rem; width: 15rem; padding: 0.75rem;
-  background: var(--mantle); color: var(--text); border: 1px solid var(--surface0); border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-family: var(--mono); font-size: 0.6875rem;
-}
-.calm-h { font: inherit; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; background: none; border: 0; padding: 0; color: var(--subtext0); cursor: pointer; text-align: left; }
-.calm-h b { color: var(--label); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
-.calm-ic { display: none; width: 14px; height: 14px; background: radial-gradient(circle, var(--label) 1.3px, transparent 1.8px) 0 0 / 5px 5px; }
-.calm-h .short { display: none; }
-/* scrolled: shrinks to an edge tab that mirrors the Theme tab on the right */
-.calm.min { width: auto; left: env(safe-area-inset-left, 0px); padding: 0.8rem 0.5rem 0.9rem; border-left: 0; border-radius: 0 10px 10px 0; box-shadow: none; transition: padding 0.15s ease; }
-.calm.min:hover { padding-left: 0.8rem; }
-.calm.min > :not(.calm-h), .calm.min .full, .calm.min .calm-x { display: none; }
-.calm.min .calm-h { flex-direction: column; gap: 0.55rem; }
-.calm.min .calm-ic { display: block; }
-.calm.min .short { display: block; writing-mode: vertical-rl; transform: rotate(180deg); color: var(--subtext0); font-weight: 400; letter-spacing: 0.12em; }
-.calm.min:hover .short { color: var(--text); }
-@media (prefers-reduced-motion: no-preference) {
-  .calm:not(.min) > * { animation: calm-in 0.2s ease-out; }
-  @keyframes calm-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-}
-.calm .ap-seg button { font-size: 0.6875rem; }
-.calm label { display: grid; grid-template-columns: auto 1fr 2.5rem; align-items: center; gap: 0.5rem; color: var(--subtext0); }
-.calm input { width: 100%; accent-color: var(--mauve); }
-.calm output { text-align: right; color: var(--text); }
-:root:not([data-calm="halo"]) .calm label, :root:not([data-bg="dots"]) .calm label { display: none; }
-.calm .note { color: var(--overlay1); }
-@media (max-width: 760px) {
-  .calm { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + 8px); left: auto; right: 8px; width: 13.5rem; }
-  .calm.min { left: auto; padding: 0.45rem 0.7rem; border-left: 1px solid var(--surface0); border-radius: 999px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
-  .calm.min:hover { padding-left: 0.7rem; }
-  .calm.min .calm-h { flex-direction: row; }
-  .calm.min .short { writing-mode: horizontal-tb; transform: none; }
-}
-
-/* appearance panel: edge tab + slide-out drawer */
+/* appearance panel: edge tab on the left, in the lower part of the screen where no column sits, + slide-out drawer */
 .ap-tab {
-  position: fixed; z-index: 30; top: 50%; right: env(safe-area-inset-right, 0px); transform: translateY(-50%);
+  position: fixed; z-index: 30; top: 75%; left: env(safe-area-inset-left, 0px); transform: translateY(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 0.55rem;
   padding: 0.8rem 0.5rem 0.9rem; cursor: pointer;
   background: var(--mantle); color: var(--subtext0);
-  border: 1px solid var(--surface0); border-right: 0; border-radius: 10px 0 0 10px;
+  border: 1px solid var(--surface0); border-left: 0; border-radius: 0 10px 10px 0;
   font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;
   transition: padding 0.15s ease, color 0.15s ease;
 }
-.ap-tab:hover { color: var(--text); padding-right: 0.8rem; }
+.ap-tab:hover { color: var(--text); padding-left: 0.8rem; }
 .ap-tab .lbl { writing-mode: vertical-rl; transform: rotate(180deg); }
 .ap-dots { display: grid; gap: 4px; }
 .ap-dots i { width: 8px; height: 8px; border-radius: 50%; display: block; }
@@ -449,7 +413,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .ap-dots i:nth-child(3) { background: var(--teal); }
 .ap-panel {
   position: fixed; z-index: 31;
-  top: calc(env(safe-area-inset-top, 0px) + 12px); right: calc(env(safe-area-inset-right, 0px) + 12px);
+  top: calc(env(safe-area-inset-top, 0px) + 12px); left: calc(env(safe-area-inset-left, 0px) + 12px);
   width: min(19rem, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow-y: auto;
   background: var(--mantle); color: var(--text);
   border: 1px solid var(--surface0); border-radius: 12px;
@@ -478,16 +442,20 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .ap-seg button + button { border-left: 1px solid var(--surface0); }
 .ap-seg button:hover { color: var(--text); }
 .ap-seg button[aria-pressed="true"] { background: var(--surface0); color: var(--text); }
+.ap-range { display: grid; grid-template-columns: auto 1fr 2.5rem; align-items: center; gap: 0.6rem; color: var(--subtext0); }
+.ap-range input { width: 100%; accent-color: var(--mauve); }
+.ap-range output { text-align: right; color: var(--text); }
+:root:not([data-calm="halo"]) .ap-range, :root:not([data-bg="dots"]) .ap-range { display: none; }
 .ap-foot { display: flex; justify-content: space-between; gap: 0.5rem; color: var(--subtext0); font-size: 0.6875rem; }
 .ap-foot button { font: inherit; background: none; border: 0; color: var(--accent); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
 @media (prefers-reduced-motion: no-preference) {
   .ap-panel:not([hidden]) { animation: ap-in 0.2s ease-out; }
-  @keyframes ap-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+  @keyframes ap-in { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
 }
 @media (max-width: 760px) {
-  .ap-tab { top: auto; transform: none; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); right: calc(env(safe-area-inset-right, 0px) + 16px);
+  .ap-tab { top: auto; left: auto; transform: none; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); right: calc(env(safe-area-inset-right, 0px) + 16px);
     flex-direction: row; border: 1px solid var(--surface0); border-radius: 999px; padding: 0.55rem 0.8rem; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
-  .ap-tab:hover { padding-right: 0.8rem; }
+  .ap-tab:hover { padding-left: 0.8rem; }
   .ap-tab .lbl { writing-mode: horizontal-tb; transform: none; }
   .ap-dots { grid-auto-flow: column; }
   .ap-panel { top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); }
@@ -842,6 +810,12 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <div class="ap-seg" data-attr="bg">
       <button type="button" id="bg-dots" data-val="dots">Dots</button><button type="button" id="bg-grid" data-val="grid">Grid</button><button type="button" id="bg-lines" data-val="lines">Lines</button><button type="button" id="bg-plain" data-val="plain">Plain</button>
     </div>
+  <div class="ap-g"><span>Pattern near text</span>
+    <div class="ap-seg" data-attr="calm">
+      <button type="button" id="calm-margins" data-val="margins">Margins</button><button type="button" id="calm-halo" data-val="halo">Halo</button><button type="button" id="calm-spotlight" data-val="spotlight">Spotlight</button>
+    </div>
+    <label class="ap-range">Clearance <input type="range" id="halo-pad" min="0" max="36" step="2" value="10"><output id="halo-pad-v">10px</output></label>
+  </div>
   </div>
   <div class="ap-g"><span>Layout</span>
     <div class="ap-seg" data-attr="layout">
@@ -1141,7 +1115,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   })();
 
   // Appearance: theme, background and text style, remembered per visitor.
-  var AP_DEFAULTS = { palette: 'black', bg: 'dots', type: 'serif', layout: '3', mnav: 'tabs' };
+  var AP_DEFAULTS = { palette: 'black', bg: 'dots', calm: 'margins', type: 'serif', layout: '3', mnav: 'tabs' };
   var tab = document.getElementById('ap-tab');
   var panel = document.getElementById('ap-panel');
   var groups = document.querySelectorAll('#ap-panel [data-attr]');
@@ -1212,12 +1186,6 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 })();
 </script>
 <canvas id="halo-dots" aria-hidden="true"></canvas>
-<div class="calm" id="calm" role="group" aria-label="Pattern near text">
-  <button type="button" class="calm-h" id="calm-h" aria-expanded="true"><span class="calm-ic" aria-hidden="true"></span><b class="full">Pattern near text</b><b class="short">Pattern</b><span class="calm-x" aria-hidden="true">–</span></button>
-  <div class="ap-seg" id="calm-seg"><button type="button" data-val="margins">Margins</button><button type="button" data-val="halo">Halo</button><button type="button" data-val="spotlight">Spotlight</button></div>
-  <label>Clearance <input type="range" id="halo-pad" min="0" max="36" step="2" value="10"><output id="halo-pad-v">10px</output></label>
-  <span class="note" id="calm-note"></span>
-</div>
 <script>
 // Halo: the dot grid drawn on a canvas so it fades out around every line of text and stays in the empty space.
 (function () {
@@ -1234,7 +1202,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       var p = n.parentNode.nodeName; return /\S/.test(n.nodeValue) && p !== 'SCRIPT' && p !== 'STYLE' ? 1 : 3; } });
     var push = function (r) { if (r.width && r.bottom > -40 && r.top < vh + 40) out.push(r); };
     while (w.nextNode()) { range.selectNodeContents(w.currentNode); Array.prototype.forEach.call(range.getClientRects(), push); }
-    document.querySelectorAll('svg, .act-g, .radar, .suggest, input, textarea, button, img, .ap-panel, .calm').forEach(function (el) { push(el.getBoundingClientRect()); });
+    document.querySelectorAll('svg, .act-g, .radar, .suggest, input, textarea, button, img, .ap-panel, .ap-tab').forEach(function (el) { push(el.getBoundingClientRect()); });
     return out;
   }
   function draw() {
@@ -1268,40 +1236,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   }
   slider.addEventListener('input', function () { setPad(+slider.value, true); });
 
-  // Margins by default; the visitor's pick is remembered on this device.
-  var box = document.getElementById('calm'), head = document.getElementById('calm-h');
-  var NOTES = { margins: 'No pattern behind the reading column.', halo: 'Dots fade out around each line of text.', spotlight: 'Pattern brightest behind the text.' };
-  function setMode(m, save) {
-    root.setAttribute('data-calm', m);
-    box.querySelectorAll('#calm-seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-val') === m)); });
-    document.getElementById('calm-note').textContent = NOTES[m] + (m === 'halo' && root.getAttribute('data-bg') !== 'dots' ? ' Needs the Dots background.' : '');
-    if (save) { try { localStorage.setItem('ap-calm', m); } catch (e) {} }
-  }
-  document.getElementById('calm-seg').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setMode(b.getAttribute('data-val'), true); });
-  new MutationObserver(function () { setMode(root.getAttribute('data-calm'), false); }).observe(root, { attributes: true, attributeFilter: ['data-bg'] });
-  var mode = 'margins'; try { mode = localStorage.getItem('ap-calm') || mode; } catch (e) {}
-  setMode(NOTES[mode] ? mode : 'margins', false);
-
-  // Full card at the top of the page; once the visitor scrolls it shrinks to a tab. Tapping the tab opens it until they scroll on.
-  var phone = matchMedia('(max-width: 760px)'), openedAt = null;
-  function fold(min) {
-    box.classList.toggle('min', min); head.setAttribute('aria-expanded', String(!min));
-    head.setAttribute('aria-label', min ? 'Show pattern options' : 'Hide pattern options'); soon();
-  }
-  head.addEventListener('click', function () {
-    var min = !box.classList.contains('min');
-    fold(min); openedAt = min ? null : scrollY;
-  });
-  function onScroll() {
-    if (openedAt !== null) { if (Math.abs(scrollY - openedAt) > 160) { openedAt = null; fold(true); } return; }
-    fold(phone.matches || scrollY > 40);
-  }
-  addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
   document.getElementById('ap-reset').addEventListener('click', function () {
-    setPad(10, false); setMode('margins', false);
-    try { localStorage.removeItem('ap-halo-pad'); localStorage.removeItem('ap-calm'); } catch (e) {}
+    setPad(10, false); try { localStorage.removeItem('ap-halo-pad'); } catch (e) {}
   });
   addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
   addEventListener('hashchange', function () { setTimeout(soon, 30); });

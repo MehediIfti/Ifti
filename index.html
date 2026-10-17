@@ -1235,7 +1235,7 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
   body::before, body::after, main::before, main::after { display: none !important; }
   * { box-shadow: none !important; text-shadow: none !important; animation: none !important; transition: none !important; }
   .rail, .meta, .m-top, .m-tabs, .m-sheet, .ap-tab, .ap-panel, .term-fab, .term, .peek, .page-next, .note-next, .sec-grip, .drop-line, .share-pop, .tour, dialog,
-  footer.colophon, .no-print, .obs-tabs, .obs-nav, .obs-status, .obs-menu, .hx-map, .radar, .we, .tg, .hm-loop, .wb, .wb-open, iframe, form, .suggest-d, .sub-box, .cta, .pg-links, .shelf-dir, .log-more, .r-src, .edu-more, .cl-more, .copy, .tour-start { display: none !important; }
+  footer.colophon, .no-print, .cof, .tour-fab, .obs-tabs, .obs-nav, .obs-status, .obs-menu, .hx-map, .radar, .we, .tg, .hm-loop, .wb, .wb-open, iframe, form, .suggest-d, .sub-box, .cta, .pg-links, .shelf-dir, .log-more, .r-src, .edu-more, .cl-more, .copy, .tour-start { display: none !important; }
   .shell { display: block !important; max-width: none !important; padding: 0 !important; margin: 0 !important; }
   main { display: block !important; padding: 0 !important; }
   .page:not(.on) { display: none !important; }
@@ -1297,6 +1297,31 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
 .term-fab:hover, .term-fab:focus-visible { border-color: var(--label); transform: translateY(-1px); outline: none; }
 .term-fab b { font-weight: 500; color: var(--label); }
 .term-fab kbd { font: inherit; font-size: 0.6875rem; color: var(--muted); background: var(--surface0); border-radius: 3px; padding: 0 0.3rem; }
+/* Coffee counter: sits on top of the Terminal button */
+.cof { position: fixed; z-index: 29; width: max-content; white-space: nowrap; left: calc(env(safe-area-inset-left, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 56px); }
+.cof-pill { display: inline-flex; align-items: center; gap: 0.45rem; height: 32px; padding: 0 0.7rem 0 0.55rem; font: 500 0.75rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s; }
+.cof-pill:hover, .cof-pill:focus-visible, .cof.open .cof-pill { border-color: var(--label); outline: none; }
+.cof-pill .cof-cup { color: var(--peach); flex: none; }
+.cof-pill b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.cof-pill span { color: var(--muted); }
+.cof-steam { animation: cof-steam 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes cof-steam { 0%, 100% { opacity: 0.25; transform: translateY(1px); } 50% { opacity: 1; transform: translateY(-1px); } }
+@media (prefers-reduced-motion: reduce) { .cof-steam { animation: none; } }
+.cof-card { position: absolute; left: 0; bottom: calc(100% + 8px); width: 17rem; white-space: normal; padding: 0.85rem 0.95rem; display: grid; gap: 0.55rem; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.4); opacity: 0; transform: translateY(4px); pointer-events: none; transition: opacity 0.14s, transform 0.14s; }
+.cof.below .cof-card { bottom: auto; top: calc(100% + 8px); }
+.cof.right .cof-card { left: auto; right: 0; }
+.cof:hover, .cof.open { z-index: 32; }
+.cof:hover .cof-card, .cof.open .cof-card { opacity: 1; transform: none; pointer-events: auto; }
+.cof-card small { font: 500 0.625rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--label); }
+.cof-card p { margin: 0; font-size: 0.875rem; line-height: 1.45; }
+.cof-card p b { font-family: var(--display); font-size: 1.35rem; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+.cof-bar { height: 4px; background: var(--surface0); border-radius: 2px; overflow: hidden; }
+.cof-bar i { display: block; height: 100%; width: 0; background: var(--peach); transition: width 0.8s ease; }
+.cof-card dl { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 0.9rem; margin: 0; font: 0.75rem var(--mono); }
+.cof-card dt { color: var(--muted); } .cof-card dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.cof-card .cof-fine { font-size: 0.75rem; color: var(--muted); }
+html.intro .cof { visibility: hidden; }
+@media (max-width: 760px) { .cof { display: none; } }
 .tour-fab { position: fixed; z-index: 29; left: calc(env(safe-area-inset-left, 0px) + 147px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); display: grid; place-items: center; padding: 0; color: var(--label); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s, color 0.15s, transform 0.15s; }
 .tour-fab:hover, .tour-fab:focus-visible { color: var(--text); border-color: var(--label); transform: translateY(-1px); outline: none; }
 .tour-fab::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(3px); white-space: nowrap; padding: 0.3rem 0.55rem; font: 500 0.6875rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 5px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); opacity: 0; pointer-events: none; transition: opacity 0.12s, transform 0.12s; }
@@ -2302,6 +2327,19 @@ html.touring .tour-fab::after { display: none; }
 
 <div class="pop" id="pop" hidden><div class="pop-card" role="dialog" aria-modal="true" aria-labelledby="pop-t"><button type="button" class="ap-x" id="pop-x" aria-label="Close">×</button><div id="pop-body"></div></div></div>
 <div class="peek" id="peek" aria-hidden="true"></div>
+<div class="cof" id="cof">
+  <button type="button" class="cof-pill" id="cof-pill" aria-expanded="false" aria-controls="cof-card" aria-label="Coffee this year">
+    <svg class="cof-cup" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path class="cof-steam" d="M9 2.5c-.8 1 .8 1.8 0 3M13 2.5c-.8 1 .8 1.8 0 3"/><path d="M4.5 8.5h12v5.5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M16.5 10h1.2a2.3 2.3 0 0 1 0 4.6h-1.4"/><path d="M4 21.5h13"/></g></svg>
+    <b id="cof-n">0</b><span id="cof-l">cups in 2026</span>
+  </button>
+  <div class="cof-card" id="cof-card" role="tooltip">
+    <small>Coffee counter</small>
+    <p><b id="cof-big">0</b> cups of black Americano this year, give or take.</p>
+    <div class="cof-bar" aria-hidden="true"><i id="cof-fill"></i></div>
+    <dl><dt>Workdays</dt><dd id="cof-wd">0 of 0</dd><dt>Per workday</dt><dd>2 to 3 big cups</dd><dt>Today</dt><dd id="cof-today">–</dd></dl>
+    <p class="cof-fine">Counts Sunday to Thursday, Dhaka time. It doesn't skip public holidays.</p>
+  </div>
+</div>
 <button type="button" class="tour-fab tour-start" aria-label="Take the tour" data-tip="Take the tour"><svg viewBox="0 0 64 64" width="18" height="18" aria-hidden="true"><path d="M32 12v13M32 39v13M12 32h13M39 32h13" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="32" r="4.5" style="fill: var(--green)"/></svg></button>
 <button type="button" class="term-fab term-open" data-float="term-fab" aria-label="Open terminal (press ~)" title="Terminal · press ~. Drag to move."><b>&gt;_</b><span class="lbl">Terminal</span><kbd>~</kbd></button>
 <div class="term" id="term" role="dialog" aria-label="Terminal" hidden>
@@ -3041,7 +3079,8 @@ html.touring .tour-fab::after { display: none; }
       if (tab.classList.contains('free')) { if (tab.classList.contains('edge-line') && tab._apply) tab._apply(); return; }
       if (matchMedia('(max-width: 760px)').matches || !railEl.offsetHeight) { tab.classList.remove('tight'); tab.style.top = ''; return; }
       var gap = 20, top = railEl.getBoundingClientRect().bottom + gap;
-      var fab = document.querySelector('.term-fab'), floor = fab && fab.offsetHeight && !fab.classList.contains('free') ? fab.getBoundingClientRect().top - 12 : window.innerHeight - gap;
+      var fab = document.querySelector('.term-fab'), cof = document.getElementById('cof'), floor = fab && fab.offsetHeight && !fab.classList.contains('free') ? fab.getBoundingClientRect().top - 12 : window.innerHeight - gap;
+      if (cof && cof.offsetHeight && fab && !fab.classList.contains('free')) floor = Math.min(floor, cof.getBoundingClientRect().top - 12);
       tab.classList.remove('tight');
       if (top + tab.offsetHeight > floor) tab.classList.add('tight');
       tab.style.top = Math.max(gap, Math.min(top, floor - tab.offsetHeight)) + 'px';
@@ -4031,6 +4070,42 @@ html.touring .tour-fab::after { display: none; }
     addEventListener('hashchange', maybe); maybe();
   })();
 
+  // ============ Coffee counter ============
+  // COFFEE UPDATE: cups per workday (I drink two to three big cups) and the workweek (0 = Sunday ... 6 = Saturday).
+  (function () {
+    var CUPS_PER_DAY = 2.5, WORKWEEK = [0, 1, 2, 3, 4], TZ = 'Asia/Dhaka';
+    var box = document.getElementById('cof'), pill = document.getElementById('cof-pill');
+    function dhakaToday() {
+      var p = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', hour12: false }).formatToParts(new Date());
+      var g = function (t) { return +p.filter(function (x) { return x.type === t; })[0].value; };
+      return { y: g('year'), m: g('month'), d: g('day'), h: g('hour') % 24 };
+    }
+    function count() {
+      var t = dhakaToday(), total = 0, sofar = 0, isWork = false;
+      for (var d = new Date(Date.UTC(t.y, 0, 1)); d.getUTCFullYear() === t.y; d.setUTCDate(d.getUTCDate() + 1)) {
+        if (WORKWEEK.indexOf(d.getUTCDay()) < 0) continue;
+        total++;
+        var before = d.getUTCMonth() + 1 < t.m || (d.getUTCMonth() + 1 === t.m && d.getUTCDate() < t.d), today = d.getUTCMonth() + 1 === t.m && d.getUTCDate() === t.d;
+        if (before) sofar++; if (today) isWork = true;
+      }
+      // today's cups: none before 9, the full ration by 6 in the evening
+      var todayCups = isWork ? Math.round(CUPS_PER_DAY * Math.max(0, Math.min(1, (t.h - 9) / 9)) * 2) / 2 : 0;
+      var cups = Math.round(sofar * CUPS_PER_DAY + todayCups);
+      document.getElementById('cof-n').textContent = cups.toLocaleString('en-US');
+      document.getElementById('cof-l').textContent = 'cups in ' + t.y;
+      document.getElementById('cof-big').textContent = cups.toLocaleString('en-US');
+      document.getElementById('cof-wd').textContent = (sofar + (isWork ? 1 : 0)) + ' of ' + total;
+      document.getElementById('cof-today').textContent = isWork ? (todayCups ? todayCups + (todayCups === 1 ? ' cup' : ' cups') + ' so far' : 'first cup soon') : 'Day off';
+      document.getElementById('cof-fill').style.width = Math.round((sofar + (isWork ? 1 : 0)) / total * 100) + '%';
+      pill.setAttribute('aria-label', cups + ' cups of coffee in ' + t.y + '. Show details');
+      if (window.placeTourBtn) placeTourBtn();
+    }
+    pill.addEventListener('click', function () { var o = !box.classList.contains('open'); box.classList.toggle('open', o); pill.setAttribute('aria-expanded', String(o)); });
+    document.addEventListener('click', function (e) { if (!box.contains(e.target)) { box.classList.remove('open'); pill.setAttribute('aria-expanded', 'false'); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') box.classList.remove('open'); });
+    count(); setInterval(count, 10 * 60 * 1000);
+  })();
+
   // MOVE THINGS AROUND (computer only).
   // The Theme tab and Terminal button can be dragged anywhere; the spot is saved in this browser.
   // Drop one back near its old spot to put it home. Sections and rail links can be dragged too;
@@ -4130,6 +4205,14 @@ html.touring .tour-fab::after { display: none; }
       var left = fab.classList.contains('edge-r') || r.right + 8 + sz > W - 8 ? r.left - 8 - sz : r.right + 8;
       tb.style.left = Math.round(left) + 'px'; tb.style.top = Math.round(r.top) + 'px'; tb.style.bottom = 'auto';
       tb.classList.toggle('tip-below', r.top < 48);
+      var cf = document.getElementById('cof');
+      if (cf && cf.offsetHeight) {
+        var below = fab.classList.contains('edge-t') || r.top - 8 - cf.offsetHeight < 8, onRight = fab.classList.contains('edge-r');
+        cf.classList.toggle('below', below); cf.classList.toggle('right', onRight);
+        cf.style.bottom = 'auto';
+        cf.style.top = Math.round(below ? r.bottom + 8 : r.top - 8 - cf.offsetHeight) + 'px';
+        cf.style.left = Math.round(onRight ? r.right - cf.offsetWidth : r.left) + 'px';
+      }
     };
     var settle = function () { placeTourBtn(); setTimeout(placeTourBtn, 260); };
     addEventListener('resize', settle); addEventListener('pointermove', function () { if (fab.classList.contains('dragging')) placeTourBtn(); }, { passive: true });

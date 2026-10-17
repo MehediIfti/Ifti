@@ -12,6 +12,8 @@ Single static file (`index.html`), served with GitHub Pages.
 
 **Moving things around (computer only):** drag the Theme tab or the Terminal button anywhere on screen; the spot is saved in that browser, and dropping it back at its old edge or corner puts it home. Hover a section heading and drag the dotted grip to move that section within the page, or drag a link in the left rail to reorder the pages (Previous/Next follows the rail). The Theme tab and Terminal button snap to the nearest screen edge when let go; the Theme tab can also snap beside the column line next to either rail (three-column layout). Section and page order are not saved: a reload puts them back. The code is the `MOVE THINGS AROUND` block in the script.
 
+**Coffee counter:** the pill above the Terminal button estimates cups of coffee this year: workdays so far (Sunday to Thursday, Dhaka time) times cups per workday, plus today's share by the hour. Change `CUPS_PER_DAY` (2.5) or `WORKWEEK` in the `COFFEE UPDATE` block. It follows the Terminal button when dragged and is hidden on phones.
+
 **Search (Ctrl K / ⌘K):** finds pages, sections, notes, Shelf items, themes and a few actions (book a call, copy email, tour, terminal, print, random note). It indexes the page as it is, so new content shows up on its own. Also the Search button in the rail and the search icon on phones.
 
 **Share cards:** select any line in a note and a "Share quote" button appears. It draws a card in the current theme (wide or square) to download, copy or share, with links to post on X or LinkedIn.

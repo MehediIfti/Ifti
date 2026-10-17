@@ -20,15 +20,15 @@ img { max-width: 100%; }
   --ink: var(--text);
   --muted: var(--subtext0);
   --rule: var(--surface0);
-  --dot: color-mix(in srgb, var(--surface1) 50%, var(--overlay1));
+  --dot: color-mix(in srgb, var(--surface1) 70%, var(--base));   /* barely there: a hint of paper texture, never competing with text */
   --line: color-mix(in srgb, var(--surface1) 55%, transparent);
   --accent: var(--maroon);                  /* links */
   --h1: var(--mauve);
   --h2: var(--peach);
   --label: var(--teal);
   --mark: color-mix(in srgb, var(--yellow) 28%, transparent);
-  --pattern: radial-gradient(circle, var(--dot) 0.8px, transparent 1.2px);
-  --pattern-size: 14px 14px;
+  --pattern: radial-gradient(circle, var(--dot) 0.5px, transparent 0.9px);
+  --pattern-size: 18px 18px;
   --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --serif: "Literata", Georgia, "Times New Roman", serif;
   --sans: "Figtree", "Segoe UI", system-ui, sans-serif;
@@ -1223,7 +1223,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 (function () {
   var root = document.documentElement, cv = document.getElementById('halo-dots'), ctx = cv.getContext('2d');
   var slider = document.getElementById('halo-pad'), readout = document.getElementById('halo-pad-v');
-  var pad = 10, FEATHER = 18, GAP = 14, R = 0.8, queued = false;
+  var pad = 10, FEATHER = 18, GAP = 18, R = 0.55, queued = false;
   try { pad = +(localStorage.getItem('ap-halo-pad') || pad); } catch (e) {}
   var probe = document.createElement('span'); probe.style.cssText = 'position:absolute;visibility:hidden;color:var(--dot)'; document.body.appendChild(probe);
   function on() { return root.getAttribute('data-calm') === 'halo' && root.getAttribute('data-bg') === 'dots'; }

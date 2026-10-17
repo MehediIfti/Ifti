@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ifti's Notebook</title>
-<meta name="description" content="Ifti on design, clients and the business between them. Key accounts at Musemind, working from Dhaka with clients across the GCC.">
+<meta name="description" content="Mehedi Hasan Ifti: sales and partnerships, based in Dhaka. Notes on clients, negotiation and building with AI agents, plus F1, music and whatever I'm into this month.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Figtree:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -588,6 +588,14 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   :root[data-layout="3"] .rail { border-right: 0; padding-right: 0; }
   :root[data-layout="3"] footer.colophon { grid-column: 1; }
 }
+/* work: toolkit chips */
+.kit { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 0.6rem 1rem; margin-inline: 0; margin-bottom: 0; align-items: baseline; }
+.kit dt { font-family: var(--mono); font-size: var(--s-0); color: var(--label); text-transform: uppercase; letter-spacing: 0.04em; }
+.kit dd { margin: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.kit dd > * { font-family: var(--mono); font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 6px; border: 1px solid var(--surface0); background: var(--paper); color: var(--text); text-decoration: none; }
+.kit dd > a { color: var(--accent); }
+.kit dd > a:hover { border-color: var(--accent); }
+@media (max-width: 760px) { .kit { grid-template-columns: minmax(0, 1fr); gap: 0.3rem; } .kit dd { margin-bottom: 0.6rem; } }
 /* home: numbers, beliefs and interests */
 .page > .home-stats { margin-top: 1.25rem; }
 .beliefs { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 0; counter-reset: b; border-top: 1px solid var(--rule); }
@@ -1018,12 +1026,12 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     <!-- ============ INDEX ============ -->
     <section class="page" id="index">
       <header class="hero">
-        <p class="label">Global Sales &amp; Partnerships · Musemind</p>
+        <p class="label">Sales &amp; partnerships · Dhaka</p>
         <h1>Ifti</h1>
-        <p class="lede">I lead global sales and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency, and the inbound team that takes a first call to a signed deal.</p>
-        <figure class="hx-map" id="hero" data-mode="map" aria-label="Musemind offices around the world, linked to Dhaka">
+        <p class="lede">I turn first conversations into partnerships that last. Most of my week is calls with founders and enterprise teams, finding out what's actually broken before anyone pitches a fix.</p>
+        <figure class="hx-map" id="hero" data-mode="map" aria-label="Where I work: Dhaka and five cities I work with most, linked on a world map">
           <div class="hm-bar">
-            <span class="hm-title"><b>Musemind around the world</b><small>six offices, run from Dhaka</small></span>
+            <span class="hm-title"><b>Where I work</b><small>Based in Dhaka. Working with teams in five more cities.</small></span>
             <div class="hm-views" id="hm-opt" role="tablist" aria-label="View">
               <button type="button" role="tab" data-v="map"><svg viewBox="0 0 16 16" aria-hidden="true"><g fill="currentColor"><circle cx="3" cy="5" r="1"/><circle cx="6" cy="4" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="4" cy="8" r="1"/><circle cx="7" cy="9" r="1"/><circle cx="11" cy="9" r="1"/><circle cx="8" cy="12" r="1"/></g></svg>Map</button><button type="button" role="tab" data-v="globe"><svg viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6"/><ellipse cx="8" cy="8" rx="2.6" ry="6"/><path d="M2 8h12"/></g></svg>Globe</button><button type="button" role="tab" data-v="clocks"><svg viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.4 1.6"/></g></svg>Clocks</button>
             </div>
@@ -1034,12 +1042,12 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
             <div class="hm-tip" id="hm-tip" hidden></div>
           </div>
           <ul class="hm-legend" id="hm-legend"></ul>
-          <figcaption class="hm-cap"><span><b>6</b> offices</span><span><b>350+</b> clients</span><span><b>5</b> countries beyond Bangladesh</span></figcaption>
+          <figcaption class="hm-cap"><span><b>6</b> cities</span><span><b>3</b> continents</span><span><b>10h</b> between the first and last time zone</span></figcaption>
         </figure>
       </header>
       <h2>What I do</h2>
-      <p>I'm Mehedi Hasan Ifti. Companies come to Musemind when their product works but people don't love using it. My team runs the first conversations. We find out what's actually broken before anyone pitches anything, then shape the engagement around it.</p>
-      <p>Before this, I spent two and a half years at Airwork AI helping founders build remote engineering teams. That's where I learned the gap between what founders need and what they say they need.</p>
+      <p>I'm Mehedi Hasan Ifti. I lead global sales and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency, including the inbound team. Every lead that comes in, from the first reply to the signed deal, runs through us.</p>
+      <p>The companies I talk to have a product that works and users who don't love it. My job is to find out why before anyone sells them anything. Before this, I spent two and a half years at Airwork AI helping founders build remote engineering teams, which is where I learned the gap between what founders need and what they say they need.</p>
       <dl class="r-index home-stats">
         <div><dt>Founders spoken to</dt><dd>200+</dd></div>
         <div><dt>Markets</dt><dd>15+</dd></div>
@@ -1058,9 +1066,11 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <h2>Off the clock</h2>
       <ul class="offclock">
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15h16M6 15l2-5h7l3 5M8 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><b>Formula 1</b><p>I follow it far too closely for someone who can't drive.</p></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b>Music</b><p>On more often than it's off.</p></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b>Music</b><p>Linkin Park, The Weeknd and Karan Aujla, mostly on repeat.</p></li>
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 9l5-5M18 2l4 4M9.5 11.5a4 4 0 0 0-5.6 5.6l1.4 1.4a4 4 0 0 0 5.6-5.6M12 9l3 3M8 15h.01"/></svg><b>Guitar</b><p>I pick it up when nobody's waiting on me.</p></li>
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg><b>Podcasts</b><p>Always one in my ears. The current rotation is on the <a href="#now">Now page</a>.</p></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 7V3.5M15.5 9.5l3.3-1.2M14.2 13.5l2 3M9.8 13.5l-2 3M8.5 9.5L5.2 8.3"/></svg><b>Football</b><p>Liverpool and Brazil. I used to play; these days I watch.</p></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-10 4 6 2-3 6 7z"/><circle cx="17" cy="6" r="1.6"/></svg><b>Travel</b><p>Bangladesh first: Chattogram, Cox's Bazar, Bhatiari waterfall and Himchari.</p></li>
       </ul>
 
       <h2>Ask me about</h2>
@@ -1069,11 +1079,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <li><b>Selling design to a CFO.</b> What it costs, what it returns, and how to say both on one page.</li>
         <li><b>Negotiation.</b> Pricing, scope, and the questions to ask before anyone names a number.</li>
         <li><b>Building with AI agents.</b> I run a small company of them. See the <a href="#paperclip">Playground</a>.</li>
-        <li><b>Liverpool.</b> Or Brazil. I'll take either.</li>
       </ul>
 
-      <h2>Recent notes</h2>
-      <p class="sub">What I learn in client rooms, written down before I forget it.</p>
+      <h2>Writing</h2>
+      <p class="sub">Short notes from client rooms here. Longer pieces on <a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a>.</p>
       <ul class="entries">
         <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
         <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep 2026</span></a></li>
@@ -1099,10 +1108,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <p>This is a <a href="https://nownow.com/about" target="_blank" rel="noopener">now page</a>: what's on my desk, my screen and my headphones this month.</p>
 
       <dl class="facts">
-        <dt>Work</dt><dd>Key accounts, sales and partnerships at Musemind. Enterprise programmes to early-stage founders.</dd>
+        <dt>Work</dt><dd>Leading global sales and partnerships at Musemind, including the inbound team.</dd>
         <dt>Practising</dt><dd>Negotiation. Asking better questions before I talk price.</dd>
         <dt>Building</dt><dd>Small things with Claude Code, starting with this site.</dd>
-        <dt>Based in</dt><dd>Dhaka, Bangladesh. Working with clients across the GCC.</dd>
+        <dt>Based in</dt><dd>Dhaka, Bangladesh. Working with teams in the GCC, Europe and the US.</dd>
       </dl>
 
       <h2>Exploring</h2>
@@ -1236,8 +1245,9 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <h1>Work</h1>
       <p class="lede">I make sure design work pays for itself.</p>
       <dl class="facts">
-        <dt>Role</dt><dd>Assistant Manager, Key Accounts, Sales &amp; Partnerships</dd>
-        <dt>Company</dt><dd><a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency serving the GCC</dd>
+        <dt>Role</dt><dd>Manager, Global Sales &amp; Partnerships</dd>
+        <dt>Company</dt><dd><a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency</dd>
+        <dt>Team</dt><dd>I lead the inbound team: every lead from first reply to signed deal</dd>
         <dt>Since</dt><dd>February 2026</dd>
         <dt>Based in</dt><dd>Dhaka, Bangladesh</dd>
       </dl>
@@ -1278,8 +1288,17 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         </div>
       </figure>
 
+      <h2>Toolkit</h2>
+      <p class="sub">What I actually use, day to day.</p>
+      <dl class="kit">
+        <dt>Selling</dt><dd><span>HubSpot</span><span>Gamma</span><span>Google Calendar</span></dd>
+        <dt>Building</dt><dd><span>Claude Code</span><span>Codex</span><span>Replit</span></dd>
+        <dt>Agents</dt><dd><a href="#paperclip">Paperclip</a><a href="#hermes">Hermes Agent</a><span>Telegram</span></dd>
+        <dt>Writing</dt><dd><a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a><span>LinkedIn</span></dd>
+      </dl>
+
       <h2>Working together</h2>
-      <p>Building something in the GCC and want a design partner who watches the numbers? Email me at <b>mh.hasan884@gmail.com</b> or find me on <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>. Two questions worth answering before we talk:</p>
+      <p>Building something and want someone who asks the hard questions before quoting a price? Email me at <b>mh.hasan884@gmail.com</b> or find me on <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>. Two questions worth answering before we talk:</p>
       <ul class="plain">
         <li><b>What are you trying to move?</b> Revenue, retention or time saved, and by when.</li>
         <li><b>Who signs off?</b> Who decides, who pays, and who can say no.</li>
@@ -1299,8 +1318,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
           <div class="edu-card">
             <p class="edu-k">Partnerships</p>
             <h3 class="edu-co">Musemind</h3>
-            <p class="edu-f">Manager, Global Partnerships · Full-time · Dhaka, on-site</p>
-            <p>I build partnerships with companies whose product works but isn't yet loved by the people using it. I start with honest conversations about what's actually broken, then shape the engagement around it.</p>
+            <p class="edu-f">Manager, Global Sales &amp; Partnerships · Full-time · Dhaka, on-site</p>
+            <p>I lead global sales and partnerships, including the inbound team. I work with companies whose product works but isn't yet loved by the people using it, and start with honest conversations about what's actually broken.</p>
             <div class="edu-skills"><span class="pp-tag">Partnerships</span><span class="pp-tag">Key accounts</span><span class="pp-tag">UX</span></div>
           </div>
         </li>

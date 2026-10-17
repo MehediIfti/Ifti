@@ -147,6 +147,32 @@ dl.facts dd { margin: 0; }
 ul.plain { margin-inline: 0; margin-bottom: 0; padding-left: 1.1rem; display: grid; gap: 0.6rem; }
 ul.plain li::marker { color: var(--muted); }
 
+/* education: a vertical timeline, years on the left, one card per school */
+.edu { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 1.25rem; }
+.edu > li { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 1rem; }
+.edu-when { position: relative; display: grid; align-content: start; gap: 0.15rem; padding-top: 1.05rem; font-family: var(--mono); font-size: var(--s-0); color: var(--muted); font-variant-numeric: tabular-nums; }
+.edu-when span:first-child { color: var(--label); }
+.edu-when::after { content: ""; position: absolute; top: 1.35rem; right: -0.6rem; width: 7px; height: 7px; border-radius: 50%; background: var(--mauve); }
+.edu > li:not(:last-child) .edu-when::before { content: ""; position: absolute; top: 2rem; bottom: -1.6rem; right: calc(-0.6rem + 3px); width: 1px; background: var(--rule); }
+.edu-card { display: grid; gap: 0.5rem; padding: 1rem 1.15rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+.edu-card > * { margin: 0; }
+.edu-k { font-family: var(--mono); font-size: var(--s-0); color: var(--label); text-transform: uppercase; letter-spacing: 0.04em; }
+.edu-card h2 { font-size: 1.3rem; color: var(--subtext1); }
+.edu-card h2::before { content: none; }
+.edu-f { font-style: italic; color: var(--muted); }
+.edu-facts { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; padding: 0.4rem 0; }
+.edu-facts dt { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.edu-facts dd { margin: 0; font-family: var(--display); font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+.edu-facts dd a { font-size: 1rem; text-decoration: none; }
+.edu-card h3 { margin-top: 0.4rem; font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.edu-roles { list-style: none; padding: 0; display: grid; gap: 0.25rem; }
+.edu-roles b { font-weight: 600; color: var(--subtext1); }
+.edu-skills { display: flex; flex-wrap: wrap; gap: 0.35rem; padding-top: 0.25rem; }
+@media (max-width: 760px) {
+  .edu > li { grid-template-columns: minmax(0, 1fr); gap: 0.35rem; }
+  .edu-when { display: flex; gap: 0.4rem; padding-top: 0; } .edu-when span + span::before { content: "– "; }
+  .edu-when::after, .edu-when::before { display: none; }
+}
 /* research: index tiles and paper cards; each card is one link to the paper's DOI */
 .r-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 0; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
 .r-index > div { padding: 0.8rem 0.9rem; background: var(--paper); }
@@ -465,7 +491,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 
   /* A: bottom tab bar */
   :root[data-mnav="tabs"] .m-tabs {
-    display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr));
     position: fixed; z-index: 25; left: 0; right: 0; bottom: 0;
     padding: 0.4rem max(8px, env(safe-area-inset-right, 0px)) calc(0.4rem + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
     background: color-mix(in srgb, var(--mantle) 88%, transparent);
@@ -641,6 +667,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <a class="name" href="#research">Academia</a>
     <ol>
       <li><a class="nav" href="#research"><kbd>6</kbd>Research</a></li>
+      <li><a class="nav" href="#education"><kbd>7</kbd>Education</a></li>
     </ol>
     <p class="stamp">Updated<br>17 Oct 2026</p>
   </nav>
@@ -892,6 +919,52 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <p class="sub">Got one that belongs here? <a href="#suggest">Suggest it.</a></p>
     </section>
 
+    <!-- ============ EDUCATION ============ -->
+    <!-- EDUCATION UPDATE: one <li> per school, newest first. -->
+    <section class="page" id="education">
+      <h1>Education</h1>
+      <p class="lede">A business degree from a technology university, where my research started.</p>
+      <ol class="edu">
+        <li>
+          <div class="edu-when"><span>2019</span><span>Jun 2023</span></div>
+          <div class="edu-card">
+            <p class="edu-k">Bachelor of Business Administration</p>
+            <h2>Islamic University of Technology</h2>
+            <p class="edu-f">BBA, Business and Technology Management</p>
+            <dl class="edu-facts">
+              <div><dt>CGPA</dt><dd>3.62</dd></div>
+              <div><dt>Research</dt><dd><a href="#research">5 papers, 1 preprint</a></dd></div>
+            </dl>
+            <p>IUT is an international university run and funded by the Organisation of Islamic Cooperation (OIC), and one of Bangladesh's leading engineering and research institutions. The programme prepares students for managerial roles across commercial, industrial and service organisations.</p>
+            <h3>Activities</h3>
+            <ul class="edu-roles">
+              <li><b>Founding Vice President, Administration</b> · Beyond The Metrics</li>
+              <li><b>Junior PR Officer</b> · IUT Career and Business Society</li>
+            </ul>
+            <div class="edu-skills"><span class="pp-tag">Collaborative leadership</span><span class="pp-tag">Communication</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="edu-when"><span>2016</span><span>2018</span></div>
+          <div class="edu-card">
+            <p class="edu-k">Higher Secondary Certificate</p>
+            <h2>Birshreshtha Noor Mohammad Public College</h2>
+            <p class="edu-f">HSC, Science</p>
+            <dl class="edu-facts">
+              <div><dt>GPA</dt><dd>5.00</dd></div>
+            </dl>
+            <h3>Activities</h3>
+            <ul class="edu-roles">
+              <li><b>Member</b> · BNMPC Science Club</li>
+              <li><b>Cadet</b> · Bangladesh National Cadet Corps (BNCC)</li>
+            </ul>
+            <div class="edu-skills"><span class="pp-tag">Communication</span><span class="pp-tag">Cross-functional collaboration</span></div>
+          </div>
+        </li>
+      </ol>
+      <p><a class="back" href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">Full profile on LinkedIn ↗</a></p>
+    </section>
+
     <!-- ============ RESEARCH ============ -->
     <!-- RESEARCH UPDATE: one <li> per paper, newest first. Titles link to the paper through its DOI. The index numbers are copied from ResearchGate; update them by hand. -->
     <section class="page" id="research">
@@ -985,7 +1058,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <footer class="colophon">
     Set in Bricolage Grotesque, Literata and IBM Plex Mono. Built by talking it through with Claude Code. No tracking, no cookies.<br>
     <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a><br>
-    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 research · T theme</span>
+    <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 research · 7 education · T theme</span>
   </footer>
 </div>
 
@@ -995,7 +1068,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <a class="nav" href="#notes"><span class="n">3</span>Notes</a>
   <a class="nav" href="#work"><span class="n">4</span>Work</a>
   <a class="nav" href="#shelf"><span class="n">5</span>Shelf</a>
-  <a class="nav" href="#research"><span class="n">6</span>Research</a>
+  <a class="nav" href="#research"><span class="n">6</span>Papers</a>
+  <a class="nav" href="#education"><span class="n">7</span>Edu</a>
   <button type="button" class="ap-open"><span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span>Theme</button>
 </nav>
 
@@ -1011,6 +1085,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   <p class="grp">Academia</p>
   <ol>
     <li><a class="nav" href="#research"><span class="n">06</span><span class="t">Research</span><span class="d">papers</span></a></li>
+    <li><a class="nav" href="#education"><span class="n">07</span><span class="t">Education</span><span class="d">IUT · BBA</span></a></li>
   </ol>
   <div class="now-mini" id="m-nowmini"></div>
   <div class="links">
@@ -1414,7 +1489,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
-    html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>6</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
+    html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>7</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
     if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
     meta.innerHTML = html;
     tocItems = heads;
@@ -1636,7 +1711,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     if (e.key === 'Escape' && !sheet.hidden) sheetOpen(false);
   });
 
-  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'research' };
+  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'research', '7': 'education' };
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var t = e.target.tagName;

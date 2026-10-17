@@ -93,6 +93,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 /* index rail */
 .rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4rem); align-self: start; font-family: var(--mono); font-size: var(--s-0); }
 .rail .name { font-family: var(--display); font-size: 1.35rem; font-weight: 700; color: var(--h1); text-decoration: none; display: block; margin-bottom: 1.5rem; line-height: 1.3; }
+.rail ol + .name { margin-top: 2.25rem; }
 .rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
 .rail a.nav { color: var(--muted); text-decoration: none; display: flex; gap: 0.6rem; }
 .rail a.nav kbd { font: inherit; color: var(--surface1); min-width: 1ch; }
@@ -494,6 +495,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   .m-sheet .head { display: flex; align-items: center; justify-content: space-between; }
   .m-sheet .head span { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--label); }
   .m-sheet ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .m-sheet .grp { margin: 0; font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--label); }
   .m-sheet li { border-bottom: 1px solid var(--rule); }
   .m-sheet ol a { display: grid; grid-template-columns: 2.75rem minmax(0, 1fr) auto; align-items: baseline; gap: 0.5rem; padding: 1rem 0; text-decoration: none; color: var(--subtext1); }
   .m-sheet ol .n { font-family: var(--mono); font-size: 0.8125rem; color: var(--overlay1); }
@@ -635,6 +637,9 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
       <li><a class="nav" href="#notes"><kbd>3</kbd>Notes</a></li>
       <li><a class="nav" href="#work"><kbd>4</kbd>Work</a></li>
       <li><a class="nav" href="#shelf"><kbd>5</kbd>Shelf</a></li>
+    </ol>
+    <a class="name" href="#research">Academia</a>
+    <ol>
       <li><a class="nav" href="#research"><kbd>6</kbd>Research</a></li>
     </ol>
     <p class="stamp">Updated<br>17 Oct 2026</p>
@@ -1002,6 +1007,9 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     <li><a class="nav" href="#notes"><span class="n">03</span><span class="t">Notes</span><span class="d" id="m-notecount"></span></a></li>
     <li><a class="nav" href="#work"><span class="n">04</span><span class="t">Work</span><span class="d">Musemind</span></a></li>
     <li><a class="nav" href="#shelf"><span class="n">05</span><span class="t">Shelf</span><span class="d">books</span></a></li>
+  </ol>
+  <p class="grp">Academia</p>
+  <ol>
     <li><a class="nav" href="#research"><span class="n">06</span><span class="t">Research</span><span class="d">papers</span></a></li>
   </ol>
   <div class="now-mini" id="m-nowmini"></div>

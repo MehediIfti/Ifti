@@ -496,6 +496,21 @@ ul.plain li::marker { color: var(--muted); }
 }
 .back { font-family: var(--mono); font-size: var(--s-0); text-decoration: none; }
 
+/* social links: square pills, brand colour on hover */
+.socials { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.soc { --brand: var(--accent); display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.4rem 0.65rem; border: 1px solid var(--surface0); border-radius: 7px; background: var(--paper); color: var(--text); text-decoration: none; font-family: var(--mono); font-size: 0.75rem; line-height: 1; transition: border-color 0.15s, color 0.15s, background 0.15s; }
+.soc svg { width: 15px; height: 15px; flex: none; color: var(--subtext0); transition: color 0.15s; }
+.soc .cut { stroke: var(--paper); } .soc .cut-t { fill: var(--paper); }
+.soc:hover, .soc:focus-visible { border-color: var(--brand); color: var(--ink); background: color-mix(in srgb, var(--brand) 10%, var(--paper)); }
+.soc:hover svg, .soc:focus-visible svg { color: var(--brand); }
+.soc[data-net="in"] { --brand: #0a66c2; } .soc[data-net="x"] { --brand: var(--ink); } .soc[data-net="ss"] { --brand: #ff6719; }
+.soc[data-net="sp"] { --brand: #1db954; } .soc[data-net="gh"] { --brand: var(--ink); } .soc[data-net="rg"] { --brand: #00ccbb; } .soc[data-net="em"] { --brand: var(--accent); }
+.page > .contact + .socials { margin-top: 0.75rem; }
+.rail-socials { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.35rem; }
+.rail-socials .soc { justify-content: center; aspect-ratio: 1; padding: 0; }
+.rail-socials .soc svg { width: 17px; height: 17px; }
+.rail-socials .soc span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.m-sheet .socials .soc { padding: 0.55rem 0.75rem; font-size: 0.8125rem; }
 .contact { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-family: var(--mono); font-size: var(--s-0); }
 .copy { font: inherit; background: none; border: 1px solid var(--rule); color: var(--muted); padding: 0.1rem 0.5rem; cursor: pointer; border-radius: 3px; }
 .copy:hover { color: var(--ink); border-color: var(--muted); }
@@ -1070,10 +1085,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       <p>Working on something in product, design or tech? I'd rather have the conversation than trade emails. My calendar's open. Email is the fastest way in.</p>
       <div class="contact">
         <span>mh.hasan884@gmail.com <button class="copy" type="button" data-copy="mh.hasan884@gmail.com">copy</button></span>
-        <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a>
-        <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a>
       </div>
+      <div class="socials home-socials" data-socials></div>
 
       <div class="act-inline"><p class="label">Activity</p><div id="act-inline" style="margin-top:0.6rem"></div></div>
     </section>
@@ -1641,7 +1654,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 
   <footer class="colophon">
     Set in Bricolage Grotesque, Literata and IBM Plex Mono. Built by talking it through with Claude Code. No tracking, no cookies.<br>
-    <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a><br>
+    <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://x.com/mehedi_ifti" target="_blank" rel="noopener">X</a> · <a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a> · <a href="https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka" target="_blank" rel="noopener">Spotify</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a><br>
     <span class="keys-line">Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf · 6 paperclip · 7 hermes · 8 research · 9 education · T theme</span>
   </footer>
 </div>
@@ -1676,9 +1689,8 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     <li><a class="nav" href="#education"><span class="n">09</span><span class="t">Education</span><span class="d">IUT · BBA</span></a></li>
   </ol>
   <div class="now-mini" id="m-nowmini"></div>
+  <div class="socials" data-socials></div>
   <div class="links">
-    <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a>
     <button type="button" class="m-btn ap-open"><span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span>Theme</button>
   </div>
 </div>
@@ -2046,6 +2058,35 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   }
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-graph]'); if (b) openGraph(b.getAttribute('data-graph')); });
 
+  // SOCIALS UPDATE: one entry per profile: [name, url, icon]. Rendered wherever a [data-socials] box appears.
+  var SOCIALS = [
+    ['LinkedIn', 'https://www.linkedin.com/in/mehedihasanifti/', 'in'],
+    ['X', 'https://x.com/mehedi_ifti', 'x'],
+    ['Substack', 'https://substack.com/@mehediifti', 'ss'],
+    ['Spotify', 'https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka', 'sp'],
+    ['GitHub', 'https://github.com/MehediIfti', 'gh'],
+    ['ResearchGate', 'https://www.researchgate.net/profile/Mehedi-Ifti', 'rg'],
+    ['Email', 'mailto:mh.hasan884@gmail.com', 'em']
+  ];
+  var SOCIAL_ICON = {
+    in: '<path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.55c0-1.32-.02-3.02-1.84-3.02-1.84 0-2.12 1.44-2.12 2.92V21H9z"/>',
+    x: '<path fill="currentColor" d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78L17.75 3zm-1.08 16.2h1.7L7.4 4.72H5.58l11.09 14.48z"/>',
+    ss: '<path fill="currentColor" d="M4 3h16v2.6H4zM4 7.2h16v2.6H4zM4 11.4h16V21l-8-4.5L4 21z"/>',
+    sp: '<circle cx="12" cy="12" r="10" fill="currentColor"/><path class="cut" d="M7 9.4c3.6-1 7.2-.7 10.2 1M7.6 12.6c3-.8 5.9-.5 8.4.9M8.3 15.6c2.3-.6 4.5-.4 6.3.7" fill="none" stroke-width="1.7" stroke-linecap="round"/>',
+    gh: '<path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/>',
+    rg: '<rect x="2" y="2" width="20" height="20" rx="3" fill="currentColor"/><text class="cut-t" x="12" y="16.3" text-anchor="middle" font-size="10.5" font-weight="700" font-family="Arial, sans-serif">RG</text>',
+    em: '<path d="M3 6.5h18v11H3z M3.5 7l8.5 6.5L20.5 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>'
+  };
+  function renderSocials(scope) {
+    (scope || document).querySelectorAll('[data-socials]').forEach(function (box) {
+      box.innerHTML = SOCIALS.map(function (x) {
+        var ext = x[1].indexOf('mailto:') !== 0;
+        return '<a class="soc" data-net="' + x[2] + '" href="' + x[1] + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + ' aria-label="' + x[0] + '" title="' + x[0] + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + SOCIAL_ICON[x[2]] + '</svg><span>' + x[0] + '</span></a>';
+      }).join('');
+    });
+  }
+  renderSocials(document);
+
   // Right column: contents, page details, what I'm on right now, prev/next note.
   var meta = document.getElementById('meta');
   var tocItems = [];
@@ -2077,9 +2118,11 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
+    html += '<section><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
     html += '<section class="m-hide"><h4>Keys</h4><ul><li><kbd>1</kbd>–<kbd>9</kbd> pages</li><li><kbd>T</kbd> theme</li></ul></section>';
     if (id === 'index') html += '<section><h4>Activity</h4>' + activityHTML() + '</section>';
     meta.innerHTML = html;
+    renderSocials(meta);
     tocItems = heads;
     meta.querySelectorAll('.toc button').forEach(function (b) {
       b.addEventListener('click', function () { heads[+b.getAttribute('data-i')].scrollIntoView({ behavior: 'smooth', block: 'start' }); });

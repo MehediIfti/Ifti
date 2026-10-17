@@ -579,7 +579,17 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .hero { display: grid; gap: 1rem; }
 .hero > * { margin: 0; }
 .hero h1 { margin-top: 0.15rem; }
-.hx-map { --home: var(--green); --office: var(--peach); margin: 0.5rem 0 0; display: grid; gap: 0.75rem; }
+.hx-map { --home: var(--green); --office: var(--peach); margin: 0.75rem 0 0; display: grid; gap: 0.9rem; padding: 0.9rem 1rem 1rem; border: 1px solid var(--rule); border-radius: 12px; background: color-mix(in srgb, var(--mantle) 70%, transparent); }
+.hm-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.6rem 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--surface0); }
+.hm-title { display: grid; }
+.hm-title b { font-family: var(--display); font-size: 1rem; color: var(--ink); }
+.hm-title small { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
+.hm-views { display: flex; padding: 3px; gap: 2px; border: 1px solid var(--surface0); border-radius: 8px; background: var(--paper); }
+.hm-views button { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; border: 0; border-radius: 6px; background: none; color: var(--muted); font-family: var(--mono); font-size: 0.75rem; cursor: pointer; }
+.hm-views button svg { width: 14px; height: 14px; }
+.hm-views button:hover { color: var(--ink); }
+.hm-views button[aria-selected="true"] { color: var(--ink); background: var(--surface0); }
+.hm-views button[aria-selected="true"] svg { color: var(--office); }
 .hm-stage { position: relative; }
 .hm-svg { display: block; width: 100%; height: auto; overflow: visible; }
 .hm-globe { display: none; width: 100%; aspect-ratio: 16 / 9; cursor: grab; touch-action: pan-y; }
@@ -626,13 +636,11 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .hx-map[data-mode="clocks"] .hm-legend .hm-sm { display: none; }
 .hm-legend button { position: relative; }
 .hx-map[data-mode="clocks"] .hm-legend button::before { top: 0.75rem; right: 0.75rem; }
-.hm-cap { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
-.hm-opt { display: flex; align-items: center; gap: 0.75rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); }
-.hm-opt .ap-seg { width: 20rem; }
-.hm-opt .ap-seg button { font-family: var(--mono); font-size: 0.6875rem; }
+.hm-cap { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; padding-top: 0.8rem; border-top: 1px solid var(--surface0); font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.hm-cap b { font-family: var(--display); font-size: 0.95rem; color: var(--ink); letter-spacing: 0; margin-right: 0.2rem; }
 @media (max-width: 760px) {
   .hx-map[data-mode="clocks"] .hm-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .hm-opt { flex-wrap: wrap; } .hm-opt .ap-seg { width: 100%; }
+  .hx-map { padding: 0.75rem; } .hm-views { width: 100%; } .hm-views button { flex: 1; justify-content: center; }
 }
 /* stats radar: a post-match screen for skills. Strength is solid teal, interest is dashed maroon, so identity never rests on colour alone. */
 .radar { --rd-str: var(--teal); --rd-int: var(--maroon); margin-inline: 0; margin-bottom: 0; display: grid; gap: 1rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: color-mix(in srgb, var(--mantle) 75%, transparent); }
@@ -986,15 +994,20 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <h1>Ifti</h1>
         <p class="lede">I run key accounts and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency. I help founders and enterprise teams across the GCC make design pay for itself.</p>
         <figure class="hx-map" id="hero" data-mode="map" aria-label="Musemind offices around the world, linked to Dhaka">
+          <div class="hm-bar">
+            <span class="hm-title"><b>Musemind around the world</b><small>six offices, run from Dhaka</small></span>
+            <div class="hm-views" id="hm-opt" role="tablist" aria-label="View">
+              <button type="button" role="tab" data-v="map"><svg viewBox="0 0 16 16" aria-hidden="true"><g fill="currentColor"><circle cx="3" cy="5" r="1"/><circle cx="6" cy="4" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="4" cy="8" r="1"/><circle cx="7" cy="9" r="1"/><circle cx="11" cy="9" r="1"/><circle cx="8" cy="12" r="1"/></g></svg>Map</button><button type="button" role="tab" data-v="globe"><svg viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6"/><ellipse cx="8" cy="8" rx="2.6" ry="6"/><path d="M2 8h12"/></g></svg>Globe</button><button type="button" role="tab" data-v="clocks"><svg viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.4 1.6"/></g></svg>Clocks</button>
+            </div>
+          </div>
           <div class="hm-stage">
             <svg class="hm-svg" id="hm-svg" aria-hidden="true"></svg>
             <canvas class="hm-globe" id="hm-globe" aria-hidden="true"></canvas>
             <div class="hm-tip" id="hm-tip" hidden></div>
           </div>
           <ul class="hm-legend" id="hm-legend"></ul>
-          <figcaption class="hm-cap"><span>6 offices</span><span>350+ clients</span><span>run from Dhaka</span></figcaption>
+          <figcaption class="hm-cap"><span><b>6</b> offices</span><span><b>350+</b> clients</span><span><b>5</b> countries beyond Bangladesh</span></figcaption>
         </figure>
-        <div class="hm-opt" role="group" aria-label="Hero style (preview)"><span>Preview</span><div class="ap-seg" id="hm-opt"><button type="button" data-v="map">A · Map</button><button type="button" data-v="globe">B · Globe</button><button type="button" data-v="clocks">C · Clocks</button></div></div>
       </header>
       <p>I'm Mehedi Hasan Ifti, based in Dhaka. My job sits between what a client's business needs and what our designers make. I keep both pointed at the same number.</p>
       <p>Clients range from enterprise teams with a dozen stakeholders to solo founders.<span class="sn-ref"></span><span class="sn">Different buyers. Every one of them is asking whether this is worth it.</span> The design is usually the easy part. Alignment, timing and saying the uncomfortable thing early are harder.</p>
@@ -2400,11 +2413,11 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     new MutationObserver(function () { cols = {}; kick(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-palette'] });
     window.addEventListener('hashchange', kick);
 
-    // preview switcher between the three hero options
+    // three views of the same data: flat map, globe, clocks
     var opt = document.getElementById('hm-opt');
     function mode(v, save) {
       fig.setAttribute('data-mode', v); tip.hidden = true;
-      opt.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === v)); });
+      opt.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-v') === v)); });
       if (save) { try { localStorage.setItem('hero-mode', v); } catch (e) {} }
       kick();
     }

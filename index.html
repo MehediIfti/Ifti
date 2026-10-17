@@ -1275,7 +1275,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
         <li><a class="nav" href="#whiteboard"><kbd>0</kbd>Whiteboard</a></li>
       </ol>
     </div>
-    <div class="rail-grp" data-grp="academia">
+    <div class="rail-grp" data-grp="academia" data-shut>
       <button type="button" class="name grp-t" aria-expanded="true" aria-controls="grp-academia">Academia<i aria-hidden="true"></i></button>
       <ol id="grp-academia">
         <li><a class="nav" href="#research"><kbd>8</kbd>Research</a></li>
@@ -2618,7 +2618,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
     };
   })();
 
-  // Rail groups: Playground and Academia fold shut by default, remember the visitor's choice, and open for the page you're on.
+  // Rail groups fold open or shut (data-shut = shut by default), remember the visitor's choice, and open for the page you're on.
   var railGrps = Array.prototype.slice.call(document.querySelectorAll('.rail-grp'));
   function grpSet(g, open, save) {
     g.classList.toggle('shut', !open);
@@ -2628,7 +2628,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   }
   railGrps.forEach(function (g) {
     var saved = null; try { saved = localStorage.getItem('rail-' + g.getAttribute('data-grp')); } catch (e) {}
-    grpSet(g, saved === 'open', false);
+    grpSet(g, saved ? saved === 'open' : !g.hasAttribute('data-shut'), false);
     g.querySelector('.grp-t').addEventListener('click', function () { grpSet(g, g.classList.contains('shut'), true); });
   });
 

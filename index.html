@@ -165,7 +165,8 @@ h2 { font-size: var(--s-2); letter-spacing: -0.01em; color: var(--h2); }
 h2::before { content: "## "; font-family: var(--mono); font-weight: 400; font-size: 0.7em; color: var(--overlay1); vertical-align: 0.12em; }
 h3 { font-size: var(--s-1); }
 .page > * + * { margin-top: 1.25rem; }
-.page > h2 { margin-top: 3.5rem; }
+.page > h2, .page > .sub + h2 { margin-top: 3.5rem; }
+.obs-view > h2 { margin-top: 2.5rem; }
 .page > h1 + * { margin-top: 1rem; }
 p { margin: 0; }
 .lede { font-size: 1.15rem; line-height: 1.5; color: var(--subtext1); }
@@ -1215,7 +1216,6 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
 @media (prefers-reduced-motion: reduce) { .tour-hole { transition: none; } }
 
 /* Changelog */
-#changelog .cl-d { font-size: 1rem; }
 .cl-list li { align-items: baseline; }
 .cl-list .t { font-weight: 500; }
 .cl-list p { flex-basis: 100%; }
@@ -1597,7 +1597,7 @@ html.touring .tour-fab::after { display: none; }
     <section class="page" id="now">
       <p class="label">Now · October 2026</p>
       <h1>What I'm up to</h1>
-      <p>This is a <a href="https://nownow.com/about" target="_blank" rel="noopener">now page</a>: what's on my desk, my screen and my headphones this month.</p>
+      <p class="lede">This is a <a href="https://nownow.com/about" target="_blank" rel="noopener">now page</a>: what's on my desk, my screen and my headphones this month.</p>
 
       <dl class="facts">
         <dt>Practising</dt><dd>Negotiation. Asking better questions before I talk price.</dd>
@@ -1655,6 +1655,7 @@ html.touring .tour-fab::after { display: none; }
 
     <!-- ============ NOTES ============ -->
     <section class="page" id="notes">
+      <p class="label">Writing</p>
       <h1>Notes</h1>
       <p class="lede">Short notes from client work: negotiation, scope, stakeholders and the business side of design.</p>
       <ul class="entries">
@@ -1765,6 +1766,7 @@ html.touring .tour-fab::after { display: none; }
 
     <!-- ============ WORK ============ -->
     <section class="page" id="work">
+      <p class="label">Musemind · Dhaka</p>
       <h1>Work</h1>
       <p class="lede">I make sure design work pays for itself.</p>
       <dl class="facts">
@@ -1892,6 +1894,7 @@ html.touring .tour-fab::after { display: none; }
 
     <!-- ============ SHELF ============ -->
     <section class="page" id="shelf">
+      <p class="label">Archive</p>
       <!-- SHELF UPDATE: everything I watch, read, listen to and explore. Newest at the top of each list.
            Add a new item at the top; the Now page shows the first few of each list (data-now) and older ones stay here. -->
       <h1>Shelf</h1>

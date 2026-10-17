@@ -402,14 +402,33 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 }
 .calm-h { font: inherit; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; background: none; border: 0; padding: 0; color: var(--subtext0); cursor: pointer; text-align: left; }
 .calm-h b { color: var(--label); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
-.calm.min { width: auto; } .calm.min > :not(.calm-h) { display: none; }
+.calm-ic { display: none; width: 14px; height: 14px; background: radial-gradient(circle, var(--label) 1.3px, transparent 1.8px) 0 0 / 5px 5px; }
+.calm-h .short { display: none; }
+/* scrolled: shrinks to an edge tab that mirrors the Theme tab on the right */
+.calm.min { width: auto; left: env(safe-area-inset-left, 0px); padding: 0.8rem 0.5rem 0.9rem; border-left: 0; border-radius: 0 10px 10px 0; box-shadow: none; transition: padding 0.15s ease; }
+.calm.min:hover { padding-left: 0.8rem; }
+.calm.min > :not(.calm-h), .calm.min .full, .calm.min .calm-x { display: none; }
+.calm.min .calm-h { flex-direction: column; gap: 0.55rem; }
+.calm.min .calm-ic { display: block; }
+.calm.min .short { display: block; writing-mode: vertical-rl; transform: rotate(180deg); color: var(--subtext0); font-weight: 400; letter-spacing: 0.12em; }
+.calm.min:hover .short { color: var(--text); }
+@media (prefers-reduced-motion: no-preference) {
+  .calm:not(.min) > * { animation: calm-in 0.2s ease-out; }
+  @keyframes calm-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
 .calm .ap-seg button { font-size: 0.6875rem; }
 .calm label { display: grid; grid-template-columns: auto 1fr 2.5rem; align-items: center; gap: 0.5rem; color: var(--subtext0); }
 .calm input { width: 100%; accent-color: var(--mauve); }
 .calm output { text-align: right; color: var(--text); }
 :root:not([data-calm="halo"]) .calm label, :root:not([data-bg="dots"]) .calm label { display: none; }
 .calm .note { color: var(--overlay1); }
-@media (max-width: 760px) { .calm { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + 8px); left: auto; right: 8px; width: 13.5rem; } }
+@media (max-width: 760px) {
+  .calm { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + 8px); left: auto; right: 8px; width: 13.5rem; }
+  .calm.min { left: auto; padding: 0.45rem 0.7rem; border-left: 1px solid var(--surface0); border-radius: 999px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+  .calm.min:hover { padding-left: 0.7rem; }
+  .calm.min .calm-h { flex-direction: row; }
+  .calm.min .short { writing-mode: horizontal-tb; transform: none; }
+}
 
 /* appearance panel: edge tab + slide-out drawer */
 .ap-tab {
@@ -1194,7 +1213,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 </script>
 <canvas id="halo-dots" aria-hidden="true"></canvas>
 <div class="calm" id="calm" role="group" aria-label="Pattern near text">
-  <button type="button" class="calm-h" id="calm-h" aria-expanded="true"><b>Pattern near text</b><span aria-hidden="true">–</span></button>
+  <button type="button" class="calm-h" id="calm-h" aria-expanded="true"><span class="calm-ic" aria-hidden="true"></span><b class="full">Pattern near text</b><b class="short">Pattern</b><span class="calm-x" aria-hidden="true">–</span></button>
   <div class="ap-seg" id="calm-seg"><button type="button" data-val="margins">Margins</button><button type="button" data-val="halo">Halo</button><button type="button" data-val="spotlight">Spotlight</button></div>
   <label>Clearance <input type="range" id="halo-pad" min="0" max="36" step="2" value="10"><output id="halo-pad-v">10px</output></label>
   <span class="note" id="calm-note"></span>
@@ -1263,13 +1282,22 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   var mode = 'margins'; try { mode = localStorage.getItem('ap-calm') || mode; } catch (e) {}
   setMode(NOTES[mode] ? mode : 'margins', false);
 
-  function fold(min, save) {
-    box.classList.toggle('min', min); head.setAttribute('aria-expanded', String(!min)); head.lastChild.textContent = min ? '+' : '–';
-    if (save) { try { localStorage.setItem('ap-calm-min', min ? '1' : '0'); } catch (e) {} }
+  // Full card at the top of the page; once the visitor scrolls it shrinks to a tab. Tapping the tab opens it until they scroll on.
+  var phone = matchMedia('(max-width: 760px)'), openedAt = null;
+  function fold(min) {
+    box.classList.toggle('min', min); head.setAttribute('aria-expanded', String(!min));
+    head.setAttribute('aria-label', min ? 'Show pattern options' : 'Hide pattern options'); soon();
   }
-  head.addEventListener('click', function () { fold(!box.classList.contains('min'), true); });
-  var min = matchMedia('(max-width: 760px)').matches; try { var f = localStorage.getItem('ap-calm-min'); if (f) min = f === '1'; } catch (e) {}
-  fold(min, false);
+  head.addEventListener('click', function () {
+    var min = !box.classList.contains('min');
+    fold(min); openedAt = min ? null : scrollY;
+  });
+  function onScroll() {
+    if (openedAt !== null) { if (Math.abs(scrollY - openedAt) > 160) { openedAt = null; fold(true); } return; }
+    fold(phone.matches || scrollY > 40);
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
   document.getElementById('ap-reset').addEventListener('click', function () {
     setPad(10, false); setMode('margins', false);

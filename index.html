@@ -1192,8 +1192,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .wb-pal { display: flex; gap: 4px; padding: 0 4px; }
 .wb-pal button { width: 22px; height: 22px; flex: none; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15); }
 .wb-pal button[aria-pressed="true"] { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #7c5cff; }
+.wb-phone { display: none; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-radius: 10px; color: var(--muted); }
+@media (max-width: 760px) { .wb-phone { display: block; } }
 .wb-keys { font-size: 0.8125rem; } .wb-keys b { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); margin-right: 0.4rem; }
-@media (max-width: 760px) { .wb { height: 70vh; } .wb-top { left: 10px; right: 10px; justify-content: space-between; } .wb-top .wb-sep { display: none; } .wb-tools button { width: 34px; height: 34px; } .wb-keys { display: none; } }
+@media (max-width: 760px) { .wb, .wb-keys, #whiteboard .sub, .wb-nav { display: none !important; } .wb { height: 70vh; } .wb-top { left: 10px; right: 10px; justify-content: space-between; } .wb-top .wb-sep { display: none; } .wb-tools button { width: 34px; height: 34px; } .wb-keys { display: none; } }
 /* the board keeps its own look in every theme */
 :root[data-theme="cropmark"] .wb button, :root[data-theme="lightsout"] .wb button { text-transform: none; letter-spacing: 0; clip-path: none; }
 
@@ -1923,6 +1925,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
       </div>
       <p class="sub wb-keys"><b>Keys</b> V select · H pan (or hold Space) · N sticky · T text · R rectangle · O ellipse · A arrow · P pen · E eraser · Double-click to add a sticky or edit text · Delete removes · Ctrl/⌘ Z undo · Ctrl/⌘ D duplicate · F full screen. Pinch or Ctrl + scroll to zoom.</p>
       <p class="sub">Everything stays on this device. Nothing is uploaded.</p>
+      <p class="wb-phone">The whiteboard is built for a computer screen. Open this page on a laptop or desktop to use it.</p>
     </section>
 
     <!-- ============ EDUCATION ============ -->
@@ -2087,7 +2090,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   <ol>
     <li><a class="nav" href="#paperclip"><span class="n">06</span><span class="t">Paperclip</span><span class="d">agent</span></a></li>
     <li><a class="nav" href="#hermes"><span class="n">07</span><span class="t">Hermes Agent</span><span class="d">agent</span></a></li>
-    <li><a class="nav" href="#whiteboard"><span class="n">00</span><span class="t">Whiteboard</span><span class="d">tool</span></a></li>
+    <li class="wb-nav"><a class="nav" href="#whiteboard"><span class="n">00</span><span class="t">Whiteboard</span><span class="d">tool</span></a></li>
   </ol>
   <p class="grp">Academia</p>
   <ol>
@@ -2843,7 +2846,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
   // ============ Whiteboard: a bare-bones FigJam. Built the first time the page opens. ============
   (function () {
     var started = false;
-    function maybeStart() { if (!started && location.hash === '#whiteboard') { started = true; boot(); } }
+    function maybeStart() { if (!started && location.hash === '#whiteboard' && !matchMedia('(max-width: 760px)').matches) { started = true; boot(); } } // not on phones
     window.addEventListener('hashchange', maybeStart); setTimeout(maybeStart, 0);
 
     function boot() {

@@ -147,7 +147,74 @@ dl.facts dd { margin: 0; }
 ul.plain { margin-inline: 0; margin-bottom: 0; padding-left: 1.1rem; display: grid; gap: 0.6rem; }
 ul.plain li::marker { color: var(--muted); }
 
-/* playground: agent and workflow pages */
+/* playground: agent and workflow pages. Each page sets --pg to its own accent. */
+.pg { --pg: var(--mauve); }
+.pg-quote { font-family: var(--mono); font-size: var(--s-0); color: var(--pg); }
+.page > h1 + .pg-quote { margin-top: 0.5rem; }
+.pg-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.pg-btn { font-family: var(--mono); font-size: var(--s-0); padding: 0.45rem 0.85rem; border-radius: 6px; text-decoration: none; background: var(--pg); color: var(--base); border: 1px solid var(--pg); }
+.pg-btn:hover { filter: brightness(1.08); }
+.pg-btn.ghost { background: none; color: var(--ink); border-color: var(--rule); }
+.pg-btn.ghost:hover { border-color: var(--pg); color: var(--pg); }
+.pg-term { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.7rem 0.75rem 0.7rem 0.9rem; background: var(--mantle); border: 1px solid var(--rule); border-radius: 8px; font-family: var(--mono); font-size: 0.8125rem; line-height: 1.6; }
+.pg-term .copy { flex: none; }
+.pg-term-p { color: var(--pg); }
+.pg-term code { flex: 1; min-width: 0; overflow-wrap: anywhere; color: var(--text); }
+.pg-facts { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin: 0; }
+.pg-facts dt { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.pg-facts dd { margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--ink); }
+.pg-cards { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+.pg-cards li { padding: 0.85rem 0.95rem; border: 1px solid var(--rule); border-top: 2px solid var(--pg); border-radius: 6px; background: var(--paper); }
+.pg-cards b { font-family: var(--display); font-size: 1rem; color: var(--subtext1); }
+.pg-cards p { margin-top: 0.3rem; font-size: 0.92em; color: var(--muted); line-height: 1.5; }
+.pg-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.pg-chips span { font-family: var(--mono); font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; color: var(--pg); background: color-mix(in srgb, var(--pg) 13%, transparent); }
+/* paperclip org chart */
+.pc-org { display: grid; justify-items: center; padding: 1.4rem 1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--mantle); }
+.pc-row { display: flex; justify-content: center; gap: 0.75rem; }
+.pc-kids { position: relative; padding-top: 14px; }
+.pc-kids::before { content: ""; position: absolute; top: 0; left: calc(100% / 6); right: calc(100% / 6); height: 14px; border: 1px solid var(--surface1); border-bottom: 0; border-radius: 6px 6px 0 0; }
+.pc-v { width: 1px; height: 18px; background: var(--surface1); }
+.pc-node { position: relative; display: grid; justify-items: center; min-width: 7.5rem; padding: 0.55rem 0.9rem; background: var(--paper); border: 1px solid var(--surface0); border-radius: 8px; }
+.pc-node b { font-family: var(--display); font-size: 0.95rem; color: var(--ink); }
+.pc-node small { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
+.pc-node.board { border-color: var(--pg); }
+.pc-node.board b { color: var(--pg); }
+.pc-node .hb { position: absolute; top: 7px; right: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+@media (prefers-reduced-motion: no-preference) {
+  .pc-node .hb { animation: hb 2.4s ease-out infinite; }
+  @keyframes hb { 0%, 70%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 60%, transparent); } 10% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--green) 0%, transparent); } }
+}
+/* paperclip budget demo */
+.pc-budget { display: grid; gap: 0.6rem; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); font-family: var(--mono); font-size: var(--s-0); --st: var(--green); }
+.pc-budget[data-state="warn"] { --st: var(--yellow); }
+.pc-budget[data-state="stop"] { --st: var(--maroon); }
+.pc-b-head { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); }
+.pc-b-head b { font-weight: 500; color: var(--ink); }
+.pc-b-head output { color: var(--ink); font-variant-numeric: tabular-nums; }
+.pc-b-bar { position: relative; height: 8px; border-radius: 4px; background: var(--surface0); }
+.pc-b-bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; background: var(--st); transition: width 0.15s, background 0.2s; }
+.pc-b-mark { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--overlay1); }
+.pc-budget input { width: 100%; accent-color: var(--pg); }
+.pc-b-status { margin: 0; color: var(--st); }
+/* hermes learning loop */
+.hm-loop { display: grid; gap: 0.9rem; padding: 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--mantle); }
+.hm-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.4rem; counter-reset: none; }
+.hm-steps li { position: relative; }
+.hm-steps li:not(:last-child)::after { content: "→"; position: absolute; right: -0.45rem; top: 50%; transform: translate(50%, -50%); font-family: var(--mono); font-size: 0.75rem; color: var(--overlay1); z-index: 1; }
+.hm-steps button { width: 100%; height: 100%; display: grid; justify-items: center; gap: 0.3rem; padding: 0.7rem 0.4rem; font-family: var(--mono); font-size: 0.75rem; line-height: 1.3; color: var(--muted); background: var(--paper); border: 1px solid var(--surface0); border-radius: 8px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+.hm-steps button span { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; font-size: 0.75rem; color: var(--pg); background: color-mix(in srgb, var(--pg) 14%, transparent); }
+.hm-steps button[aria-selected="true"] { color: var(--ink); border-color: var(--pg); }
+.hm-steps button[aria-selected="true"] span { color: var(--base); background: var(--pg); }
+.hm-panel p { margin: 0; color: var(--text); }
+.hm-panel p:not(.on) { display: none; }
+.hm-where { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.hm-where h3 { margin-bottom: 0.5rem; font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+@media (max-width: 760px) {
+  .pg-cards, .hm-where { grid-template-columns: minmax(0, 1fr); }
+  .pc-row { gap: 0.4rem; } .pc-node { min-width: 0; padding: 0.5rem 0.55rem; }
+  .hm-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hm-steps li::after { display: none; }
+}
 .pg-soon { display: flex; gap: 0.9rem; align-items: flex-start; padding: 1.1rem 1.2rem; border: 1px dashed color-mix(in srgb, var(--mauve) 45%, var(--rule)); border-radius: 8px; }
 .pg-soon b { font-family: var(--mono); font-size: var(--s-0); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
 .pg-soon p { margin-top: 0.25rem; color: var(--muted); }
@@ -933,24 +1000,119 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 
     <!-- ============ PLAYGROUND ============ -->
     <!-- PLAYGROUND: agents and workflows I work with. One page each. -->
-    <section class="page" id="paperclip">
-      <p class="label">Playground</p>
+    <section class="page pg" id="paperclip" style="--pg: var(--peach)">
+      <p class="label">Playground · Agent orchestration</p>
       <h1>Paperclip</h1>
-      <p class="lede">One of the agents I work with day to day.</p>
+      <p class="pg-quote">“A team of agents for every person.”</p>
+      <p class="lede">An open-source control room for running a company of AI agents. You set the mission, it gives each agent a role, a boss, a budget and a ticket queue, and you sit above it all as the board.</p>
+      <div class="pg-links">
+        <a class="pg-btn" href="https://paperclip.ing" target="_blank" rel="noopener">paperclip.ing ↗</a>
+        <a class="pg-btn ghost" href="https://paperclip.ing/docs" target="_blank" rel="noopener">Docs ↗</a>
+        <a class="pg-btn ghost" href="https://github.com/paperclipai/paperclip" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="pg-term"><span class="pg-term-p" aria-hidden="true">$</span><code>npx paperclipai onboard --yes</code><button class="copy" type="button" data-copy="npx paperclipai onboard --yes">copy</button></div>
+      <dl class="pg-facts">
+        <div><dt>Licence</dt><dd>MIT</dd></div>
+        <div><dt>Runs</dt><dd>Self-hosted</dd></div>
+        <div><dt>Account</dt><dd>None needed</dd></div>
+      </dl>
+
+      <h2>How it works</h2>
+      <p class="sub">An example company. Every box is an agent; each one wakes on its heartbeat, checks its tickets and acts.</p>
+      <div class="pc-org" role="img" aria-label="Example org chart: you as the board, a CEO agent, and three agents reporting to it, each with a heartbeat">
+        <div class="pc-row"><div class="pc-node board"><b>You</b><small>the board</small></div></div>
+        <span class="pc-v" aria-hidden="true"></span>
+        <div class="pc-row"><div class="pc-node"><i class="hb"></i><b>CEO</b><small>Claude</small></div></div>
+        <span class="pc-v" aria-hidden="true"></span>
+        <div class="pc-row pc-kids">
+          <div class="pc-node"><i class="hb" style="animation-delay: .5s"></i><b>CTO</b><small>Codex</small></div>
+          <div class="pc-node"><i class="hb" style="animation-delay: 1.1s"></i><b>Marketing</b><small>Gemini</small></div>
+          <div class="pc-node"><i class="hb" style="animation-delay: 1.7s"></i><b>Research</b><small>Hermes</small></div>
+        </div>
+      </div>
+      <ul class="pg-cards">
+        <li><b>Org chart</b><p>Agents get roles and reporting lines. Work is delegated down the chart and escalated up it.</p></li>
+        <li><b>Heartbeats</b><p>Agents wake on a schedule, check their work and act. A new ticket or an @-mention wakes them too.</p></li>
+        <li><b>Budgets</b><p>Each agent has a monthly budget. A warning at 80%, an automatic pause at 100%.</p></li>
+        <li><b>Governance</b><p>You're the board. New hires need your approval, and you can pause, reassign or fire any agent.</p></li>
+        <li><b>Tickets</b><p>Work runs as tickets with owners, status and threads. Every tool call and decision goes in an audit log.</p></li>
+        <li><b>Goal alignment</b><p>Every task traces back to the company mission, so agents know what to do and why.</p></li>
+      </ul>
+
+      <h2>Try the budget rule</h2>
+      <div class="pc-budget" id="pc-budget" data-state="ok">
+        <div class="pc-b-head"><span><b>Research agent</b> · monthly budget</span><output id="pc-b-out">$42 of $100</output></div>
+        <div class="pc-b-bar" aria-hidden="true"><i id="pc-b-fill"></i><span class="pc-b-mark" style="left: 80%"></span></div>
+        <input type="range" id="pc-b-range" min="0" max="100" value="42" aria-label="Budget used, percent">
+        <p class="pc-b-status" id="pc-b-status" role="status"></p>
+      </div>
+      <p class="sub">Drag the slider. This is how Paperclip keeps a runaway agent from burning money.</p>
+
+      <h2>Who it can hire</h2>
+      <p>Anything that can receive a heartbeat: Claude Code, Codex, Gemini, Cursor, OpenClaw, OpenCode, Hermes, a Python script, a shell command or a webhook.</p>
+      <div class="pg-chips"><span>Claude</span><span>Codex</span><span>Gemini</span><span>Cursor</span><span>Hermes</span><span>OpenClaw</span><span>OpenCode</span><span>Pi</span><span>Scripts</span><span>Webhooks</span></div>
+
+      <h2>How I use it</h2>
       <div class="pg-soon">
         <span class="pg-dot" aria-hidden="true"></span>
-        <div><b>Being built</b><p>An interactive walkthrough is on its way: what it does, how I set it up, and the workflows I run with it.</p></div>
+        <div><b>Coming next</b><p>My own setup and the workflows I run on it.</p></div>
       </div>
+      <p class="sub">Paperclip runs a team of agents. For one agent that learns, see <a href="#hermes">Hermes Agent</a>.</p>
     </section>
 
-    <section class="page" id="hermes">
-      <p class="label">Playground</p>
+    <section class="page pg" id="hermes" style="--pg: var(--sky)">
+      <p class="label">Playground · Personal agent</p>
       <h1>Hermes Agent</h1>
-      <p class="lede">One of the agents I work with day to day.</p>
+      <p class="pg-quote">“The agent that grows with you.”</p>
+      <p class="lede">An open-source agent from Nous Research that gets better the more you use it. When it solves something, it saves how as a skill, and it carries its memory across sessions and every app you talk to it from.</p>
+      <div class="pg-links">
+        <a class="pg-btn" href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener">hermes-agent.nousresearch.com ↗</a>
+        <a class="pg-btn ghost" href="https://hermes-agent.nousresearch.com/docs" target="_blank" rel="noopener">Docs ↗</a>
+        <a class="pg-btn ghost" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="pg-term"><span class="pg-term-p" aria-hidden="true">$</span><code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code><button class="copy" type="button" data-copy="curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash">copy</button></div>
+      <dl class="pg-facts">
+        <div><dt>Licence</dt><dd>MIT</dd></div>
+        <div><dt>By</dt><dd>Nous Research</dd></div>
+        <div><dt>Runs</dt><dd>Your machine</dd></div>
+      </dl>
+
+      <h2>The learning loop</h2>
+      <p class="sub">Tap a step, or watch it go round.</p>
+      <div class="hm-loop" id="hm-loop">
+        <ol class="hm-steps" role="tablist" aria-label="Learning loop">
+          <li><button type="button" role="tab" data-i="0"><span>1</span>You ask</button></li>
+          <li><button type="button" role="tab" data-i="1"><span>2</span>It works it out</button></li>
+          <li><button type="button" role="tab" data-i="2"><span>3</span>It saves a skill</button></li>
+          <li><button type="button" role="tab" data-i="3"><span>4</span>It reuses it</button></li>
+        </ol>
+        <div class="hm-panel" role="tabpanel" aria-live="polite">
+          <p data-i="0">You send it a task from wherever you are: Telegram, Slack, WhatsApp, email or the terminal.</p>
+          <p data-i="1">It uses its tools to get it done: web search, a browser, vision, a terminal, and subagents that each work in their own sandbox.</p>
+          <p data-i="2">Once it has solved the problem, it writes down how as a reusable skill.</p>
+          <p data-i="3">Next time something similar comes up, it starts from that skill. Memory and skills persist across sessions and every app.</p>
+        </div>
+      </div>
+
+      <ul class="pg-cards">
+        <li><b>Persistent memory</b><p>Conversations, memories and skills carry over between sessions, with one shared memory across every app.</p></li>
+        <li><b>Scheduled jobs</b><p>Describe a recurring job in plain language, like a report, backup or briefing, and it runs unattended.</p></li>
+        <li><b>Subagents</b><p>Splits a task across isolated subagents, each with its own conversation and terminal.</p></li>
+        <li><b>Any model</b><p>Bring your own provider, or use Nous Portal for 200+ models.</p></li>
+      </ul>
+
+      <h2>Where it lives</h2>
+      <div class="hm-where">
+        <div><h3>Talk to it from</h3><div class="pg-chips"><span>Telegram</span><span>Discord</span><span>Slack</span><span>WhatsApp</span><span>Signal</span><span>Email</span><span>CLI</span></div></div>
+        <div><h3>It runs in</h3><div class="pg-chips"><span>Local</span><span>Docker</span><span>SSH</span><span>Singularity</span><span>Modal</span></div></div>
+      </div>
+
+      <h2>How I use it</h2>
       <div class="pg-soon">
         <span class="pg-dot" aria-hidden="true"></span>
-        <div><b>Being built</b><p>An interactive walkthrough is on its way: what it does, how I set it up, and the workflows I run with it.</p></div>
+        <div><b>Coming next</b><p>My own setup and the workflows I run on it.</p></div>
       </div>
+      <p class="sub">Hermes is one agent that learns. To run a whole team of agents, Hermes included, see <a href="#paperclip">Paperclip</a>.</p>
     </section>
 
     <!-- ============ EDUCATION ============ -->
@@ -1759,6 +1921,38 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
     if (t === 'INPUT' || t === 'TEXTAREA') return;
     if (keys[e.key]) location.hash = keys[e.key];
   });
+
+  // Paperclip: budget rule demo (warn at 80%, pause at 100%)
+  (function () {
+    var box = document.getElementById('pc-budget'); if (!box) return;
+    var range = document.getElementById('pc-b-range'), fill = document.getElementById('pc-b-fill'), out = document.getElementById('pc-b-out'), st = document.getElementById('pc-b-status');
+    function upd() {
+      var v = +range.value, state = v >= 100 ? 'stop' : v >= 80 ? 'warn' : 'ok';
+      fill.style.width = v + '%'; out.textContent = '$' + v + ' of $100'; box.setAttribute('data-state', state);
+      st.textContent = state === 'stop' ? 'Paused automatically. New tasks are blocked until the board raises the budget.'
+        : state === 'warn' ? 'Soft warning at 80%. The agent keeps working, and the board gets a heads-up.'
+        : 'Running. Wakes on its heartbeat and works its tickets.';
+    }
+    range.addEventListener('input', upd); upd();
+  })();
+  // Hermes: learning loop, auto-advances until the visitor picks a step
+  (function () {
+    var loop = document.getElementById('hm-loop'); if (!loop) return;
+    var tabs = loop.querySelectorAll('[role="tab"]'), paras = loop.querySelectorAll('.hm-panel p'), cur = 0, timer = null;
+    function set(i) {
+      cur = i;
+      tabs.forEach(function (t, k) { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
+      paras.forEach(function (p, k) { p.classList.toggle('on', k === i); });
+    }
+    function stop() { clearInterval(timer); timer = null; }
+    tabs.forEach(function (t, k) { t.addEventListener('click', function () { stop(); set(k); }); });
+    loop.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      stop(); set((cur + (e.key === 'ArrowRight' ? 1 : 3)) % 4); tabs[cur].focus();
+    });
+    set(0);
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(function () { if (document.getElementById('hermes').classList.contains('on')) set((cur + 1) % 4); }, 2800);
+  })();
 
   document.querySelectorAll('.copy').forEach(function (b) {
     b.addEventListener('click', function () {

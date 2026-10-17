@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ifti's Notebook</title>
+<meta name="description" content="Notes on design, clients and the business between them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html, body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+/* Layout: a pocket notebook on dot-grid paper. Narrow index rail on the left, one reading column, sidenotes in the right margin. */
+:root {
+  --paper-l: #ffffff; --paper-d: #161514;     /* paper (light / dark) */
+  --accent-l: #8c2f2b; --accent-d: #e8a19b;   /* oxblood ink (light / dark) */
+  --paper: var(--paper-l);
+  --ink: #1f1d1a;
+  --muted: #6b675f;
+  --rule: #dcd9d2;
+  --accent: var(--accent-l);
+  --mark: #fbe98a;        /* highlighter */
+  --dot: #b9b5ac;
+  --serif: "Literata", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --s-0: 0.8125rem; --s-1: 1.0625rem; --s-2: 1.375rem; --s-3: 2rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: var(--paper-d); --ink: #e7e4df; --muted: #9d988f; --rule: #2e2c29;
+    --accent: var(--accent-d); --mark: #5a4f12; --dot: #3d3a36; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: var(--paper-d); --ink: #e7e4df; --muted: #9d988f; --rule: #2e2c29;
+  --accent: var(--accent-d); --mark: #5a4f12; --dot: #3d3a36; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background-color: var(--paper);
+  background-image: radial-gradient(circle, var(--dot) 1.1px, transparent 1.5px);
+  background-size: 22px 22px;
+  background-attachment: fixed;
+  color: var(--ink);
+  font: 400 var(--s-1)/1.65 var(--serif);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+::selection { background: var(--mark); color: var(--ink); }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+.shell {
+  max-width: 68rem; margin: 0 auto;
+  display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 3rem;
+  padding-block: 4rem 3rem;
+}
+
+/* index rail */
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4rem); align-self: start; font-family: var(--mono); font-size: var(--s-0); }
+.rail .name { font-family: var(--serif); font-size: var(--s-1); font-weight: 600; color: var(--ink); text-decoration: none; display: block; margin-bottom: 1.5rem; line-height: 1.3; }
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.rail a.nav { color: var(--muted); text-decoration: none; display: flex; gap: 0.6rem; }
+.rail a.nav kbd { font: inherit; color: var(--rule); min-width: 1ch; }
+.rail a.nav:hover, .rail a.nav[aria-current="page"] { color: var(--ink); }
+.rail a.nav[aria-current="page"] kbd { color: var(--accent); }
+.rail .stamp { margin-top: 2rem; color: var(--muted); line-height: 1.5; }
+
+/* reading column + margin for sidenotes */
+main { min-width: 0; padding-right: 15rem; }
+.page { max-width: 37rem; }
+.page + .page { margin-top: 5rem; padding-top: 3rem; border-top: 1px dashed var(--rule); }
+.js .page + .page { margin-top: 0; padding-top: 0; border-top: 0; }
+.js .page:not(.on) { display: none; }
+
+h1, h2, h3 { font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: var(--s-3); letter-spacing: -0.01em; }
+h2 { font-size: var(--s-2); }
+h3 { font-size: var(--s-1); }
+.page > * + * { margin-top: 1.25rem; }
+.page > h2 { margin-top: 3rem; }
+p { margin: 0; }
+.lede { font-size: var(--s-2); line-height: 1.45; color: var(--ink); }
+.label { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+hl, mark { background: var(--mark); color: inherit; padding: 0 0.15em; }
+
+/* sidenotes (Tufte style) */
+.page { counter-reset: sn; }
+.sn-ref { counter-increment: sn; }
+.sn-ref::after { content: counter(sn); font-family: var(--mono); font-size: 0.7em; vertical-align: super; color: var(--accent); margin-left: 1px; }
+.sn {
+  float: right; clear: right; width: 13rem; margin-right: -15rem; margin-top: 0.3rem;
+  font-family: var(--mono); font-size: var(--s-0); line-height: 1.5; color: var(--muted);
+}
+.sn::before { content: counter(sn) " "; color: var(--accent); }
+
+/* lists */
+.entries { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; border-top: 1px solid var(--rule); }
+.entries li { border-bottom: 1px solid var(--rule); }
+.entries a { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto; gap: 1rem; align-items: baseline; padding: 0.7rem 0; text-decoration: none; color: var(--ink); }
+.entries a:hover .t { color: var(--accent); }
+.entries .no, .entries .d { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+dl.facts { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 0.75rem 1.25rem; margin-inline: 0; margin-bottom: 0; }
+dl.facts dt { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); padding-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.04em; }
+dl.facts dd { margin: 0; }
+
+ul.plain { margin-inline: 0; margin-bottom: 0; padding-left: 1.1rem; display: grid; gap: 0.6rem; }
+ul.plain li::marker { color: var(--muted); }
+
+.shelf { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 1.1rem; }
+.shelf b { font-weight: 600; }
+.shelf .by { color: var(--muted); }
+.shelf p { color: var(--muted); font-size: 0.95em; margin-top: 0.15rem; }
+
+.note-head { display: flex; gap: 1rem; flex-wrap: wrap; }
+.back { font-family: var(--mono); font-size: var(--s-0); text-decoration: none; }
+
+.contact { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-family: var(--mono); font-size: var(--s-0); }
+.copy { font: inherit; background: none; border: 1px solid var(--rule); color: var(--muted); padding: 0.1rem 0.5rem; cursor: pointer; border-radius: 3px; }
+.copy:hover { color: var(--ink); border-color: var(--muted); }
+
+footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: var(--s-0); color: var(--muted); line-height: 1.6; }
+
+/* now page: monthly log + suggestion box */
+.sub { color: var(--muted); }
+.page > h2 + .sub { margin-top: 0.35rem; }
+.log { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; border-top: 1px solid var(--rule); }
+.log li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.75rem; padding: 0.7rem 0; border-bottom: 1px solid var(--rule); }
+.log .t { font-weight: 600; flex: 1 1 14rem; min-width: 0; }
+.log .by { font-weight: 400; color: var(--muted); }
+.log .tag { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius: 3px; padding: 0 0.4rem; }
+.log .st { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); min-width: 9rem; text-align: right; }
+.log p { flex-basis: 100%; color: var(--muted); font-size: 0.95em; }
+.suggest { display: grid; gap: 1rem; padding: 1.25rem; border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--rule)); border-radius: 6px; background: var(--paper); }
+.kinds { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.kinds input { position: absolute; opacity: 0; pointer-events: none; }
+.kinds span { display: inline-block; font-family: var(--mono); font-size: var(--s-0); padding: 0.25rem 0.7rem; border: 1px solid var(--rule); border-radius: 999px; color: var(--muted); cursor: pointer; }
+.kinds input:checked + span { color: var(--paper); background: var(--accent); border-color: var(--accent); }
+.kinds input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.field { display: grid; gap: 0.3rem; }
+.field > span { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); }
+.field i { font-style: normal; opacity: 0.75; }
+.field input, .field textarea { font: inherit; font-size: 1rem; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 0.5rem 0.65rem; width: 100%; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent); }
+.field textarea { resize: vertical; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.btn { font-family: var(--mono); font-size: var(--s-0); color: var(--paper); background: var(--accent); border: 0; border-radius: 4px; padding: 0.55rem 1rem; cursor: pointer; }
+.btn:hover { filter: brightness(1.1); }
+.btn:disabled { opacity: 0.6; cursor: default; }
+.status { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); }
+@media (max-width: 760px) { .log .st { min-width: 0; text-align: left; } .suggest { padding: 1rem; } }
+
+@media (max-width: 1100px) {
+  main { padding-right: 0; }
+  .sn { float: none; display: block; width: auto; margin: 0.6rem 0 0.2rem 1rem; padding-left: 0.75rem; border-left: 2px solid var(--rule); }
+}
+@media (max-width: 760px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-block: 2rem 2rem; }
+  .rail { position: static; }
+  .rail .name { margin-bottom: 0.75rem; }
+  .rail ol { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; }
+  .rail a.nav kbd, .rail .stamp { display: none; }
+  footer.colophon { grid-column: 1; }
+  h1 { font-size: 1.75rem; }
+  .lede { font-size: 1.2rem; }
+  .entries a { grid-template-columns: 3.5rem minmax(0, 1fr); }
+  .entries .d { display: none; }
+  dl.facts { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }
+  dl.facts dd { margin-bottom: 0.8rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .page.on { animation: in 0.25s ease-out; }
+  @keyframes in { from { opacity: 0.4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="rail" aria-label="Sections">
+    <a class="name" href="#index">Ifti</a>
+    <ol>
+      <li><a class="nav" href="#index"><kbd>1</kbd>Index</a></li>
+      <li><a class="nav" href="#now"><kbd>2</kbd>Now</a></li>
+      <li><a class="nav" href="#notes"><kbd>3</kbd>Notes</a></li>
+      <li><a class="nav" href="#work"><kbd>4</kbd>Work</a></li>
+      <li><a class="nav" href="#shelf"><kbd>5</kbd>Shelf</a></li>
+    </ol>
+    <p class="stamp">Updated<br>17 Oct 2026</p>
+  </nav>
+
+  <main>
+    <!-- ============ INDEX ============ -->
+    <section class="page" id="index">
+      <h1>Ifti</h1>
+      <p class="lede">I help founders and enterprise teams in the GCC turn design work into business results.</p>
+      <p>Day to day, I run key accounts at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency. I sit between what a client's business needs and what our designers make, and I make sure the work moves a number the client cares about.</p>
+      <p>My clients range from enterprise teams with a dozen stakeholders to solo founders with six months of runway. <span class="sn-ref"></span><span class="sn">Different buyers, same question underneath: is this worth it?</span> I've learned that the hard part is rarely the design. It's alignment, timing, and saying the uncomfortable thing early.</p>
+      <p>This site is my notebook. I write down what I learn in those rooms, and keep a monthly log of what I'm exploring, watching and reading. <a href="#suggest">Suggestions welcome.</a></p>
+
+      <h2>Recent notes</h2>
+      <ul class="entries">
+        <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed. Enterprises buy safety.</span><span class="d">12 Oct</span></a></li>
+        <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep</span></a></li>
+        <li><a href="#n-002"><span class="no">N°002</span><span class="t">The recap email is the contract people read</span><span class="d">14 Sep</span></a></li>
+      </ul>
+      <p><a class="back" href="#notes">All notes →</a></p>
+
+      <h2>Elsewhere</h2>
+      <div class="contact">
+        <span>mh.hasan884@gmail.com <button class="copy" type="button" data-copy="mh.hasan884@gmail.com">copy</button></span>
+        <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </section>
+
+    <!-- ============ NOW ============ -->
+    <!-- MONTHLY UPDATE: edit this section once a month. Change the date in the label, the "Updated" stamp in the sidebar, and the lists below. -->
+    <section class="page" id="now">
+      <p class="label">Now · October 2026</p>
+      <h1>What I'm up to</h1>
+      <p>This is a <a href="https://nownow.com/about" target="_blank" rel="noopener">now page</a>: what's on my desk, my screen and my nightstand this month. I update it once a month.</p>
+
+      <dl class="facts">
+        <dt>Work</dt><dd>Running a portfolio of key accounts at Musemind, from enterprise programmes to early-stage founders.</dd>
+        <dt>Practising</dt><dd>Negotiation. Asking better questions before I talk price.</dd>
+        <dt>Based in</dt><dd>Dhaka, Bangladesh. Working across the GCC.</dd>
+      </dl>
+
+      <h2>Exploring</h2>
+      <p class="sub">Tools and ideas I'm trying out, mostly AI.</p>
+      <ul class="log">
+        <li><span class="t">Claude Code</span><span class="tag">AI</span><p>Built this site with it, by talking through what I wanted.</p></li>
+        <li><span class="t">Figma AI</span><span class="tag">Design</span><p>Seeing where it speeds up early concepts and where it gets in the way.</p></li>
+        <li><span class="t">Meeting recorders</span><span class="tag">AI</span><p>Testing whether AI call notes are good enough to replace my own.</p></li>
+      </ul>
+
+      <h2>Watching</h2>
+      <p class="sub">Series, films and anime currently on my screen.</p>
+      <ul class="log">
+        <li><span class="t">Frieren: Beyond Journey's End</span><span class="tag">Anime</span><span class="st">S2 · watching</span></li>
+        <li><span class="t">Severance</span><span class="tag">Series</span><span class="st">S2 · finished</span></li>
+        <li><span class="t">Vinland Saga</span><span class="tag">Anime</span><span class="st">up next</span></li>
+      </ul>
+
+      <h2>Reading</h2>
+      <ul class="log">
+        <li><span class="t">High Output Management <span class="by">· Andrew Grove</span></span><span class="tag">Book</span><span class="st">reading · 2nd time</span></li>
+        <li><span class="t">The Mom Test <span class="by">· Rob Fitzpatrick</span></span><span class="tag">Book</span><span class="st">up next</span></li>
+      </ul>
+      <p><a class="back" href="#shelf">Books that stuck → Shelf</a></p>
+
+      <h2 id="suggest">Suggest something</h2>
+      <p>Know a show, an anime, a book or a tool I should try? Tell me. The best ones end up on this page.</p>
+      <form class="suggest" id="suggest-form" novalidate>
+        <div class="kinds" role="radiogroup" aria-label="Type">
+          <label><input type="radio" name="kind" id="k-show" value="Series" checked><span>Series</span></label>
+          <label><input type="radio" name="kind" id="k-anime" value="Anime"><span>Anime</span></label>
+          <label><input type="radio" name="kind" id="k-film" value="Film"><span>Film</span></label>
+          <label><input type="radio" name="kind" id="k-book" value="Book"><span>Book</span></label>
+          <label><input type="radio" name="kind" id="k-tool" value="Tool"><span>Tool</span></label>
+        </div>
+        <label class="field"><span>Title</span><input type="text" id="s-title" name="title" required maxlength="120" placeholder="e.g. Blue Eye Samurai"></label>
+        <label class="field"><span>Why I'd like it <i>(optional)</i></span><textarea id="s-why" name="why" rows="3" maxlength="600"></textarea></label>
+        <label class="field"><span>Your name <i>(optional)</i></span><input type="text" id="s-name" name="name" maxlength="80"></label>
+        <div class="actions"><button type="submit" class="btn">Send suggestion</button><span class="status" id="s-status" role="status"></span></div>
+      </form>
+    </section>
+
+    <!-- ============ NOTES ============ -->
+    <section class="page" id="notes">
+      <h1>Notes</h1>
+      <p>Short notes from client work: negotiation, stakeholder alignment, and the business side of design. Numbered in the order I wrote them.</p>
+      <ul class="entries">
+        <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed. Enterprises buy safety.</span><span class="d">12 Oct 2026</span></a></li>
+        <li><a href="#n-003"><span class="no">N°003</span><span class="t">Scope creep starts at kickoff</span><span class="d">28 Sep 2026</span></a></li>
+        <li><a href="#n-002"><span class="no">N°002</span><span class="t">The recap email is the contract people read</span><span class="d">14 Sep 2026</span></a></li>
+        <li><a href="#n-001"><span class="no">N°001</span><span class="t">Why this notebook exists</span><span class="d">01 Sep 2026</span></a></li>
+      </ul>
+    </section>
+
+    <article class="page" id="n-004">
+      <div class="note-head"><span class="label">N°004</span><span class="label">12 Oct 2026</span></div>
+      <h1>Founders buy speed. Enterprises buy safety.</h1>
+      <p>Same proposal, two buyers. A founder reads it asking, "How fast can I ship?" An enterprise stakeholder reads it asking, "What happens if this goes wrong, and who gets blamed?"</p>
+      <p>Pitch speed to the enterprise and you sound reckless. Pitch governance to the founder and you sound slow.<span class="sn-ref"></span><span class="sn">The scope, price and timeline barely change. Only the framing does.</span></p>
+      <p>So now I write the first paragraph twice. <mark>Everything below it stays the same.</mark></p>
+      <p><a class="back" href="#notes">← All notes</a></p>
+    </article>
+
+    <article class="page" id="n-003">
+      <div class="note-head"><span class="label">N°003</span><span class="label">28 Sep 2026</span></div>
+      <h1>Scope creep starts at kickoff</h1>
+      <p>Most scope fights aren't about scope. They're about an assumption nobody said out loud in week one.</p>
+      <p>I now end every kickoff with one question: <mark>"What would make you unhappy in month two, even if we hit every deliverable?"</mark><span class="sn-ref"></span><span class="sn">Ask it to the most senior person in the room, last. The answer changes when the boss is listening.</span></p>
+      <p>The answers are the real scope. Write them down, put them in the recap, and get a yes.</p>
+      <p><a class="back" href="#notes">← All notes</a></p>
+    </article>
+
+    <article class="page" id="n-002">
+      <div class="note-head"><span class="label">N°002</span><span class="label">14 Sep 2026</span></div>
+      <h1>The recap email is the contract people read</h1>
+      <p>Nobody rereads the statement of work. Everyone rereads the email you sent after the call.</p>
+      <p>So that email does the heavy lifting: decisions, owners, dates, open questions. Five lines, no adjectives.<span class="sn-ref"></span><span class="sn">My test: could the client's CFO read it cold and know what happens next?</span></p>
+      <p>If the stakeholder can't forward it to their boss without editing it, it isn't done.</p>
+      <p><a class="back" href="#notes">← All notes</a></p>
+    </article>
+
+    <article class="page" id="n-001">
+      <div class="note-head"><span class="label">N°001</span><span class="label">01 Sep 2026</span></div>
+      <h1>Why this notebook exists</h1>
+      <p>I spend my days with founders and enterprise teams working out what design is worth to their business. I learn something most weeks, and then I forget most of it.</p>
+      <p>This is where I write it down. Short notes, no schedule, no newsletter.<span class="sn-ref"></span><span class="sn">Inspired by Paul Graham's essays. Much shorter, written by someone with much less time.</span></p>
+      <p>If one is useful to you, email me and tell me why.</p>
+      <p><a class="back" href="#notes">← All notes</a></p>
+    </article>
+
+    <!-- ============ WORK ============ -->
+    <section class="page" id="work">
+      <h1>Work</h1>
+      <p class="lede">Key Accounts at Musemind. I make sure design work pays for itself.</p>
+      <p>Musemind is a UX design agency working with companies across the GCC. My job is the relationship: understanding what the client's business needs, keeping stakeholders aligned, and steering the work toward outcomes rather than deliverables.</p>
+
+      <h2>Who I work with</h2>
+      <dl class="facts">
+        <dt>Enterprise</dt><dd>Teams that need design to get through procurement, internal politics and a dozen stakeholders, and still ship something good.</dd>
+        <dt>Founders</dt><dd>People who need a product that sells before the runway ends. Fewer meetings, faster decisions.</dd>
+      </dl>
+
+      <h2>How I work</h2>
+      <ul class="plain">
+        <li><b>Outcomes before outputs.</b> A screen is not a result. Revenue, retention or time saved is.</li>
+        <li><b>Say the hard thing early.</b> Bad news gets more expensive every week you wait.</li>
+        <li><b>One owner per decision.</b> If everyone owns it, nobody signs it off.</li>
+        <li><b>Write it down.</b> If it isn't in the recap, it didn't happen.</li>
+      </ul>
+
+      <h2>Working together</h2>
+      <p>If you're building something in the GCC and want a design partner who cares about the numbers, email me at <b>mh.hasan884@gmail.com</b>.</p>
+    </section>
+
+    <!-- ============ SHELF ============ -->
+    <section class="page" id="shelf">
+      <h1>Shelf</h1>
+      <p>Books that changed how I work, with one line on why.</p>
+      <ul class="shelf">
+        <li><b>Never Split the Difference</b> <span class="by">· Chris Voss</span><p>Negotiation is mostly listening. Labels and calibrated questions changed how I run pricing calls.</p></li>
+        <li><b>The Mom Test</b> <span class="by">· Rob Fitzpatrick</span><p>How to ask questions that people can't answer politely. Essential for discovery calls.</p></li>
+        <li><b>High Output Management</b> <span class="by">· Andrew Grove</span><p>Treat your work like a production line and find the bottleneck. Still the best book on management.</p></li>
+        <li><b>Thinking in Bets</b> <span class="by">· Annie Duke</span><p>Judge a decision by the information you had, not by how it turned out.</p></li>
+        <li><b>The Design of Everyday Things</b> <span class="by">· Don Norman</span><p>Why I can explain to a CFO what UX actually means.</p></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    Set in Literata and IBM Plex Mono. Hand-written HTML. No tracking, no cookies.<br>
+    <a href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/MehediIfti" target="_blank" rel="noopener">GitHub</a><br>
+    Keys: 1 index · 2 now · 3 notes · 4 work · 5 shelf
+  </footer>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.add('js');
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var navs = document.querySelectorAll('.rail a.nav');
+
+  function show() {
+    var id = (location.hash || '#index').slice(1);
+    var target = document.getElementById(id);
+    if (!target || !target.classList.contains('page')) { target = document.getElementById('index'); id = 'index'; }
+    pages.forEach(function (p) { p.classList.toggle('on', p === target); });
+    var section = id.indexOf('n-') === 0 ? 'notes' : id;
+    navs.forEach(function (a) {
+      if (a.getAttribute('href') === '#' + section) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+    var h = target.querySelector('h1');
+    document.title = (id === 'index' ? '' : (h ? h.textContent + ' · ' : '')) + "Ifti's Notebook";
+    window.scrollTo(0, 0);
+    setTimeout(function () { window.scrollTo(0, 0); }, 0);
+  }
+  window.addEventListener('hashchange', show);
+  window.addEventListener('load', function () { window.scrollTo(0, 0); });
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  show();
+
+
+  // Suggestion box. Paste your form endpoint (e.g. https://formspree.io/f/xxxx) to receive suggestions by email.
+  var SUGGEST_ENDPOINT = '';
+  var form = document.getElementById('suggest-form');
+  var status = document.getElementById('s-status');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var title = document.getElementById('s-title');
+    if (!title.value.trim()) { status.textContent = 'Add a title first.'; title.focus(); return; }
+    var data = new FormData(form);
+    if (!SUGGEST_ENDPOINT) { status.textContent = 'Suggestions open once the site is live. For now, email me.'; return; }
+    var btn = form.querySelector('button'); btn.disabled = true; status.textContent = 'Sending…';
+    fetch(SUGGEST_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
+      .then(function (r) { if (!r.ok) throw new Error(); form.reset(); status.textContent = 'Got it. Thank you.'; })
+      .catch(function () { status.textContent = "Couldn't send. Try again, or email me."; })
+      .then(function () { btn.disabled = false; });
+  });
+
+  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf' };
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA') return;
+    if (keys[e.key]) location.hash = keys[e.key];
+  });
+
+  document.querySelectorAll('.copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var text = b.getAttribute('data-copy');
+      var done = function () { b.textContent = 'copied'; setTimeout(function () { b.textContent = 'copy'; }, 1500); };
+      try {
+        navigator.clipboard.writeText(text).then(done, function () { select(b.previousSibling); });
+      } catch (err) { select(b.previousSibling); }
+    });
+  });
+  function select(node) {
+    var r = document.createRange(); r.selectNodeContents(node);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+})();
+</script>
+</body>
+</html>

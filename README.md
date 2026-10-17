@@ -44,3 +44,5 @@ Single static file (`index.html`), served with GitHub Pages.
 - Homepage blocks below the fold use `content-visibility: auto`. Add new long homepage sections to that rule.
 - Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
 - No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.
+
+**Whiteboard (Playground, key 0):** a bare-bones FigJam at `#whiteboard`. Stickies, text, rectangles, ellipses, arrows, pen and eraser; pan, zoom, undo, copy and paste; full screen; export to PNG, SVG or a `.board.json` file you can open again from the Export menu. Boards save in the visitor's own browser (`wb-board` in localStorage); nothing is uploaded. The code builds only the first time the page opens, so it costs nothing on other pages.

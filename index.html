@@ -1539,14 +1539,26 @@ html.touring .tour-fab::after { display: none; }
 @media print { :root[data-theme="halftone"] .hero::before { display: none; } }
 </style>
 <script>
-  // Before first paint: show only the page being opened (not all of them), and apply the visitor's saved theme.
+  // THEME OF THE DAY: new visitors, and anyone who hasn't picked a theme, get one of these, changing at midnight Dhaka time.
+  // Halftone on 18 Oct 2026, then Cropmark, then Midnight Ledger, and round again. Lights Out stays out of it.
+  // Each row is [id, palette, bg, calm, layout, type]; keep it in step with that theme's `set` in THEMES.
+  var THEME_DAY = [['halftone', 'halftone', 'dots', 'margins', '3', 'mono'], ['cropmark', 'cropmark', 'plain', 'margins', '3', 'sans'], ['midnight-ledger', 'black', 'grid', 'spotlight', '3', 'serif']];
+  var THEME_TODAY = THEME_DAY[((Math.floor((Date.now() + 6 * 36e5) / 864e5) - 20744) % THEME_DAY.length + THEME_DAY.length) % THEME_DAY.length];
+  // Before first paint: show only the page being opened (not all of them), and apply the visitor's saved theme, or today's.
   (function () {
     var root = document.documentElement, id = (location.hash || '#index').slice(1).replace(/[^\w-]/g, '') || 'index';
     root.classList.add('js');
     var st = document.createElement('style'); st.id = 'first-page';
     st.textContent = '.js .page#' + id + ' { display: block; } .js:not(:has(.page#' + id + ')) #index { display: block; }';
     document.head.appendChild(st);
-    try { var a = JSON.parse(localStorage.getItem('ap-resolved') || 'null'); if (a) for (var k in a) root.setAttribute('data-' + k, a[k]); } catch (e) {}
+    var a = { theme: THEME_TODAY[0] };
+    ['palette', 'bg', 'calm', 'layout', 'type'].forEach(function (k, i) { a[k] = THEME_TODAY[i + 1]; });
+    try {
+      var saved = JSON.parse(localStorage.getItem('ap-resolved') || 'null');
+      if (saved && (localStorage.getItem('ap-theme') || saved.theme === a.theme)) a = saved; // a picked theme, or today's with the visitor's edits
+      else { var ed = JSON.parse(localStorage.getItem('ap-t-' + a.theme) || '{}') || {}; for (var e in ed) a[e] = ed[e]; }
+    } catch (e) {}
+    for (var k in a) root.setAttribute('data-' + k, a[k]);
   })();
   // Decide before first paint whether this visit gets the intro, so the page never flashes in first.
   try { if (!localStorage.getItem('booted') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(function () { document.documentElement.classList.remove('intro', 'boot-out'); }, 4000); } } catch (e) {}
@@ -2377,6 +2389,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Theme of the day</span><span class="tag t-tool">Feature</span><p>The site changes its look every day at midnight, Dhaka time: Halftone, Cropmark, then Midnight Ledger. Pick a theme and it stays yours.</p></li>
         <li><span class="t">Halftone theme</span><span class="tag t-design">Design</span><p>Mint paper, black ink, pixel type and a dithered orange sun on the homepage.</p></li>
         <li><span class="t">Target lock</span><span class="tag t-tool">Feature</span><p>Point at anything you can click and the cursor disappears. Four red corners frame it instead.</p></li>
         <li><span class="t">N°006 Show the cut marks</span><span class="tag t-book">Note</span><p>Notes on Joe Rogan's talk with Tyler Engle about old legends that might be true. <a href="#n-006">Read it</a>.</p></li>
@@ -3164,7 +3177,7 @@ html.touring .tour-fab::after { display: none; }
   })();
 
   // Appearance. A theme is a named bundle of settings (colours, background, pattern, layout, text).
-  // THEME UPDATE: add next week's theme at the top of THEMES. The first one is what new visitors get.
+  // THEME UPDATE: add next week's theme at the top of THEMES (the picker shows them in this order). What new visitors get is THEME_DAY, in the <head> script.
   // `sw` is how its card looks in the picker: background, text, accent, and the background pattern.
   var THEMES = [
     { id: 'halftone', name: 'Halftone', week: 'Week 43', note: 'Mint paper, black ink, a dithered orange sun, pixel type and heavy headlines.',
@@ -3180,7 +3193,7 @@ html.touring .tour-fab::after { display: none; }
       set: { palette: 'black', bg: 'grid', calm: 'spotlight', layout: '3', type: 'serif' },
       sw: { bg: '#0c0d10', fg: '#d4d4d8', ac: '#cba6f7', pat: 'linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px) 0 0 / 14px 14px, linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px) 0 0 / 14px 14px' } }
   ];
-  var THEME_DEFAULT = 'cropmark'; // what new visitors get
+  var THEME_DEFAULT = THEME_TODAY[0]; // what new visitors get: the theme of the day (THEME_DAY, top of the page)
   var THEME_KEYS = ['palette', 'bg', 'calm', 'layout', 'type'];
   var AP_GLOBAL = { mnav: 'tabs' };
   var tab = document.getElementById('ap-tab');
@@ -3220,6 +3233,8 @@ html.touring .tour-fab::after { display: none; }
     }
     root.style.setProperty('--ht-sun', 'url(' + c.toDataURL() + ')');
   }, 0);
+  // Picking today's theme puts the visitor back on the daily rotation; any other pick sticks.
+  function pickTheme(id) { apTheme(id); store('ap-theme', cur === THEME_DEFAULT ? null : cur); }
   function edits(id) { try { return JSON.parse(read('ap-t-' + id) || '{}') || {}; } catch (e) { return {}; } }
   var cur = themeById(read('ap-theme')).id;
   ['palette', 'bg', 'calm', 'type', 'layout'].forEach(function (k) { store('ap-' + k, null); }); // settings saved before themes existed
@@ -3241,11 +3256,11 @@ html.touring .tour-fab::after { display: none; }
   }
   presets.innerHTML = THEMES.map(function (t) {
     return '<button type="button" class="ap-preset" title="' + esc(t.note) + '" data-id="' + t.id + '" style="--sw-bg:' + t.sw.bg + ';--sw-fg:' + t.sw.fg + ';--sw-ac:' + t.sw.ac + ';--sw-pat:' + t.sw.pat + '">' +
-      '<span class="pr-top"><b>' + esc(t.name) + '</b><em>' + esc(t.week) + '</em></span><small>' + esc(t.note) + '</small></button>';
+      '<span class="pr-top"><b>' + esc(t.name) + '</b><em>' + esc(t.id === THEME_DEFAULT ? 'Today' : t.week) + '</em></span><small>' + esc(t.note) + '</small></button>';
   }).join('');
   presets.addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
-    var was = cur; apTheme(b.getAttribute('data-id')); store('ap-theme', cur); if (cur === 'lightsout' && was !== cur) lightsOut();
+    var was = cur; pickTheme(b.getAttribute('data-id')); if (cur === 'lightsout' && was !== cur) lightsOut();
   });
   groups.forEach(function (g) {
     var attr = g.getAttribute('data-attr');
@@ -3507,10 +3522,10 @@ html.touring .tour-fab::after { display: none; }
           '2026: <span class="y">' + F1.pos + '</span> on ' + F1.pts + ' pts. ' + esc(F1.lastWin) + '\n<span class="c">as of the ' + esc(F1.asOf) + '</span>');
       },
       theme: function (a) {
-        if (!a) { print(THEMES.map(function (t) { return (t.id === cur ? '<span class="g">* ' : '  ') + t.id + (t.id === cur ? '</span>' : '') + '  <span class="c">' + esc(t.week + ' · ' + t.note) + '</span>'; }).join('\n') + '\n<span class="c">theme &lt;name&gt; to switch</span>'); return; }
+        if (!a) { print(THEMES.map(function (t) { return (t.id === cur ? '<span class="g">* ' : '  ') + t.id + (t.id === cur ? '</span>' : '') + '  <span class="c">' + esc((t.id === THEME_DEFAULT ? 'Today' : t.week) + ' · ' + t.note) + '</span>'; }).join('\n') + '\n<span class="c">theme &lt;name&gt; to switch</span>'); return; }
         var t = THEMES.filter(function (x) { return x.id === a || x.name.toLowerCase() === a.toLowerCase(); })[0];
         if (!t) { line('theme: no theme ' + a + '. Try theme.', 'r'); return; }
-        var was = cur; apTheme(t.id); store('ap-theme', t.id); line('Switched to ' + t.name + '.', 'g'); if (t.id === 'lightsout' && was !== t.id) { close(); setTimeout(lightsOut, 250); }
+        var was = cur; pickTheme(t.id); line('Switched to ' + t.name + '.', 'g'); if (t.id === 'lightsout' && was !== t.id) { close(); setTimeout(lightsOut, 250); }
       },
       book: function () { window.open(bookHref, '_blank', 'noopener'); line('Opening my calendar in a new tab.', 'g'); },
       email: function () {

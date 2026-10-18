@@ -1293,6 +1293,38 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
   :root[data-print="work"] .page.on > h1 + .lede { font-size: 11pt; margin-top: 0; }
 }
 
+/* Spotify stereo (Now page, right column): a small deck with an LCD. The chassis follows the theme; the LCD is always green on black. */
+.sp-deck { --lcd: #0e140d; --lcd-ink: #b8f5a0; padding: 0.55rem; background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text) 8%, transparent), 0 6px 18px rgba(0,0,0,0.18); display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.45rem; }
+.sp-deck > * { min-width: 0; }
+.sp-top { display: flex; align-items: center; gap: 0.4rem; font: 500 0.625rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--subtext0); }
+.sp-top b { font-weight: 500; color: var(--text); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-led { width: 7px; height: 7px; border-radius: 50%; background: var(--overlay1); flex: none; }
+[data-state="live"] .sp-led { background: #ff3b30; box-shadow: 0 0 6px #ff3b30; }
+.sp-lcd { position: relative; display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 0.5rem; align-items: center; padding: 0.45rem; background: var(--lcd); border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6), inset 0 2px 8px rgba(0,0,0,0.6); overflow: hidden; }
+.sp-lcd::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.28) 0 1px, transparent 1px 3px); }
+.sp-art { width: 2.6rem; height: 2.6rem; image-rendering: pixelated; background: rgba(184,245,160,0.06); filter: saturate(0.7) contrast(1.1); }
+.sp-txt { min-width: 0; display: grid; gap: 0.15rem; font: 400 0.75rem/1.25 var(--mono); color: var(--lcd-ink); text-shadow: 0 0 6px rgba(184,245,160,0.45); }
+.sp-mq { overflow: hidden; white-space: nowrap; }
+.sp-title { display: inline-block; }
+.sp-mq.long .sp-title::after { content: attr(data-copy); }
+.sp-artist { opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-eq { display: flex; align-items: flex-end; gap: 3px; height: 20px; }
+.sp-eq i { flex: 1; height: 20%; background: var(--accent); opacity: 0.9; -webkit-mask: repeating-linear-gradient(to top, #000 0 2px, transparent 2px 4px); mask: repeating-linear-gradient(to top, #000 0 2px, transparent 2px 4px); }
+.sp-bar { height: 6px; background: repeating-linear-gradient(90deg, var(--surface0) 0 4px, transparent 4px 6px); }
+.sp-bar i { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--accent) 0 4px, transparent 4px 6px); transition: width 1s linear; }
+.sp-time { display: flex; justify-content: space-between; font: 0.625rem/1 var(--mono); color: var(--subtext0); }
+.sp-open { font: 500 0.6875rem/1 var(--mono); color: var(--accent); text-decoration: none; }
+.sp-open:hover { text-decoration: underline; }
+@media (prefers-reduced-motion: no-preference) {
+  [data-state="live"] .sp-led { animation: sp-blink 1.4s steps(2, jump-none) infinite; }
+  .sp-mq.long .sp-title { animation: sp-scroll 14s linear infinite; }
+  [data-state="live"] .sp-eq i { animation: sp-eq 0.9s ease-in-out infinite alternate; }
+  .sp-eq i:nth-child(2n) { animation-duration: 0.7s !important; } .sp-eq i:nth-child(3n) { animation-duration: 1.1s !important; animation-delay: -0.4s; } .sp-eq i:nth-child(5n) { animation-delay: -0.2s; }
+  @keyframes sp-blink { 50% { opacity: 0.25; } }
+  @keyframes sp-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes sp-eq { from { height: 15%; } to { height: 100%; } }
+}
+[data-state="last"] .sp-eq i { height: 20%; opacity: 0.4; }
 /* ============ THEME: LIGHTS OUT ============
    Formula 1, Red Bull colours. Navy, F1 red and yellow, Titillium Web (the classic F1 typeface), slanted headlines,
    parallelogram buttons, corner-cut cards and diagonal speed lines. A start-light sequence plays when you switch to it. */
@@ -2962,14 +2994,75 @@ html.touring .tour-fab::after { display: none; }
     // Page details come after Right now
     if (isNote) html += noteMeta(page);
     html += '<section class="m-hide"><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
+    if (id === 'now') html += '<section class="m-hide sp" hidden><h4>On the stereo</h4><div class="sp-deck" data-state="last">' +
+      '<div class="sp-top"><i class="sp-led"></i><b class="sp-st">Last played</b><span>Spotify</span></div>' +
+      '<div class="sp-lcd"><canvas class="sp-art" width="16" height="16" aria-hidden="true"></canvas>' +
+      '<div class="sp-txt"><div class="sp-mq"><span class="sp-title"></span></div><span class="sp-artist"></span></div></div>' +
+      '<div class="sp-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>' +
+      '<div class="sp-bar"><i></i></div><div class="sp-time"><span class="sp-cur">0:00</span><span class="sp-dur">0:00</span></div>' +
+      '<a class="sp-open" target="_blank" rel="noopener">Open in Spotify ↗</a></div></section>';
     meta.innerHTML = html;
     renderSocials(meta);
+    if (id === 'now') spStart(); else spStop();
     tocItems = heads;
     meta.querySelectorAll('.toc button').forEach(function (b) {
       b.addEventListener('click', function () { heads[+b.getAttribute('data-i')].scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     });
     spy();
   }
+  // SPOTIFY: the stereo at the bottom of the Now page's right column. api/now-playing.js asks Spotify what I'm playing.
+  // It stays hidden until Spotify is connected (README → Spotify). Add ?player=demo to the address to preview it.
+  var SP = { poll: 0, tick: 0, d: null, at: 0, el: null };
+  function spStop() { clearInterval(SP.poll); clearInterval(SP.tick); SP.poll = SP.tick = 0; }
+  function spTime(ms) { var s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
+  function spAgo(iso) {
+    var m = Math.round((Date.now() - new Date(iso)) / 60000);
+    return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + ' h ago' : Math.round(m / 1440) + ' d ago';
+  }
+  function spLoad() {
+    if (document.hidden || !SP.el) return;
+    if (/[?&]player=demo/.test(location.search)) return spShow({ configured: true, playing: true, kind: 'track', title: 'Track title goes here, and it scrolls when it runs long', artist: 'Artist name', progress: 42000, duration: 201000, url: 'https://open.spotify.com/', art: null });
+    fetch('/api/now-playing').then(function (r) { return r.json(); }).then(spShow, function () { spShow(null); });
+  }
+  function spShow(d) {
+    var el = SP.el; if (!el || !el.isConnected) return;
+    if (!d || !d.configured || !d.title) { el.hidden = true; return; }
+    var deck = el.querySelector('.sp-deck'), same = SP.d && SP.d.url === d.url && SP.d.title === d.title;
+    SP.d = d; SP.at = Date.now(); el.hidden = false;
+    deck.setAttribute('data-state', d.playing ? 'live' : 'last');
+    el.querySelector('.sp-st').textContent = d.playing ? 'On air' : d.playedAt ? 'Last played' : 'Paused';
+    el.querySelector('.sp-artist').textContent = d.artist || (d.kind === 'episode' ? 'Podcast' : '');
+    var open = el.querySelector('.sp-open'); if (d.url) open.href = d.url; open.hidden = !d.url;
+    el.querySelector('.sp-dur').textContent = spTime(d.duration);
+    if (!same) {
+      var t = el.querySelector('.sp-title'), mq = el.querySelector('.sp-mq');
+      t.textContent = d.title; mq.classList.remove('long'); t.removeAttribute('data-copy');
+      if (t.scrollWidth > mq.clientWidth + 2) { t.textContent = d.title + '\u00a0\u00a0·\u00a0\u00a0'; t.setAttribute('data-copy', t.textContent); mq.classList.add('long'); } // two copies, scrolled by half
+      spArt(el.querySelector('.sp-art'), d.art);
+    }
+    spTick();
+  }
+  // The cover, drawn at 16 by 16 and scaled up, so it looks like an old LCD. Drawing a cross-site image is fine; we never read it back.
+  function spArt(c, src) {
+    var x = c.getContext('2d'); x.clearRect(0, 0, 16, 16);
+    if (!src) { x.fillStyle = 'rgba(184,245,160,0.25)'; for (var i = 0; i < 16; i++) for (var j = 0; j < 16; j++) if ((i * 7 + j * 3) % 5 === 0) x.fillRect(i, j, 1, 1); return; }
+    var img = new Image(); img.crossOrigin = 'anonymous';
+    img.onload = function () { x.imageSmoothingEnabled = true; x.drawImage(img, 0, 0, 16, 16); };
+    img.src = src;
+  }
+  function spTick() {
+    var d = SP.d, el = SP.el; if (!d || !el) return;
+    var p = d.playing ? Math.min(d.duration, d.progress + (Date.now() - SP.at)) : (d.progress || 0);
+    if (!d.playing && d.playedAt) p = d.duration;
+    el.querySelector('.sp-bar i').style.width = (d.duration ? p / d.duration * 100 : 0) + '%';
+    el.querySelector('.sp-cur').textContent = !d.playing && d.playedAt ? spAgo(d.playedAt) : spTime(p);
+    if (d.playing && p >= d.duration && Date.now() - SP.at > 3000) { SP.at = Date.now(); setTimeout(spLoad, 1500); } // song ended: ask again
+  }
+  function spStart() {
+    spStop(); SP.el = meta.querySelector('.sp'); SP.d = null; if (!SP.el) return;
+    spLoad(); SP.poll = setInterval(spLoad, 30000); SP.tick = setInterval(spTick, 1000);
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && SP.poll) spLoad(); });
   function spy() {
     if (!tocItems.length) return;
     var cur = 0;

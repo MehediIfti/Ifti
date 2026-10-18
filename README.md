@@ -54,6 +54,12 @@ Single static file (`index.html`), hosted on Vercel.
 
 **Playground:** tool, agent and workflow pages (Whiteboard, Paperclip, Hermes Agent, in that order), under the Playground heading in the left rail, above Academia. Playground starts open and Academia starts folded (the `data-shut` attribute on its rail group); clicking a heading toggles it, the choice is saved per visitor, and the group holding the current page always opens. The Theme tab snaps to just below the rail's last line (the Updated date) and shrinks to a dots-only pill when the screen is too short. On phones, the tab bar's More button opens the full index with Playground and Academia.
 
+**Spotify stereo:** the Now page's right column ends with a small retro deck showing what I'm playing on Spotify (song or podcast episode), or the last thing I played. `api/now-playing.js` asks Spotify; the page asks it every 30 seconds while the Now page is open, and Vercel's cache answers most of those. The player stays hidden until Spotify is connected, and on phones (the right column is computer-only). Add `?player=demo` to the address to preview it with placeholder text. To connect, once:
+1. At developer.spotify.com/dashboard, create an app (any name). Redirect URI: `https://ifti-gold.vercel.app/api/spotify-callback`. API: Web API.
+2. In Vercel → Settings → Environment Variables, add `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` from that app, and `SPOTIFY_SETUP_KEY` set to any long random word. Redeploy.
+3. Open `https://ifti-gold.vercel.app/api/spotify-login?key=<that word>`, sign in to Spotify and agree. The page shows a refresh token.
+4. Add it in Vercel as `SPOTIFY_REFRESH_TOKEN`, delete `SPOTIFY_SETUP_KEY`, and redeploy. The deck appears on the Now page.
+
 **Social links:** the `SOCIALS UPDATE` list in the script. Each profile appears as a pill on the homepage (Let's talk), in the phone index menu, and as an icon tile under "Find me" in the right column. The footer links are plain HTML.
 
 **Booking:** the booking link (Google Calendar) is `var CALENDLY` (the `BOOKING` comment in the script). Every `data-book` button points to it.

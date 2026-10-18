@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>No page here · Ifti's Notebook</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+/* Vercel serves this for any address that doesn't exist. It stands alone: no main script, fonts by absolute path. */
+@font-face { font-family: "DM Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url(/fonts/dm-mono-400.woff2) format('woff2'); }
+:root { --bg: #121212; --fg: #ededed; --muted: #a0a0a0; --accent: #f7cafa; --ok: #a0c0a7; --err: #f38ba8; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { display: grid; place-items: center; background: var(--bg); color: var(--fg); font: 15px/1.6 "DM Mono", ui-monospace, Menlo, monospace;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.term { width: min(36rem, 100%); border: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); border-radius: 10px; overflow: hidden; background: color-mix(in srgb, var(--bg) 92%, var(--fg)); }
+.bar { padding: 0.5rem 0.9rem; font-size: 0.75rem; color: var(--muted); border-bottom: 1px solid color-mix(in srgb, var(--fg) 14%, transparent); }
+.bar::before { content: "●"; color: var(--ok); margin-right: 0.5rem; }
+pre { margin: 0; padding: 1rem 0.9rem 1.2rem; white-space: pre-wrap; word-break: break-word; font: inherit; }
+.p { color: var(--ok); } .m { color: var(--muted); } .r { color: var(--err); }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cur { display: inline-block; width: 0.6em; height: 1.1em; vertical-align: -0.2em; background: var(--fg); }
+@media (prefers-reduced-motion: no-preference) { .cur { animation: b 1.1s steps(2, jump-none) infinite; } @keyframes b { 50% { opacity: 0; } } }
+</style>
+<script>
+  // The visitor's theme colours, if they've been here before (the main page saves them), else today's theme.
+  (function () {
+    var P = { cropmark: ['#121212', '#ededed', '#a0a0a0', '#f7cafa', '#a0c0a7', '#f38ba8', 'dark'], halftone: ['#e3f8e7', '#111311', '#3b4a3f', '#c2410c', '#2f7d45', '#b42318', 'light'],
+      black: ['#0c0d10', '#d4d4d8', '#8e8e96', '#cba6f7', '#a6e3a1', '#f38ba8', 'dark'], lightsout: ['#0b0e1a', '#e9ecf5', '#9098b3', '#ffc906', '#3ddc84', '#ff5a52', 'dark'] };
+    var DAY = ['halftone', 'cropmark', 'black'], pal = DAY[((Math.floor((Date.now() + 6 * 36e5) / 864e5) - 20744) % 3 + 3) % 3];
+    try { var a = JSON.parse(localStorage.getItem('ap-resolved') || 'null'); if (a && P[a.palette]) pal = a.palette; } catch (e) {}
+    var c = P[pal], s = document.documentElement.style;
+    ['--bg', '--fg', '--muted', '--accent', '--ok', '--err'].forEach(function (k, i) { s.setProperty(k, c[i]); });
+    s.colorScheme = c[6];
+  })();
+</script>
+</head>
+<body>
+<main class="term" aria-labelledby="t">
+  <div class="bar">ifti@notebook</div>
+  <pre id="out"><span class="p">~ $</span> cd <span id="path">this-page</span>
+<span class="r" id="t">cd: no such page.</span> It may have moved, or the link has a typo.<span id="guess"></span>
+
+<span class="p">~ $</span> ls
+<a href="/#index">index</a>   <a href="/#now">now</a>   <a href="/#notes">notes</a>   <a href="/#work">work</a>   <a href="/#shelf">shelf</a>
+
+<span class="p">~ $</span> <a href="/">cd ~</a>  <span class="m"># back to the notebook</span>
+<span class="p">~ $</span> <span class="cur" aria-hidden="true"></span></pre>
+</main>
+<script>
+  // Show the address they tried, and guess the page they meant: the site's pages live after a #, so /notes is /#notes.
+  (function () {
+    var path = decodeURIComponent(location.pathname).replace(/^\/+|\/+$/g, '');
+    document.getElementById('path').textContent = path || '/';
+    var PAGES = ['index', 'now', 'notes', 'work', 'shelf', 'whiteboard', 'paperclip', 'hermes', 'research', 'education', 'changelog'];
+    var last = path.split('/').pop().toLowerCase(), note = path.match(/n[-\/]?0*(\d{1,3})$/i), go = null;
+    if (note) go = 'n-' + ('00' + note[1]).slice(-3);
+    else if (PAGES.indexOf(last) >= 0) go = last;
+    if (!go) return;
+    var g = document.getElementById('guess'), a = document.createElement('a');
+    a.href = '/#' + go; a.textContent = '/#' + go;
+    g.append('\nDid you mean ', a, '?');
+  })();
+</script>
+</body>
+</html>

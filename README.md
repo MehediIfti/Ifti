@@ -80,6 +80,8 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Dhaka right now:** under the status in the left rail: Dhaka's time (worked out in the page, ticking each minute) and the weather from `api/weather.js`, which reads Open-Meteo (free, no key, no cookies) and is cached for 30 minutes, so visitors' browsers never call a third party. Each visit keeps it for 30 minutes in `sessionStorage`. If the weather can't load, only the time shows.
 
+**404:** `404.html`, served by Vercel for any address that doesn't exist. A terminal says there's no such page, lists the main pages, and guesses the one you meant (`/notes` → `/#notes`, `/n/5` → `/#n-005`). It stands alone (no main script), uses the visitor's saved theme colours or today's, and isn't indexed.
+
 **Hidden room:** `#backstage`, a page about how the site is built. It's left out of the rail, search, Previous/Next and the changelog on purpose. The terminal finds it: `ls -a` lists `.backstage`, and `cd .backstage` opens it. Its numbers (pages, notes, themes, changelog entries, page size) are counted live.
 
 **Achievements:** eight badges in the `ACHIEVEMENTS` block (`ACH`), stored only in `localStorage`, with a small toast when one unlocks: terminal, `?` sheet, three themes picked, every note opened, tour, share card, the hidden room and the Konami code. Search "Achievements" or type `achievements` in the terminal for the list. Call `unlock('id')` from any new feature to add one.

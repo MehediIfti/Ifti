@@ -33,6 +33,9 @@ function diag(data) {
     if (err || n === 0 && /WEEKLY|DAILY/.test(rule)) out.recurringInWeek.push({ rule: rule.slice(0, 90), start: e.start && new Date(+e.start).toISOString(), tz: e.start && e.start.tz || null, n, err, status: e.status || null, transp: e.transparency || null });
   }
   out.recurringInWeek = out.recurringInWeek.slice(0, 25);
+  out.node = process.version;
+  out.seriesFields = evs.filter(e => e.recurrences).map(e => ({ keys: Object.keys(e).sort().join(','), rruleType: typeof e.rrule, overrides: Object.keys(e.recurrences).length }));
+  try { out.rruleLib = typeof require('rrule-temporal'); } catch (x) { out.rruleLib = 'load failed: ' + String(x.message).slice(0, 100); }
   return out;
 }
 

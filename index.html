@@ -1161,6 +1161,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 #pop-music .st-deck { grid-row: 1 / span 3; align-self: center; }
 #pop-music .st-meta b { font-size: 1.05rem; } #pop-music .stereo[data-deck="cassette"] .st-meta { display: grid; }
 @media (max-width: 480px) { #pop-music .stereo:not([hidden]) { grid-template-columns: minmax(0, 1fr); } #pop-music .st-deck { grid-row: auto; width: min(13rem, 100%); } }
+#pop-music .st-art { transition: opacity 0.35s; } #pop-music .st-art.ld { opacity: 0; }
 .pop-recent { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--surface0); }
 .pop-recent li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; padding: 0.45rem 0; border-bottom: 1px solid var(--surface0); }
 .pop-recent li > span { display: grid; min-width: 0; }
@@ -3856,8 +3857,8 @@ html.touring .tour-fab::after { display: none; }
         '<p class="pop-foot">Career figures as of the ' + esc(F1.asOf) + '. <a href="https://www.formula1.com/en/results/2026/drivers" target="_blank" rel="noopener">Live standings ↗</a></p>';
     },
     music: function () {
-      setTimeout(musicLoad, 0);
-      return '<p class="pop-k">Music · Spotify</p><h3 id="pop-t">On the stereo</h3><div id="pop-music"><p class="muted">Asking Spotify…</p></div>' +
+      setTimeout(musicOpen, 0);
+      return '<p class="pop-k">Music · Spotify</p><h3 id="pop-t">On the stereo</h3><div id="pop-music"></div>' +
         '<p class="pop-foot"><a href="https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka" target="_blank" rel="noopener">My Spotify ↗</a></p>';
     },
     podcasts: function () {
@@ -3879,37 +3880,73 @@ html.touring .tour-fab::after { display: none; }
     }
   };
   // MUSIC POP-UP: the stereo's turntable or cassette with what I'm playing now, and the last three songs before it.
-  // Same answer as the stereo (api/now-playing.js); it asks again every 30 seconds while open.
-  var MU = { d: null, at: 0, poll: 0, tick: 0 };
+  // Same answer as the stereo (api/now-playing.js). Asked once when the homepage settles (like F1) and again on hover, so it opens ready;
+  // while open it asks every 30 seconds and changes only what changed, so the record keeps turning.
+  var MU = { d: null, at: 0, got: 0, poll: 0, tick: 0, rec: '' };
+  function musicFetch() {
+    return fetch('/api/now-playing').then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.configured && d.title) { MU.d = d; MU.at = MU.got = Date.now(); if (d.art) new Image().src = d.art; } // warm the cover too
+      return d;
+    });
+  }
+  (function (li) {
+    if (!li) return;
+    setTimeout(function () { MU.got = Date.now(); musicFetch().catch(function () {}); }, 3000);
+    ['pointerenter', 'focus'].forEach(function (ev) { li.addEventListener(ev, function () { if (Date.now() - MU.got > 30000) { MU.got = Date.now(); musicFetch().catch(function () {}); } }); });
+  })(document.querySelector('.offclock [data-pop="music"]'));
   function musicStop() { clearInterval(MU.poll); clearInterval(MU.tick); MU.poll = MU.tick = 0; }
+  // Opens at full size straight away: the deck and three rows, filled now if the answer is fresh, else when it lands.
+  function musicOpen() {
+    var box = document.getElementById('pop-music'); if (!box) return;
+    var st = ST.el.cloneNode(true);
+    st.removeAttribute('id'); st.hidden = false; st.className = 'stereo pop-st'; st.setAttribute('data-state', 'last');
+    st.querySelectorAll('h4, [id]').forEach(function (x) { if (x.tagName === 'H4') x.remove(); else x.removeAttribute('id'); });
+    st.querySelectorAll('.st-title').forEach(function (t) { t.textContent = 'Asking Spotify…'; t.removeAttribute('title'); });
+    st.querySelectorAll('.st-artist, .st-clock').forEach(function (t) { t.textContent = ''; });
+    st.querySelectorAll('.st-art').forEach(function (img) { img.hidden = true; img.removeAttribute('src'); img.onload = function () { img.classList.remove('ld'); }; });
+    st.querySelector('.st-open').hidden = true;
+    box.innerHTML = '<div class="pop-rec"><p class="pop-k" style="margin-bottom:.4rem">Before that</p><ol class="pop-recent">' + '<li><span>&nbsp;<small>&nbsp;</small></span></li>'.repeat(3) + '</ol></div>';
+    box.insertBefore(st, box.firstChild); MU.rec = '';
+    if (MU.d && Date.now() - MU.at < 60000) musicShow(MU.d);
+    MU.poll = setInterval(musicLoad, 30000); MU.tick = setInterval(musicTick, 1000);
+    musicLoad();
+  }
   function musicLoad() {
     if (!document.getElementById('pop-music')) return musicStop();
-    if (!MU.poll) { MU.poll = setInterval(musicLoad, 30000); MU.tick = setInterval(musicTick, 1000); }
-    fetch('/api/now-playing').then(function (r) { return r.json(); }).then(musicShow, function () { musicShow(null); });
+    musicFetch().then(musicShow, function () { musicShow(null); });
   }
   function musicShow(d) {
     var box = document.getElementById('pop-music'); if (!box) return musicStop();
+    var st = box.querySelector('.pop-st');
     if (!d || !d.configured || !d.title) {
+      if (st && st.getAttribute('data-shown')) return; // keep the last answer on screen
       box.innerHTML = '<p>' + (d && d.configured && !d.error ? 'Nothing played lately.' : 'Couldn\'t reach Spotify. Try again in a minute, or open my Spotify.') + '</p>';
-      MU.d = null; return;
+      return;
     }
-    MU.d = d; MU.at = Date.now();
-    // a copy of the stereo itself, so the two always look the same
-    var st = ST.el.cloneNode(true), q = function (sel, fn) { st.querySelectorAll(sel).forEach(fn); };
-    st.removeAttribute('id'); st.hidden = false; st.className = 'stereo pop-st'; st.setAttribute('data-state', d.playing ? 'live' : 'last');
-    q('h4, [id]', function (x) { if (x.tagName === 'H4') x.remove(); else x.removeAttribute('id'); });
+    if (!st) return;
+    var q = function (sel, fn) { st.querySelectorAll(sel).forEach(fn); };
+    st.setAttribute('data-shown', '1'); st.setAttribute('data-state', d.playing ? 'live' : 'last');
     q('.st-st', function (t) { t.textContent = d.playing ? 'On air' : d.playedAt ? 'Last played' : 'Paused'; });
     q('.st-title', function (t) { t.textContent = t.title = d.title; });
     q('.st-artist', function (t) { t.textContent = d.artist || (d.kind === 'episode' ? 'Podcast' : ''); });
-    q('.st-art', function (img) { img.hidden = !d.art; if (d.art) img.src = d.art; });
+    q('.st-art', function (img) { // only a new song swaps the cover, and it fades in once loaded
+      if (!d.art) { img.hidden = true; return; }
+      if (img.getAttribute('src') !== d.art) { img.classList.add('ld'); img.src = d.art; if (img.complete) img.classList.remove('ld'); }
+      img.hidden = false;
+    });
     q('.st-open', function (a) { a.hidden = !d.url; if (d.url) a.href = d.url; });
-    box.innerHTML = (d.recent || []).length ? '<div><p class="pop-k" style="margin-bottom:.4rem">' + (d.playing ? 'Before this' : 'Before that') + '</p><ol class="pop-recent">' +
-      d.recent.slice(0, 3).map(function (t) { return '<li><span>' + (/^https:\/\//.test(t.url) ? '<a href="' + esc(t.url) + '" target="_blank" rel="noopener">' + esc(t.title) + '</a>' : esc(t.title)) + '<small>' + esc(t.artist) + '</small></span><time>' + stAgo(t.playedAt) + '</time></li>'; }).join('') + '</ol></div>' : '';
-    box.insertBefore(st, box.firstChild);
+    var rec = d.recent || [], key = JSON.stringify(rec.slice(0, 3).map(function (t) { return t.url + t.playedAt; })) + d.playing;
+    var wrap = box.querySelector('.pop-rec');
+    if (!rec.length) { if (wrap) wrap.remove(); }
+    else if (wrap && key !== MU.rec) {
+      MU.rec = key;
+      wrap.querySelector('.pop-k').textContent = d.playing ? 'Before this' : 'Before that';
+      wrap.querySelector('ol').innerHTML = rec.slice(0, 3).map(function (t) { return '<li><span>' + (/^https:\/\//.test(t.url) ? '<a href="' + esc(t.url) + '" target="_blank" rel="noopener">' + esc(t.title) + '</a>' : esc(t.title)) + '<small>' + esc(t.artist) + '</small></span><time>' + stAgo(t.playedAt) + '</time></li>'; }).join('');
+    }
     musicTick();
   }
   function musicTick() {
-    var d = MU.d, c = document.querySelector('#pop-music .st-clock'); if (!d || !c) return;
+    var d = MU.d, c = document.querySelector('#pop-music [data-shown] .st-clock'); if (!d || !c) return;
     var p = d.playing ? Math.min(d.duration, d.progress + (Date.now() - MU.at)) : d.playedAt ? d.duration : (d.progress || 0), f = d.duration ? p / d.duration : 0;
     c.textContent = !d.playing && d.playedAt ? stAgo(d.playedAt) : stTime(p) + ' / ' + stTime(d.duration);
     var reels = document.querySelectorAll('#pop-music .cas-reel');

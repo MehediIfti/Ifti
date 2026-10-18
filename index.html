@@ -908,7 +908,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   .m-tabs a[aria-current="page"] .n { color: var(--h1); }
   .m-tabs .ap-dots { grid-auto-flow: column; gap: 3px; height: 1.15rem; align-items: center; }
   .m-tabs .ap-dots i { width: 6px; height: 6px; }
-  :root[data-mnav="tabs"] .ap-panel { bottom: calc(env(safe-area-inset-bottom, 0px) + 4.75rem); }
+  :root[data-mnav="tabs"] .ap-panel { bottom: calc(env(safe-area-inset-bottom, 0px) + 4.75rem); top: auto; max-height: calc(100dvh - 4.75rem - 24px - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px)); }
   :root[data-mnav="tabs"] footer.colophon { margin-bottom: 5.5rem; }
 
   /* B: full-screen index sheet */
@@ -1344,8 +1344,10 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
   font: 0.75rem/1.5 var(--mono); color: var(--subtext0);
 }
 :root[data-layout="3"] .stereo:not([hidden])::before { content: ""; position: absolute; top: 0; left: 1.5rem; right: 0; border-top: 1px solid var(--rule); }
-:root[data-layout="3"] .meta { grid-column: 3; grid-row: 1; } /* the stereo shares this cell, so the details need their place spelled out */
-:root[data-layout="3"].has-stereo .meta { max-height: calc(100vh - 7.5rem - var(--stereo-h, 0px)); }
+@media (min-width: 961px) {
+  :root[data-layout="3"] .meta { grid-column: 3; grid-row: 1; } /* the stereo shares this cell, so the details need their place spelled out */
+  :root[data-layout="3"].has-stereo .meta { max-height: calc(100vh - 7.5rem - var(--stereo-h, 0px)); }
+} /* three columns only: on phones and tablets the details sit below the note */
 @media (max-width: 960px) { :root[data-layout="3"] .stereo:not([hidden]) { display: none; } }
 .stereo h4 { margin: 0; font: 500 0.6875rem/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--label); }
 .st-deck > * { display: none; }
@@ -1708,6 +1710,7 @@ html.touring .tour-fab::after { display: none; }
 /* the dithered sun behind the homepage title (drawn by the script as --ht-sun) */
 :root[data-theme="halftone"] .hero { position: relative; isolation: isolate; }
 :root[data-theme="halftone"] .hero::before { content: ""; position: absolute; z-index: -1; top: -3.25rem; right: -1.5rem; width: 10rem; aspect-ratio: 1; background: var(--ht-sun, none) center / contain no-repeat; image-rendering: pixelated; pointer-events: none; }
+@media (max-width: 1023px) { :root[data-theme="halftone"] .hero::before { right: 0; } } /* tablets: keep the sun inside the page */
 @media (max-width: 720px) { :root[data-theme="halftone"] .hero::before { width: 4.25rem; top: 2.2rem; right: 0; } }
 /* footer: a checkered strip */
 :root[data-theme="halftone"] footer.colophon { border-top: 0; background: repeating-conic-gradient(var(--ht-ink) 0 25%, transparent 0 50%) 0 0 / 8px 8px repeat-x; padding-top: 1.6rem; }
@@ -1735,12 +1738,15 @@ html.touring .tour-fab::after { display: none; }
       else { var ed = JSON.parse(localStorage.getItem('ap-t-' + a.theme) || '{}') || {}; for (var e in ed) a[e] = ed[e]; }
     } catch (e) {}
     for (var k in a) root.setAttribute('data-' + k, a[k]);
+    // the phone nav style too, before first paint, or the page drops when the tab bar arrives
+    try { root.setAttribute('data-mnav', localStorage.getItem('ap-mnav') || 'tabs'); } catch (e) { root.setAttribute('data-mnav', 'tabs'); }
     // The phone browser bar takes the page colour of whatever theme is showing (and follows changes later).
     function bar() { var m = document.querySelector('meta[name="theme-color"]'), c = getComputedStyle(root).getPropertyValue('--paper').trim(); if (m && c) m.setAttribute('content', c); }
     bar(); new MutationObserver(bar).observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-palette'] });
   })();
   // Decide before first paint whether this visit gets the intro, so the page never flashes in first.
-  try { if (!localStorage.getItem('booted') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(function () { document.documentElement.classList.remove('intro', 'boot-out'); }, 4000); } } catch (e) {}
+  // A link straight to a note or page skips it: that visitor came to read.
+  try { if (!localStorage.getItem('booted') && (!location.hash || location.hash === '#index') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(function () { document.documentElement.classList.remove('intro', 'boot-out'); }, 4000); } } catch (e) {}
 </script>
 </head>
 <body>
@@ -1813,7 +1819,7 @@ html.touring .tour-fab::after { display: none; }
             <div class="hm-tip" id="hm-tip" hidden></div>
           </div>
           <ul class="hm-legend" id="hm-legend"></ul>
-          <figcaption class="hm-cap"><span><b>6</b> cities</span><span><b>3</b> continents</span><span><b>10h</b> between the first and last time zone</span></figcaption>
+          <figcaption class="hm-cap"><span><b>6</b> cities</span><span><b>3</b> continents</span><span><b id="hm-span">10h</b> between the first and last time zone</span></figcaption>
         </figure>
       </header>
       <h2>What I do</h2>
@@ -2453,7 +2459,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="label">Playground · Tool</p>
       <h1>Whiteboard</h1>
       <p class="lede">A hand-drawn whiteboard I built for thinking on a page, modelled on Excalidraw. It saves in this browser and opens Excalidraw files.</p>
-      <div class="wb" id="wb"><iframe id="wb-frame" title="Whiteboard" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe></div>
+      <div class="wb" id="wb"><iframe id="wb-frame" title="Whiteboard" allow="fullscreen; clipboard-read; clipboard-write"></iframe></div>
       <p class="sub wb-open"><a id="wb-open" href="/whiteboard/" target="_blank" rel="noopener">Open in its own tab ↗</a></p>
       <details class="sub wb-keys"><summary>Keyboard shortcuts</summary><p>Click the board first, then: V select · R rectangle · D diamond · O ellipse · A arrow · L line · P draw · T text · N sticky · E eraser · F frame · K laser · H or Space to pan · Ctrl/⌘ + / for every command · ? for all shortcuts.</p></details>
       <p class="wb-phone">The whiteboard is built for a computer screen. Open this page on a laptop or desktop to use it.</p>
@@ -2602,7 +2608,7 @@ html.touring .tour-fab::after { display: none; }
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
         <li><span class="t">Brew a cup</span><span class="tag t-tool">Feature</span><p>Click the cup on the coffee counter to brew one. Every hundredth cup of the year gets a puff of steam.</p></li>
-        <li><span class="t">A real 404</span><span class="tag t-page">Page</span><p>A wrong address now gets a terminal that says so, and guesses the page you meant.</p></li>
+        <li><span class="t">A real 404</span><span class="tag t-series">Page</span><p>A wrong address now gets a terminal that says so, and guesses the page you meant.</p></li>
         <li><span class="t">Achievements</span><span class="tag t-tool">Feature</span><p>Small badges for poking around. Search "achievements" to see what's left. They live only in your browser.</p></li>
         <li><span class="t">Live activity</span><span class="tag t-tool">Feature</span><p>The meetings heatmap on the homepage now updates itself from my calendar. Still counts only.</p></li>
         <li><span class="t">Dhaka right now</span><span class="tag t-tool">Feature</span><p>At the top of every page: the date and time in Dhaka, and the weather outside.</p></li>
@@ -4099,7 +4105,7 @@ html.touring .tour-fab::after { display: none; }
       if (!raw) return;
       hist.push(raw); hi = hist.length;
       var parts = raw.split(/\s+/), cmd = parts.shift().toLowerCase(), arg = parts.join(' ');
-      if (CMDS[cmd]) CMDS[cmd](arg, arg); else line(cmd + ': command not found. Type help.', 'r');
+      if (Object.prototype.hasOwnProperty.call(CMDS, cmd)) CMDS[cmd](arg, arg); else line(cmd + ': command not found. Type help.', 'r');
       ps.textContent = here() + ' $';
     }
     function open() {
@@ -4183,14 +4189,20 @@ html.touring .tour-fab::after { display: none; }
     var fmts = {};
     function fmtFor(z, k, o) { return fmts[k + z] || (fmts[k + z] = new Intl.DateTimeFormat(k === 'h' ? 'en-GB' : 'en-US', Object.assign({ timeZone: z }, o))); }
     function hm(z) { return fmtFor(z, 'h', { hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date()); }
-    function offset(z) {
+    function hours(z) {
       var d = new Date(), f = function (zz) { var p = fmtFor(zz, 'o', { hour12: false, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }).formatToParts(d), o = {}; p.forEach(function (x) { o[x.type] = x.value; }); return Date.UTC(o.year, o.month - 1, o.day, o.hour % 24, o.minute); };
-      var diff = Math.round((f(z) - f('Asia/Dhaka')) / 36e5 * 2) / 2;
+      return Math.round((f(z) - f('Asia/Dhaka')) / 36e5 * 2) / 2;
+    }
+    function offset(z) {
+      var diff = hours(z);
       return diff === 0 ? 'same time as Dhaka' : (diff > 0 ? '+' : '−') + Math.abs(diff) + 'h vs Dhaka';
     }
     function tick() {
       leg.querySelectorAll('[data-z]').forEach(function (e) { e.textContent = hm(e.getAttribute('data-z')); });
       leg.querySelectorAll('[data-off]').forEach(function (e) { e.textContent = offset(e.getAttribute('data-off')); });
+      // the caption's spread follows daylight saving: 10h most of the year, 11h in the northern winter
+      var hs = SITES.map(function (st) { return hours(st[5]); });
+      document.getElementById('hm-span').textContent = (Math.max.apply(null, hs) - Math.min.apply(null, hs)) + 'h';
     }
     setTimeout(tick, 0); setInterval(tick, 20000);
 
@@ -4863,7 +4875,7 @@ html.touring .tour-fab::after { display: none; }
       var l = window.achList(), n = l.filter(function (x) { return x.got; }).length;
       document.getElementById('ach-n').textContent = n + ' of ' + l.length;
       document.getElementById('ach-list').innerHTML = l.map(function (x) {
-        return '<li class="' + (x.got ? 'got' : '') + '"><i aria-hidden="true">' + (x.got ? '✓' : '·') + '</i><b>' + esc(x.name) + '</b><span>' + (x.got ? 'Unlocked' : esc(x.hint)) + '</span></li>';
+        return '<li class="' + (x.got ? 'got' : '') + '"><i aria-hidden="true">' + (x.got ? '✓' : '·') + '</i><b>' + esc(x.name) + '</b><span>' + (x.got ? 'Found' : esc(x.hint)) + '</span></li>';
       }).join('');
       if (!dlg.open) dlg.showModal();
     };

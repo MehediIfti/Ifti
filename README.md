@@ -6,6 +6,44 @@ Personal notebook site: notes, a monthly now page, work and bookshelf.
 
 Single static file (`index.html`), hosted on Vercel. `package.json` only holds packages for the server functions in `api/`.
 
+**What's live, what's next, what's waiting on me:** [ROADMAP.md](ROADMAP.md).
+
+## Start here
+
+```sh
+git clone https://github.com/MehediIfti/Ifti.git && cd Ifti
+npm install                 # only needed to run the api/ functions locally (node-ical)
+node scripts/check.mjs      # scripts parse, #links resolve, size under budget
+npx serve .                 # preview at localhost:3000 (any static server works)
+```
+
+- **Branch:** work on `main`. Vercel deploys `main` to the live site on every push; other branches get a preview link.
+- **Rules:** read `CLAUDE.md` (how a session works, "next issue") and `VOICE.md` (how every word reads) before changing anything.
+- **Live data offline:** a static server can't run `api/`, so the stereo, status, weather, F1 and heatmap fall back or stay hidden. Use `?player=demo` and `?status=free|busy` to preview the first two, or `vercel dev` to run the functions.
+
+**Server functions (`api/`):**
+
+| Endpoint | What it does | Cache |
+|---|---|---|
+| `/api/now-playing` | What I'm playing on Spotify | 20 s |
+| `/api/status` | Free or busy-until, from the work calendar | 2 min |
+| `/api/activity` | Meetings per day for 18 weeks (counts only) | 1 h |
+| `/api/f1` | Standings, Max's numbers, next race (Jolpica) | 6 h |
+| `/api/weather` | Dhaka temperature and sky (Open-Meteo) | 30 min |
+| `/api/ping` | Health check, used by the terminal's `ping` | none |
+| `/api/spotify-login`, `/api/spotify-callback` | One-time Spotify setup | none |
+
+`api/_calendar.js` is shared by status and activity; files starting with `_` aren't endpoints.
+
+**Vercel environment variables** (Project → Settings → Environment Variables; never in the page):
+
+| Name | For |
+|---|---|
+| `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` | The Spotify app |
+| `SPOTIFY_REFRESH_TOKEN` | Reading what I play |
+| `SPOTIFY_SETUP_KEY` | Only during Spotify setup; delete after |
+| `GOOGLE_ICS_URL` | Secret iCal address of the work calendar. Treat it like a password |
+
 ## Hosting
 
 - **Vercel** deploys `main` on every push; every other branch gets its own preview link. Setup lives in `vercel.json`.
@@ -58,7 +96,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 1. At developer.spotify.com/dashboard, create an app (any name). Redirect URI: `https://ifti-gold.vercel.app/api/spotify-callback`. API: Web API.
 2. In Vercel → Settings → Environment Variables, add `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` from that app, and `SPOTIFY_SETUP_KEY` set to any long random word. Redeploy.
 3. Open `https://ifti-gold.vercel.app/api/spotify-login?key=<that word>`, sign in to Spotify and agree. The page shows a refresh token.
-4. Add it in Vercel as `SPOTIFY_REFRESH_TOKEN`, delete `SPOTIFY_SETUP_KEY`, and redeploy. The deck appears on the Now page.
+4. Add it in Vercel as `SPOTIFY_REFRESH_TOKEN`, delete `SPOTIFY_SETUP_KEY`, and redeploy. The player appears on every page but the homepage.
 
 **Calendar status:** under my name in the left rail on every page (and next to it in the phone top bar): **Door's open · Book a call** when my calendar is free, **In a meeting · free at 3:30 pm** when it's busy, at any hour (there are no working hours). Times show in the visitor's own time zone. Back-to-back meetings count as one; all-day events, events marked Free, cancelled ones and ones I declined don't count. `api/status.js` reads my work calendar through its secret iCal address and passes on only free or busy-until; titles and details never reach the page. It uses one package, `node-ical` (in `package.json`; Vercel installs it). Hidden until connected; add `?status=free` or `busy` to the address to preview. To connect, once: in Google Calendar (work account) → Settings → my calendar → Integrate calendar, copy **Secret address in iCal format**, add it in Vercel as `GOOGLE_ICS_URL`, and redeploy. Treat that link like a password: anyone with it can read the whole calendar. If it ever leaks, reset it on the same page and paste the new one.
 
@@ -100,7 +138,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 - Homepage blocks below the fold use `content-visibility: auto`. Add new long homepage sections to that rule.
 - Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
 - No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.
-- **Size budget:** `scripts/check.mjs` fails if `index.html` goes over 115 KB gzipped (about 103 KB today). Raise `BUDGET` there on purpose, not to get a push through.
+- **Size budget:** `scripts/check.mjs` fails if `index.html` goes over 115 KB gzipped (about 111 KB today). Raise `BUDGET` there on purpose, not to get a push through.
 - **Favicon:** `favicon.svg` is the source (target-lock corners around a pixel "i", drawn on a 32px grid). `favicon.ico` (16, 32, 48) and `apple-touch-icon.png` (180) are rendered from it; re-render both if the SVG changes.
 
 **Whiteboard (Playground, key 6):** the app lives in its own repo, `MehediIfti/whiteboard`, deployed by its own Vercel project at `whiteboard-mu-two.vercel.app`. `vercel.json` passes `/whiteboard/` through to it, so the `#whiteboard` page loads it from the site's own address (`WB_URL` in the script) the first time the page opens, on computers only; phones see a short note instead. Change the tool in that repo, not here.

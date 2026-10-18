@@ -5,6 +5,7 @@
 - **Structure:** single file, `index.html`. The README lists every `UPDATE` block and how themes work.
 - **Location:** Dhaka everywhere.
 - **Notes from podcasts, videos and books:** summarise what was said, attributed to the speakers. Do not add a "What I'm taking into client work" section or tie the note back to client work unless Ifti asks for it. Not everything he listens to is about work.
+- **Roadmap:** [ROADMAP.md](ROADMAP.md) lists what's live, next and waiting on Ifti. When you ship or open an issue, update it in the same commit.
 - **Changelog:** when a change adds a page, a note, a feature or a redesign, add one entry to the `CHANGELOG UPDATE` block in the same commit. Skip copy edits, fixes and small tweaks.
 
 ## Daily routine: "next issue"

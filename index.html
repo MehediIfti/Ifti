@@ -9,6 +9,20 @@
 <meta name="theme-color" content="#0b0c0f">
 <!-- SHARE PREVIEW: swap SITE to the custom domain once it's connected -->
 <link rel="canonical" href="https://mehediifti.github.io/Ifti/">
+<script>
+  // HOSTING: the site runs on Vercel. Set LIVE to its address (e.g. "https://ifti.vercel.app/") and the
+  // old GitHub Pages address forwards there, keeping the #page. Empty means both addresses serve the site.
+  (function () {
+    var LIVE = '';
+    var h = location.hostname;
+    if (LIVE && /github\.io$/.test(h)) location.replace(LIVE + location.hash);
+    // Vercel Web Analytics: page views only, no cookies. The script exists only on Vercel.
+    if (/vercel\.app$/.test(h) || (LIVE && h === new URL(LIVE).hostname)) {
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      var s = document.createElement('script'); s.defer = true; s.src = '/_vercel/insights/script.js'; document.head.appendChild(s);
+    }
+  })();
+</script>
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="Ifti's Notebook">
 <meta property="og:title" content="Mehedi Hasan Ifti · Sales &amp; partnerships">
@@ -2316,7 +2330,7 @@ html.touring .tour-fab::after { display: none; }
 
   <aside class="meta" id="meta" aria-label="Page details"></aside>
 
-  <footer class="colophon">Built by talking it through with Claude Code. <a href="#changelog">See every change</a>. No tracking, no cookies.</footer>
+  <footer class="colophon">Built by talking it through with Claude Code. <a href="#changelog">See every change</a>. No cookies.</footer>
 </div>
 
 <nav class="m-tabs" aria-label="Sections">

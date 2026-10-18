@@ -4,7 +4,15 @@ Personal notebook site: notes, a monthly now page, work and bookshelf.
 
 **Live:** https://mehediifti.github.io/Ifti/
 
-Single static file (`index.html`), served with GitHub Pages.
+Single static file (`index.html`), hosted on Vercel (moving from GitHub Pages).
+
+## Hosting
+
+- **Vercel** deploys `main` on every push; every other branch gets its own preview link. Setup lives in `vercel.json`.
+- **Whiteboard:** `/whiteboard/` is passed through to the whiteboard repo on GitHub Pages, so it loads from the same address as the site.
+- **Server functions** live in `api/` (e.g. `/api/ping`). API keys go in Vercel → Project → Settings → Environment Variables, never in the page.
+- **Analytics:** Vercel Web Analytics, page views only, no cookies. It loads only on Vercel.
+- **Old address:** set `LIVE` in the `HOSTING` block at the top of `index.html` to the Vercel address and GitHub Pages forwards visitors there, keeping the `#page`.
 
 ## How we work
 

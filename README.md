@@ -2,9 +2,9 @@
 
 Personal notebook site: notes, a monthly now page, work and bookshelf.
 
-**Live:** https://mehediifti.github.io/Ifti/
+**Live:** https://ifti-gold.vercel.app/ (the old address, mehediifti.github.io/Ifti, forwards here)
 
-Single static file (`index.html`), hosted on Vercel (moving from GitHub Pages).
+Single static file (`index.html`), hosted on Vercel.
 
 ## Hosting
 

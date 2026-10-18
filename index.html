@@ -857,6 +857,11 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 :root[data-layout="3"] .act-inline { display: none; }
 @media (max-width: 960px) { :root[data-layout="3"] .act-inline { display: block; } }
 
+/* Reading progress (app.js, READING PROGRESS): a fixed line along the top on notes, so nothing on the page moves. */
+.readbar { position: fixed; left: 0; right: 0; top: var(--rb-top, 0px); z-index: 30; height: 3px; pointer-events: none; }
+.readbar i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(var(--rb, 0)); }
+.readbar span { position: absolute; top: 7px; right: var(--rb-right, 16px); padding: 0.1rem 0.45rem; border: 1px solid var(--surface0); border-radius: 999px; background: var(--paper); font: 0.6875rem/1.5 var(--mono); color: var(--subtext0); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.readbar span:empty { display: none; }
 /* mobile navigation experiments: tabs (bottom bar) · sheet (full-screen index) · classic */
 .m-top, .m-tabs, .m-sheet { display: none; }
 .page h2[id] { scroll-margin-top: 5rem; }
@@ -1327,7 +1332,7 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
   body::before, body::after, main::before, main::after { display: none !important; }
   * { box-shadow: none !important; text-shadow: none !important; animation: none !important; transition: none !important; }
   .rail, .meta, .m-top, .m-tabs, .m-sheet, .ap-tab, .ap-panel, .term-fab, .term, .peek, .page-next, .note-next, .sec-grip, .drop-line, .share-pop, .tour, dialog,
-  footer.colophon, .no-print, .cof, .tour-fab, .obs-tabs, .obs-nav, .obs-status, .obs-menu, .hx-map, .radar, .we, .tg, .hm-loop, .wb, .wb-open, iframe, form, .suggest-d, .sub-box, .cta, .pg-links, .shelf-dir, .log-more, .r-src, .edu-more, .copy, .tour-start { display: none !important; }
+  footer.colophon, .no-print, .readbar, .cof, .tour-fab, .obs-tabs, .obs-nav, .obs-status, .obs-menu, .hx-map, .radar, .we, .tg, .hm-loop, .wb, .wb-open, iframe, form, .suggest-d, .sub-box, .cta, .pg-links, .shelf-dir, .log-more, .r-src, .edu-more, .copy, .tour-start { display: none !important; }
   .shell { display: block !important; max-width: none !important; padding: 0 !important; margin: 0 !important; }
   main { display: block !important; padding: 0 !important; }
   .page:not(.on) { display: none !important; }
@@ -2620,6 +2625,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Reading progress</span><span class="tag t-tool">Feature</span><p>On any note, a thin line across the top fills as you read, and a small counter shows the minutes left.</p></li>
         <li><span class="t">Music, live</span><span class="tag t-tool">Feature</span><p>Music under Off the clock now opens the stereo: what I'm playing on Spotify right now, and the three songs before it.</p></li>
         <li><span class="t">Brew a cup</span><span class="tag t-tool">Feature</span><p>Click the cup on the coffee counter to brew one. Every hundredth cup of the year gets a puff of steam.</p></li>
         <li><span class="t">A real 404</span><span class="tag t-series">Page</span><p>A wrong address now gets a terminal that says so, and guesses the page you meant.</p></li>

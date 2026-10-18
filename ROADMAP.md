@@ -44,6 +44,7 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] Share cards from selected quotes, Tour, Print (Work prints as a CV)
 - [x] Move things around: drag the Theme tab, Terminal, sections and rail links
 - [x] Coffee counter, Book a call, hover previews
+- [x] Brew a cup: click the coffee cup, your cups saved in your browser ([#1](https://github.com/MehediIfti/Ifti/issues/1))
 - [x] Both emails wherever the site shares one: personal and work (mehedi.ifti@musemind.agency)
 
 ### Under the hood
@@ -54,7 +55,6 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 ## Next (ready to build)
 Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 
-- [ ] [#1](https://github.com/MehediIfti/Ifti/issues/1) Coffee: click the cup to brew · 20-min
 - [ ] [#9](https://github.com/MehediIfti/Ifti/issues/9) Reading progress on notes · 20-min
 - [ ] [#11](https://github.com/MehediIfti/Ifti/issues/11) Stat share cards · 20-min
 - [ ] [#12](https://github.com/MehediIfti/Ifti/issues/12) Map game: find Dhaka · 20-min

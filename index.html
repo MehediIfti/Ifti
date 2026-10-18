@@ -1497,14 +1497,30 @@ main > .here { display: none; } /* until the router puts it on a page */
 .term-fab kbd { font: inherit; font-size: 0.6875rem; color: var(--muted); background: var(--surface0); border-radius: 3px; padding: 0 0.3rem; }
 /* Coffee counter: sits on top of the Terminal button */
 .cof { position: fixed; z-index: 29; width: max-content; white-space: nowrap; left: calc(env(safe-area-inset-left, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 56px); }
-.cof-pill { display: inline-flex; align-items: center; gap: 0.45rem; height: 32px; padding: 0 0.7rem 0 0.55rem; font: 500 0.75rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s; }
-.cof-pill:hover, .cof-pill:focus-visible, .cof.open .cof-pill { border-color: var(--label); outline: none; }
+.cof-pill { display: inline-flex; align-items: stretch; height: 32px; font: 500 0.75rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); transition: border-color 0.15s; }
+.cof-pill:hover, .cof-pill:focus-within, .cof.open .cof-pill { border-color: var(--label); }
+/* two buttons in one pill: the cup brews, the count opens the card */
+.cof-pill button { display: inline-flex; align-items: center; gap: 0.45rem; margin: 0; padding: 0; font: inherit; color: inherit; background: none; border: 0; border-radius: 7px; cursor: pointer; }
+.cof-pill button:focus-visible { outline: 1px solid var(--label); outline-offset: -3px; }
+.cof-brew { padding: 0 0.3rem 0 0.55rem !important; }
+.cof-open { padding: 0 0.7rem 0 0.15rem !important; }
 .cof-pill .cof-cup { color: var(--peach); flex: none; }
 .cof-pill b { font-weight: 600; font-variant-numeric: tabular-nums; }
 .cof-pill span { color: var(--muted); }
 .cof-steam { animation: cof-steam 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
 @keyframes cof-steam { 0%, 100% { opacity: 0.25; transform: translateY(1px); } 50% { opacity: 1; transform: translateY(-1px); } }
-@media (prefers-reduced-motion: reduce) { .cof-steam { animation: none; } }
+/* a brew: the cup fills from the bottom, the steam rises fast, then it all settles back */
+.cof-fillup { fill: currentColor; opacity: 0.45; transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(0); }
+.cof-brew:hover .cof-cup { transform: translateY(-1px); }
+.cof-cup { transition: transform 0.15s; }
+.cof-brew.brewing .cof-fillup { animation: cof-fill 1.6s ease-in-out; }
+.cof-brew.brewing .cof-steam { animation: cof-rise 0.8s ease-out 2; }
+@keyframes cof-fill { 0% { transform: scaleY(0); } 45%, 75% { transform: scaleY(1); } 100% { transform: scaleY(0); opacity: 0; } }
+.cof-cup { overflow: visible; }
+.cof-brew.burst .cof-steam { animation: cof-burst 0.7s ease-out 3; }
+@keyframes cof-burst { 0% { opacity: 0; transform: translateY(2px) scale(1); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(-6px) scale(1.8); } }
+@keyframes cof-rise { 0% { opacity: 0; transform: translateY(2px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .cof-steam, .cof-brew.brewing .cof-steam, .cof-brew.brewing .cof-fillup, .cof-brew.burst .cof-steam { animation: none; } .cof-cup { transition: none; } }
 .cof-card { position: absolute; left: 0; bottom: calc(100% + 8px); width: 17rem; white-space: normal; padding: 0.85rem 0.95rem; display: grid; gap: 0.55rem; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.4); opacity: 0; transform: translateY(4px); pointer-events: none; transition: opacity 0.14s, transform 0.14s; }
 .cof.below .cof-card { bottom: auto; top: calc(100% + 8px); }
 .cof.right .cof-card { left: auto; right: 0; }
@@ -2585,6 +2601,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Brew a cup</span><span class="tag t-tool">Feature</span><p>Click the cup on the coffee counter to brew one. Every hundredth cup of the year gets a puff of steam.</p></li>
         <li><span class="t">A real 404</span><span class="tag t-page">Page</span><p>A wrong address now gets a terminal that says so, and guesses the page you meant.</p></li>
         <li><span class="t">Achievements</span><span class="tag t-tool">Feature</span><p>Small badges for poking around. Search "achievements" to see what's left. They live only in your browser.</p></li>
         <li><span class="t">Live activity</span><span class="tag t-tool">Feature</span><p>The meetings heatmap on the homepage now updates itself from my calendar. Still counts only.</p></li>
@@ -2747,15 +2764,20 @@ html.touring .tour-fab::after { display: none; }
 <div class="pop" id="pop" hidden><div class="pop-card" role="dialog" aria-modal="true" aria-labelledby="pop-t"><button type="button" class="ap-x" id="pop-x" aria-label="Close">×</button><div id="pop-body"></div></div></div>
 <div class="peek" id="peek" aria-hidden="true"></div>
 <div class="cof" id="cof">
-  <button type="button" class="cof-pill" id="cof-pill" aria-expanded="false" aria-controls="cof-card" aria-label="Coffee this year">
-    <svg class="cof-cup" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path class="cof-steam" d="M9 2.5c-.8 1 .8 1.8 0 3M13 2.5c-.8 1 .8 1.8 0 3"/><path d="M4.5 8.5h12v5.5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M16.5 10h1.2a2.3 2.3 0 0 1 0 4.6h-1.4"/><path d="M4 21.5h13"/></g></svg>
-    <b id="cof-n">0</b><span id="cof-l">cups in 2026</span>
-  </button>
+  <div class="cof-pill">
+    <button type="button" class="cof-brew" id="cof-brew" aria-label="Brew a cup" title="Brew a cup">
+      <svg class="cof-cup" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><clipPath id="cof-clip"><path d="M4.5 8.5h12v5.5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/></clipPath><rect class="cof-fillup" x="4.5" y="8.5" width="12" height="10.5" clip-path="url(#cof-clip)"/><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path class="cof-steam" d="M9 2.5c-.8 1 .8 1.8 0 3M13 2.5c-.8 1 .8 1.8 0 3"/><path d="M4.5 8.5h12v5.5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M16.5 10h1.2a2.3 2.3 0 0 1 0 4.6h-1.4"/><path d="M4 21.5h13"/></g></svg>
+    </button>
+    <button type="button" class="cof-open" id="cof-pill" aria-expanded="false" aria-controls="cof-card" aria-label="Coffee this year">
+      <b id="cof-n">0</b><span id="cof-l">cups in 2026</span>
+    </button>
+  </div>
   <div class="cof-card" id="cof-card" role="tooltip">
     <small>Coffee counter</small>
     <p><b id="cof-big">0</b> cups of black Americano this year.</p>
     <div class="cof-bar" aria-hidden="true"><i id="cof-fill"></i></div>
-    <dl><dt>Workdays</dt><dd id="cof-wd">0 of 0</dd><dt>Today</dt><dd id="cof-today">–</dd></dl>
+    <dl><dt>Workdays</dt><dd id="cof-wd">0 of 0</dd><dt>Today</dt><dd id="cof-today">–</dd><dt>You brewed</dt><dd id="cof-you">0</dd></dl>
+    <p class="cof-fine" id="cof-say" role="status" aria-live="polite">Click the cup to brew one.</p>
   </div>
 </div>
 <button type="button" class="tour-fab tour-start" aria-label="Take the tour" data-tip="Take the tour"><svg viewBox="0 0 64 64" width="18" height="18" aria-hidden="true"><path d="M32 12v13M32 39v13M12 32h13M39 32h13" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="32" r="4.5" style="fill: var(--green)"/></svg></button>
@@ -4889,9 +4911,11 @@ html.touring .tour-fab::after { display: none; }
       var todayCups = isWork ? Math.round(CUPS_PER_DAY * Math.max(0, Math.min(1, (t.h - 9) / 9))) : 0;
       return { y: t.y, cups: Math.round(sofar * CUPS_PER_DAY + todayCups), sofar: sofar, total: total, isWork: isWork, today: todayCups };
     }
-    window.coffeeNow = numbers;
+    // Cups brewed on this visit tick the count up; a reload puts it back.
+    var session = 0;
+    window.coffeeNow = function () { var n = numbers(); n.cups += session; return n; };
     function count() {
-      var n = numbers(), t = { y: n.y }, cups = n.cups, sofar = n.sofar, total = n.total, isWork = n.isWork, todayCups = n.today;
+      var n = window.coffeeNow(), t = { y: n.y }, cups = n.cups, sofar = n.sofar, total = n.total, isWork = n.isWork, todayCups = n.today;
       document.getElementById('cof-n').textContent = cups.toLocaleString('en-US');
       document.getElementById('cof-l').textContent = 'cups in ' + t.y;
       document.getElementById('cof-big').textContent = cups.toLocaleString('en-US');
@@ -4900,11 +4924,41 @@ html.touring .tour-fab::after { display: none; }
       document.getElementById('cof-fill').style.width = Math.round((sofar + (isWork ? 1 : 0)) / total * 100) + '%';
       pill.setAttribute('aria-label', cups + ' cups of coffee in ' + t.y + '. Show details');
       if (window.placeTourBtn) placeTourBtn();
+      milestone(cups);
     }
     pill.addEventListener('click', function () { var o = !box.classList.contains('open'); box.classList.toggle('open', o); pill.setAttribute('aria-expanded', String(o)); });
     document.addEventListener('click', function (e) { if (!box.contains(e.target)) { box.classList.remove('open'); pill.setAttribute('aria-expanded', 'false'); } });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') box.classList.remove('open'); });
     count(); setInterval(count, 10 * 60 * 1000);
+
+    // Click the cup to brew. A visitor's cups are theirs: saved only in this browser, never added to my count.
+    var brew = document.getElementById('cof-brew'), say = document.getElementById('cof-say'), you = document.getElementById('cof-you');
+    function day() { var t = dhakaToday(); return t.y + '-' + t.m + '-' + t.d; }
+    function load() { var v; try { v = JSON.parse(localStorage.getItem('cof-brew') || 'null'); } catch (e) {} v = v || { d: '', today: 0, all: 0 }; if (v.d !== day()) { v.d = day(); v.today = 0; } return v; }
+    function nth(n) { var t = n % 100, e = n % 10; return n + (t > 10 && t < 14 ? 'th' : e === 1 ? 'st' : e === 2 ? 'nd' : e === 3 ? 'rd' : 'th'); }
+    // Every 100th cup this year gets one steam burst, the first time this browser sees it.
+    function milestone(cups) {
+      var m = Math.floor(cups / 100) * 100, k = dhakaToday().y + ':' + m, seen;
+      if (!brew || !m || !box.offsetHeight || document.documentElement.classList.contains('intro')) return;
+      try { seen = localStorage.getItem('cof-burst'); } catch (e) { return; }
+      if (seen === k) return;
+      try { localStorage.setItem('cof-burst', k); } catch (e) {}
+      say.textContent = 'Cup ' + m.toLocaleString('en-US') + ' this year.';
+      brew.classList.remove('burst'); void brew.offsetWidth; brew.classList.add('burst');
+    }
+    function show(v) { you.textContent = v.all ? v.today + ' today · ' + v.all.toLocaleString('en-US') + ' in all' : '0'; }
+    show(load());
+    brew.addEventListener('click', function () {
+      var v = load(); v.today++; v.all++; session++;
+      try { localStorage.setItem('cof-brew', JSON.stringify(v)); } catch (e) {}
+      show(v);
+      say.textContent = v.today === 1 ? 'Brewed. Your first today.' : 'Brewed. That\'s your ' + nth(v.today) + ' today.';
+      brew.classList.remove('brewing'); void brew.offsetWidth; brew.classList.add('brewing');
+      count();
+    });
+    brew.addEventListener('animationend', function (e) { if (e.animationName === 'cof-fill') brew.classList.remove('brewing'); if (e.animationName === 'cof-burst') brew.classList.remove('burst'); });
+    // check for a burst now that the cup is wired up, or once the intro (which hides the pill) is gone
+    setTimeout(count, document.documentElement.classList.contains('intro') ? 4200 : 0);
   })();
 
   // MOVE THINGS AROUND (computer only).

@@ -53,7 +53,8 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 <script>
   // Show the address they tried, and guess the page they meant: the site's pages live after a #, so /notes is /#notes.
   (function () {
-    var path = decodeURIComponent(location.pathname).replace(/^\/+|\/+$/g, '');
+    var path = location.pathname; try { path = decodeURIComponent(path); } catch (e) {} // a broken %-code: show it as typed
+    path = path.replace(/^\/+|\/+$/g, '');
     document.getElementById('path').textContent = path || '/';
     var PAGES = ['index', 'now', 'notes', 'work', 'shelf', 'whiteboard', 'paperclip', 'hermes', 'research', 'education', 'changelog'];
     var last = path.split('/').pop().toLowerCase(), note = path.match(/n[-\/]?0*(\d{1,3})$/i), go = null;

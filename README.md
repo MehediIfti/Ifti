@@ -14,6 +14,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 git clone https://github.com/MehediIfti/Ifti.git && cd Ifti
 npm install                 # only needed to run the api/ functions locally (node-ical)
 node scripts/check.mjs      # scripts parse, #links resolve, size under budget
+node scripts/check-layout.mjs  # every page at 390, 700, 820, 1440 px: column wide enough, no sideways scroll (needs Playwright)
 npx serve .                 # preview at localhost:3000 (any static server works)
 ```
 
@@ -58,6 +59,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 - **Labels:** `fun`, `feature`, `design`, `content`, `chore`, `bug` say what it is. `20-min` / `2x20-min` say how long. `needs-info` waits on a fact or decision from me; `needs-backend` waits on a small server.
 - **Daily 20 minutes:** I open a session and say "next issue". The rules are in `CLAUDE.md`.
 - **Safety check:** every push runs `scripts/check.mjs` (GitHub Actions): the scripts must parse, every `#link` must point somewhere, and the page must stay under its size budget. Run it locally with `node scripts/check.mjs`.
+- **Layout check:** `scripts/check-layout.mjs` opens every page in four themes at 390, 700, 820 and 1440 px and fails if the reading column is under 300 px, the page scrolls sideways, or a script throws. It needs Playwright, so it runs locally, not on push. Without Playwright in `node_modules`, set `PLAYWRIGHT=/path/to/playwright`. A squashed column throws no error, so `check.mjs` can't catch it.
 - **New ideas:** use the Idea or Bug template on the New issue page.
 
 **Voice:** all copy follows [VOICE.md](VOICE.md): plain words, the claim first, strong but true, facts only. Read it before adding a page, a note or a button. `CLAUDE.md` points Claude Code at it automatically.
@@ -138,7 +140,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 - Homepage blocks below the fold use `content-visibility: auto`. Add new long homepage sections to that rule.
 - Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
 - No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.
-- **Size budget:** `scripts/check.mjs` fails if `index.html` goes over 115 KB gzipped (about 111 KB today). Raise `BUDGET` there on purpose, not to get a push through.
+- **Size budget:** `scripts/check.mjs` fails if `index.html` goes over 115 KB gzipped (about 112.6 KB today). Raise `BUDGET` there on purpose, not to get a push through.
 - **Favicon:** `favicon.svg` is the source (target-lock corners around a pixel "i", drawn on a 32px grid). `favicon.ico` (16, 32, 48) and `apple-touch-icon.png` (180) are rendered from it; re-render both if the SVG changes.
 
 **Whiteboard (Playground, key 6):** the app lives in its own repo, `MehediIfti/whiteboard`, deployed by its own Vercel project at `whiteboard-mu-two.vercel.app`. `vercel.json` passes `/whiteboard/` through to it, so the `#whiteboard` page loads it from the site's own address (`WB_URL` in the script) the first time the page opens, on computers only; phones see a short note instead. Change the tool in that repo, not here.

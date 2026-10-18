@@ -29,6 +29,7 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 
 ### Live data (Vercel functions in `api/`)
 - [x] On the stereo: Spotify now playing, turntable or cassette, compact player on phones ([#22](https://github.com/MehediIfti/Ifti/issues/22))
+- [x] Music under Off the clock opens the stereo: playing now, and the last three songs
 - [x] Door's open: free or in a meeting, from the work calendar, under my name ([#23](https://github.com/MehediIfti/Ifti/issues/23))
 - [x] Live activity: the meetings heatmap counts itself from the calendar
 - [x] Live F1 numbers from Jolpica, next race in the visitor's time

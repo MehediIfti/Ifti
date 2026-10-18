@@ -1155,6 +1155,18 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .pop-list { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.35rem; color: var(--text); }
 .pop-list li::marker { color: var(--h2); }
 .pop-foot { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
+#pop-music .stereo:not([hidden]) { display: grid; grid-template-columns: 11rem minmax(0, 1fr); align-content: center; gap: 0.55rem 1rem; position: static; grid-column: auto; grid-row: auto; border: 0; padding: 0; background: none; font: 0.75rem/1.5 var(--mono); color: var(--subtext0); }
+#pop-music .stereo::before { content: none; }
+#pop-music { display: grid; gap: 1.1rem; }
+#pop-music .st-deck { grid-row: 1 / span 3; align-self: center; }
+#pop-music .st-meta b { font-size: 1.05rem; } #pop-music .stereo[data-deck="cassette"] .st-meta { display: grid; }
+@media (max-width: 480px) { #pop-music .stereo:not([hidden]) { grid-template-columns: minmax(0, 1fr); } #pop-music .st-deck { grid-row: auto; width: min(13rem, 100%); } }
+.pop-recent { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--surface0); }
+.pop-recent li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; padding: 0.45rem 0; border-bottom: 1px solid var(--surface0); }
+.pop-recent li > span { display: grid; min-width: 0; }
+.pop-recent a, .pop-recent li > span { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pop-recent small { font-size: 0.85em; color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+.pop-recent time { flex: none; font: 0.6875rem var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 @media (max-width: 560px) { .pop-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } .pop { place-items: end center; padding: 8px; } .pop-card { max-height: 85vh; } }
 
 /* ============ hover previews on internal links ============ */
@@ -2607,6 +2619,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Music, live</span><span class="tag t-tool">Feature</span><p>Music under Off the clock now opens the stereo: what I'm playing on Spotify right now, and the three songs before it.</p></li>
         <li><span class="t">Brew a cup</span><span class="tag t-tool">Feature</span><p>Click the cup on the coffee counter to brew one. Every hundredth cup of the year gets a puff of steam.</p></li>
         <li><span class="t">A real 404</span><span class="tag t-series">Page</span><p>A wrong address now gets a terminal that says so, and guesses the page you meant.</p></li>
         <li><span class="t">Achievements</span><span class="tag t-tool">Feature</span><p>Small badges for poking around. Search "achievements" to see what's left. They live only in your browser.</p></li>
@@ -3843,8 +3856,9 @@ html.touring .tour-fab::after { display: none; }
         '<p class="pop-foot">Career figures as of the ' + esc(F1.asOf) + '. <a href="https://www.formula1.com/en/results/2026/drivers" target="_blank" rel="noopener">Live standings ↗</a></p>';
     },
     music: function () {
-      return '<p class="pop-k">Music</p><h3 id="pop-t">On repeat</h3><ul class="pop-list"><li>Linkin Park</li><li>The Weeknd</li></ul>' +
-        '<p><a href="https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka" target="_blank" rel="noopener">My Spotify ↗</a></p>';
+      setTimeout(musicLoad, 0);
+      return '<p class="pop-k">Music · Spotify</p><h3 id="pop-t">On the stereo</h3><div id="pop-music"><p class="muted">Asking Spotify…</p></div>' +
+        '<p class="pop-foot"><a href="https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka" target="_blank" rel="noopener">My Spotify ↗</a></p>';
     },
     podcasts: function () {
       return '<p class="pop-k">Podcasts</p><h3 id="pop-t">In my ears right now</h3><p><b>Huge Conversations</b> · Cleo Abram. Alexandr Wang on Muse, Meta\'s personal agent.</p>' +
@@ -3864,12 +3878,57 @@ html.touring .tour-fab::after { display: none; }
         '<div><p class="pop-k" style="margin-bottom:.4rem">Coffee in Dhaka</p><p>Nerdy Bean Coffee House, Brewers Den or Arabika Coffee.</p></div>';
     }
   };
+  // MUSIC POP-UP: the stereo's turntable or cassette with what I'm playing now, and the last three songs before it.
+  // Same answer as the stereo (api/now-playing.js); it asks again every 30 seconds while open.
+  var MU = { d: null, at: 0, poll: 0, tick: 0 };
+  function musicStop() { clearInterval(MU.poll); clearInterval(MU.tick); MU.poll = MU.tick = 0; }
+  function musicLoad() {
+    if (!document.getElementById('pop-music')) return musicStop();
+    if (!MU.poll) { MU.poll = setInterval(musicLoad, 30000); MU.tick = setInterval(musicTick, 1000); }
+    fetch('/api/now-playing').then(function (r) { return r.json(); }).then(musicShow, function () { musicShow(null); });
+  }
+  function musicShow(d) {
+    var box = document.getElementById('pop-music'); if (!box) return musicStop();
+    if (!d || !d.configured || !d.title) {
+      box.innerHTML = '<p>' + (d && d.configured && !d.error ? 'Nothing played lately.' : 'Couldn\'t reach Spotify. Try again in a minute, or open my Spotify.') + '</p>';
+      MU.d = null; return;
+    }
+    MU.d = d; MU.at = Date.now();
+    // a copy of the stereo itself, so the two always look the same
+    var st = ST.el.cloneNode(true), q = function (sel, fn) { st.querySelectorAll(sel).forEach(fn); };
+    st.removeAttribute('id'); st.hidden = false; st.className = 'stereo pop-st'; st.setAttribute('data-state', d.playing ? 'live' : 'last');
+    q('h4, [id]', function (x) { if (x.tagName === 'H4') x.remove(); else x.removeAttribute('id'); });
+    q('.st-st', function (t) { t.textContent = d.playing ? 'On air' : d.playedAt ? 'Last played' : 'Paused'; });
+    q('.st-title', function (t) { t.textContent = t.title = d.title; });
+    q('.st-artist', function (t) { t.textContent = d.artist || (d.kind === 'episode' ? 'Podcast' : ''); });
+    q('.st-art', function (img) { img.hidden = !d.art; if (d.art) img.src = d.art; });
+    q('.st-open', function (a) { a.hidden = !d.url; if (d.url) a.href = d.url; });
+    box.innerHTML = (d.recent || []).length ? '<div><p class="pop-k" style="margin-bottom:.4rem">' + (d.playing ? 'Before this' : 'Before that') + '</p><ol class="pop-recent">' +
+      d.recent.slice(0, 3).map(function (t) { return '<li><span>' + (/^https:\/\//.test(t.url) ? '<a href="' + esc(t.url) + '" target="_blank" rel="noopener">' + esc(t.title) + '</a>' : esc(t.title)) + '<small>' + esc(t.artist) + '</small></span><time>' + stAgo(t.playedAt) + '</time></li>'; }).join('') + '</ol></div>' : '';
+    box.insertBefore(st, box.firstChild);
+    musicTick();
+  }
+  function musicTick() {
+    var d = MU.d, c = document.querySelector('#pop-music .st-clock'); if (!d || !c) return;
+    var p = d.playing ? Math.min(d.duration, d.progress + (Date.now() - MU.at)) : d.playedAt ? d.duration : (d.progress || 0), f = d.duration ? p / d.duration : 0;
+    c.textContent = !d.playing && d.playedAt ? stAgo(d.playedAt) : stTime(p) + ' / ' + stTime(d.duration);
+    var reels = document.querySelectorAll('#pop-music .cas-reel');
+    if (reels.length) { reels[0].style.setProperty('--tape', (1 + 6 * (1 - f)).toFixed(1) + 'px'); reels[1].style.setProperty('--tape', (1 + 6 * f).toFixed(1) + 'px'); }
+    if (d.playing && p >= d.duration && Date.now() - MU.at > 3000) { MU.at = Date.now(); setTimeout(musicLoad, 1500); } // song ended: ask again
+  }
+  document.getElementById('pop-body').addEventListener('click', function (e) {
+    var b = e.target.closest('#pop-music .st-pick button'); if (!b) return;
+    var name = b.getAttribute('data-deck');
+    b.closest('.pop-st').setAttribute('data-deck', name);
+    b.parentNode.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    stDeck(name); try { localStorage.setItem('st-deck', name); } catch (err) {} // the stereo on other pages follows
+  });
   var pop = document.getElementById('pop'), popBody = document.getElementById('pop-body'), popFrom = null;
   function popOpen(k) {
-    popFrom = document.activeElement; popBody.innerHTML = POPS[k](); pop.hidden = false;
+    musicStop(); popFrom = document.activeElement; popBody.innerHTML = POPS[k](); pop.hidden = false;
     document.documentElement.style.overflow = 'hidden'; document.getElementById('pop-x').focus();
   }
-  function popClose() { if (pop.hidden) return; pop.hidden = true; document.documentElement.style.overflow = ''; if (popFrom) popFrom.focus(); }
+  function popClose() { if (pop.hidden) return; musicStop(); pop.hidden = true; document.documentElement.style.overflow = ''; if (popFrom) popFrom.focus(); }
   document.querySelectorAll('.offclock [data-pop]').forEach(function (li) {
     li.addEventListener('click', function (e) { if (!e.target.closest('a')) popOpen(li.getAttribute('data-pop')); });
     li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); popOpen(li.getAttribute('data-pop')); } });

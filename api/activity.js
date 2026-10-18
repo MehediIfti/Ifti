@@ -17,12 +17,33 @@ function counts(data, now) {
   return { from: new Date(from + DHAKA).toISOString().slice(0, 10), counts: c };
 }
 
+// TEMPORARY diagnostic: counts and rule shapes only, never titles, people or descriptions.
+function diag(data) {
+  const ical = require('node-ical');
+  const evs = Object.values(data).filter(x => x.type === 'VEVENT');
+  const from = new Date(Date.parse('2026-10-11T00:00:00+06:00')), to = new Date(Date.parse('2026-10-17T00:00:00+06:00'));
+  const starts = evs.filter(e => e.start).map(e => +e.start).sort((a, b) => a - b);
+  const rec = evs.filter(e => e.rrule), out = { events: evs.length, recurring: rec.length, withRecurrences: evs.filter(e => e.recurrences).length,
+    firstStart: starts.length ? new Date(starts[0]).toISOString() : null, lastStart: starts.length ? new Date(starts[starts.length - 1]).toISOString() : null,
+    byMonth: {}, recurringInWeek: [] };
+  for (const t of starts) { const k = new Date(t).toISOString().slice(0, 7); out.byMonth[k] = (out.byMonth[k] || 0) + 1; }
+  for (const e of rec) {
+    let n, err = null; try { n = ical.expandRecurringEvent(e, { from, to, expandOngoing: true }).length; } catch (x) { err = String(x && x.message || x).slice(0, 120); }
+    const rule = String(e.rrule && (e.rrule.toString ? e.rrule.toString() : e.rrule)).replace(/UNTIL=[^;\n]+/, 'UNTIL=…').replace(/DTSTART[^\n]*\n?/, '');
+    if (err || n === 0 && /WEEKLY|DAILY/.test(rule)) out.recurringInWeek.push({ rule: rule.slice(0, 90), start: e.start && new Date(+e.start).toISOString(), tz: e.start && e.start.tz || null, n, err, status: e.status || null, transp: e.transparency || null });
+  }
+  out.recurringInWeek = out.recurringInWeek.slice(0, 25);
+  return out;
+}
+
 module.exports = async function handler(req, res) {
   const url = process.env.GOOGLE_ICS_URL;
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
   if (!url) return res.status(200).json({ configured: false });
   try {
-    return res.status(200).json(Object.assign({ configured: true }, counts(await readCalendar(url), Date.now())));
+    const data = await readCalendar(url);
+    if (req.query && req.query.diag === '1') { res.setHeader('Cache-Control', 'no-store'); return res.status(200).json(diag(data)); } // TEMPORARY: numbers only
+    return res.status(200).json(Object.assign({ configured: true }, counts(data, Date.now())));
   } catch (e) {
     res.setHeader('Cache-Control', 'no-store');
     console.error('activity', e);

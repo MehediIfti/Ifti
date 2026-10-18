@@ -19,7 +19,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 - **Backlog:** ideas live as [issues](https://github.com/MehediIfti/Ifti/issues), grouped into milestones in play order: *1 · Easter eggs & delight*, *2 · Interaction polish*, *3 · Content & pages*, *Later · Needs a backend*. The [project board](https://github.com/MehediIfti/Ifti/projects) shows them as Ready, In progress, Done and Parked.
 - **Labels:** `fun`, `feature`, `design`, `content`, `chore`, `bug` say what it is. `20-min` / `2x20-min` say how long. `needs-info` waits on a fact or decision from me; `needs-backend` waits on a small server.
 - **Daily 20 minutes:** I open a session and say "next issue". The rules are in `CLAUDE.md`.
-- **Safety check:** every push runs `scripts/check.mjs` (GitHub Actions): the scripts must parse and every `#link` must point somewhere. Run it locally with `node scripts/check.mjs`.
+- **Safety check:** every push runs `scripts/check.mjs` (GitHub Actions): the scripts must parse, every `#link` must point somewhere, and the page must stay under its size budget. Run it locally with `node scripts/check.mjs`.
 - **New ideas:** use the Idea or Bug template on the New issue page.
 
 **Voice:** all copy follows [VOICE.md](VOICE.md): plain words, the claim first, strong but true, facts only. Read it before adding a page, a note or a button. `CLAUDE.md` points Claude Code at it automatically.
@@ -54,7 +54,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Playground:** tool, agent and workflow pages (Whiteboard, Paperclip, Hermes Agent, in that order), under the Playground heading in the left rail, above Academia. Playground starts open and Academia starts folded (the `data-shut` attribute on its rail group); clicking a heading toggles it, the choice is saved per visitor, and the group holding the current page always opens. The Theme tab snaps to just below the rail's last line (the Updated date) and shrinks to a dots-only pill when the screen is too short. On phones, the tab bar's More button opens the full index with Playground and Academia.
 
-**Spotify stereo:** on every page but the homepage, the right column gets a second section, pinned to the bottom of the screen (the page details above it scroll on their own when long): a turntable (the default) or a cassette, switched under the player and remembered per visitor. It shows what I'm playing on Spotify (song or podcast episode), or the last thing I played. The markup is `#stereo` after the right column; the styles and script are marked `Spotify stereo` and `SPOTIFY`. Where the right column isn't shown (phones, tablets, the 2-column layout), a compact player (`#stereo-m`) floats at the bottom instead, above the tab bar on phones; × hides it for the visit. `api/now-playing.js` asks Spotify; the page asks it every 30 seconds while the Now page is open, and Vercel's cache answers most of those. The player stays hidden until Spotify is connected. Add `?player=demo` to the address to preview it with placeholder text. To connect, once:
+**Spotify stereo:** on every page but the homepage, the right column gets a second section, pinned to the bottom of the screen (the page details above it scroll on their own when long): a turntable (the default) or a cassette, switched under the player and remembered per visitor. It shows what I'm playing on Spotify (song or podcast episode), or the last thing I played. The markup is `#stereo` after the right column; the styles and script are marked `Spotify stereo` and `SPOTIFY`. Where the right column isn't shown (phones, tablets, the 2-column layout), a compact player (`#stereo-m`) floats at the bottom instead, above the tab bar on phones; × hides it for the visit. `api/now-playing.js` asks Spotify; the page asks it every 30 seconds on every page but the homepage, and Vercel's cache answers most of those. The player stays hidden until Spotify is connected. Add `?player=demo` to the address to preview it with placeholder text. To connect, once:
 1. At developer.spotify.com/dashboard, create an app (any name). Redirect URI: `https://ifti-gold.vercel.app/api/spotify-callback`. API: Web API.
 2. In Vercel → Settings → Environment Variables, add `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` from that app, and `SPOTIFY_SETUP_KEY` set to any long random word. Redeploy.
 3. Open `https://ifti-gold.vercel.app/api/spotify-login?key=<that word>`, sign in to Spotify and agree. The page shows a refresh token.
@@ -68,7 +68,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Contact form:** posts to FormSubmit and lands in mh.hasan884@gmail.com. The first submission sends a one-time activation email; click it once and every later message comes through. The endpoint is `SUGGEST_ENDPOINT` in the script.
 
-**Share preview and domain:** the `SHARE PREVIEW` block in `<head>` holds the canonical URL, Open Graph / X tags and the Person schema. When the custom domain is connected, replace `https://mehediifti.github.io/Ifti/` there (and in the schema) with the new domain. The preview image is `og.png` (1200×630).
+**Share preview and domain:** the `SHARE PREVIEW` block in `<head>` holds the canonical URL, Open Graph / X tags and the Person schema. It points at `https://ifti-gold.vercel.app/`; when a custom domain is connected, replace that address there (and in the schema). The preview image is `og.png` (1200×630).
 
 **CV:** `cv.pdf`, one A4 page, linked from the homepage and the Work page.
 
@@ -76,7 +76,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Off the clock pop-ups:** each card with `data-pop` opens a pop-up built in `POPS` in the script. The F1 numbers live in the `F1 UPDATE` block (standings, career stats, records). Refresh them after each race and change `asOf`.
 
-**Terminal:** press `~`, or click the `>_ Terminal` button in the bottom-left corner (bottom-right on phones). Commands live in `CMDS` in the script: `help`, `ls`, `cd`, `cat`, `whoami`, `now`, `f1`, `theme`, `book`, `email`, `cv`, `socials`, `clear`, `exit`, plus `sudo hire ifti`.
+**Terminal:** press `~`, or click the `>_ Terminal` button in the bottom-left corner. It is hidden on phones; search opens it there. Commands live in `CMDS` in the script: `help`, `ls`, `cd`, `cat`, `whoami`, `now`, `f1`, `theme`, `book`, `email`, `cv`, `socials`, `clear`, `exit`, plus `sudo hire ifti`.
 
 **Hover previews:** on a desktop, hovering any link to another page or note shows its title and first lines. Nothing to update; it reads the page itself.
 
@@ -86,6 +86,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 - Homepage blocks below the fold use `content-visibility: auto`. Add new long homepage sections to that rule.
 - Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
 - No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.
+- **Size budget:** `scripts/check.mjs` fails if `index.html` goes over 115 KB gzipped (about 103 KB today). Raise `BUDGET` there on purpose, not to get a push through.
 - **Favicon:** `favicon.svg` is the source (target-lock corners around a pixel "i", drawn on a 32px grid). `favicon.ico` (16, 32, 48) and `apple-touch-icon.png` (180) are rendered from it; re-render both if the SVG changes.
 
 **Whiteboard (Playground, key 6):** the app lives in its own repo, `MehediIfti/whiteboard`, deployed by its own Vercel project at `whiteboard-mu-two.vercel.app`. `vercel.json` passes `/whiteboard/` through to it, so the `#whiteboard` page loads it from the site's own address (`WB_URL` in the script) the first time the page opens, on computers only; phones see a short note instead. Change the tool in that repo, not here.

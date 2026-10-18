@@ -1,7 +1,9 @@
 // Runs on every push (see .github/workflows/check.yml) and works locally: node scripts/check.mjs
 // 1. Every inline script in index.html must parse.  2. Every href="#id" must point to an id that exists.
+// 3. index.html stays under the size budget (gzipped), so the speed rules in the README hold as the file grows.
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { gzipSync } from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -22,5 +24,9 @@ const missing = [...new Set([...html.matchAll(/href="#([^"]+)"/g)].map(m => m[1]
   .filter(id => !ids.has(id) && !generated.test(id));
 if (missing.length) { failed++; console.error('Links to ids that do not exist: ' + missing.map(x => '#' + x).join(', ')); }
 
-console.log(`${scripts.length} scripts checked, ${ids.size} ids, ${missing.length} broken anchor links.`);
+const BUDGET = 115 * 1024; // gzipped bytes; raise it on purpose, not by accident
+const size = gzipSync(html).length;
+if (size > BUDGET) { failed++; console.error(`index.html is ${(size / 1024).toFixed(1)} KB gzipped, over the ${BUDGET / 1024} KB budget.`); }
+
+console.log(`${scripts.length} scripts checked, ${ids.size} ids, ${missing.length} broken anchor links, ${(size / 1024).toFixed(1)} of ${BUDGET / 1024} KB gzipped.`);
 process.exit(failed ? 1 : 0);

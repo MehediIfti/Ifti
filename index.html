@@ -146,6 +146,9 @@ body::after {
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+.skip { position: fixed; z-index: 130; left: 12px; top: calc(env(safe-area-inset-top, 0px) + 12px); padding: 0.55rem 0.9rem; font: 500 0.8125rem var(--mono); color: var(--base); background: var(--accent); border-radius: 6px; text-decoration: none; transform: translateY(-200%); }
+.skip:focus { transform: none; }
+main:focus { outline: none; }
 
 .shell {
   max-width: 68rem; margin: 0 auto;
@@ -1060,6 +1063,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .lock { --lk: var(--lock, #ff3b30); position: fixed; left: 0; top: 0; z-index: 119; width: 0; height: 0; pointer-events: none; opacity: 0;
   background: repeating-linear-gradient(-45deg, color-mix(in srgb, var(--lk) 16%, transparent) 0 1px, transparent 1px 6px), color-mix(in srgb, var(--lk) 7%, transparent); }
 .lock.on { opacity: 1; }
+.kb-locked:focus-visible { outline-color: transparent !important; }
 .lock i { position: absolute; width: 9px; height: 9px; border: 0 solid var(--lk); }
 .lock i:nth-child(1) { left: 0; top: 0; border-width: 2px 0 0 2px; --dx: -5px; --dy: -5px; }
 .lock i:nth-child(2) { right: 0; top: 0; border-width: 2px 2px 0 0; --dx: 5px; --dy: -5px; }
@@ -1670,12 +1674,16 @@ html.touring .tour-fab::after { display: none; }
       else { var ed = JSON.parse(localStorage.getItem('ap-t-' + a.theme) || '{}') || {}; for (var e in ed) a[e] = ed[e]; }
     } catch (e) {}
     for (var k in a) root.setAttribute('data-' + k, a[k]);
+    // The phone browser bar takes the page colour of whatever theme is showing (and follows changes later).
+    function bar() { var m = document.querySelector('meta[name="theme-color"]'), c = getComputedStyle(root).getPropertyValue('--paper').trim(); if (m && c) m.setAttribute('content', c); }
+    bar(); new MutationObserver(bar).observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-palette'] });
   })();
   // Decide before first paint whether this visit gets the intro, so the page never flashes in first.
   try { if (!localStorage.getItem('booted') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('intro'); setTimeout(function () { document.documentElement.classList.remove('intro', 'boot-out'); }, 4000); } } catch (e) {}
 </script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="boot" id="boot" aria-hidden="true">
   <p>&gt; connecting to ifti.notebook</p>
   <p>&gt; bypassing firewall  [████████████] 100%</p>
@@ -1722,7 +1730,7 @@ html.touring .tour-fab::after { display: none; }
     <p class="stamp">Updated<br>17 Oct 2026</p>
   </nav>
 
-  <main>
+  <main id="content" tabindex="-1">
     <!-- ============ INDEX ============ -->
     <section class="page" id="index">
       <header class="hero">
@@ -3022,6 +3030,7 @@ html.touring .tour-fab::after { display: none; }
   // BOOKING: paste the Calendly link here. Until then, Book a call opens an email.
   var CALENDLY = 'https://calendar.app.google/hLuo2fyWcoeTghbM6';
   if (CALENDLY) document.querySelectorAll('[data-book]').forEach(function (a) { a.href = CALENDLY; a.target = '_blank'; a.rel = 'noopener'; });
+  document.querySelector('.skip').addEventListener('click', function (e) { e.preventDefault(); document.getElementById('content').focus(); });
 
   // CALENDAR STATUS: under my name on every page (rail) and in the phone top bar. api/status.js reads free/busy only, in my
   // working hours (Sun–Thu, 10:00–19:00 Dhaka). Hidden until the calendar is connected (README → Calendar status).
@@ -4013,6 +4022,15 @@ html.touring .tour-fab::after { display: none; }
       lk.classList.add('on');
     }, { passive: true });
     document.addEventListener('mouseout', function (e) { if (!e.relatedTarget) drop(); });
+    // Keyboard: tabbing onto something clickable frames it the same way (the corners stand in for the focus outline).
+    document.addEventListener('focusin', function (e) {
+      var t = e.target;
+      if (!t.matches || !t.matches(SEL) || !t.matches(':focus-visible') || t.closest('.wb')) return;
+      var fresh = !tgt; tgt = t; mx = my = -1; t.classList.add('kb-locked');
+      if (fresh) { lk.classList.add('snap'); place(); void lk.offsetWidth; lk.classList.remove('snap'); } else place();
+      lk.classList.add('on');
+    });
+    document.addEventListener('focusout', function (e) { e.target.classList && e.target.classList.remove('kb-locked'); if (tgt === e.target) drop(); });
     document.addEventListener('mousedown', function (e) { if (tgt && e.button === 0) lk.classList.add('press'); });
     document.addEventListener('mouseup', function () { lk.classList.remove('press'); place(); });
     window.addEventListener('scroll', place, { passive: true, capture: true });

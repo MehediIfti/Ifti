@@ -1,4 +1,4 @@
-// What I'm playing on Spotify, for the stereo on the Now page: GET /api/now-playing
+// What I'm playing on Spotify, for the stereo on every page but the homepage: GET /api/now-playing
 // Needs SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET and SPOTIFY_REFRESH_TOKEN in Vercel (README → Spotify).
 // Answers { configured: false } until they are set, so the page simply hides the player.
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';

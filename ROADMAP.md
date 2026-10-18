@@ -71,7 +71,7 @@ Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 - [ ] [#31](https://github.com/MehediIfti/Ifti/issues/31) Theme secrets and scratching the record · 2x20-min
 
 ## Later (bigger builds, start with a first slice)
-- [ ] [#20](https://github.com/MehediIfti/Ifti/issues/20) Ask Ifti in the terminal: keyword search over the notes first, no AI. [30-day plan](docs/plans/ask-ifti-30-day-plan.md)
+- [ ] [#20](https://github.com/MehediIfti/Ifti/issues/20) Ask Ifti in the terminal: keyword search over the notes first, no AI. [30-day plan](docs/plans/ask-ifti-30-day-plan.md). Parked 18 Oct: quick wins first.
 - [ ] [#21](https://github.com/MehediIfti/Ifti/issues/21) Negotiation sparring game: a scripted buyer first
 - [ ] [#24](https://github.com/MehediIfti/Ifti/issues/24) Whiteboard guestbook: notes by FormSubmit, approved by hand
 

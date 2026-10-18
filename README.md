@@ -9,7 +9,7 @@ Single static file (`index.html`), hosted on Vercel.
 ## Hosting
 
 - **Vercel** deploys `main` on every push; every other branch gets its own preview link. Setup lives in `vercel.json`.
-- **Whiteboard:** `/whiteboard/` is passed through to the whiteboard repo on GitHub Pages, so it loads from the same address as the site.
+- **Whiteboard:** `/whiteboard/` is passed through to the whiteboard's own Vercel project, so it loads from the same address as the site.
 - **Server functions** live in `api/` (e.g. `/api/ping`). API keys go in Vercel → Project → Settings → Environment Variables, never in the page.
 - **Analytics:** Vercel Web Analytics, page views only, no cookies. It loads only on Vercel.
 - **Old address:** set `LIVE` in the `HOSTING` block at the top of `index.html` to the Vercel address and GitHub Pages forwards visitors there, keeping the `#page`.
@@ -79,4 +79,4 @@ Single static file (`index.html`), hosted on Vercel.
 - Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
 - No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.
 
-**Whiteboard (Playground, key 6):** the app lives in its own repo, `MehediIfti/whiteboard`, served at `mehediifti.github.io/whiteboard/`. The `#whiteboard` page loads it in a frame (`WB_URL` in the script) the first time the page opens, on computers only; phones see a short note instead. Change the tool in that repo, not here. If the site moves to a custom domain, give the app a subdomain (e.g. `board.yourdomain.com`) and update `WB_URL`, so boards and full screen keep working.
+**Whiteboard (Playground, key 6):** the app lives in its own repo, `MehediIfti/whiteboard`, deployed by its own Vercel project at `whiteboard-mu-two.vercel.app`. `vercel.json` passes `/whiteboard/` through to it, so the `#whiteboard` page loads it from the site's own address (`WB_URL` in the script) the first time the page opens, on computers only; phones see a short note instead. Change the tool in that repo, not here.

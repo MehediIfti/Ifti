@@ -4,8 +4,8 @@
     { "source": "/whiteboard", "destination": "/whiteboard/", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/whiteboard/", "destination": "https://mehediifti.github.io/whiteboard/" },
-    { "source": "/whiteboard/:path*", "destination": "https://mehediifti.github.io/whiteboard/:path*" }
+    { "source": "/whiteboard/", "destination": "https://whiteboard-mu-two.vercel.app/" },
+    { "source": "/whiteboard/:path*", "destination": "https://whiteboard-mu-two.vercel.app/:path*" }
   ],
   "headers": [
     { "source": "/fonts/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },

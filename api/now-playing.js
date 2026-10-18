@@ -1,4 +1,5 @@
-// What I'm playing on Spotify, for the stereo on every page but the homepage: GET /api/now-playing
+// What I'm playing on Spotify, for the stereo on every page but the homepage and the Music pop-up on it: GET /api/now-playing
+// Also lists the last three songs before it (recent: [{ title, artist, url, playedAt }]).
 // Needs SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET and SPOTIFY_REFRESH_TOKEN in Vercel (README → Spotify).
 // Answers { configured: false } until they are set, so the page simply hides the player.
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
@@ -38,16 +39,20 @@ module.exports = async function handler(req, res) {
   if (!id || !secret || !refresh) return res.status(200).json({ configured: false });
   try {
     const auth = { headers: { Authorization: 'Bearer ' + await accessToken(id, secret, refresh) } };
-    const now = await fetch('https://api.spotify.com/v1/me/player/currently-playing?additional_types=track,episode', auth);
+    // Both questions at once: what's on, and the last few songs (four, in case the first one has to stand in for "now").
+    const [now, rec] = await Promise.all([
+      fetch('https://api.spotify.com/v1/me/player/currently-playing?additional_types=track,episode', auth),
+      fetch('https://api.spotify.com/v1/me/player/recently-played?limit=4', auth)
+    ]);
+    const played = ((rec.ok && (await rec.json()).items) || []).map(i => ({ ...shape(i.track), playedAt: i.played_at }));
+    const list = items => items.slice(0, 3).map(t => ({ title: t.title, artist: t.artist, url: t.url, playedAt: t.playedAt }));
     if (now.status === 200) {
       const d = await now.json();
-      if (d && d.item) return res.status(200).json({ configured: true, playing: !!d.is_playing, progress: d.progress_ms || 0, ...shape(d.item) });
+      if (d && d.item) return res.status(200).json({ configured: true, playing: !!d.is_playing, progress: d.progress_ms || 0, ...shape(d.item), recent: list(played) });
     }
-    // Nothing on right now (204), or a private session: show the last song instead.
-    const rec = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=1', auth);
-    const last = rec.ok && (await rec.json()).items;
-    if (last && last[0]) return res.status(200).json({ configured: true, playing: false, playedAt: last[0].played_at, ...shape(last[0].track) });
-    return res.status(200).json({ configured: true, playing: false });
+    // Nothing on right now (204), or a private session: show the last song instead, and the three before it.
+    if (played[0]) return res.status(200).json({ configured: true, playing: false, ...played[0], recent: list(played.slice(1)) });
+    return res.status(200).json({ configured: true, playing: false, recent: [] });
   } catch (e) {
     res.setHeader('Cache-Control', 'no-store');
     return res.status(502).json({ configured: true, error: 'Spotify did not answer' });

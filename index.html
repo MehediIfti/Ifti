@@ -149,6 +149,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .skip { position: fixed; z-index: 130; left: 12px; top: calc(env(safe-area-inset-top, 0px) + 12px); padding: 0.55rem 0.9rem; font: 500 0.8125rem var(--mono); color: var(--base); background: var(--accent); border-radius: 6px; text-decoration: none; transform: translateY(-200%); }
 .skip:focus { transform: none; }
 main:focus { outline: none; }
+/* # beside note headings: copies a link to that section. Shows on hover or keyboard focus; always faintly on phones. */
+article.page[id^="n-"] h2 { scroll-margin-top: 6rem; }
+.h-link { margin-left: 0.4em; font: 400 0.75em var(--mono); color: var(--overlay1); text-decoration: none; opacity: 0; transition: opacity 0.15s; }
+.h-link::before { content: "#"; }
+h2:hover > .h-link, .h-link:focus-visible { opacity: 1; }
+.h-link:hover { color: var(--accent); }
+.h-link.copied::before { content: "copied"; color: var(--accent); }
+@media (hover: none) { .h-link { opacity: 0.45; } }
+@media print { .h-link { display: none; } }
 
 .shell {
   max-width: 68rem; margin: 0 auto;
@@ -2523,6 +2532,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Links to sections</span><span class="tag t-tool">Feature</span><p>Hover a heading in any note and click # to copy a link straight to that part.</p></li>
         <li><span class="t">More in the terminal</span><span class="tag t-tool">Feature</span><p>Press ~ and try coffee, fortune, git log, top or ping.</p></li>
         <li><span class="t">Keyboard shortcuts</span><span class="tag t-tool">Feature</span><p>Press ? to see every key the site answers to. R opens a random note.</p></li>
         <li><span class="t">N°007 Show the guardrails first</span><span class="tag t-book">Note</span><p>Four things I'm taking into client work from N°005, starting with answering what happens when something goes wrong. <a href="#n-007">Read it</a>.</p></li>
@@ -3366,6 +3376,22 @@ html.touring .tour-fab::after { display: none; }
   }
   window.addEventListener('hashchange', show);
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  // Links to sections: every note heading gets its id now (the same id search gives it), so a shared #s-n-005-… link
+  // opens the note at that section on a fresh visit. The # beside each heading copies that link.
+  var hSlug = function (t) { return t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40); };
+  document.querySelectorAll('article.page[id^="n-"] h2').forEach(function (h) {
+    if (!h.id) h.id = 's-' + h.closest('.page').id + '-' + hSlug(h.textContent);
+    var a = document.createElement('a');
+    a.className = 'h-link'; a.href = '#' + h.id; a.setAttribute('aria-label', 'Copy a link to this section'); a.title = 'Copy a link to this section';
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var url = location.origin + location.pathname + '#' + h.id, done = function () { a.classList.add('copied'); setTimeout(function () { a.classList.remove('copied'); }, 1400); };
+      history.replaceState(null, '', '#' + h.id);
+      if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, done); else done();
+    });
+    h.appendChild(a);
+  });
   window.addEventListener('load', function () { var t = document.getElementById((location.hash || '#index').slice(1)); if (!t || t.classList.contains('page')) setTimeout(function () { window.scrollTo(0, 0); }, 0); });
   window.addEventListener('load', function () { var a = document.getElementById(location.hash.slice(1)); if (a && !a.classList.contains('page') && a.closest('.page')) a.scrollIntoView(); else window.scrollTo(0, 0); });
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';

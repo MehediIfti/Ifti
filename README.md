@@ -80,6 +80,8 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Keyboard:** `?` opens the shortcut sheet, built from the number-key map (`keys`) and the rail's labels, so new pages show up on their own. `r` opens a random note, never the one you're on (`randomNote()`, also used by search). There's one key the sheet doesn't mention: the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) runs the start lights and shows Lights Out for that visit only; a reload brings back the visitor's own theme.
 
+**Links to sections:** every note heading gets an id like `s-n-005-who-pays-for-it` when the page loads (the same id search uses), and a `#` beside it copies the link. A fresh visit to that link opens the note at the section.
+
 **Hover previews:** on a desktop, hovering any link to another page or note shows its title and first lines. Nothing to update; it reads the page itself.
 
 **Speed:** keep it fast by following these rules.

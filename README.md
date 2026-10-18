@@ -66,6 +66,8 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Booking:** the booking link (Google Calendar) is `var CALENDLY` (the `BOOKING` comment in the script). Every `data-book` button points to it.
 
+**Email:** wherever the site shares my email, it shows both: personal (mh.hasan884@gmail.com) and work (mehedi.ifti@musemind.agency). That's the contact line under Book a call on the homepage and Work, the Find me icons (`SOCIALS UPDATE`), the terminal's `email` (and `email work`), search's two copy actions, and the printed header.
+
 **Contact form:** posts to FormSubmit and lands in mh.hasan884@gmail.com. The first submission sends a one-time activation email; click it once and every later message comes through. The endpoint is `SUGGEST_ENDPOINT` in the script.
 
 **Share preview and domain:** the `SHARE PREVIEW` block in `<head>` holds the canonical URL, Open Graph / X tags and the Person schema. It points at `https://ifti-gold.vercel.app/`; when a custom domain is connected, replace that address there (and in the schema). The preview image is `og.png` (1200×630).

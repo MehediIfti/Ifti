@@ -618,6 +618,7 @@ ul.plain li::marker { color: var(--muted); }
 .rail-socials .soc span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .m-sheet .socials .soc { padding: 0.55rem 0.75rem; font-size: 0.8125rem; }
 .contact { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-family: var(--mono); font-size: var(--s-0); }
+.contact .em { white-space: nowrap; } /* each address stays with its copy button */
 .copy { font: inherit; background: none; border: 1px solid var(--rule); color: var(--muted); padding: 0.1rem 0.5rem; cursor: pointer; border-radius: 3px; }
 .copy:hover { color: var(--ink); border-color: var(--muted); }
 
@@ -1861,7 +1862,7 @@ html.touring .tour-fab::after { display: none; }
         <div><dt>Negotiation</dt><dd>Pricing, scope, and the questions to ask before anyone names a number.</dd></div>
         <div><dt>Building with AI agents</dt><dd>I run a small company of them. See the <a href="#paperclip">Playground</a>.</dd></div>
       </dl>
-      <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><span class="contact">or email <a href="mailto:mh.hasan884@gmail.com">mh.hasan884@gmail.com</a> <button class="copy" type="button" data-copy="mh.hasan884@gmail.com">copy</button></span></div>
+      <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><span class="contact">or email <span class="em"><a href="mailto:mh.hasan884@gmail.com">mh.hasan884@gmail.com</a> <button class="copy" type="button" data-copy="mh.hasan884@gmail.com">copy</button></span> · <span class="em">work <a href="mailto:mehedi.ifti@musemind.agency">mehedi.ifti@musemind.agency</a> <button class="copy" type="button" data-copy="mehedi.ifti@musemind.agency">copy</button></span></span></div>
       <div class="socials home-socials" data-socials></div>
 
       <div class="act-inline"><p class="label">Activity</p><div id="act-inline" style="margin-top:0.6rem"></div></div>
@@ -2194,7 +2195,7 @@ html.touring .tour-fab::after { display: none; }
         <li><b>What are you trying to move?</b> Revenue, retention or time saved, and by when.</li>
         <li><b>Who signs off?</b> Who decides, who pays, and who can say no.</li>
       </ul>
-      <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><span class="contact">or email <a href="mailto:mh.hasan884@gmail.com">mh.hasan884@gmail.com</a></span></div>
+      <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><span class="contact">or email <a href="mailto:mh.hasan884@gmail.com">mh.hasan884@gmail.com</a> · work <a href="mailto:mehedi.ifti@musemind.agency">mehedi.ifti@musemind.agency</a></span></div>
     </section>
 
     <!-- ============ SHELF ============ -->
@@ -3203,7 +3204,8 @@ html.touring .tour-fab::after { display: none; }
     ['Spotify', 'https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka', 'sp'],
     ['GitHub', 'https://github.com/MehediIfti', 'gh'],
     ['ResearchGate', 'https://www.researchgate.net/profile/Mehedi-Ifti', 'rg'],
-    ['Email', 'mailto:mh.hasan884@gmail.com', 'em']
+    ['Email', 'mailto:mh.hasan884@gmail.com', 'em'],
+    ['Work email', 'mailto:mehedi.ifti@musemind.agency', 'em']
   ];
   var SOCIAL_ICON = {
     in: '<path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.55c0-1.32-.02-3.02-1.84-3.02-1.84 0-2.12 1.44-2.12 2.92V21H9z"/>',
@@ -3936,7 +3938,7 @@ html.touring .tour-fab::after { display: none; }
         print('<span class="b">Commands</span>\n' + [
           ['ls', 'list pages and notes'], ['cd <page>', 'open a page (cd work, cd ..)'], ['cat <note>', 'read a note here (cat 5)'],
           ['whoami', 'who runs this notebook'], ['now', 'what I\'m on this month'], ['f1', 'Max and Red Bull, right now'],
-          ['theme [name]', 'list or switch themes'], ['book', 'book a call'], ['email', 'copy my email'], ['cv', 'download my CV'],
+          ['theme [name]', 'list or switch themes'], ['book', 'book a call'], ['email [work]', 'show both emails, copy one'], ['cv', 'download my CV'],
           ['socials', 'where else to find me'], ['coffee', 'cups so far this year'], ['fortune', 'a line from my notes'],
           ['git log', 'what changed on the site'], ['top', 'what I\'m running on'], ['ping', 'check the site is up'], ['achievements', 'what you\'ve found'],
           ['date', 'the time in Dhaka'], ['pwd', 'where you are'], ['echo <text>', 'say it back'], ['history', 'what you typed'],
@@ -3983,10 +3985,11 @@ html.touring .tour-fab::after { display: none; }
         var was = cur; pickTheme(t.id); line('Switched to ' + t.name + '.', 'g'); if (t.id === 'lightsout' && was !== t.id) { close(); setTimeout(lightsOut, 250); }
       },
       book: function () { window.open(bookHref, '_blank', 'noopener'); line('Opening my calendar in a new tab.', 'g'); },
-      email: function () {
-        var e = 'mh.hasan884@gmail.com';
-        if (navigator.clipboard) navigator.clipboard.writeText(e).then(function () { line('Copied ' + e + '.', 'g'); }, function () { line(e); });
-        else line(e);
+      email: function (a) {
+        // Both addresses; email copies the personal one, email work copies the office one.
+        var mine = 'mh.hasan884@gmail.com', work = 'mehedi.ifti@musemind.agency', e = /^work/i.test(a || '') ? work : mine;
+        print('<span class="y">personal</span>  <a href="mailto:' + mine + '">' + mine + '</a>\n<span class="y">work</span>      <a href="mailto:' + work + '">' + work + '</a>');
+        if (navigator.clipboard) navigator.clipboard.writeText(e).then(function () { line('Copied ' + e + '.' + (e === mine ? ' Type email work for the office one.' : ''), 'g'); }, function () {});
       },
       cv: function () { window.open('cv.pdf', '_blank', 'noopener'); line('Opening cv.pdf.', 'g'); },
       socials: function () {
@@ -4676,7 +4679,8 @@ html.touring .tour-fab::after { display: none; }
       if (matchMedia('(pointer: fine)').matches) items.push({ k: 'Action', t: 'Keyboard shortcuts', x: 'keys hotkeys help ?', run: function () { setTimeout(window.openKeys, 60); } });
       items.push(
         { k: 'Action', t: 'Book a call', x: 'calendar meeting', run: function () { window.open(book.href, '_blank', 'noopener'); } },
-        { k: 'Action', t: 'Copy my email', x: 'mail contact', run: function () { var e = 'mh.hasan884@gmail.com'; if (navigator.clipboard) navigator.clipboard.writeText(e); } },
+        { k: 'Action', t: 'Copy my email', x: 'mail contact personal', run: function () { var e = 'mh.hasan884@gmail.com'; if (navigator.clipboard) navigator.clipboard.writeText(e); } },
+        { k: 'Action', t: 'Copy my work email', x: 'mail contact office musemind', run: function () { var e = 'mehedi.ifti@musemind.agency'; if (navigator.clipboard) navigator.clipboard.writeText(e); } },
         { k: 'Action', t: 'Take the tour', x: 'guide help new', run: function () { window.startTour(); } },
         { k: 'Action', t: 'Open the terminal', x: 'command line', run: function () { document.querySelector('.term-open').click(); } },
         { k: 'Action', t: 'Change theme', x: 'appearance colours look', run: function () { apOpen(true); } },
@@ -4852,7 +4856,7 @@ html.touring .tour-fab::after { display: none; }
       var pg = document.querySelector('.page.on'), id = pg ? pg.id : 'index';
       var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Dhaka' });
       head.innerHTML = '<b>Mehedi Hasan Ifti</b><span>' + (id === 'work' ? 'Manager, Global Sales &amp; Partnerships · Musemind · Dhaka' : "Ifti's Notebook") + '</span>' +
-        '<span>mh.hasan884@gmail.com · ' + esc(SITE.replace('https://', '') + (id === 'index' ? '' : '#' + id)) + '</span><span>Printed ' + esc(date) + '</span>';
+        '<span>mh.hasan884@gmail.com · mehedi.ifti@musemind.agency · ' + esc(SITE.replace('https://', '') + (id === 'index' ? '' : '#' + id)) + '</span><span>Printed ' + esc(date) + '</span>';
       document.body.insertBefore(head, document.body.firstChild);
       document.documentElement.setAttribute('data-print', id);
       opened = Array.prototype.filter.call(document.querySelectorAll('.page.on details:not([open])'), function (d) { d.open = true; return true; });

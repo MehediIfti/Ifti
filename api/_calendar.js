@@ -25,12 +25,21 @@ function meetings(data, from, to) {
   const out = [];
   for (const ev of Object.values(data)) {
     if (ev.type !== 'VEVENT' || !ev.start) continue;
-    let list;
-    try { list = ical.expandRecurringEvent(ev, { from: new Date(from), to: new Date(to), expandOngoing: true }); } catch (e) { continue; }
+    let list = [];
+    if (ev.rrule) {
+      try { list = ical.expandRecurringEvent(ev, { from: new Date(from), to: new Date(to), expandOngoing: true }).map(x => ({ ev: x.event || ev, s: +x.start, e: +x.end, allDay: x.isFullDay })); } catch (e) { continue; }
+    } else {
+      // Google's secret link often writes a series as separate copies with no repeat rule. The reader files them under the
+      // first copy's recurrences, so each copy counts as its own meeting (the first copy and the map can repeat one).
+      const seen = new Set();
+      for (const x of [ev].concat(Object.values(ev.recurrences || {}))) {
+        if (!x || !x.start || seen.has(+x.start)) continue; seen.add(+x.start); // one series can't start twice at once
+        list.push({ ev: x, s: +x.start, e: +(x.end || x.start), allDay: x.datetype === 'date' });
+      }
+    }
     for (const x of list) {
-      if (x.isFullDay || !blocks(x.event || ev, me)) continue;
-      const s = +x.start, e = +x.end;
-      if (e > from && s < to) out.push([s, e]);
+      if (x.allDay || !blocks(x.ev, me)) continue;
+      if (x.e > from && x.s < to) out.push([x.s, x.e]);
     }
   }
   return out.sort((a, b) => a[0] - b[0]);

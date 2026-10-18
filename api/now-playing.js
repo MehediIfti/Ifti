@@ -17,7 +17,7 @@ async function accessToken(id, secret, refresh) {
   return cached.token;
 }
 
-// A song or a podcast episode, trimmed to what the player shows. The 64px cover is plenty: the player pixelates it.
+// A song or a podcast episode, trimmed to what the player shows. Spotify lists covers largest first (640, 300, 64); 300 stays sharp on the record label.
 function shape(item) {
   const episode = item.type === 'episode';
   const images = (episode ? item.images : item.album && item.album.images) || [];
@@ -25,7 +25,7 @@ function shape(item) {
     kind: episode ? 'episode' : 'track',
     title: item.name,
     artist: episode ? (item.show && item.show.name) || '' : (item.artists || []).map(a => a.name).join(', '),
-    art: (images[images.length - 1] || {}).url || null,
+    art: (images[1] || images[0] || {}).url || null,
     url: (item.external_urls && item.external_urls.spotify) || null,
     duration: item.duration_ms || 0
   };

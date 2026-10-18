@@ -76,7 +76,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Off the clock pop-ups:** each card with `data-pop` opens a pop-up built in `POPS` in the script. The F1 numbers live in the `F1 UPDATE` block (standings, career stats, records). Refresh them after each race and change `asOf`.
 
-**Terminal:** press `~`, or click the `>_ Terminal` button in the bottom-left corner. It is hidden on phones; search opens it there. Commands live in `CMDS` in the script: `help`, `ls`, `cd`, `cat`, `whoami`, `now`, `f1`, `theme`, `book`, `email`, `cv`, `socials`, `clear`, `exit`, plus `sudo hire ifti`.
+**Terminal:** press `~`, or click the `>_ Terminal` button in the bottom-left corner. It is hidden on phones; search opens it there. Commands live in `CMDS` in the script: `help`, `ls`, `cd`, `cat`, `whoami`, `now`, `f1`, `theme`, `book`, `email`, `cv`, `socials`, `coffee` (same numbers as the pill, from `window.coffeeNow()`), `fortune` (a random `<mark>` line from the notes), `git log` (the Changelog; `--all` for everything) and `git status`, `top` (the `STATS UPDATE` rows as processes), `ping` (three real calls to `/api/ping`), `date`, `pwd`, `echo`, `history`, `clear`, `exit`, plus `sudo hire ifti`.
 
 **Keyboard:** `?` opens the shortcut sheet, built from the number-key map (`keys`) and the rail's labels, so new pages show up on their own. `r` opens a random note, never the one you're on (`randomNote()`, also used by search). There's one key the sheet doesn't mention: the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) runs the start lights and shows Lights Out for that visit only; a reload brings back the visitor's own theme.
 

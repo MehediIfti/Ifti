@@ -2523,6 +2523,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">More in the terminal</span><span class="tag t-tool">Feature</span><p>Press ~ and try coffee, fortune, git log, top or ping.</p></li>
         <li><span class="t">Keyboard shortcuts</span><span class="tag t-tool">Feature</span><p>Press ? to see every key the site answers to. R opens a random note.</p></li>
         <li><span class="t">N°007 Show the guardrails first</span><span class="tag t-book">Note</span><p>Four things I'm taking into client work from N°005, starting with answering what happens when something goes wrong. <a href="#n-007">Read it</a>.</p></li>
         <li><span class="t">Door's open</span><span class="tag t-tool">Feature</span><p>Under my name: whether I'm in a meeting right now, free to talk, or off the clock. It reads only busy or free from my calendar.</p></li>
@@ -3749,7 +3750,7 @@ html.touring .tour-fab::after { display: none; }
   // ============ Terminal: press ~ (or the footer link) ============
   (function () {
     var term = document.getElementById('term'), out = document.getElementById('term-out'), form = document.getElementById('term-form'), input = document.getElementById('term-i'), ps = document.getElementById('term-ps');
-    var hist = [], hi = 0, booted = false;
+    var hist = [], hi = 0, booted = false, lastFortune = null;
     var pagesList = Array.prototype.filter.call(document.querySelectorAll('.page[id]'), function (p) { return p.id.indexOf('n-') !== 0; }).map(function (p) { return p.id; });
     var notesList = Array.prototype.map.call(document.querySelectorAll('article.page[id^="n-"]'), function (n) { return n; });
     function here() { var id = (location.hash || '#index').slice(1); return id === 'index' ? '~' : id.indexOf('n-') === 0 ? '~/notes/' + id.slice(2) : '~/' + id; }
@@ -3781,7 +3782,10 @@ html.touring .tour-fab::after { display: none; }
           ['ls', 'list pages and notes'], ['cd <page>', 'open a page (cd work, cd ..)'], ['cat <note>', 'read a note here (cat 5)'],
           ['whoami', 'who runs this notebook'], ['now', 'what I\'m on this month'], ['f1', 'Max and Red Bull, right now'],
           ['theme [name]', 'list or switch themes'], ['book', 'book a call'], ['email', 'copy my email'], ['cv', 'download my CV'],
-          ['socials', 'where else to find me'], ['clear', 'clear the screen'], ['exit', 'close (or press Esc)']
+          ['socials', 'where else to find me'], ['coffee', 'cups so far this year'], ['fortune', 'a line from my notes'],
+          ['git log', 'what changed on the site'], ['top', 'what I\'m running on'], ['ping', 'check the site is up'],
+          ['date', 'the time in Dhaka'], ['pwd', 'where you are'], ['echo <text>', 'say it back'], ['history', 'what you typed'],
+          ['clear', 'clear the screen'], ['exit', 'close (or press Esc)']
         ].map(function (r) { return '  <span class="g">' + esc(r[0].padEnd(16, ' ')) + '</span>' + r[1]; }).join('\n') + '\n<span class="c">Tab completes. ↑ ↓ for history.</span>');
       },
       ls: function (a) {
@@ -3840,6 +3844,63 @@ html.touring .tour-fab::after { display: none; }
       sudo: function (a, raw) {
         if (/^hire( ifti)?$/i.test(raw)) { line('Permission granted. Opening my calendar.', 'g'); window.open(bookHref, '_blank', 'noopener'); }
         else line('Nice try. This incident will be reported.', 'r');
+      },
+      coffee: function () {
+        var c = window.coffeeNow && window.coffeeNow(); if (!c) { line('coffee: the pot is empty.', 'r'); return; }
+        print('<span class="c">     ( (\n      ) )</span>\n<span class="y">   ........\n   |      |]\n   \\      /\n    `----\'</span>\n' +
+          '<span class="b">' + c.cups.toLocaleString('en-US') + '</span> cups in ' + c.y + ' · ' + (c.sofar + (c.isWork ? 1 : 0)) + ' of ' + c.total + ' workdays · today: ' +
+          (c.isWork ? (c.today ? c.today + (c.today === 1 ? ' cup' : ' cups') : 'first cup soon') : 'day off') + '\n<span class="c">black Americanos, counted the same way as the pill</span>');
+      },
+      fortune: function () {
+        // A highlighted line from a note, never the same one twice in a row.
+        var marks = Array.prototype.slice.call(document.querySelectorAll('article.page[id^="n-"] mark'));
+        if (!marks.length) { line('fortune: nothing highlighted yet.', 'r'); return; }
+        var pick, tries = 0;
+        do { pick = marks[Math.floor(Math.random() * marks.length)]; } while (marks.length > 1 && pick === lastFortune && ++tries < 20);
+        lastFortune = pick;
+        var note = pick.closest('article.page');
+        print('<span class="b">' + esc(pick.textContent.replace(/\s+/g, ' ').trim()) + '</span>\n<span class="c">— ' + 'N°' + note.id.slice(2) + ' </span><a href="#' + note.id + '">' + esc(note.querySelector('h1').textContent) + '</a>');
+      },
+      git: function (a) {
+        if (/^status/.test(a)) { line('On branch main. Nothing to commit, working tree clean.', 'g'); return; }
+        if (!/^log/.test(a)) { line('usage: git log [--all]   (or git status)', 'c'); return; }
+        // The changelog, newest first, in git's one-line format. The ids are short hashes of each entry's title.
+        var rows = [];
+        document.querySelectorAll('#changelog .cl-list').forEach(function (ul) {
+          var d = ul.previousElementSibling; while (d && !d.classList.contains('cl-d')) d = d.previousElementSibling;
+          ul.querySelectorAll(':scope > li').forEach(function (li) {
+            var t = li.querySelector('.t').textContent.trim(), tag = li.querySelector('.tag'), h = 5381;
+            for (var i = 0; i < t.length; i++) h = (h * 33 + t.charCodeAt(i)) >>> 0;
+            rows.push('<span class="y">' + ('000000' + h.toString(16)).slice(-7) + '</span> <span class="c">' + esc(d ? d.textContent.trim() : '') + '</span> <span class="m">' + esc(tag ? tag.textContent.trim().toLowerCase() : 'change') + ':</span> ' + esc(t));
+          });
+        });
+        var all = /--all/.test(a), shown = all ? rows : rows.slice(0, 12);
+        print(shown.join('\n') + (rows.length > shown.length ? '\n<span class="c">' + (rows.length - shown.length) + ' older. git log --all for everything.</span>' : ''));
+      },
+      top: function () {
+        // The stats radar as a process list: interest is the CPU, strength is the memory.
+        var rows = STATS.slice().sort(function (x, y) { return y[3] - x[3]; });
+        print('<span class="b">top</span> - ' + new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Dhaka', hour12: false }) + ' Dhaka · ' + rows.length + ' processes · <span class="c">%CPU is interest, %MEM is strength, out of 100</span>\n' +
+          '<span class="c">  PID  %CPU  %MEM  COMMAND</span>\n' + rows.map(function (r, i) {
+            return '  ' + String(i + 1).padStart(3, ' ') + '  <span class="g">' + String(r[3]).padStart(4, ' ') + '</span>  ' + String(r[2]).padStart(4, ' ') + '  ' + esc(r[1]);
+          }).join('\n'));
+      },
+      ping: function () {
+        // Three real round trips to this site's own server function.
+        var host = location.host || 'ifti-gold.vercel.app', times = [], n = 0;
+        line('PING ' + host, 'c');
+        (function one() {
+          var t0 = performance.now();
+          fetch('/api/ping?t=' + Date.now(), { cache: 'no-store' }).then(function (r) {
+            if (!r.ok) throw 0;
+            var ms = Math.round(performance.now() - t0); times.push(ms);
+            print('64 bytes from ' + esc(host) + ': seq=' + n + ' time=<span class="g">' + ms + ' ms</span>');
+          }).catch(function () { line('Request timeout for seq ' + n, 'r'); }).then(function () {
+            if (++n < 3) return setTimeout(one, 400);
+            line('--- ' + host + ' ping statistics ---', 'c');
+            line(times.length + ' of 3 answered' + (times.length ? ', min ' + Math.min.apply(null, times) + ' ms, max ' + Math.max.apply(null, times) + ' ms' : ''), times.length ? 'g' : 'r');
+          });
+        })();
       },
       history: function () { print(hist.map(function (h, i) { return '<span class="c">' + String(i + 1).padStart(3, ' ') + '</span>  ' + esc(h); }).join('\n')); }
     };
@@ -4589,7 +4650,8 @@ html.touring .tour-fab::after { display: none; }
       var g = function (t) { return +p.filter(function (x) { return x.type === t; })[0].value; };
       return { y: g('year'), m: g('month'), d: g('day'), h: g('hour') % 24 };
     }
-    function count() {
+    // The numbers, shared with the terminal's coffee command so the two can never disagree.
+    function numbers() {
       var t = dhakaToday(), total = 0, sofar = 0, isWork = false;
       for (var d = new Date(Date.UTC(t.y, 0, 1)); d.getUTCFullYear() === t.y; d.setUTCDate(d.getUTCDate() + 1)) {
         if (WORKWEEK.indexOf(d.getUTCDay()) < 0) continue;
@@ -4599,7 +4661,11 @@ html.touring .tour-fab::after { display: none; }
       }
       // today's cups: none before 9, the full ration by 6 in the evening
       var todayCups = isWork ? Math.round(CUPS_PER_DAY * Math.max(0, Math.min(1, (t.h - 9) / 9))) : 0;
-      var cups = Math.round(sofar * CUPS_PER_DAY + todayCups);
+      return { y: t.y, cups: Math.round(sofar * CUPS_PER_DAY + todayCups), sofar: sofar, total: total, isWork: isWork, today: todayCups };
+    }
+    window.coffeeNow = numbers;
+    function count() {
+      var n = numbers(), t = { y: n.y }, cups = n.cups, sofar = n.sofar, total = n.total, isWork = n.isWork, todayCups = n.today;
       document.getElementById('cof-n').textContent = cups.toLocaleString('en-US');
       document.getElementById('cof-l').textContent = 'cups in ' + t.y;
       document.getElementById('cof-big').textContent = cups.toLocaleString('en-US');

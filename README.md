@@ -4,7 +4,7 @@ Personal notebook site: notes, a monthly now page, work and bookshelf.
 
 **Live:** https://ifti-gold.vercel.app/ (the old address, mehediifti.github.io/Ifti, forwards here)
 
-Single static file (`index.html`), hosted on Vercel. `package.json` only holds packages for the server functions in `api/`.
+A static site, hosted on Vercel: `index.html` holds the pages, the styles and the content blocks (Monthly, Shelf, Changelog, Research, Education, Work history); `app.js` holds the main script, and wherever this README says "in the script", that's `app.js` (Themes, Socials, Stats, Coffee, Activity, F1, Booking, the terminal, search, pop-ups). `package.json` only holds packages for the server functions in `api/`.
 
 **What's live, what's next, what's waiting on me:** [ROADMAP.md](ROADMAP.md).
 
@@ -82,7 +82,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 
 **Changelog:** the `CHANGELOG UPDATE` block (the `#changelog` page, linked in the footer). Written by hand, newest first, one heading per day. Only what a visitor would notice goes in: a new page, a new note, a new feature or a redesign. Copy edits, fixes and small tweaks stay out. Tag each entry Page, Note, Feature or Design.
 
-**Stats radar:** edit the `STATS UPDATE` array in the script at the bottom of `index.html`. Each row is `[chart label, full name, strength, interest]`, scored 0–100. OVR, MVP and Grinding are calculated from it.
+**Stats radar:** edit the `STATS UPDATE` array in the script (`app.js`). Each row is `[chart label, full name, strength, interest]`, scored 0–100. OVR, MVP and Grinding are calculated from it.
 
 **Calendar activity:** the heatmap shows meetings per day for the last 18 weeks (counts only, no titles). `api/activity.js` counts them from the same calendar link as the status (what counts as a meeting lives in `api/_calendar.js`), cached for an hour. Google's link only reaches back a couple of months, so for older days the page uses the hand-kept `ACTIVITY UPDATE` block, which is also what shows if the live call fails. Nothing to update by hand any more.
 
@@ -140,7 +140,8 @@ npx serve .                 # preview at localhost:3000 (any static server works
 - Homepage blocks below the fold use `content-visibility: auto`. Add new long homepage sections to that rule.
 - Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
 - No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.
-- **Size budget:** `scripts/check.mjs` fails if `index.html` goes over 115 KB gzipped (about 112.6 KB today). Raise `BUDGET` there on purpose, not to get a push through.
+- **Size budget:** `scripts/check.mjs` fails if `index.html` or `app.js` goes over 75 KB gzipped each (about 61 and 55 KB today). Raise `BUDGET` there on purpose, not to get a push through.
+- **The script lives in `app.js`,** loaded by a plain `<script src="/app.js">` at the end of `index.html` (not `defer`, so it runs exactly where the inline script used to). Browsers keep a copy between visits. Small page-specific scripts (the head script, the Now lists, the Halo dots) stay inline.
 - **Favicon:** `favicon.svg` is the source (target-lock corners around a pixel "i", drawn on a 32px grid). `favicon.ico` (16, 32, 48) and `apple-touch-icon.png` (180) are rendered from it; re-render both if the SVG changes.
 
 **Whiteboard (Playground, key 6):** the app lives in its own repo, `MehediIfti/whiteboard`, deployed by its own Vercel project at `whiteboard-mu-two.vercel.app`. `vercel.json` passes `/whiteboard/` through to it, so the `#whiteboard` page loads it from the site's own address (`WB_URL` in the script) the first time the page opens, on computers only; phones see a short note instead. Change the tool in that repo, not here.

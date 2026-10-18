@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 
 const { chromium } = createRequire(import.meta.url)(process.env.PLAYWRIGHT || 'playwright');
 const root = fileURLToPath(new URL('..', import.meta.url));
-const TYPES = { '.html': 'text/html', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf' };
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf' };
 const THEMES = { // the same values as THEMES[].set in index.html
   cropmark: { palette: 'cropmark', bg: 'plain', calm: 'margins', layout: '3', type: 'sans' },
   'midnight-ledger': { palette: 'black', bg: 'grid', calm: 'spotlight', layout: '3', type: 'serif' },

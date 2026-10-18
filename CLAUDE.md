@@ -2,7 +2,7 @@
 
 - **Voice:** every word on the site follows [VOICE.md](VOICE.md). Read it before writing or editing any copy: pages, notes, labels, buttons, captions, meta tags.
 - **Facts only:** never invent clients, quotes, numbers or stories. Ask Ifti if something is missing.
-- **Structure:** single file, `index.html`. The README lists every `UPDATE` block and how themes work.
+- **Structure:** `index.html` (pages, styles, content blocks) and `app.js` (the main script). The README lists every `UPDATE` block, which file it's in, and how themes work.
 - **Location:** Dhaka everywhere.
 - **Notes from podcasts, videos and books:** summarise what was said, attributed to the speakers. Do not add a "What I'm taking into client work" section or tie the note back to client work unless Ifti asks for it. Not everything he listens to is about work.
 - **Roadmap:** [ROADMAP.md](ROADMAP.md) lists what's live, next and waiting on Ifti. When you ship or open an issue, update it in the same commit.

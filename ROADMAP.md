@@ -50,7 +50,7 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 
 ### Under the hood
 - [x] Hosted on Vercel, `main` only. v2-review retired ([#25](https://github.com/MehediIfti/Ifti/issues/25))
-- [x] `scripts/check.mjs` on every push: scripts parse, anchors resolve, size under 115 KB gzipped
+- [x] `scripts/check.mjs` on every push: scripts parse, anchors resolve, page and script each under 75 KB gzipped
 - [x] `scripts/check-layout.mjs` before shipping: every page at 390, 700, 820 and 1440 px, column wide enough, no sideways scroll
 - [x] Audit fixes: notes readable on phones, no page jump on phone load, Appearance panel fits phones, time-zone caption follows daylight saving, no intro on deep links
 - [x] Self-hosted fonts, skip link, no cookies

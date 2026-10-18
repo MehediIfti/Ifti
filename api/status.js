@@ -55,13 +55,20 @@ module.exports = async function handler(req, res) {
   if (!url) return res.status(200).json({ configured: false });
   const now = Date.now();
   if (!inHours(now)) return res.status(200).json(status({}, now)); // no need to read the calendar at night
+  let step = 'fetch';
   try {
-    const r = await fetch(url);
-    if (!r.ok) throw new Error('ics ' + r.status);
-    return res.status(200).json(status(ical.sync.parseICS(await r.text()), now));
+    const r = await fetch(url.trim());
+    if (!r.ok) throw new Error('Google answered ' + r.status + (r.status === 404 ? ': check it is the Secret address, not the Public one' : ''));
+    const text = await r.text();
+    if (!/^\s*BEGIN:VCALENDAR/.test(text)) throw new Error('the link did not return a calendar file');
+    step = 'parse'; const data = ical.sync.parseICS(text);
+    step = 'status'; return res.status(200).json(status(data, now));
   } catch (e) {
+    // Say what went wrong without echoing the link or any calendar content.
     res.setHeader('Cache-Control', 'no-store');
-    return res.status(502).json({ configured: true, error: 'Calendar did not answer' });
+    const why = step === 'fetch' ? String(e.message || e).replace(/https?:\/\/\S+/g, '[link]').slice(0, 160) : 'could not ' + step + ' the calendar (' + (e.name || 'Error') + ')';
+    console.error('status', step, e);
+    return res.status(502).json({ configured: true, error: 'Calendar did not answer', why });
   }
 };
 module.exports.status = status; // for tests

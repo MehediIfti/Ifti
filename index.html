@@ -4296,7 +4296,8 @@ html.touring .tour-fab::after { display: none; }
       kick();
     }
     opt.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) mode(b.getAttribute('data-v'), true); });
-    var m0 = 'map'; try { m0 = localStorage.getItem('hero-mode') || m0; } catch (e) {}
+    // phones open on the globe, computers on the map; a view the visitor picked wins either way
+    var m0 = matchMedia('(max-width: 760px)').matches ? 'globe' : 'map'; try { m0 = localStorage.getItem('hero-mode') || m0; } catch (e) {}
     mode(m0, false);
     setActive('a', false);
   }, 0); });

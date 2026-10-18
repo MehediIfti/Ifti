@@ -4,7 +4,7 @@ Personal notebook site: notes, a monthly now page, work and bookshelf.
 
 **Live:** https://ifti-gold.vercel.app/ (the old address, mehediifti.github.io/Ifti, forwards here)
 
-Single static file (`index.html`), hosted on Vercel.
+Single static file (`index.html`), hosted on Vercel. `package.json` only holds packages for the server functions in `api/`.
 
 ## Hosting
 
@@ -60,11 +60,7 @@ Single static file (`index.html`), hosted on Vercel.
 3. Open `https://ifti-gold.vercel.app/api/spotify-login?key=<that word>`, sign in to Spotify and agree. The page shows a refresh token.
 4. Add it in Vercel as `SPOTIFY_REFRESH_TOKEN`, delete `SPOTIFY_SETUP_KEY`, and redeploy. The deck appears on the Now page.
 
-**Calendar status:** under my name on every page (and next to it in the phone top bar): **Door's open · Book a call** when my calendar is free, **In a meeting · free at 3:30 pm** when it's busy, **Off the clock · back Sun 10 am** outside working hours (Sunday to Thursday, 10:00 to 19:00 Dhaka; change `HOURS` in `api/status.js`). Times show in the visitor's own time zone. `api/status.js` reads only free/busy from my work calendar through a Google service account, so meeting titles never reach the site. Hidden until connected; add `?status=free`, `busy` or `off` to the address to preview. To connect, once:
-1. At console.cloud.google.com (signed in with my personal Gmail), create a project. In APIs & Services → Library, enable **Google Calendar API**.
-2. In IAM & Admin → Service Accounts, create one (no roles needed). Open it → Keys → Add key → JSON. A file downloads.
-3. In Google Calendar (work account) → Settings → my calendar → Share with specific people → add the service account's email (`client_email` in the file) with **See only free/busy (hide details)**.
-4. In Vercel → Settings → Environment Variables, add `GOOGLE_CLIENT_EMAIL` (`client_email`), `GOOGLE_PRIVATE_KEY` (`private_key`, the whole thing) and `GOOGLE_CALENDAR_ID` (`mehedi.ifti@musemind.agency`). Redeploy. Delete the downloaded file.
+**Calendar status:** under my name on every page (and next to it in the phone top bar): **Door's open · Book a call** when my calendar is free, **In a meeting · free at 3:30 pm** when it's busy, **Off the clock · back Sun 10 am** outside working hours (Sunday to Thursday, 10:00 to 19:00 Dhaka; change `HOURS` in `api/status.js`). Times show in the visitor's own time zone. Back-to-back meetings count as one; all-day events, events marked Free, cancelled ones and ones I declined don't count. `api/status.js` reads my work calendar through its secret iCal address and passes on only free, busy-until or off; titles and details never reach the page. It uses one package, `node-ical` (in `package.json`; Vercel installs it). Hidden until connected; add `?status=free`, `busy` or `off` to the address to preview. To connect, once: in Google Calendar (work account) → Settings → my calendar → Integrate calendar, copy **Secret address in iCal format**, add it in Vercel as `GOOGLE_ICS_URL`, and redeploy. Treat that link like a password: anyone with it can read the whole calendar. If it ever leaks, reset it on the same page and paste the new one.
 
 **Social links:** the `SOCIALS UPDATE` list in the script. Each profile appears as a pill on the homepage (Let's talk), in the phone index menu, and as an icon tile under "Find me" in the right column. The footer links are plain HTML.
 

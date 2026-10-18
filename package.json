@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "description": "Packages for the server functions in api/. The site itself has none.",
+  "dependencies": {
+    "node-ical": "0.27.2"
+  }
+}

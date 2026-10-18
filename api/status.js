@@ -1,28 +1,10 @@
 // Am I free right now? For the status under my name on every page: GET /api/status
-// Reads only free/busy from my work calendar through a Google service account. The calendar is shared with that account as
-// "See only free/busy", so no meeting titles or details ever reach the site. Setup: README → Calendar status.
-// Needs GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY and GOOGLE_CALENDAR_ID in Vercel. Answers { configured: false } until then.
-const crypto = require('crypto');
+// Reads my work calendar through its secret iCal address (GOOGLE_ICS_URL in Vercel; README → Calendar status) and
+// answers only free, busy-until or off-the-clock. Meeting titles and details never leave this function.
+const ical = require('node-ical');
 
 const HOURS = { days: [0, 1, 2, 3, 4], start: 10, end: 19 }; // Sunday to Thursday, 10:00 to 19:00 Dhaka time
 const DHAKA = 6 * 3600e3; // UTC+6 all year, no daylight saving
-let cached = { token: null, until: 0 };
-
-async function accessToken(email, key) {
-  if (cached.token && Date.now() < cached.until) return cached.token;
-  const now = Math.floor(Date.now() / 1000);
-  const part = o => Buffer.from(JSON.stringify(o)).toString('base64url');
-  const body = part({ alg: 'RS256', typ: 'JWT' }) + '.' + part({ iss: email, scope: 'https://www.googleapis.com/auth/calendar.freebusy', aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now + 3600 });
-  const jwt = body + '.' + crypto.createSign('RSA-SHA256').update(body).sign(key, 'base64url');
-  const r = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion: jwt })
-  });
-  if (!r.ok) throw new Error('token ' + r.status);
-  const d = await r.json();
-  cached = { token: d.access_token, until: Date.now() + (d.expires_in - 60) * 1000 };
-  return cached.token;
-}
 
 // Working hours, read on a Dhaka clock (shift by +6h, then use the UTC getters).
 function inHours(t) { const d = new Date(t + DHAKA); return HOURS.days.includes(d.getUTCDay()) && d.getUTCHours() >= HOURS.start && d.getUTCHours() < HOURS.end; }
@@ -34,30 +16,52 @@ function nextOpen(t) {
   }
 }
 
+// Does this event block my time? Not if it's all-day, marked Free, cancelled, or one I declined.
+function blocks(ev, me) {
+  if (ev.status === 'CANCELLED' || ev.transparency === 'TRANSPARENT') return false;
+  const people = [].concat(ev.attendee || []);
+  return !people.some(a => a && a.params && a.params.PARTSTAT === 'DECLINED' && String(a.val || '').toLowerCase().endsWith(me));
+}
+
+// Busy blocks overlapping the next 12 hours, as [start, end] in ms.
+function busyBlocks(data, now) {
+  const cal = Object.values(data).find(x => x.type === 'VCALENDAR') || {};
+  const me = String(cal['WR-CALNAME'] || '').toLowerCase(); // Google names a calendar after its owner's email
+  const from = new Date(now - 864e5), to = new Date(now + 12 * 36e5), out = [];
+  for (const ev of Object.values(data)) {
+    if (ev.type !== 'VEVENT' || !ev.start) continue;
+    let list;
+    try { list = ical.expandRecurringEvent(ev, { from, to, expandOngoing: true }); } catch (e) { continue; }
+    for (const x of list) {
+      if (x.isFullDay || !blocks(x.event || ev, me)) continue;
+      const s = +x.start, e = +x.end;
+      if (e > now && s < +to) out.push([s, e]);
+    }
+  }
+  return out.sort((a, b) => a[0] - b[0]);
+}
+
+function status(data, now) {
+  if (!inHours(now)) return { configured: true, state: 'off', back: new Date(nextOpen(now)).toISOString() };
+  // Join back-to-back meetings so "free at" is when I'm actually free.
+  let until = 0;
+  for (const [s, e] of busyBlocks(data, now)) if (s <= Math.max(now, until) + 60e3) until = Math.max(until, e);
+  return until > now ? { configured: true, state: 'busy', until: new Date(until).toISOString() } : { configured: true, state: 'free' };
+}
+
 module.exports = async function handler(req, res) {
-  const { GOOGLE_CLIENT_EMAIL: email, GOOGLE_PRIVATE_KEY: rawKey, GOOGLE_CALENDAR_ID: cal } = process.env;
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
-  if (!email || !rawKey || !cal) return res.status(200).json({ configured: false });
+  const url = process.env.GOOGLE_ICS_URL;
+  res.setHeader('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=240');
+  if (!url) return res.status(200).json({ configured: false });
   const now = Date.now();
-  if (!inHours(now)) return res.status(200).json({ configured: true, state: 'off', back: new Date(nextOpen(now)).toISOString() });
+  if (!inHours(now)) return res.status(200).json(status({}, now)); // no need to read the calendar at night
   try {
-    const key = rawKey.replace(/\\n/g, '\n'); // Vercel keeps the key's line breaks as \n
-    const r = await fetch('https://www.googleapis.com/calendar/v3/freeBusy', {
-      method: 'POST',
-      headers: { Authorization: 'Bearer ' + await accessToken(email, key), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ timeMin: new Date(now - 60e3).toISOString(), timeMax: new Date(now + 12 * 36e5).toISOString(), items: [{ id: cal }] })
-    });
-    const d = await r.json();
-    const c = d.calendars && d.calendars[cal];
-    if (!r.ok || !c || c.errors) throw new Error('freebusy ' + r.status + ' ' + JSON.stringify(c && c.errors));
-    // Busy blocks come back in order. Join back-to-back meetings so "free at" is when I'm actually free.
-    const blocks = c.busy.map(b => [Date.parse(b.start), Date.parse(b.end)]);
-    let until = 0;
-    for (const [s, e] of blocks) if (s <= Math.max(now, until) + 60e3 && e > now) until = Math.max(until, e);
-    if (until) return res.status(200).json({ configured: true, state: 'busy', until: new Date(until).toISOString() });
-    return res.status(200).json({ configured: true, state: 'free' });
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('ics ' + r.status);
+    return res.status(200).json(status(ical.sync.parseICS(await r.text()), now));
   } catch (e) {
     res.setHeader('Cache-Control', 'no-store');
     return res.status(502).json({ configured: true, error: 'Calendar did not answer' });
   }
 };
+module.exports.status = status; // for tests

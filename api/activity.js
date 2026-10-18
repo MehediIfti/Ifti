@@ -1,5 +1,6 @@
 // Meetings per day for the Activity heatmap on the homepage: GET /api/activity
-// The last 18 weeks, Sunday to today, on Dhaka days. Counts only: no titles, no names, nothing else leaves this function.
+// The last 18 weeks, Sunday to today, on Dhaka days, plus `since`: the first day the calendar link fully covers (earlier
+// days come from the hand-kept ACTIVITY block in the page). Counts only: no titles, no names, nothing else leaves here.
 // What counts as a meeting is decided in _calendar.js (all-day, marked Free, cancelled and declined events don't count).
 const { readCalendar, meetings } = require('./_calendar');
 
@@ -14,7 +15,11 @@ function counts(data, now) {
     const i = Math.floor((s - from) / 864e5);
     if (i >= 0 && i < days) c[i]++;
   }
-  return { from: new Date(from + DHAKA).toISOString().slice(0, 10), counts: c };
+  // Google's link only reaches back so far, so say from which day the counts are complete: the day after the first event.
+  let first = Infinity;
+  for (const ev of Object.values(data)) if (ev.type === 'VEVENT') for (const x of [ev].concat(Object.values(ev.recurrences || {}))) if (x && x.start && +x.start < first) first = +x.start;
+  const fd = new Date((isFinite(first) ? first : from) + DHAKA), since = Date.UTC(fd.getUTCFullYear(), fd.getUTCMonth(), fd.getUTCDate() + 1);
+  return { from: new Date(from + DHAKA).toISOString().slice(0, 10), since: new Date(since).toISOString().slice(0, 10), counts: c };
 }
 
 module.exports = async function handler(req, res) {

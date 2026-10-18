@@ -2538,6 +2538,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Live activity</span><span class="tag t-tool">Feature</span><p>The meetings heatmap on the homepage now updates itself from my calendar. Still counts only.</p></li>
         <li><span class="t">Dhaka right now</span><span class="tag t-tool">Feature</span><p>Under my name: the time in Dhaka and the weather outside.</p></li>
         <li><span class="t">Live F1 numbers</span><span class="tag t-tool">Feature</span><p>The F1 card and the terminal's f1 update themselves after every race, and show when the next one starts in your time.</p></li>
         <li><span class="t">Links to sections</span><span class="tag t-tool">Feature</span><p>Hover a heading in any note and click # to copy a link straight to that part.</p></li>
@@ -2762,8 +2763,9 @@ html.touring .tour-fab::after { display: none; }
   var navs = document.querySelectorAll('a.nav');
 
 
-  // ACTIVITY UPDATE: meetings per day from my calendar, oldest first, one row per week starting Sunday.
-  // Counts only: no titles, no names. Declined, all-day and out-of-office events are left out.
+  // ACTIVITY UPDATE: meetings per day, oldest first, one row per week starting Sunday. Counts only: no titles, no names.
+  // The page swaps in live counts from api/activity.js for the days the calendar link covers (from 19 Aug 2026 on), so
+  // this block only fills older days now and needs no more updates; it's also what shows if the live call fails.
   var ACTIVITY = {
     from: '2026-06-14',
     counts: [
@@ -2811,6 +2813,20 @@ html.touring .tour-fab::after { display: none; }
       '<div class="act-src">From my calendar, to ' + fmt(day(c.length - 1), true) + '</div></div>';
   }
   document.getElementById('act-inline').innerHTML = activityHTML();
+  // Live counts from api/activity.js for the days the calendar link covers; the hand-kept ACTIVITY block fills the
+  // earlier days (Google's link only reaches back a couple of months). If the call fails, the hand-kept grid stays.
+  setTimeout(function () {
+    fetch('/api/activity').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (!d || !d.configured || !d.counts || !d.counts.length) return;
+      var dayMs = 864e5, t = function (s) { return Date.parse(s + 'T00:00:00Z'); }, hand0 = t(ACTIVITY.from), live0 = t(d.from), since = t(d.since || d.from);
+      ACTIVITY = { from: d.from, counts: d.counts.map(function (v, i) {
+        var day = live0 + i * dayMs, h = Math.round((day - hand0) / dayMs);
+        return day >= since ? v : (h >= 0 && h < ACTIVITY.counts.length ? ACTIVITY.counts[h] : 0);
+      }) };
+      activityHTML.c = null;
+      document.querySelectorAll('.act').forEach(function (el) { el.outerHTML = activityHTML(); });
+    }, function () {});
+  }, 1800);
   // hover a day to read it; leave the grid to see the total again
   document.addEventListener('mouseover', function (e) {
     var cell = e.target.closest && e.target.closest('.act-g i');

@@ -44,7 +44,7 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Stats radar:** edit the `STATS UPDATE` array in the script at the bottom of `index.html`. Each row is `[chart label, full name, strength, interest]`, scored 0–100. OVR, MVP and Grinding are calculated from it.
 
-**Calendar activity:** the `ACTIVITY UPDATE` block holds meetings per day from the calendar (counts only, no titles). `from` is the first day (a Sunday); each row of `counts` is one week.
+**Calendar activity:** the heatmap shows meetings per day for the last 18 weeks (counts only, no titles). `api/activity.js` counts them from the same calendar link as the status (what counts as a meeting lives in `api/_calendar.js`), cached for an hour. Google's link only reaches back a couple of months, so for older days the page uses the hand-kept `ACTIVITY UPDATE` block, which is also what shows if the live call fails. Nothing to update by hand any more.
 
 **Note tags:** each note's `<article>` has a `data-tags` attribute (space-separated). Tags show in the note's Properties block, and notes that share a tag link to each other in the right column's local graph and linked mentions.
 

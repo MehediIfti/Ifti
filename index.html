@@ -1040,13 +1040,32 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   @keyframes in { from { opacity: 0.4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 }
 
-/* FPS cursor: a crosshair everywhere, red and tighter over anything you can click, normal I-beam in text fields. Mouse and trackpad only. */
+/* FPS cursor: a crosshair everywhere, tighter over anything you can click, normal I-beam in text fields. Mouse and trackpad only.
+   With the script running, the cursor hides over anything clickable and the target lock (.lock) frames it instead. */
 @media (pointer: fine) {
   html, html *:not(.wb *) { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Cpath d='M11 2V7.5M11 14.5V20M2 11H7.5M14.5 11H20' stroke='%23000' stroke-opacity='.6' stroke-width='3.2'/%3E%3Cpath d='M11 2V7.5M11 14.5V20M2 11H7.5M14.5 11H20' stroke='%23ffffff' stroke-width='1.6'/%3E%3Ccircle cx='11' cy='11' r='1.3' fill='%23ffffff' stroke='%23000' stroke-opacity='.6' stroke-width='.8'/%3E%3C/svg%3E") 11 11, crosshair !important; }
-  html a:not(.wb *), html button:not(.wb *), html [role="tab"]:not(.wb *), html [role="button"]:not(.wb *), html label:not(.wb *), html summary:not(.wb *), html select:not(.wb *), html input[type="range"]:not(.wb *), html input[type="radio"]:not(.wb *), html input[type="checkbox"]:not(.wb *), html .graph-open:not(.wb *) { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Cpath d='M11 2V8.8M11 13.2V20M2 11H8.8M13.2 11H20' stroke='%23000' stroke-opacity='.6' stroke-width='3.2'/%3E%3Cpath d='M11 2V8.8M11 13.2V20M2 11H8.8M13.2 11H20' stroke='%23ff4d6d' stroke-width='1.6'/%3E%3Ccircle cx='11' cy='11' r='1.3' fill='%23ff4d6d' stroke='%23000' stroke-opacity='.6' stroke-width='.8'/%3E%3C/svg%3E") 11 11, pointer !important; }
+  html a:not(.wb *), html button:not(.wb *), html [role="tab"]:not(.wb *), html [role="button"]:not(.wb *), html label:not(.wb *), html summary:not(.wb *), html select:not(.wb *), html input[type="range"]:not(.wb *), html input[type="radio"]:not(.wb *), html input[type="checkbox"]:not(.wb *), html .graph-open:not(.wb *) { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Cpath d='M11 2V8.8M11 13.2V20M2 11H8.8M13.2 11H20' stroke='%23000' stroke-opacity='.6' stroke-width='3.2'/%3E%3Cpath d='M11 2V8.8M11 13.2V20M2 11H8.8M13.2 11H20' stroke='%23ffffff' stroke-width='1.6'/%3E%3Ccircle cx='11' cy='11' r='1.3' fill='%23ffffff' stroke='%23000' stroke-opacity='.6' stroke-width='.8'/%3E%3C/svg%3E") 11 11, pointer !important; }
   html input[type="text"], html input[type="email"], html input:not([type]), html textarea, html [contenteditable] { cursor: text !important; }
   html button:disabled { cursor: not-allowed !important; }
+  html.lock-on:not(.is-dragging) :is(a[href], button:not(:disabled), [role="tab"], [role="button"], label, summary, select, input[type="range"], input[type="radio"], input[type="checkbox"], .graph-open):not(.wb *) { cursor: none !important; }
 }
+/* Target lock: four corners frame whatever is under the pointer. --lock sets the colour per theme. */
+.lock { --lk: var(--lock, #ff3b30); position: fixed; left: 0; top: 0; z-index: 119; width: 0; height: 0; pointer-events: none; opacity: 0;
+  background: repeating-linear-gradient(-45deg, color-mix(in srgb, var(--lk) 16%, transparent) 0 1px, transparent 1px 6px), color-mix(in srgb, var(--lk) 7%, transparent); }
+.lock.on { opacity: 1; }
+.lock i { position: absolute; width: 9px; height: 9px; border: 0 solid var(--lk); }
+.lock i:nth-child(1) { left: 0; top: 0; border-width: 2px 0 0 2px; --dx: -5px; --dy: -5px; }
+.lock i:nth-child(2) { right: 0; top: 0; border-width: 2px 2px 0 0; --dx: 5px; --dy: -5px; }
+.lock i:nth-child(3) { left: 0; bottom: 0; border-width: 0 0 2px 2px; --dx: -5px; --dy: 5px; }
+.lock i:nth-child(4) { right: 0; bottom: 0; border-width: 0 2px 2px 0; --dx: 5px; --dy: 5px; }
+.lock:not(.on) i { transform: translate(var(--dx), var(--dy)); }
+.lock.press i { transform: translate(calc(var(--dx) * -0.5), calc(var(--dy) * -0.5)); }
+@media (prefers-reduced-motion: no-preference) {
+  .lock { transition: opacity 0.12s, transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.16s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .lock i { transition: transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .lock.snap { transition: opacity 0.12s; }
+}
+@media print { .lock { display: none !important; } }
 .hitmark { position: fixed; z-index: 120; width: 14px; height: 14px; margin: -7px 0 0 -7px; pointer-events: none; }
 .hitmark::before, .hitmark::after { content: ""; position: absolute; inset: 0; background:
   linear-gradient(45deg, transparent 46%, #fff 46%, #fff 54%, transparent 54%) top left / 5px 5px no-repeat,
@@ -2296,6 +2315,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Target lock</span><span class="tag t-tool">Feature</span><p>Point at anything you can click and the cursor disappears. Four red corners frame it instead.</p></li>
         <li><span class="t">N°006 Show the cut marks</span><span class="tag t-book">Note</span><p>Notes on Joe Rogan's talk with Tyler Engle about old legends that might be true. <a href="#n-006">Read it</a>.</p></li>
         <li><span class="t">Coffee counter</span><span class="tag t-tool">Feature</span><p>A running count of the black Americanos I drink on workdays this year. It sits above the terminal button.</p></li>
         <li><span class="t">Search</span><span class="tag t-tool">Feature</span><p>Press Ctrl K, or ⌘K on a Mac, to find any page, section, note, book or theme.</p></li>
@@ -3645,10 +3665,46 @@ html.touring .tour-fab::after { display: none; }
     timers.push(setTimeout(finish, 60 + lines.length * 95 + 160));
     ['click', 'keydown', 'touchstart'].forEach(function (ev) { window.addEventListener(ev, finish, { once: true, passive: true }); });
   })();
-  // Hit marker where you click, like landing a shot.
+  // Target lock: over anything clickable the cursor hides and four corners frame the target. Mouse and trackpad only.
+  var lockOn = function () { return false; };
+  if (matchMedia('(pointer: fine)').matches) (function () {
+    var SEL = 'a[href], button:not(:disabled), [role="tab"], [role="button"], label, summary, select, input[type="range"], input[type="radio"], input[type="checkbox"], .graph-open';
+    var TYPING = 'input:not([type="range"]):not([type="radio"]):not([type="checkbox"]):not([type="button"]):not([type="submit"]), textarea, [contenteditable]';
+    var PAD = 5, lk = document.createElement('div'), tgt = null, mx = 0, my = 0;
+    lk.className = 'lock'; lk.setAttribute('aria-hidden', 'true'); lk.innerHTML = '<i></i><i></i><i></i><i></i>';
+    document.body.appendChild(lk); root.classList.add('lock-on');
+    lockOn = function () { return !!tgt; };
+    function drop() { tgt = null; lk.classList.remove('on', 'press'); }
+    function place() {
+      if (!tgt) return;
+      if (!tgt.isConnected) return drop();
+      // A link that wraps onto two lines gets the line under the pointer, not one big box.
+      var rs = tgt.getClientRects(), r = tgt.getBoundingClientRect();
+      for (var i = 0; rs.length > 1 && i < rs.length; i++) if (mx >= rs[i].left && mx <= rs[i].right && my >= rs[i].top && my <= rs[i].bottom) { r = rs[i]; break; }
+      if (!r.width && !r.height) return drop();
+      lk.style.transform = 'translate(' + (r.left - PAD) + 'px,' + (r.top - PAD) + 'px)';
+      lk.style.width = (r.width + PAD * 2) + 'px'; lk.style.height = (r.height + PAD * 2) + 'px';
+    }
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      var el = e.target, t = el.closest && !el.closest(TYPING) && !root.classList.contains('is-dragging') ? el.closest(SEL) : null;
+      if (t && t.closest('.wb')) t = null;
+      if (!t) return drop();
+      if (t === tgt && tgt.getClientRects().length < 2) return;
+      var fresh = !tgt; tgt = t;
+      if (fresh) { lk.classList.add('snap'); place(); void lk.offsetWidth; lk.classList.remove('snap'); } else place();
+      lk.classList.add('on');
+    }, { passive: true });
+    document.addEventListener('mouseout', function (e) { if (!e.relatedTarget) drop(); });
+    document.addEventListener('mousedown', function (e) { if (tgt && e.button === 0) lk.classList.add('press'); });
+    document.addEventListener('mouseup', function () { lk.classList.remove('press'); place(); });
+    window.addEventListener('scroll', place, { passive: true, capture: true });
+    window.addEventListener('resize', place);
+  })();
+  // Hit marker where you click, like landing a shot. On a locked target the corners squeeze instead.
   if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.addEventListener('mousedown', function (e) {
-      if (e.button !== 0) return;
+      if (e.button !== 0 || lockOn()) return;
       var m = document.createElement('span'); m.className = 'hitmark'; m.style.left = e.clientX + 'px'; m.style.top = e.clientY + 'px';
       document.body.appendChild(m); setTimeout(function () { m.remove(); }, 340);
     });

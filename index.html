@@ -1232,6 +1232,22 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .rail-search + .stamp { margin-top: 1.25rem; }
 .pal { width: min(36rem, calc(100vw - 24px)); margin-top: 12vh; padding: 0; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); }
 .pal::backdrop, .sc::backdrop, .keys::backdrop { background: rgba(0,0,0,0.55); }
+/* Achievements: the list (search or the terminal) and the toast when one unlocks. */
+.keys-head h2 small { margin-left: 0.4rem; font: 0.75rem var(--mono); color: var(--subtext0); }
+.ach-list { list-style: none; margin: 0; padding: 0.4rem 1rem 1rem; display: grid; gap: 0.6rem; }
+.ach-list li { display: grid; grid-template-columns: 1.4rem minmax(0, 1fr); column-gap: 0.4rem; align-items: baseline; color: var(--subtext0); }
+.ach-list li i { grid-row: span 2; font-style: normal; font: 600 0.875rem var(--mono); color: var(--overlay1); }
+.ach-list li b { font-weight: 600; font-size: 0.9rem; }
+.ach-list li span { font-size: 0.8rem; }
+.ach-list li.got { color: var(--text); }
+.ach-list li.got i { color: var(--accent); }
+.ach-toast { position: fixed; z-index: 140; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 1.25rem); transform: translate(-50%, 12px); opacity: 0; display: grid; gap: 0.1rem; padding: 0.55rem 1rem; text-align: center; color: var(--text); background: var(--mantle); border: 1px solid var(--accent); border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,0.35); pointer-events: none; transition: opacity 0.25s, transform 0.25s; }
+.ach-toast.on { opacity: 1; transform: translate(-50%, 0); }
+.ach-toast small { font: 500 0.625rem var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.ach-toast b { font-size: 0.875rem; }
+@media (max-width: 760px) { :root[data-mnav="tabs"] .ach-toast { bottom: calc(env(safe-area-inset-bottom, 0px) + 9rem); } }
+@media (prefers-reduced-motion: reduce) { .ach-toast { transition: none; transform: translate(-50%, 0); } }
+@media print { .ach-toast { display: none; } }
 /* Shortcut sheet (?): every key the site listens to, built from the live key map so it can't go stale. */
 .keys { width: min(30rem, calc(100vw - 24px)); padding: 0; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); }
 .keys-head { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1rem; border-bottom: 1px solid var(--surface0); }
@@ -2529,6 +2545,33 @@ html.touring .tour-fab::after { display: none; }
       <p><a class="back" href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">All research on ResearchGate ↗</a></p>
     </section>
 
+    <!-- BACKSTAGE: the hidden room. Not in the rail, search or Previous/Next; the terminal finds it (ls -a, cd .backstage). -->
+    <section class="page" id="backstage">
+      <p class="label">Backstage</p>
+      <h1>How this notebook is built</h1>
+      <p class="lede">You found the room that isn't on the map. Here's what's behind the pages.</p>
+      <dl class="facts" id="bs-stats"></dl>
+
+      <h2>One file</h2>
+      <p>The whole site is a single HTML file: every page, every note, all the styles and all the scripts. No framework and no build step. What sits in the repo is what your browser downloads.</p>
+      <p>A check runs on every push. The scripts must parse, every link inside the site must lead somewhere, and the file must stay under 115 KB compressed.</p>
+
+      <h2>Built by talking</h2>
+      <p>I build it in conversation with Claude Code. I say what I want. It writes the change, checks it in a browser at computer and phone sizes, and ships it. That's what the footer means.</p>
+
+      <h2>The rules it follows</h2>
+      <ul class="plain">
+        <li><b>Plain words.</b> Every line follows a voice guide: the claim first, no hype, no exclamation marks.</li>
+        <li><b>Facts only.</b> No invented clients, quotes or numbers. If a fact is missing, it waits.</li>
+        <li><b>Credit the speaker.</b> Notes on podcasts summarise the episode and say who said what.</li>
+        <li><b>Write it down.</b> Every new page, note and feature gets a line in the <a href="#changelog">changelog</a>.</li>
+      </ul>
+
+      <h2>The live parts</h2>
+      <p>A few small server functions run next to the page: what I'm playing on Spotify, whether I'm in a meeting, the Dhaka weather, the F1 numbers and the meetings heatmap. Keys stay on the server, calendar details never leave it, and the page sets no cookies.</p>
+      <p><a class="back" href="#index">← Back to the notebook</a></p>
+    </section>
+
     <!-- CHANGELOG UPDATE: newest first, one <h2> per day (Dhaka time). Only things a visitor would notice:
          a new page, a new note, a new feature or a redesign. Not copy edits, fixes or small tweaks.
          Tag each entry Page, Note, Feature or Design. -->
@@ -2538,6 +2581,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Achievements</span><span class="tag t-tool">Feature</span><p>Small badges for poking around. Search "achievements" to see what's left. They live only in your browser.</p></li>
         <li><span class="t">Live activity</span><span class="tag t-tool">Feature</span><p>The meetings heatmap on the homepage now updates itself from my calendar. Still counts only.</p></li>
         <li><span class="t">Dhaka right now</span><span class="tag t-tool">Feature</span><p>Under my name: the time in Dhaka and the weather outside.</p></li>
         <li><span class="t">Live F1 numbers</span><span class="tag t-tool">Feature</span><p>The F1 card and the terminal's f1 update themselves after every race, and show when the next one starts in your time.</p></li>
@@ -2726,6 +2770,11 @@ html.touring .tour-fab::after { display: none; }
 <dialog class="keys" id="keys" aria-labelledby="keys-t">
   <div class="keys-head"><h2 id="keys-t">Keyboard shortcuts</h2><button type="button" class="ap-x" id="keys-x" aria-label="Close">×</button></div>
   <dl class="keys-list" id="keys-list"></dl>
+</dialog>
+
+<dialog class="keys ach" id="ach-dlg" aria-labelledby="ach-t">
+  <div class="keys-head"><h2 id="ach-t">Achievements <small id="ach-n"></small></h2><button type="button" class="ap-x" id="ach-x" aria-label="Close">×</button></div>
+  <ul class="ach-list" id="ach-list"></ul>
 </dialog>
 
 <dialog class="sc" id="sc" aria-label="Share a quote">
@@ -3418,6 +3467,20 @@ html.touring .tour-fab::after { display: none; }
   window.addEventListener('hashchange', show);
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
+  // Backstage numbers: counted from the page itself once it has loaded, so they're always current.
+  window.addEventListener('load', function () {
+    var box = document.getElementById('bs-stats'); if (!box) return;
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var rows = [
+      ['Pages', document.querySelectorAll('.page:not(article):not(#backstage)').length],
+      ['Notes', document.querySelectorAll('article.page[id^="n-"]').length],
+      ['Themes', THEMES.length],
+      ['Changelog', document.querySelectorAll('#changelog .cl-list > li').length + ' entries']
+    ];
+    if (nav && nav.encodedBodySize) rows.push(['This page', 'arrived as ' + Math.round(nav.encodedBodySize / 1024) + ' KB']);
+    box.innerHTML = rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>'; }).join('');
+  });
+
   // Links to sections: every note heading gets its id now (the same id search gives it), so a shared #s-n-005-… link
   // opens the note at that section on a fresh visit. The # beside each heading copies that link.
   var hSlug = function (t) { return t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40); };
@@ -3555,7 +3618,7 @@ html.touring .tour-fab::after { display: none; }
     root.style.setProperty('--ht-sun', 'url(' + c.toDataURL() + ')');
   }, 0);
   // Picking today's theme puts the visitor back on the daily rotation; any other pick sticks.
-  function pickTheme(id) { apTheme(id); store('ap-theme', cur === THEME_DEFAULT ? null : cur); }
+  function pickTheme(id) { apTheme(id); store('ap-theme', cur === THEME_DEFAULT ? null : cur); if (window.achTheme) achTheme(cur); }
   function edits(id) { try { return JSON.parse(read('ap-t-' + id) || '{}') || {}; } catch (e) { return {}; } }
   var cur = themeById(read('ap-theme')).id;
   ['palette', 'bg', 'calm', 'type', 'layout'].forEach(function (k) { store('ap-' + k, null); }); // settings saved before themes existed
@@ -3644,7 +3707,7 @@ html.touring .tour-fab::after { display: none; }
     kStep = 0;
     var saved = read('ap-resolved');
     apTheme('lightsout'); store('ap-resolved', saved);
-    lightsOut();
+    lightsOut(); if (window.unlock) unlock('lights');
   });
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -3680,6 +3743,7 @@ html.touring .tour-fab::after { display: none; }
     rows.push([kb('R'), 'A random note'], [kb('T'), 'Theme'], [kb('~'), 'Terminal'], [kb(mac ? '⌘' : 'Ctrl', 'K'), 'Search'], [kb('?'), 'This list'], [kb('Esc'), 'Close whatever is open']);
     document.getElementById('keys-list').innerHTML = rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>'; }).join('');
     if (!keysDlg.open) keysDlg.showModal();
+    if (window.unlock) unlock('keys');
   }
   window.openKeys = keysOpen;
   document.getElementById('keys-x').addEventListener('click', function () { keysDlg.close(); });
@@ -3833,7 +3897,7 @@ html.touring .tour-fab::after { display: none; }
   (function () {
     var term = document.getElementById('term'), out = document.getElementById('term-out'), form = document.getElementById('term-form'), input = document.getElementById('term-i'), ps = document.getElementById('term-ps');
     var hist = [], hi = 0, booted = false, lastFortune = null;
-    var pagesList = Array.prototype.filter.call(document.querySelectorAll('.page[id]'), function (p) { return p.id.indexOf('n-') !== 0; }).map(function (p) { return p.id; });
+    var pagesList = Array.prototype.filter.call(document.querySelectorAll('.page[id]'), function (p) { return p.id.indexOf('n-') !== 0 && p.id !== 'backstage'; }).map(function (p) { return p.id; });
     var notesList = Array.prototype.map.call(document.querySelectorAll('article.page[id^="n-"]'), function (n) { return n; });
     function here() { var id = (location.hash || '#index').slice(1); return id === 'index' ? '~' : id.indexOf('n-') === 0 ? '~/notes/' + id.slice(2) : '~/' + id; }
     function print(html, cls) { var d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); out.scrollTop = out.scrollHeight; }
@@ -3865,18 +3929,20 @@ html.touring .tour-fab::after { display: none; }
           ['whoami', 'who runs this notebook'], ['now', 'what I\'m on this month'], ['f1', 'Max and Red Bull, right now'],
           ['theme [name]', 'list or switch themes'], ['book', 'book a call'], ['email', 'copy my email'], ['cv', 'download my CV'],
           ['socials', 'where else to find me'], ['coffee', 'cups so far this year'], ['fortune', 'a line from my notes'],
-          ['git log', 'what changed on the site'], ['top', 'what I\'m running on'], ['ping', 'check the site is up'],
+          ['git log', 'what changed on the site'], ['top', 'what I\'m running on'], ['ping', 'check the site is up'], ['achievements', 'what you\'ve found'],
           ['date', 'the time in Dhaka'], ['pwd', 'where you are'], ['echo <text>', 'say it back'], ['history', 'what you typed'],
           ['clear', 'clear the screen'], ['exit', 'close (or press Esc)']
         ].map(function (r) { return '  <span class="g">' + esc(r[0].padEnd(16, ' ')) + '</span>' + r[1]; }).join('\n') + '\n<span class="c">Tab completes. ↑ ↓ for history.</span>');
       },
       ls: function (a) {
-        if (!a || a === 'pages' || a === '~') line(pagesList.join('   '), 'g');
+        if (a === '-a' || a === '-la' || a === '-al') { print('<span class="c">.</span>   <span class="c">..</span>   <span class="m">.backstage</span>   <span class="g">' + esc(pagesList.join('   ')) + '</span>'); a = 'notes'; }
+        else if (!a || a === 'pages' || a === '~') line(pagesList.join('   '), 'g');
         if (!a || a === 'notes') print(notesList.map(function (n) { return '<span class="y">' + n.id.slice(2) + '</span>  ' + esc(n.querySelector('h1').textContent); }).join('\n'));
       },
       cd: function (a) {
         if (!a || a === '~' || a === '/' || a === '..') { location.hash = 'index'; return; }
         a = a.replace(/^~?\//, '').replace(/\/$/, '');
+        if (a === '.backstage' || a === 'backstage') { location.hash = 'backstage'; return; }
         var n = /^notes\/(\d+)$/.test(a) ? noteById(a.split('/')[1]) : null;
         if (n) { location.hash = n.id; return; }
         if (pagesList.indexOf(a) >= 0) { location.hash = a; return; }
@@ -3985,6 +4051,12 @@ html.touring .tour-fab::after { display: none; }
           });
         })();
       },
+      achievements: function () {
+        var l = window.achList ? window.achList() : [];
+        print('<span class="b">Achievements</span> <span class="c">' + l.filter(function (x) { return x.got; }).length + ' of ' + l.length + '</span>\n' + l.map(function (x) {
+          return (x.got ? '  <span class="g">✓ ' + esc(x.name) + '</span>' : '  <span class="c">· ' + esc(x.name) + ' — ' + esc(x.hint) + '</span>');
+        }).join('\n'));
+      },
       history: function () { print(hist.map(function (h, i) { return '<span class="c">' + String(i + 1).padStart(3, ' ') + '</span>  ' + esc(h); }).join('\n')); }
     };
     CMDS.open = CMDS.cd; CMDS.man = CMDS.help; CMDS['?'] = CMDS.help; CMDS.contact = CMDS.email; CMDS.hire = CMDS.book; CMDS.rm = function () { line('Nothing here gets deleted.', 'r'); };
@@ -3998,6 +4070,7 @@ html.touring .tour-fab::after { display: none; }
     }
     function open() {
       term.hidden = false; requestAnimationFrame(function () { term.classList.add('on'); });
+      if (window.unlock) unlock('terminal');
       if (!booted) { booted = true; print('<span class="m">ifti@notebook</span> — last login ' + new Date().toDateString() + ' from Dhaka\nType <span class="g">help</span> to see what I can do. <span class="c">Esc to close.</span>'); }
       ps.textContent = here() + ' $'; setTimeout(function () { input.focus(); }, 30);
     }
@@ -4525,7 +4598,7 @@ html.touring .tour-fab::after { display: none; }
       document.getElementById('sc-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '&url=' + encodeURIComponent(url());
       document.getElementById('sc-li').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url());
       var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-      fonts.then(function () { draw(); if (!dlg.open) dlg.showModal(); });
+      fonts.then(function () { draw(); if (!dlg.open) dlg.showModal(); if (window.unlock) unlock('share'); });
     }
     function blob(cb) { cv.toBlob(cb, 'image/png'); }
     function fname() { return 'ifti-' + q.art.id + '-quote.png'; }
@@ -4580,7 +4653,7 @@ html.touring .tour-fab::after { display: none; }
         items.push({ k: 'Note', t: title(n), x: 'N°' + n.id.slice(2) + ' ' + (n.getAttribute('data-tags') || ''), go: '#' + n.id });
       });
       document.querySelectorAll('.page h2').forEach(function (h) {
-        var pg = h.closest('.page'); if (!pg) return;
+        var pg = h.closest('.page'); if (!pg || pg.id === 'backstage') return; // the hidden room stays hidden
         if (!h.id) h.id = 's-' + pg.id + '-' + slug(h.textContent);
         items.push({ k: 'Section', t: h.textContent.trim(), x: 'in ' + title(pg), go: '#' + h.id });
       });
@@ -4590,6 +4663,7 @@ html.touring .tour-fab::after { display: none; }
       });
       THEMES.forEach(function (th) { items.push({ k: 'Theme', t: th.name || th.id, x: th.note || '', run: function () { apTheme(th.id); } }); });
       var book = document.querySelector('[data-book]');
+      items.push({ k: 'Action', t: 'Achievements', x: 'badges unlocked progress', run: function () { setTimeout(window.openAch, 60); } });
       if (matchMedia('(pointer: fine)').matches) items.push({ k: 'Action', t: 'Keyboard shortcuts', x: 'keys hotkeys help ?', run: function () { setTimeout(window.openKeys, 60); } });
       items.push(
         { k: 'Action', t: 'Book a call', x: 'calendar meeting', run: function () { window.open(book.href, '_blank', 'noopener'); } },
@@ -4704,6 +4778,62 @@ html.touring .tour-fab::after { display: none; }
       if (e.key === 'Escape') end(); else if (e.key === 'ArrowRight') go(i + 1); else if (e.key === 'ArrowLeft' && i) go(i - 1);
     });
     document.querySelectorAll('.tour-start').forEach(function (b) { b.addEventListener('click', function () { window.startTour(); }); });
+  })();
+
+  // ============ ACHIEVEMENTS: small badges for exploring. Stored only in this browser; no network, no tracking. ============
+  // Each row is [id, name, how to get it]. The hints stay vague on purpose for the last two.
+  (function () {
+    var ACH = [
+      ['terminal', 'Found the terminal', 'Press ~, or open it from search.'],
+      ['keys', 'Knows the keys', 'Press ? on a computer.'],
+      ['themes', 'Theme hopper', 'Pick three different themes.'],
+      ['notes', 'Read every note', 'Open each note in the notebook.'],
+      ['tour', 'Took the tour', 'Start the tour.'],
+      ['share', 'Shared a line', 'Turn a line from a note into a share card.'],
+      ['backstage', 'Found the hidden room', 'It isn\'t on the map. The terminal knows the way.'],
+      ['lights', 'Lights out', 'A very old cheat code.']
+    ];
+    function get(k, d) { try { return JSON.parse(localStorage.getItem(k) || 'null') || d; } catch (e) { return d; } }
+    function put(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+    var got = get('ach', {}), queue = [], showing = false;
+    function toast() {
+      if (showing || !queue.length) return; showing = true;
+      var t = document.createElement('div'); t.className = 'ach-toast'; t.setAttribute('role', 'status');
+      t.innerHTML = '<small>Achievement</small><b>' + esc(queue.shift()) + '</b>';
+      document.body.appendChild(t); requestAnimationFrame(function () { t.classList.add('on'); });
+      setTimeout(function () { t.classList.remove('on'); setTimeout(function () { t.remove(); showing = false; toast(); }, 300); }, 3200);
+    }
+    window.unlock = function (id) {
+      var a = ACH.filter(function (x) { return x[0] === id; })[0];
+      if (!a || got[id]) return;
+      got[id] = Date.now(); put('ach', got); queue.push(a[1]); toast();
+    };
+    // Themes and notes need a running list before they count.
+    window.achTheme = function (id) { var l = get('ach-themes', []); if (l.indexOf(id) < 0) { l.push(id); put('ach-themes', l); } if (l.length >= 3) unlock('themes'); };
+    function onPage() {
+      var id = (location.hash || '').slice(1);
+      if (id === 'backstage') unlock('backstage');
+      if (id.indexOf('n-') === 0 && document.getElementById(id)) {
+        var l = get('ach-notes', []); if (l.indexOf(id) < 0) { l.push(id); put('ach-notes', l); }
+        var all = Array.prototype.map.call(document.querySelectorAll('article.page[id^="n-"]'), function (n) { return n.id; });
+        if (all.every(function (n) { return l.indexOf(n) >= 0; })) unlock('notes');
+      }
+    }
+    window.addEventListener('hashchange', onPage); onPage();
+    var st = window.startTour; if (st) window.startTour = function () { unlock('tour'); return st.apply(this, arguments); };
+    // The list: in search ("Achievements") and the terminal's achievements command.
+    var dlg = document.getElementById('ach-dlg');
+    window.achList = function () { return ACH.map(function (a) { return { name: a[1], hint: a[2], got: !!got[a[0]] }; }); };
+    window.openAch = function () {
+      var l = window.achList(), n = l.filter(function (x) { return x.got; }).length;
+      document.getElementById('ach-n').textContent = n + ' of ' + l.length;
+      document.getElementById('ach-list').innerHTML = l.map(function (x) {
+        return '<li class="' + (x.got ? 'got' : '') + '"><i aria-hidden="true">' + (x.got ? '✓' : '·') + '</i><b>' + esc(x.name) + '</b><span>' + (x.got ? 'Unlocked' : esc(x.hint)) + '</span></li>';
+      }).join('');
+      if (!dlg.open) dlg.showModal();
+    };
+    document.getElementById('ach-x').addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
   })();
 
   // ============ Print: any page prints clean; the Work page prints as a CV ============

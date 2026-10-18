@@ -80,6 +80,10 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Dhaka right now:** under the status in the left rail: Dhaka's time (worked out in the page, ticking each minute) and the weather from `api/weather.js`, which reads Open-Meteo (free, no key, no cookies) and is cached for 30 minutes, so visitors' browsers never call a third party. Each visit keeps it for 30 minutes in `sessionStorage`. If the weather can't load, only the time shows.
 
+**Hidden room:** `#backstage`, a page about how the site is built. It's left out of the rail, search, Previous/Next and the changelog on purpose. The terminal finds it: `ls -a` lists `.backstage`, and `cd .backstage` opens it. Its numbers (pages, notes, themes, changelog entries, page size) are counted live.
+
+**Achievements:** eight badges in the `ACHIEVEMENTS` block (`ACH`), stored only in `localStorage`, with a small toast when one unlocks: terminal, `?` sheet, three themes picked, every note opened, tour, share card, the hidden room and the Konami code. Search "Achievements" or type `achievements` in the terminal for the list. Call `unlock('id')` from any new feature to add one.
+
 **Keyboard:** `?` opens the shortcut sheet, built from the number-key map (`keys`) and the rail's labels, so new pages show up on their own. `r` opens a random note, never the one you're on (`randomNote()`, also used by search). There's one key the sheet doesn't mention: the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) runs the start lights and shows Lights Out for that visit only; a reload brings back the visitor's own theme.
 
 **Links to sections:** every note heading gets an id like `s-n-005-who-pays-for-it` when the page loads (the same id search uses), and a `#` beside it copies the link. A fresh visit to that link opens the note at the section.

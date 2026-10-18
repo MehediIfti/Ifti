@@ -1388,7 +1388,22 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
   .stereo-m[data-state="live"] .sm-disc { animation: st-spin 1.8s linear infinite; }
   .stereo-m[data-state="live"] .sm-reels .cas-reel { animation: st-spin 1.6s linear infinite; }
 }
-@media print { .stereo, .stereo-m { display: none !important; } }
+@media print { .stereo, .stereo-m, .avail { display: none !important; } }
+/* Calendar status under my name (api/status.js): Door's open, In a meeting, or Off the clock. Free/busy only, never meeting details. */
+.avail { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.45rem; margin: 0; font: 0.6875rem/1.5 var(--mono); color: var(--subtext0); text-decoration: none; }
+.avail[hidden] { display: none; }
+.avail i { flex: none; align-self: center; width: 7px; height: 7px; border-radius: 50%; background: var(--overlay1); }
+.avail b { font-weight: 500; color: var(--text); }
+.avail a { color: var(--accent); }
+.avail[data-state="free"] i { background: #22c55e; }
+.avail[data-state="busy"] i { background: #ff3b30; }
+.rail .avail { margin: -1.15rem 0 1.5rem; }
+.rail .avail span { flex-basis: 100%; padding-left: calc(7px + 0.45rem); }
+.avail-m { flex: none; gap: 0.35rem; font-size: 0.625rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .avail[data-state="free"] i { animation: av-pulse 2.4s ease-out infinite; }
+  @keyframes av-pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); } 70%, 100% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } }
+}
 /* ============ THEME: LIGHTS OUT ============
    Formula 1, Red Bull colours. Navy, F1 red and yellow, Titillium Web (the classic F1 typeface), slanted headlines,
    parallelogram buttons, corner-cut cards and diagonal speed lines. A start-light sequence plays when you switch to it. */
@@ -1670,6 +1685,7 @@ html.touring .tour-fab::after { display: none; }
 
 <header class="m-top" id="m-top">
   <a class="who" href="#index">Ifti</a>
+  <a class="avail avail-m" data-avail target="_blank" rel="noopener" hidden><i></i><b></b></a>
   <span class="path" id="m-path">~/</span>
   <button type="button" class="m-btn pal-open" aria-label="Search the site"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></g></svg></button>
   <button type="button" class="m-btn m-theme-top ap-open" aria-label="Change theme"><span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
@@ -1679,6 +1695,7 @@ html.touring .tour-fab::after { display: none; }
 <div class="shell">
   <nav class="rail" aria-label="Sections">
     <a class="name" href="#index">Ifti</a>
+    <p class="avail" data-avail hidden><i></i><b></b><span></span></p>
     <ol>
       <li><a class="nav" href="#index"><kbd>1</kbd>Index</a></li>
       <li><a class="nav" href="#now"><kbd>2</kbd>Now</a></li>
@@ -3004,6 +3021,36 @@ html.touring .tour-fab::after { display: none; }
   // BOOKING: paste the Calendly link here. Until then, Book a call opens an email.
   var CALENDLY = 'https://calendar.app.google/hLuo2fyWcoeTghbM6';
   if (CALENDLY) document.querySelectorAll('[data-book]').forEach(function (a) { a.href = CALENDLY; a.target = '_blank'; a.rel = 'noopener'; });
+
+  // CALENDAR STATUS: under my name on every page (rail) and in the phone top bar. api/status.js reads free/busy only, in my
+  // working hours (Sun–Thu, 10:00–19:00 Dhaka). Hidden until the calendar is connected (README → Calendar status).
+  // Times show in the visitor's own time zone. Add ?status=free, busy or off to the address to preview it.
+  (function () {
+    var els = document.querySelectorAll('[data-avail]');
+    function clock(iso) { return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).replace(':00', '').toLowerCase(); }
+    function when(iso) { var d = new Date(iso); return d.toDateString() === new Date().toDateString() ? 'at ' + clock(iso) : d.toLocaleDateString([], { weekday: 'short' }) + ' ' + clock(iso); }
+    function show(d) {
+      var ok = !!(d && d.configured && d.state);
+      els.forEach(function (el) {
+        el.hidden = !ok; if (!ok) return;
+        el.setAttribute('data-state', d.state);
+        el.querySelector('b').textContent = d.state === 'free' ? "Door's open" : d.state === 'busy' ? 'In a meeting' : 'Off the clock';
+        el.title = d.state === 'busy' ? 'Free at ' + clock(d.until) + ', your time' : d.state === 'off' ? 'Back ' + when(d.back) + ', your time' : 'Free right now. Book a call.';
+        if (el.tagName === 'A') { if (d.state === 'free' && CALENDLY) el.href = CALENDLY; else el.removeAttribute('href'); }
+        var s = el.querySelector('span'); if (!s) return;
+        if (d.state === 'free') s.innerHTML = '<a href="' + CALENDLY + '" target="_blank" rel="noopener">Book a call</a>';
+        else s.textContent = d.state === 'busy' ? 'free at ' + clock(d.until) : 'back ' + when(d.back);
+      });
+    }
+    function load() {
+      if (document.hidden) return;
+      var demo = (location.search.match(/[?&]status=(free|busy|off)/) || [])[1];
+      if (demo) return show({ configured: true, state: demo, until: new Date(Date.now() + 40 * 60e3).toISOString(), back: new Date(Date.now() + 15 * 36e5).toISOString() });
+      fetch('/api/status').then(function (r) { return r.json(); }).then(show, function () { show(null); });
+    }
+    load(); setInterval(load, 120000);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) load(); });
+  })();
 
   // SOCIALS UPDATE: one entry per profile: [name, url, icon]. Rendered wherever a [data-socials] box appears.
   var SOCIALS = [

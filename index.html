@@ -588,6 +588,7 @@ ul.plain li::marker { color: var(--muted); }
 .sub-box .back { margin-left: auto; }
 .sub-box input { flex: 1 1 14rem; min-width: 0; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--base); border: 1px solid var(--surface0); border-radius: 6px; padding: 0.5rem 0.7rem; }
 .sub-box input:focus { outline: none; border-color: var(--accent); }
+#sub-email { scroll-margin-block: 35vh; } /* "subscribe here" links land with the box mid-screen, not under the top edge */
 /* calls to action */
 .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; }
 .cta .btn { text-decoration: none; display: inline-block; }
@@ -1786,9 +1787,9 @@ html.touring .tour-fab::after { display: none; }
       <h2 class="grp" id="writing-h">Writing</h2>
       <p class="sub">Short notes on work and what I'm listening to. Longer pieces on <a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a>.</p>
       <ul class="entries">
+        <li><a href="#n-007"><span class="no">N°007</span><span class="t">Show the guardrails first</span><span class="d">18 Oct 2026</span></a></li>
         <li><a href="#n-006"><span class="no">N°006</span><span class="t">Show the cut marks</span><span class="d">18 Oct 2026</span></a></li>
         <li><a href="#n-005"><span class="no">N°005</span><span class="t">Trust is the product</span><span class="d">17 Oct 2026</span></a></li>
-        <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
         <li><a href="https://mehediifti.substack.com/p/life-module-01-being-out-there" target="_blank" rel="noopener"><span class="no">LM 01</span><span class="t">Being out there <i class="ext">Substack ↗</i></span><span class="d">17 Nov 2025</span></a></li>
       </ul>
       <form class="sub-box" action="https://mehediifti.substack.com/subscribe" method="get" target="_blank">
@@ -1889,6 +1890,7 @@ html.touring .tour-fab::after { display: none; }
       <h1>Notes</h1>
       <p class="lede">Short notes from client work, and from what I'm watching and listening to.</p>
       <ul class="entries">
+        <li><a href="#n-007"><span class="no">N°007</span><span class="t">Show the guardrails first</span><span class="d">18 Oct 2026</span></a></li>
         <li><a href="#n-006"><span class="no">N°006</span><span class="t">Show the cut marks</span><span class="d">18 Oct 2026</span></a></li>
         <li><a href="#n-005"><span class="no">N°005</span><span class="t">Trust is the product</span><span class="d">17 Oct 2026</span></a></li>
         <li><a href="#n-004"><span class="no">N°004</span><span class="t">Founders buy speed, enterprises buy safety</span><span class="d">12 Oct 2026</span></a></li>
@@ -1897,6 +1899,20 @@ html.touring .tour-fab::after { display: none; }
         <li><a href="#n-001"><span class="no">N°001</span><span class="t">Why this notebook exists</span><span class="d">1 Sep 2026</span></a></li>
       </ul>
     </section>
+
+    <article class="page" id="n-007" data-tags="trust sales enterprise positioning">
+      <div class="note-head"><span class="label">N°007</span><span class="label">18 Oct 2026</span></div>
+      <h1>Show the guardrails first</h1>
+      <p>What I took from <a href="#n-005">N°005</a>, Alexandr Wang on how Meta made its agent safe to say yes to, and how it changes the way I sell design work.</p>
+      <ul class="plain">
+        <li><b>Show the guardrails before the portfolio.</b> Enterprise buyers aren't asking whether we're good. They're asking what happens when something goes wrong. Answer that first.</li>
+        <li><b>Sell to people who don't want the tech.</b> Most clients don't want to learn UX. They want fewer drop-offs and a product their users love. Talk about the outcome, not the craft.</li>
+        <li><b>Name their part up front.</b> Same as the $10,000 line. Feedback on time, one decision-maker, access to real users. Write it into the kickoff, like <a href="#n-003">scope</a>.</li>
+        <li><b>Get paid when it works.</b> Not every deal can be outcome-based, but tying part of it to a result is how you earn the next one.</li>
+      </ul>
+      <p>The takeaway isn't really about AI. <mark>People don't buy the smartest option. They buy the one they'd trust with the keys.</mark></p>
+      <p><a class="back" href="#notes">← All notes</a></p>
+    </article>
 
     <article class="page" id="n-006" data-tags="podcasts history evidence trust">
       <div class="note-head"><span class="label">N°006</span><span class="label">18 Oct 2026</span></div>
@@ -1954,14 +1970,6 @@ html.touring .tour-fab::after { display: none; }
       <p>Cleo pushed on safety, and he didn't dodge. He summed up the race logic as "I am responsible, those people are not, so I cannot slow down," and admitted nobody yet knows how to oversee systems much smarter than us. He also said AI leaders are all very smart, but personal grudges are shaping how this gets built, and that he's changed his mind on China: the "monster" framing goes too far.</p>
       <p>Outside the episode, Amazon has already blocked Muse from shopping on its site, citing data security.<span class="sn-ref"></span><span class="sn">The title calls it the biggest launch since ChatGPT. Downloads aren't retention. I'll check back in three months.</span> Trust isn't just the user's call. Every platform the agent touches gets a vote.</p>
 
-      <h2>What I'm taking into client work</h2>
-      <ul class="plain">
-        <li><b>Show the guardrails before the portfolio.</b> Enterprise buyers aren't asking whether we're good. They're asking what happens when something goes wrong. Answer that first.</li>
-        <li><b>Sell to people who don't want the tech.</b> Most clients don't want to learn UX. They want fewer drop-offs and a product their users love. Talk about the outcome, not the craft.</li>
-        <li><b>Name their part up front.</b> Same as the $10,000 line. Feedback on time, one decision-maker, access to real users. Write it into the kickoff, like <a href="#n-003">scope</a>.</li>
-        <li><b>Get paid when it works.</b> Not every deal can be outcome-based, but tying part of it to a result is how you earn the next one.</li>
-      </ul>
-      <p>The takeaway isn't really about AI. <mark>People don't buy the smartest option. They buy the one they'd trust with the keys.</mark></p>
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
 
@@ -2012,7 +2020,7 @@ html.touring .tour-fab::after { display: none; }
       <div class="note-head"><span class="label">N°001</span><span class="label">1 Sep 2026</span></div>
       <h1>Why this notebook exists</h1>
       <p>I spend my days with founders and enterprise teams, working out what design is worth to their business. I learn something most weeks. Then I forget most of it.</p>
-      <p>So I write it down here. Short notes, no schedule, no newsletter.<span class="sn-ref"></span><span class="sn">Inspired by Paul Graham's essays. Much shorter, written by someone with much less time.</span></p>
+      <p>So I write it down here. Short notes, no schedule. Longer pieces go out by email: <a href="#sub-email">subscribe here</a>.<span class="sn-ref"></span><span class="sn">Inspired by Paul Graham's essays. Much shorter, written by someone with much less time.</span></p>
       <p>If one is useful to you, email me and tell me why.</p>
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
@@ -2506,6 +2514,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">N°007 Show the guardrails first</span><span class="tag t-book">Note</span><p>Four things I'm taking into client work from N°005, starting with answering what happens when something goes wrong. <a href="#n-007">Read it</a>.</p></li>
         <li><span class="t">Door's open</span><span class="tag t-tool">Feature</span><p>Under my name: whether I'm in a meeting right now, free to talk, or off the clock. It reads only busy or free from my calendar.</p></li>
         <li><span class="t">On the stereo</span><span class="tag t-tool">Feature</span><p>Every page but the homepage shows what I'm playing on Spotify, on a turntable or a cassette. Pick the one you like under the player. Phones get a small one above the tab bar.</p></li>
         <li><span class="t">Theme of the day</span><span class="tag t-tool">Feature</span><p>The site changes its look every day at midnight, Dhaka time: Halftone, Cropmark, then Midnight Ledger. Pick a theme and it stays yours.</p></li>
@@ -3032,9 +3041,9 @@ html.touring .tour-fab::after { display: none; }
   if (CALENDLY) document.querySelectorAll('[data-book]').forEach(function (a) { a.href = CALENDLY; a.target = '_blank'; a.rel = 'noopener'; });
   document.querySelector('.skip').addEventListener('click', function (e) { e.preventDefault(); document.getElementById('content').focus(); });
 
-  // CALENDAR STATUS: under my name on every page (rail) and in the phone top bar. api/status.js reads free/busy only, in my
-  // working hours (Sun–Thu, 10:00–19:00 Dhaka). Hidden until the calendar is connected (README → Calendar status).
-  // Times show in the visitor's own time zone. Add ?status=free, busy or off to the address to preview it.
+  // CALENDAR STATUS: under my name on every page (rail) and in the phone top bar. api/status.js reads free/busy only, at any
+  // hour (no working hours). Hidden until the calendar is connected (README → Calendar status).
+  // Times show in the visitor's own time zone. Add ?status=free or busy to the address to preview it.
   (function () {
     var els = document.querySelectorAll('[data-avail]');
     function clock(iso) { return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).replace(':00', '').toLowerCase(); }

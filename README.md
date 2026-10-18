@@ -47,7 +47,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 
 ## Hosting
 
-- **Vercel** deploys `main` on every push; every other branch gets its own preview link. Setup lives in `vercel.json`.
+- **Vercel** deploys `main` on every push; every other branch gets its own preview link, except `claude/*` session branches, which only mirror `main` (`git.deploymentEnabled` in `vercel.json`). The free plan caps deploys per day; past it, Vercel marks the commit "Deployment rate limited" and doesn't retry, so the next push (or Redeploy in Vercel) puts it live. Setup lives in `vercel.json`.
 - **Whiteboard:** `/whiteboard/` is passed through to the whiteboard's own Vercel project, so it loads from the same address as the site.
 - **Server functions** live in `api/` (e.g. `/api/ping`). API keys go in Vercel → Project → Settings → Environment Variables, never in the page.
 - **Analytics:** Vercel Web Analytics, page views only, no cookies. It loads only on Vercel.

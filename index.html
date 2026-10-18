@@ -1222,7 +1222,16 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .rail-search kbd, .pal kbd { font: 500 0.6875rem var(--mono); color: var(--muted); background: var(--surface0); border-radius: 3px; padding: 0.05rem 0.35rem; }
 .rail-search + .stamp { margin-top: 1.25rem; }
 .pal { width: min(36rem, calc(100vw - 24px)); margin-top: 12vh; padding: 0; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); }
-.pal::backdrop, .sc::backdrop { background: rgba(0,0,0,0.55); }
+.pal::backdrop, .sc::backdrop, .keys::backdrop { background: rgba(0,0,0,0.55); }
+/* Shortcut sheet (?): every key the site listens to, built from the live key map so it can't go stale. */
+.keys { width: min(30rem, calc(100vw - 24px)); padding: 0; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); }
+.keys-head { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1rem; border-bottom: 1px solid var(--surface0); }
+.keys-head h2 { margin: 0; font-size: 1rem; }
+.keys-head h2::before { content: none !important; }
+.keys-list { margin: 0; padding: 0.6rem 1rem 1rem; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.55rem 1rem; align-items: baseline; font-size: 0.875rem; }
+.keys-list dt { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+.keys-list dd { margin: 0; color: var(--subtext0); }
+.keys-list kbd { font: 500 0.75rem/1 var(--mono); padding: 0.25rem 0.4rem; min-width: 1.5rem; text-align: center; color: var(--text); background: var(--base); border: 1px solid var(--surface0); border-bottom-width: 2px; border-radius: 4px; }
 .pal-in { display: flex; align-items: center; gap: 0.6rem; padding: 0.85rem 1rem; border-bottom: 1px solid var(--surface0); color: var(--muted); }
 .pal-in input, .pal-in input:focus, .pal-in input:focus-visible { outline: none !important; box-shadow: none !important; border: 0 !important; background: none !important; padding: 0 !important; border-radius: 0 !important; }
 .pal-in input { flex: 1; min-width: 0; font: inherit; font-size: 1rem; color: var(--ink); background: none; border: 0; outline: none; }
@@ -2514,6 +2523,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Keyboard shortcuts</span><span class="tag t-tool">Feature</span><p>Press ? to see every key the site answers to. R opens a random note.</p></li>
         <li><span class="t">N°007 Show the guardrails first</span><span class="tag t-book">Note</span><p>Four things I'm taking into client work from N°005, starting with answering what happens when something goes wrong. <a href="#n-007">Read it</a>.</p></li>
         <li><span class="t">Door's open</span><span class="tag t-tool">Feature</span><p>Under my name: whether I'm in a meeting right now, free to talk, or off the clock. It reads only busy or free from my calendar.</p></li>
         <li><span class="t">On the stereo</span><span class="tag t-tool">Feature</span><p>Every page but the homepage shows what I'm playing on Spotify, on a turntable or a cassette. Pick the one you like under the player. Phones get a small one above the tab bar.</p></li>
@@ -2691,6 +2701,11 @@ html.touring .tour-fab::after { display: none; }
   <div class="pal-in"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></g></svg><input id="pal-q" type="text" placeholder="Search pages, notes, books, themes…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="pal-list" aria-autocomplete="list"><kbd>esc</kbd></div>
   <ul class="pal-list" id="pal-list" role="listbox" aria-label="Results"></ul>
   <p class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>enter</kbd> open</span><span><kbd>esc</kbd> close</span></p>
+</dialog>
+
+<dialog class="keys" id="keys" aria-labelledby="keys-t">
+  <div class="keys-head"><h2 id="keys-t">Keyboard shortcuts</h2><button type="button" class="ap-x" id="keys-x" aria-label="Close">×</button></div>
+  <dl class="keys-list" id="keys-list"></dl>
 </dialog>
 
 <dialog class="sc" id="sc" aria-label="Share a quote">
@@ -3550,6 +3565,19 @@ html.touring .tour-fab::after { display: none; }
   document.addEventListener('click', function (e) {
     if (!panel.hidden && !panel.contains(e.target) && !tab.contains(e.target) && !e.target.closest('.ap-open')) apOpen(false);
   });
+  // ↑ ↑ ↓ ↓ ← → ← → B A: the start lights and Lights Out, for this visit only. apTheme() saves what's showing for the
+  // next first paint, so the saved look is put back right after; a reload returns to the visitor's own theme.
+  var KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'], kStep = 0;
+  document.addEventListener('keydown', function (e) {
+    var t = e.target.tagName; if (t === 'INPUT' || t === 'TEXTAREA' || e.target.isContentEditable) { kStep = 0; return; }
+    var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    kStep = k === KONAMI[kStep] ? kStep + 1 : (k === KONAMI[0] ? 1 : 0);
+    if (kStep < KONAMI.length) return;
+    kStep = 0;
+    var saved = read('ap-resolved');
+    apTheme('lightsout'); store('ap-resolved', saved);
+    lightsOut();
+  });
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var t = e.target.tagName;
@@ -3565,6 +3593,33 @@ html.touring .tour-fab::after { display: none; }
     var t = e.target.tagName;
     if (t === 'INPUT' || t === 'TEXTAREA') return;
     if (keys[e.key]) location.hash = keys[e.key];
+    if ((e.key === 'r' || e.key === 'R') && !e.repeat) randomNote();
+  });
+  // A random note, never the one you're on. Used by the r key and search.
+  function randomNote() {
+    var here = (location.hash || '').slice(1), n = Array.prototype.filter.call(document.querySelectorAll('article.page[id^="n-"]'), function (a) { return a.id !== here; });
+    if (n.length) location.hash = n[Math.floor(Math.random() * n.length)].id;
+  }
+  window.randomNote = randomNote;
+
+  // Shortcut sheet: ? opens it. The page list comes from the number keys above and the rail's own labels.
+  var keysDlg = document.getElementById('keys');
+  function keysOpen() {
+    var label = function (id) { var a = document.querySelector('.rail a.nav[href="#' + id + '"]') || document.querySelector('.rail a[href="#' + id + '"]:not(.name)'); return a ? a.textContent.replace(/^\s*\d\s*/, '').trim() : id; };
+    var kb = function () { return Array.prototype.map.call(arguments, function (k) { return '<kbd>' + k + '</kbd>'; }).join(''); };
+    var mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+    var rows = Object.keys(keys).sort(function (a, b) { return (a === '0' ? 10 : +a) - (b === '0' ? 10 : +b); }).map(function (k) { return [kb(k), label(keys[k])]; });
+    rows.push([kb('R'), 'A random note'], [kb('T'), 'Theme'], [kb('~'), 'Terminal'], [kb(mac ? '⌘' : 'Ctrl', 'K'), 'Search'], [kb('?'), 'This list'], [kb('Esc'), 'Close whatever is open']);
+    document.getElementById('keys-list').innerHTML = rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>'; }).join('');
+    if (!keysDlg.open) keysDlg.showModal();
+  }
+  window.openKeys = keysOpen;
+  document.getElementById('keys-x').addEventListener('click', function () { keysDlg.close(); });
+  keysDlg.addEventListener('click', function (e) { if (e.target === keysDlg) keysDlg.close(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey || e.key !== '?') return;
+    var t = e.target.tagName; if (t === 'INPUT' || t === 'TEXTAREA' || e.target.isContentEditable) return;
+    e.preventDefault(); keysDlg.open ? keysDlg.close() : keysOpen();
   });
 
   // ============ Whiteboard: the app lives in its own repo (MehediIfti/whiteboard). Load it the first time the page opens, on computers only. ============
@@ -4391,6 +4446,7 @@ html.touring .tour-fab::after { display: none; }
       });
       THEMES.forEach(function (th) { items.push({ k: 'Theme', t: th.name || th.id, x: th.note || '', run: function () { apTheme(th.id); } }); });
       var book = document.querySelector('[data-book]');
+      if (matchMedia('(pointer: fine)').matches) items.push({ k: 'Action', t: 'Keyboard shortcuts', x: 'keys hotkeys help ?', run: function () { setTimeout(window.openKeys, 60); } });
       items.push(
         { k: 'Action', t: 'Book a call', x: 'calendar meeting', run: function () { window.open(book.href, '_blank', 'noopener'); } },
         { k: 'Action', t: 'Copy my email', x: 'mail contact', run: function () { var e = 'mh.hasan884@gmail.com'; if (navigator.clipboard) navigator.clipboard.writeText(e); } },
@@ -4398,7 +4454,7 @@ html.touring .tour-fab::after { display: none; }
         { k: 'Action', t: 'Open the terminal', x: 'command line', run: function () { document.querySelector('.term-open').click(); } },
         { k: 'Action', t: 'Change theme', x: 'appearance colours look', run: function () { apOpen(true); } },
         { k: 'Action', t: 'Print this page', x: 'pdf save cv', run: function () { setTimeout(function () { window.print(); }, 60); } },
-        { k: 'Action', t: 'Open a random note', x: 'surprise', run: function () { var n = document.querySelectorAll('article.page[id^="n-"]'); location.hash = n[Math.floor(Math.random() * n.length)].id; } }
+        { k: 'Action', t: 'Open a random note', x: 'surprise', run: function () { window.randomNote(); } }
       );
     }
     function score(it, words) {

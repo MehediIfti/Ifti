@@ -41,6 +41,7 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] Terminal (`~`): `coffee`, `fortune`, `git log`, `git status`, `top`, `ping`, `achievements`, `email [work]`, `ls -a` and more ([#2](https://github.com/MehediIfti/Ifti/issues/2), [#3](https://github.com/MehediIfti/Ifti/issues/3))
 - [x] Keyboard: `?` shortcut sheet, `r` random note, Konami code for Lights Out, not saved ([#8](https://github.com/MehediIfti/Ifti/issues/8), [#10](https://github.com/MehediIfti/Ifti/issues/10), [#4](https://github.com/MehediIfti/Ifti/issues/4))
 - [x] Achievements: eight badges, stored only in the browser ([#6](https://github.com/MehediIfti/Ifti/issues/6))
+- [x] Reading progress: a line along the top fills as you read a note, with minutes left ([#9](https://github.com/MehediIfti/Ifti/issues/9))
 - [x] Links to sections: `#` beside every note heading copies a deep link
 - [x] Share cards from selected quotes, Tour, Print (Work prints as a CV)
 - [x] Move things around: drag the Theme tab, Terminal, sections and rail links
@@ -58,7 +59,6 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 ## Next (ready to build)
 Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 
-- [ ] [#9](https://github.com/MehediIfti/Ifti/issues/9) Reading progress on notes · 20-min
 - [ ] [#11](https://github.com/MehediIfti/Ifti/issues/11) Stat share cards · 20-min
 - [ ] [#12](https://github.com/MehediIfti/Ifti/issues/12) Map game: find Dhaka · 20-min
 - [ ] [#13](https://github.com/MehediIfti/Ifti/issues/13) Theme roulette · 20-min

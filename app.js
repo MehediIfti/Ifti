@@ -2430,3 +2430,30 @@
     var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
   }
 })();
+
+// READING PROGRESS: on a note, a thin line along the top of the screen fills as you read, and a small label counts down the minutes left
+// (230 words a minute, the same as the note's Properties). It sits under the phone's top bar and lines up with the note's right edge.
+(function () {
+  var bar = document.createElement('div'), mtop = document.getElementById('m-top'), queued = false;
+  bar.className = 'readbar'; bar.setAttribute('aria-hidden', 'true'); bar.hidden = true; bar.innerHTML = '<i></i><span></span>';
+  document.body.appendChild(bar);
+  var label = bar.lastChild;
+  function update() {
+    queued = false;
+    var note = document.querySelector('.page.obs.on'), view = note && note.querySelector('.obs-view');
+    if (!view) { bar.hidden = true; return; }
+    if (!view.dataset.min) view.dataset.min = Math.max(1, Math.round(view.textContent.replace(/\s+/g, ' ').trim().split(' ').length / 230));
+    var top = mtop && mtop.offsetHeight ? Math.max(0, mtop.getBoundingClientRect().bottom) : 0;
+    var r = view.getBoundingClientRect(), span = r.height - (innerHeight - top);
+    var f = span > 0 ? Math.min(1, Math.max(0, (top - r.top) / span)) : 1;
+    var left = Math.ceil(view.dataset.min * (1 - f) - 0.05);
+    bar.style.setProperty('--rb', f.toFixed(4)); bar.style.setProperty('--rb-top', top + 'px');
+    bar.style.setProperty('--rb-right', Math.max(8, innerWidth - note.getBoundingClientRect().right + 8) + 'px');
+    label.textContent = left > 0 ? left + ' min left' : '';
+    bar.hidden = false;
+  }
+  function soon() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+  addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
+  addEventListener('hashchange', function () { setTimeout(soon, 0); });
+  soon();
+})();

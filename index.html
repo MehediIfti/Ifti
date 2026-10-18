@@ -1421,6 +1421,12 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
 .avail[data-state="free"] i { background: #22c55e; }
 .avail[data-state="busy"] i { background: #ff3b30; }
 .rail .avail { margin: -1.15rem 0 1.5rem; }
+/* Dhaka time and weather, under the status: the clock is worked out in the page; the weather comes from api/weather.js. */
+.here { margin: -1.15rem 0 1.5rem; display: flex; flex-wrap: wrap; gap: 0 0.4rem; font: 0.6875rem/1.5 var(--mono); color: var(--subtext0); font-variant-numeric: tabular-nums; }
+.here b { font-weight: 500; color: var(--text); }
+.here-w { flex-basis: 100%; }
+.here-w:empty { display: none; }
+.rail .avail:not([hidden]) + .here { margin-top: -1.1rem; padding-left: calc(7px + 0.45rem); } /* lines up with the status text */
 .rail .avail span { flex-basis: 100%; padding-left: calc(7px + 0.45rem); }
 .avail-m { flex: none; gap: 0.35rem; font-size: 0.625rem; }
 @media (prefers-reduced-motion: no-preference) {
@@ -1723,6 +1729,7 @@ html.touring .tour-fab::after { display: none; }
   <nav class="rail" aria-label="Sections">
     <a class="name" href="#index">Ifti</a>
     <p class="avail" data-avail hidden><i></i><b></b><span></span></p>
+    <p class="here" id="here"><b>Dhaka</b> <span class="here-t"></span><span class="here-w"></span></p>
     <ol>
       <li><a class="nav" href="#index"><kbd>1</kbd>Index</a></li>
       <li><a class="nav" href="#now"><kbd>2</kbd>Now</a></li>
@@ -2531,6 +2538,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Dhaka right now</span><span class="tag t-tool">Feature</span><p>Under my name: the time in Dhaka and the weather outside.</p></li>
         <li><span class="t">Live F1 numbers</span><span class="tag t-tool">Feature</span><p>The F1 card and the terminal's f1 update themselves after every race, and show when the next one starts in your time.</p></li>
         <li><span class="t">Links to sections</span><span class="tag t-tool">Feature</span><p>Hover a heading in any note and click # to copy a link straight to that part.</p></li>
         <li><span class="t">More in the terminal</span><span class="tag t-tool">Feature</span><p>Press ~ and try coffee, fortune, git log, top or ping.</p></li>
@@ -3095,6 +3103,23 @@ html.touring .tour-fab::after { display: none; }
     }
     load(); setInterval(load, 120000);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) load(); });
+  })();
+
+  // DHAKA RIGHT NOW: the time there, ticking each minute, and the weather from api/weather.js (kept 30 minutes per visit).
+  (function () {
+    var box = document.getElementById('here'); if (!box) return;
+    var t = box.querySelector('.here-t'), w = box.querySelector('.here-w');
+    function tick() { t.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Dhaka', hour: 'numeric', minute: '2-digit' }).toLowerCase(); }
+    function weather(d) { if (d && typeof d.temp === 'number') w.textContent = d.temp + '°C' + (d.sky ? ' · ' + d.sky : ''); }
+    tick(); setInterval(tick, 15000);
+    var cached = null; try { cached = JSON.parse(sessionStorage.getItem('dhaka-weather') || 'null'); } catch (e) {}
+    if (cached && Date.now() - cached.at < 30 * 60e3) weather(cached);
+    else setTimeout(function () {
+      fetch('/api/weather').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+        if (!d) return; weather(d);
+        try { d.at = Date.now(); sessionStorage.setItem('dhaka-weather', JSON.stringify(d)); } catch (e) {}
+      }, function () {});
+    }, 1200);
   })();
 
   // SOCIALS UPDATE: one entry per profile: [name, url, icon]. Rendered wherever a [data-socials] box appears.

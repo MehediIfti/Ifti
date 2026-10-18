@@ -78,6 +78,8 @@ Single static file (`index.html`), hosted on Vercel. `package.json` only holds p
 
 **Terminal:** press `~`, or click the `>_ Terminal` button in the bottom-left corner. It is hidden on phones; search opens it there. Commands live in `CMDS` in the script: `help`, `ls`, `cd`, `cat`, `whoami`, `now`, `f1`, `theme`, `book`, `email`, `cv`, `socials`, `coffee` (same numbers as the pill, from `window.coffeeNow()`), `fortune` (a random `<mark>` line from the notes), `git log` (the Changelog; `--all` for everything) and `git status`, `top` (the `STATS UPDATE` rows as processes), `ping` (three real calls to `/api/ping`), `date`, `pwd`, `echo`, `history`, `clear`, `exit`, plus `sudo hire ifti`.
 
+**Dhaka right now:** under the status in the left rail: Dhaka's time (worked out in the page, ticking each minute) and the weather from `api/weather.js`, which reads Open-Meteo (free, no key, no cookies) and is cached for 30 minutes, so visitors' browsers never call a third party. Each visit keeps it for 30 minutes in `sessionStorage`. If the weather can't load, only the time shows.
+
 **Keyboard:** `?` opens the shortcut sheet, built from the number-key map (`keys`) and the rail's labels, so new pages show up on their own. `r` opens a random note, never the one you're on (`randomNote()`, also used by search). There's one key the sheet doesn't mention: the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) runs the start lights and shows Lights Out for that visit only; a reload brings back the visitor's own theme.
 
 **Links to sections:** every note heading gets an id like `s-n-005-who-pays-for-it` when the page loads (the same id search uses), and a `#` beside it copies the link. A fresh visit to that link opens the note at the section.

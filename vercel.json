@@ -9,6 +9,6 @@
   ],
   "headers": [
     { "source": "/fonts/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
-    { "source": "/api/((?!now-playing|status).*)", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
+    { "source": "/api/((?!now-playing|status|f1|weather).*)", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
   ]
 }

@@ -130,8 +130,6 @@ npx serve .                 # preview at localhost:3000 (any static server works
 
 **Keyboard:** `?` opens the shortcut sheet, built from the number-key map (`keys`) and the rail's labels, so new pages show up on their own. `r` opens a random note, never the one you're on (`randomNote()`, also used by search). There's one key the sheet doesn't mention: the Konami code (↑ ↑ ↓ ↓ ← → ← → B A) runs the start lights and shows Lights Out for that visit only; a reload brings back the visitor's own theme.
 
-**Reading progress:** on a note, a thin line in the accent colour runs along the top of the screen (under the phone's top bar) and fills as you read, with a small "2 min left" label at the note's right edge (230 words a minute, like Properties). It's fixed in place, so nothing on the page moves, and it doesn't print. The `READING PROGRESS` block at the end of `app.js`.
-
 **Links to sections:** every note heading gets an id like `s-n-005-who-pays-for-it` when the page loads (the same id search uses), and a `#` beside it copies the link. A fresh visit to that link opens the note at the section.
 
 **Hover previews:** on a desktop, hovering any link to another page or note shows its title and first lines. Nothing to update; it reads the page itself.

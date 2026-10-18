@@ -1358,7 +1358,37 @@ button.cta-2 { font-weight: inherit; line-height: inherit; color: var(--accent);
   @keyframes st-spin { to { transform: rotate(360deg); } }
   @keyframes st-blink { 50% { opacity: 0.25; } }
 }
-@media print { .stereo { display: none !important; } }
+/* Compact stereo: wherever the right column isn't shown (phones, tablets, the 2-column layout). Phones get it above the tab bar. */
+.stereo-m { display: none; }
+@media (max-width: 960px) { .stereo-m:not([hidden]) { display: flex; } }
+:root[data-layout="2"] .stereo-m:not([hidden]) { display: flex; }
+.stereo-m { position: fixed; z-index: 28; right: calc(env(safe-area-inset-right, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); width: min(22rem, calc(100vw - 24px));
+  align-items: center; gap: 0.65rem; padding: 0.45rem 0.4rem 0.45rem 0.5rem; background: var(--mantle); color: var(--text); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+@media (max-width: 760px) {
+  .stereo-m { left: calc(env(safe-area-inset-left, 0px) + 12px); width: auto; }
+  :root[data-mnav="tabs"] .stereo-m { bottom: calc(env(safe-area-inset-bottom, 0px) + 5.1rem); }
+  :root.has-stereo-m main { padding-bottom: 4.5rem; }
+}
+.sm-disc, .sm-reels { flex: none; display: none; }
+.stereo[data-deck="turntable"] ~ .stereo-m .sm-disc, .stereo[data-deck="cassette"] ~ .stereo-m .sm-reels { display: block; }
+.sm-disc { position: relative; width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle, transparent 0 30%, #111 31%), repeating-radial-gradient(circle, #161616 0 1px, #0b0b0b 1px 2.5px); box-shadow: 0 0 0 2px #1d1d1d; }
+.sm-disc img { position: absolute; inset: 30%; width: 40%; height: 40%; border-radius: 50%; object-fit: cover; }
+.sm-disc i { position: absolute; left: 47%; top: 47%; width: 6%; height: 6%; border-radius: 50%; background: #ccc; }
+.sm-reels { display: none; gap: 4px; padding: 5px 6px; border-radius: 6px; background: #1d1d21; }
+.stereo[data-deck="cassette"] ~ .stereo-m .sm-reels { display: flex; }
+.sm-reels .cas-reel { width: 14px; height: 14px; box-shadow: 0 0 0 2px #3a2a20; }
+.sm-txt { flex: 1; min-width: 0; display: grid; gap: 0.1rem; text-decoration: none; color: inherit; }
+.sm-txt b { font: 600 0.875rem/1.25 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sm-txt small { font: 0.6875rem/1.3 var(--mono); color: var(--subtext0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stereo-m[data-state="live"] .st-st { color: #ff3b30; }
+.sm-x { flex: none; font: inherit; font-size: 1.1rem; line-height: 1; width: 2rem; height: 2rem; border: 0; background: none; color: var(--subtext0); cursor: pointer; border-radius: 6px; }
+.sm-x:hover { color: var(--text); }
+:root[data-theme="cropmark"] .stereo-m, :root[data-theme="halftone"] .stereo-m { border-color: var(--rule); }
+@media (prefers-reduced-motion: no-preference) {
+  .stereo-m[data-state="live"] .sm-disc { animation: st-spin 1.8s linear infinite; }
+  .stereo-m[data-state="live"] .sm-reels .cas-reel { animation: st-spin 1.6s linear infinite; }
+}
+@media print { .stereo, .stereo-m { display: none !important; } }
 /* ============ THEME: LIGHTS OUT ============
    Formula 1, Red Bull colours. Navy, F1 red and yellow, Titillium Web (the classic F1 typeface), slanted headlines,
    parallelogram buttons, corner-cut cards and diagonal speed lines. A start-light sequence plays when you switch to it. */
@@ -1510,7 +1540,7 @@ html.touring .tour-fab::after { display: none; }
   --cm-pos: left 3px top 7px, left 7px top 3px, right 3px bottom 7px, right 7px bottom 3px, right 3px top 3px, left 3px bottom 3px;
   --cm-size: 9px 1px, 1px 9px, 9px 1px, 1px 9px, 3px 3px, 3px 3px;
 }
-:root[data-theme="cropmark"] :not(.wb, .wb *, .st-deck *), :root[data-theme="cropmark"] :not(.wb, .wb *, .st-deck *)::before, :root[data-theme="cropmark"] :not(.wb, .wb *, .st-deck *)::after { border-radius: 0 !important; }
+:root[data-theme="cropmark"] :not(.wb, .wb *, .st-deck *, .sm-disc, .sm-disc *, .sm-reels *), :root[data-theme="cropmark"] :not(.wb, .wb *, .st-deck *, .sm-disc, .sm-disc *, .sm-reels *)::before, :root[data-theme="cropmark"] :not(.wb, .wb *, .st-deck *, .sm-disc, .sm-disc *, .sm-reels *)::after { border-radius: 0 !important; }
 :root[data-theme="cropmark"] ::selection { background: var(--sel); color: var(--sel-ink); }
 /* type: light, tight headlines; grey lede; small mono labels */
 :root[data-theme="cropmark"] h1 { font-weight: 400; letter-spacing: -0.025em; line-height: 1.2; }
@@ -1565,7 +1595,7 @@ html.touring .tour-fab::after { display: none; }
     linear-gradient(var(--ht-ink), var(--ht-ink)) 259px 591px / 9px 9px no-repeat;
   --pattern-size: 480px 680px;
 }
-:root[data-theme="halftone"] :not(.wb, .wb *, .st-deck *), :root[data-theme="halftone"] :not(.wb, .wb *, .st-deck *)::before, :root[data-theme="halftone"] :not(.wb, .wb *, .st-deck *)::after { border-radius: 0 !important; }
+:root[data-theme="halftone"] :not(.wb, .wb *, .st-deck *, .sm-disc, .sm-disc *, .sm-reels *), :root[data-theme="halftone"] :not(.wb, .wb *, .st-deck *, .sm-disc, .sm-disc *, .sm-reels *)::before, :root[data-theme="halftone"] :not(.wb, .wb *, .st-deck *, .sm-disc, .sm-disc *, .sm-reels *)::after { border-radius: 0 !important; }
 :root[data-theme="halftone"] ::selection { background: var(--sel); color: var(--sel-ink); }
 /* type: black, heavy and tight headlines; pixel labels */
 :root[data-theme="halftone"] h1 { font-weight: 800; letter-spacing: -0.045em; line-height: 0.98; }
@@ -2451,7 +2481,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
-        <li><span class="t">On the stereo</span><span class="tag t-tool">Feature</span><p>The <a href="#now">Now</a> page shows what I'm playing on Spotify, on a turntable or a cassette. Pick the one you like under the player.</p></li>
+        <li><span class="t">On the stereo</span><span class="tag t-tool">Feature</span><p>Every page but the homepage shows what I'm playing on Spotify, on a turntable or a cassette. Pick the one you like under the player. Phones get a small one above the tab bar.</p></li>
         <li><span class="t">Theme of the day</span><span class="tag t-tool">Feature</span><p>The site changes its look every day at midnight, Dhaka time: Halftone, Cropmark, then Midnight Ledger. Pick a theme and it stays yours.</p></li>
         <li><span class="t">Halftone theme</span><span class="tag t-design">Design</span><p>Mint paper, black ink, pixel type and a dithered orange sun on the homepage.</p></li>
         <li><span class="t">Target lock</span><span class="tag t-tool">Feature</span><p>Point at anything you can click and the cursor disappears. Four red corners frame it instead.</p></li>
@@ -2500,6 +2530,12 @@ html.touring .tour-fab::after { display: none; }
       <span class="st-pick" role="group" aria-label="Player"><button type="button" id="st-tt" data-deck="turntable" aria-pressed="true">Turntable</button><button type="button" id="st-cas" data-deck="cassette" aria-pressed="false">Cassette</button></span>
       <a class="st-open" target="_blank" rel="noopener" aria-label="Open in Spotify" title="Open in Spotify">Open ↗</a>
     </div>
+  </aside>
+  <aside class="stereo-m" id="stereo-m" aria-label="What I'm playing on Spotify" hidden>
+    <span class="sm-disc" aria-hidden="true"><img class="st-art" alt="" width="64" height="64" hidden><i></i></span>
+    <span class="sm-reels" aria-hidden="true"><i class="cas-reel"></i><i class="cas-reel"></i></span>
+    <a class="sm-txt st-open" target="_blank" rel="noopener"><b class="st-title"></b><small><span class="st-st">Last played</span> · <span class="st-artist"></span></small></a>
+    <button type="button" class="sm-x" aria-label="Hide the player">×</button>
   </aside>
 
   <footer class="colophon">Built by talking it through with Claude Code. <a href="#changelog">See every change</a>. No cookies.</footer>
@@ -3051,9 +3087,10 @@ html.touring .tour-fab::after { display: none; }
     });
     spy();
   }
-  // SPOTIFY: the stereo section under the right column on the Now page (#stereo). api/now-playing.js asks Spotify what I'm playing.
+  // SPOTIFY: the stereo section under the right column on every page but the homepage (#stereo), and a compact one (#stereo-m) where that column isn't shown. api/now-playing.js asks Spotify what I'm playing.
   // It stays hidden until Spotify is connected (README → Spotify). Add ?player=demo to the address to preview it.
-  var ST = { el: document.getElementById('stereo'), poll: 0, tick: 0, d: null, at: 0 };
+  var ST = { el: document.getElementById('stereo'), m: document.getElementById('stereo-m'), poll: 0, tick: 0, d: null, at: 0 };
+  function stBoth(sel, fn) { [ST.el, ST.m].forEach(function (x) { x.querySelectorAll(sel).forEach(fn); }); }
   function stTime(ms) { var s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
   function stAgo(iso) {
     var m = Math.round((Date.now() - new Date(iso)) / 60000);
@@ -3065,7 +3102,8 @@ html.touring .tour-fab::after { display: none; }
     stFit();
   }
   // The right column's details make room for the player, so the two never overlap.
-  function stFit() { root.classList.toggle('has-stereo', !ST.el.hidden); root.style.setProperty('--stereo-h', ST.el.offsetHeight + 'px'); }
+  function stFit() { root.classList.toggle('has-stereo', !ST.el.hidden); root.classList.toggle('has-stereo-m', !ST.m.hidden); root.style.setProperty('--stereo-h', ST.el.offsetHeight + 'px'); }
+  function stDismissed() { try { return sessionStorage.getItem('st-hide') === '1'; } catch (e) { return false; } }
   function stLoad() {
     if (document.hidden) return;
     if (/[?&]player=demo/.test(location.search)) return stShow({ configured: true, playing: true, kind: 'track', title: 'Track title goes here', artist: 'Artist name', progress: 42000, duration: 201000, url: 'https://open.spotify.com/', art: null });
@@ -3073,28 +3111,30 @@ html.touring .tour-fab::after { display: none; }
   }
   function stShow(d) {
     var el = ST.el;
-    if (!ST.poll) return; // left the Now page while waiting
-    if (!d || !d.configured || !d.title) { el.hidden = true; stFit(); return; }
-    ST.d = d; ST.at = Date.now(); el.hidden = false;
-    el.setAttribute('data-state', d.playing ? 'live' : 'last');
-    el.querySelector('.st-st').textContent = d.playing ? 'On air' : d.playedAt ? 'Last played' : 'Paused';
-    el.querySelectorAll('.st-title').forEach(function (t) { t.textContent = d.title; t.title = d.title; });
-    el.querySelectorAll('.st-artist').forEach(function (t) { t.textContent = d.artist || (d.kind === 'episode' ? 'Podcast' : ''); });
-    var img = el.querySelector('.st-art'); if (d.art) { if (img.getAttribute('src') !== d.art) img.src = d.art; img.hidden = false; } else img.hidden = true;
-    var open = el.querySelector('.st-open'); open.hidden = !d.url; if (d.url) open.href = d.url;
+    if (!ST.poll) return; // went to the homepage while waiting
+    if (!d || !d.configured || !d.title) { el.hidden = ST.m.hidden = true; stFit(); return; }
+    ST.d = d; ST.at = Date.now(); el.hidden = false; ST.m.hidden = stDismissed();
+    [el, ST.m].forEach(function (x) { x.setAttribute('data-state', d.playing ? 'live' : 'last'); });
+    stBoth('.st-st', function (t) { t.textContent = d.playing ? 'On air' : d.playedAt ? 'Last played' : 'Paused'; });
+    stBoth('.st-title', function (t) { t.textContent = d.title; t.title = d.title; });
+    stBoth('.st-artist', function (t) { t.textContent = d.artist || (d.kind === 'episode' ? 'Podcast' : ''); });
+    stBoth('.st-art', function (img) { if (d.art) { if (img.getAttribute('src') !== d.art) img.src = d.art; img.hidden = false; } else img.hidden = true; });
+    stBoth('.st-open', function (a) { if (d.url) a.href = d.url; else a.removeAttribute('href'); });
+    el.querySelector('.st-open').hidden = !d.url;
     stTick(); stFit();
   }
   function stTick() {
     var d = ST.d, el = ST.el; if (!d) return;
     var p = d.playing ? Math.min(d.duration, d.progress + (Date.now() - ST.at)) : d.playedAt ? d.duration : (d.progress || 0);
-    var f = d.duration ? p / d.duration : 0, reels = el.querySelectorAll('.cas-reel');
+    var f = d.duration ? p / d.duration : 0, reels = el.querySelectorAll('.st-deck .cas-reel');
     el.querySelector('.st-clock').textContent = !d.playing && d.playedAt ? stAgo(d.playedAt) : stTime(p) + ' / ' + stTime(d.duration);
     reels[0].style.setProperty('--tape', (1 + 6 * (1 - f)).toFixed(1) + 'px'); reels[1].style.setProperty('--tape', (1 + 6 * f).toFixed(1) + 'px');
     if (d.playing && p >= d.duration && Date.now() - ST.at > 3000) { ST.at = Date.now(); setTimeout(stLoad, 1500); } // song ended: ask again
   }
   function stereoFor(id) {
     clearInterval(ST.poll); clearInterval(ST.tick); ST.poll = ST.tick = 0;
-    if (id !== 'now') { ST.el.hidden = true; stFit(); return; }
+    if (id === 'index') { ST.el.hidden = ST.m.hidden = true; stFit(); return; } // the homepage has its own story; the stereo is everywhere else
+    if (ST.d) { ST.el.hidden = false; ST.m.hidden = stDismissed(); stFit(); } // keep showing the last answer while the next one loads
     ST.poll = setInterval(stLoad, 30000); ST.tick = setInterval(stTick, 1000); stLoad();
   }
   try { if (localStorage.getItem('st-deck') === 'cassette') stDeck('cassette'); } catch (e) {}
@@ -3103,6 +3143,7 @@ html.touring .tour-fab::after { display: none; }
     stDeck(b.getAttribute('data-deck'));
     try { localStorage.setItem('st-deck', b.getAttribute('data-deck')); } catch (err) {}
   });
+  ST.m.querySelector('.sm-x').addEventListener('click', function () { ST.m.hidden = true; stFit(); try { sessionStorage.setItem('st-hide', '1'); } catch (e) {} });
   document.addEventListener('visibilitychange', function () { if (!document.hidden && ST.poll) stLoad(); });
   window.addEventListener('resize', stFit);
   function spy() {

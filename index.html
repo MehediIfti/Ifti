@@ -1820,7 +1820,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="sub">Everything that isn't client work. Tap one for more.</p>
       <ul class="offclock">
         <li data-pop="f1" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15h16M6 15l2-5h7l3 5M8 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><b>Formula 1</b><p>I follow it far too closely for someone who can't drive.</p></li>
-        <li data-pop="music" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b>Music</b><p>Linkin Park, The Weeknd and Karan Aujla, mostly on repeat.</p></li>
+        <li data-pop="music" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b>Music</b><p>Linkin Park and The Weeknd, mostly on repeat.</p></li>
         <li data-pop="guitar" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 9l5-5M18 2l4 4M9.5 11.5a4 4 0 0 0-5.6 5.6l1.4 1.4a4 4 0 0 0 5.6-5.6M12 9l3 3M8 15h.01"/></svg><b>Guitar</b><p>I pick it up when nobody's waiting on me.</p></li>
         <li data-pop="podcasts" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg><b>Podcasts</b><p>Always one in my ears. The current rotation is on the <a href="#now">Now page</a>.</p></li>
         <li data-pop="football" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 7V3.5M15.5 9.5l3.3-1.2M14.2 13.5l2 3M9.8 13.5l-2 3M8.5 9.5L5.2 8.3"/></svg><b>Football</b><p>Liverpool and Brazil. I used to play; these days I watch.</p></li>
@@ -2233,7 +2233,6 @@ html.touring .tour-fab::after { display: none; }
         <li><span class="t">Huge Conversations <span class="by">· Cleo Abram</span></span><span class="tag t-pod">Podcast</span><p>Alexandr Wang on Muse, Meta's personal agent. <a href="#n-005">My notes</a> · <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Watch ↗</a></p></li>
         <li><span class="t">Linkin Park</span><span class="tag t-music">Music</span></li>
         <li><span class="t">The Weeknd</span><span class="tag t-music">Music</span></li>
-        <li><span class="t">Karan Aujla</span><span class="tag t-music">Music</span></li>
       </ul>
       <p class="sub"><a href="#suggest">Suggest something on the Now page →</a></p>
     </section>
@@ -2532,6 +2531,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Live F1 numbers</span><span class="tag t-tool">Feature</span><p>The F1 card and the terminal's f1 update themselves after every race, and show when the next one starts in your time.</p></li>
         <li><span class="t">Links to sections</span><span class="tag t-tool">Feature</span><p>Hover a heading in any note and click # to copy a link straight to that part.</p></li>
         <li><span class="t">More in the terminal</span><span class="tag t-tool">Feature</span><p>Press ~ and try coffee, fortune, git log, top or ping.</p></li>
         <li><span class="t">Keyboard shortcuts</span><span class="tag t-tool">Feature</span><p>Press ? to see every key the site answers to. R opens a random note.</p></li>
@@ -3661,7 +3661,8 @@ html.touring .tour-fab::after { display: none; }
   })();
 
   // ============ Off the clock pop-ups ============
-  // F1 UPDATE: refresh these after each race. Source: formula1.com standings and Verstappen's Wikipedia stats.
+  // F1 UPDATE: hand-written fallbacks. Standings, team position, wins, podiums, starts, the latest win and the next race
+  // update themselves from api/f1.js a few seconds after load. Keep titles, titleYears, poles and records current by hand.
   var F1 = {
     asOf: '2026 Singapore Grand Prix', team: 'Oracle Red Bull Racing', driver: 'Max Verstappen', number: '3',
     titles: '4', titleYears: '2021, 2022, 2023, 2024', wins: '73', poles: '50', podiums: '136', starts: '250',
@@ -3669,6 +3670,20 @@ html.touring .tour-fab::after { display: none; }
     table: [['1', 'Kimi Antonelli', 'Mercedes', '340'], ['2', 'George Russell', 'Mercedes', '238'], ['3', 'Lewis Hamilton', 'Ferrari', '229'], ['4', 'Max Verstappen', 'Red Bull', '221'], ['5', 'Charles Leclerc', 'Ferrari', '215']],
     records: ['Most wins in a season: 19, in 2023', 'Most wins in a row: 10', 'Youngest Grand Prix winner: 18 years, 228 days, Spain 2016', '2025: runner-up, two points behind Lando Norris']
   };
+  // Live numbers, fetched once per visit after the page has settled. If the API is down, the fallbacks above stay.
+  function f1When(iso) { return new Date(iso).toLocaleString([], { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }); }
+  setTimeout(function () {
+    fetch('/api/f1').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (!d || !d.table) return;
+      var ord = function (n) { return n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th'); };
+      F1.asOf = d.asOf || F1.asOf; F1.pos = 'P' + d.pos; F1.pts = d.pts; F1.table = d.table;
+      F1.wins = d.wins; F1.podiums = d.podiums; F1.starts = d.starts;
+      if (d.teamPos) F1.teamPos = 'Red Bull is ' + ord(+d.teamPos) + ' in the constructors\' table on ' + d.teamPts + '.';
+      if (d.latestWin) F1.lastWin = d.latestWin.isLast ? 'Won the ' + d.latestWin.race + ', his latest win.' : 'Latest win: the ' + d.latestWin.season + ' ' + d.latestWin.race + '.';
+      F1.next = d.next;
+      var pop = document.getElementById('pop'); if (pop && !pop.hidden && pop.querySelector('.pop-livery')) popOpen('f1'); // refresh if it's open
+    }, function () {});
+  }, 2500);
   var bookHref = (document.querySelector('[data-book]') || {}).href || 'mailto:mh.hasan884@gmail.com';
   var POPS = {
     f1: function () {
@@ -3679,12 +3694,12 @@ html.touring .tour-fab::after { display: none; }
         '<dl class="pop-stats"><div><dt>Titles</dt><dd>' + F1.titles + '</dd></div><div><dt>Wins</dt><dd>' + F1.wins + '</dd></div><div><dt>Poles</dt><dd>' + F1.poles + '</dd></div><div><dt>Podiums</dt><dd>' + F1.podiums + '</dd></div><div><dt>Starts</dt><dd>' + F1.starts + '</dd></div></dl>' +
         '<div><p class="pop-k" style="margin-bottom:.4rem">2026 drivers\' standings · Max is ' + F1.pos + ' on ' + F1.pts + '</p><ol class="pop-stand">' +
         F1.table.map(function (r) { return '<li' + (r[1] === F1.driver ? ' class="me"' : '') + '><span>P' + r[0] + '</span><span>' + esc(r[1]) + ' · ' + esc(r[2]) + '</span><span>' + r[3] + '</span></li>'; }).join('') + '</ol></div>' +
-        '<p class="muted">' + esc(F1.lastWin) + '</p>' +
+        '<p class="muted">' + esc(F1.lastWin) + (F1.next ? ' Next: the ' + esc(F1.next.race) + ', ' + esc(f1When(F1.next.at)) + ' your time.' : '') + '</p>' +
         '<div><p class="pop-k" style="margin-bottom:.4rem">Records</p><ul class="pop-list">' + F1.records.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>' +
         '<p class="pop-foot">Career figures as of the ' + esc(F1.asOf) + '. <a href="https://www.formula1.com/en/results/2026/drivers" target="_blank" rel="noopener">Live standings ↗</a></p>';
     },
     music: function () {
-      return '<p class="pop-k">Music</p><h3 id="pop-t">On repeat</h3><ul class="pop-list"><li>Linkin Park</li><li>The Weeknd</li><li>Karan Aujla</li></ul>' +
+      return '<p class="pop-k">Music</p><h3 id="pop-t">On repeat</h3><ul class="pop-list"><li>Linkin Park</li><li>The Weeknd</li></ul>' +
         '<p><a href="https://open.spotify.com/user/21cq757g3mlgyweevd5rnbzka" target="_blank" rel="noopener">My Spotify ↗</a></p>';
     },
     podcasts: function () {
@@ -3842,7 +3857,8 @@ html.touring .tour-fab::after { display: none; }
       f1: function () {
         print('<span class="b">' + esc(F1.driver) + '</span> #' + F1.number + ' · ' + esc(F1.team) + '\n' +
           F1.titles + '× world champion (' + F1.titleYears + ')\n' + F1.wins + ' wins · ' + F1.poles + ' poles · ' + F1.podiums + ' podiums · ' + F1.starts + ' starts\n' +
-          '2026: <span class="y">' + F1.pos + '</span> on ' + F1.pts + ' pts. ' + esc(F1.lastWin) + '\n<span class="c">as of the ' + esc(F1.asOf) + '</span>');
+          '2026: <span class="y">' + F1.pos + '</span> on ' + F1.pts + ' pts. ' + esc(F1.lastWin) + '\n' +
+          (F1.next ? 'Next: <span class="g">' + esc(F1.next.race) + '</span>, ' + esc(f1When(F1.next.at)) + ' your time\n' : '') + '<span class="c">as of the ' + esc(F1.asOf) + '</span>');
       },
       theme: function (a) {
         if (!a) { print(THEMES.map(function (t) { return (t.id === cur ? '<span class="g">* ' : '  ') + t.id + (t.id === cur ? '</span>' : '') + '  <span class="c">' + esc((t.id === THEME_DEFAULT ? 'Today' : t.week) + ' · ' + t.note) + '</span>'; }).join('\n') + '\n<span class="c">theme &lt;name&gt; to switch</span>'); return; }

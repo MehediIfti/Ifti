@@ -17,6 +17,7 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] N°007 Show the guardrails first (N°005's client-work list, now its own note)
 - [x] Work history timeline, homepage map (map, globe, clocks), Shelf as the archive
 - [x] Hidden room `#backstage`: how the site is built, numbers counted live ([#5](https://github.com/MehediIfti/Ifti/issues/5))
+- [x] Notes have their own links (`/n/005`) with their own previews, and an RSS feed at `/feed.xml` ([#27](https://github.com/MehediIfti/Ifti/issues/27))
 - [x] A real 404: a terminal that guesses the page you meant ([#7](https://github.com/MehediIfti/Ifti/issues/7))
 
 ### Themes and look
@@ -62,21 +63,33 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] `scripts/check-layout.mjs` before shipping: every page at 390, 700, 820 and 1440 px, column wide enough, no sideways scroll
 - [x] Audit fixes: notes readable on phones, no page jump on phone load, Appearance panel fits phones, time-zone caption follows daylight saving, no intro on deep links
 - [x] Self-hosted fonts, skip link, no cookies
+- [x] Contrast: every palette passes 4.5:1, checked by `check.mjs` on every push; axe scan 0 violations on 44 page views ([#29](https://github.com/MehediIfti/Ifti/issues/29))
+- [x] Screen readers: real buttons for Off the clock, honest note tabs, heading levels; `robots.txt`, `sitemap.xml`, security headers
 
 ## Next (ready to build)
 Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 
 - [ ] [#15](https://github.com/MehediIfti/Ifti/issues/15) Tour on phones · 20-min
-- [ ] [#29](https://github.com/MehediIfti/Ifti/issues/29) Contrast check for every theme in check.mjs · 20-min
 - [ ] [#30](https://github.com/MehediIfti/Ifti/issues/30) Installable: web app manifest · 20-min
 - [ ] [#26](https://github.com/MehediIfti/Ifti/issues/26) Free-slot finder under Book a call · 2x20-min
-- [ ] [#27](https://github.com/MehediIfti/Ifti/issues/27) Note share previews and an RSS feed · 2x20-min
 - [ ] [#28](https://github.com/MehediIfti/Ifti/issues/28) Recap email builder in the Playground · 2x20-min
+- [ ] [#49](https://github.com/MehediIfti/Ifti/issues/49) Refresh og.png with the current address · 20-min
+- [ ] [#47](https://github.com/MehediIfti/Ifti/issues/47) Accessibility scan in check-layout.mjs · 20-min
+- [ ] [#48](https://github.com/MehediIfti/Ifti/issues/48) Lighter first load on phones · 2x20-min
+
+## Cool, for later
+The fun queue. Pick one when there's a free session.
+
+- [ ] [#43](https://github.com/MehediIfti/Ifti/issues/43) A preview image for every note: N°, title and date in the site's look · 2x20-min
+- [ ] [#45](https://github.com/MehediIfti/Ifti/issues/45) Belief cards: share a line from What I believe · 20-min
+- [ ] [#46](https://github.com/MehediIfti/Ifti/issues/46) Listen to a note: read aloud by the browser, the paragraph highlighted · 20-min
+- [ ] [#44](https://github.com/MehediIfti/Ifti/issues/44) Fastest starts: a reaction-test leaderboard (needs a small store)
 
 ## Later (bigger builds, start with a first slice)
 - [ ] [#20](https://github.com/MehediIfti/Ifti/issues/20) Ask Ifti in the terminal: keyword search over the notes first, no AI. [30-day plan](docs/plans/ask-ifti-30-day-plan.md). Parked 18 Oct: quick wins first.
 - [ ] [#21](https://github.com/MehediIfti/Ifti/issues/21) Negotiation sparring game: a scripted buyer first
 - [ ] [#24](https://github.com/MehediIfti/Ifti/issues/24) Whiteboard guestbook: notes by FormSubmit, approved by hand
+- [ ] [#50](https://github.com/MehediIfti/Ifti/issues/50) Hear about broken features before visitors do: script errors logged by a Vercel function
 
 ## Waiting on me (`needs-info`)
 - [ ] [#16](https://github.com/MehediIfti/Ifti/issues/16) A /uses page: the list of what I use

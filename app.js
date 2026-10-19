@@ -112,7 +112,7 @@
     while (a.firstChild) view.appendChild(a.firstChild);
     var text = view.textContent.replace(/\s+/g, ' ').trim(), words = text.split(' ').length;
     var row = function (ic, k, v) { return '<dt>' + icon(ic) + k + '</dt><dd>' + v + '</dd>'; };
-    view.querySelector('h1').insertAdjacentHTML('afterend', '<div class="obs-props"><h5>Properties</h5><dl>' +
+    view.querySelector('h1').insertAdjacentHTML('afterend', '<div class="obs-props"><p class="obs-props-t">Properties</p><dl>' +
       row('calendar', 'created', esc(date)) + row('hash', 'number', esc(no)) +
       row('tags', 'tags', tags.map(function (t) { return '<a class="obs-tag" href="#notes">#' + esc(t) + '</a>'; }).join('')) +
       row('clock', 'reading', Math.max(1, Math.round(words / 230)) + ' min') + '</dl></div>');
@@ -127,7 +127,7 @@
     };
     var links = related(a).length;
     a.innerHTML =
-      '<div class="obs-tabs" role="tablist" aria-label="Open notes"></div>' +
+      '<div class="obs-tabs" role="group" aria-label="Open notes"></div>' +
       '<div class="obs-nav">' + arrow(older, 'left', 'Older') + arrow(newer, 'right', 'Newer') +
       '<span class="obs-crumb"><a href="#index">Notebook</a><i>/</i><a href="#notes">Notes</a><i>/</i><b>' + esc(title) + '</b></span><span class="obs-mode">reading</span><button type="button" class="obs-arrow obs-graph" data-graph="' + a.id + '" title="Graph view" aria-label="Open graph view">' + icon('graph') + '</button></div>';
     a.appendChild(view);
@@ -157,7 +157,7 @@
     var bar = a.querySelector('.obs-tabs');
     bar.innerHTML = tabs.map(function (id) {
       var n = document.getElementById(id), on = id === a.id;
-      return '<div class="obs-tab' + (on ? ' on' : '') + '"><a href="#' + id + '" role="tab" aria-selected="' + on + '" title="' + esc(noteTitle(n)) + '">' + icon('file') + '<span>' + esc(noteTitle(n)) + '</span></a>' +
+      return '<div class="obs-tab' + (on ? ' on' : '') + '"><a href="#' + id + '"' + (on ? ' aria-current="page"' : '') + ' title="' + esc(noteTitle(n)) + '">' + icon('file') + '<span>' + esc(noteTitle(n)) + '</span></a>' +
         '<button type="button" class="obs-x" data-close="' + id + '" aria-label="Close ' + esc(noteTitle(n)) + '" title="Close">×</button></div>';
     }).join('') +
       '<button type="button" class="obs-new" aria-haspopup="true" aria-expanded="false"' + (tabs.length >= MAX_TABS ? ' disabled title="Up to ' + MAX_TABS + ' tabs. Close one to open another."' : ' title="Open another note in a new tab"') + ' aria-label="New tab">+</button>';
@@ -220,8 +220,8 @@
   }
   function noteMeta(n) {
     var rel = related(n);
-    return '<section><h4>Local graph</h4><button type="button" class="graph-open" data-graph="' + n.id + '" aria-label="Open graph view">' + graphSVG(n) + '<span class="hint">⤢ expand</span></button></section>' +
-      '<section><h4>Linked mentions</h4>' + (rel.length ? '<div class="mentions">' + rel.map(function (r) {
+    return '<section><h4 aria-level="2">Local graph</h4><button type="button" class="graph-open" data-graph="' + n.id + '" aria-label="Open graph view">' + graphSVG(n) + '<span class="hint">⤢ expand</span></button></section>' +
+      '<section><h4 aria-level="2">Linked mentions</h4>' + (rel.length ? '<div class="mentions">' + rel.map(function (r) {
         return '<a href="#' + r.note.id + '">' + esc(noteTitle(r.note)) + '<small>via ' + r.shared.map(function (t) { return '#' + esc(t); }).join(' ') + '</small></a>';
       }).join('') + '</div>' : '<p>No linked notes yet.</p>') + '</section>';
   }
@@ -436,12 +436,12 @@
     var html = '';
     var heads = Array.prototype.slice.call(page.querySelectorAll('h2'));
     if (heads.length >= 3) {
-      html += '<section class="m-toc"><h4>On this page</h4><ol class="toc">' + heads.map(function (h, i) {
+      html += '<section class="m-toc"><h4 aria-level="2">On this page</h4><ol class="toc">' + heads.map(function (h, i) {
         return '<li><button type="button" data-i="' + i + '">' + esc(h.textContent) + '</button></li>';
       }).join('') + '</ol></section>';
     }
     // calendar activity sits high on the index so it gets seen
-    if (id === 'index') html += '<section class="m-hide"><h4>Activity</h4>' + activityHTML() + '</section>';
+    if (id === 'index') html += '<section class="m-hide"><h4 aria-level="2">Activity</h4>' + activityHTML() + '</section>';
     var words = page.textContent.trim().split(/\s+/).length; // textContent: innerText skips content-visibility sections
     var isNote = id.indexOf('n-') === 0;
     var now = document.getElementById('now');
@@ -452,14 +452,14 @@
       return t ? t.childNodes[0].textContent.trim() : '';
     };
     if (id !== 'now' && !isNote) {
-      html += '<section class="m-hide"><h4>Right now</h4><ul class="cur">' +
+      html += '<section class="m-hide"><h4 aria-level="2">Right now</h4><ul class="cur">' +
         [['reading', pick('Reading')], ['watching', pick('Watching')], ['listening', pick('Listening')], ['exploring', pick('Exploring')]].filter(function (r) { return r[1]; })
         .map(function (r) { return '<li><span class="k">' + r[0] + '</span><span class="v">' + esc(r[1]) + '</span></li>'; }).join('') +
         '</ul><p style="margin-top:0.6rem"><a href="#now">full log →</a></p></section>';
     }
     // Page details come after Right now
     if (isNote) html += noteMeta(page);
-    html += '<section class="m-hide"><h4>Find me</h4><div class="socials rail-socials" data-socials></div></section>';
+    html += '<section class="m-hide"><h4 aria-level="2">Find me</h4><div class="socials rail-socials" data-socials></div></section>';
     meta.innerHTML = html;
     renderSocials(meta);
     stereoFor(id);
@@ -691,7 +691,7 @@
     a.className = 'h-link'; a.href = '#' + h.id; a.setAttribute('aria-label', 'Copy a link to this section'); a.title = 'Copy a link to this section';
     a.addEventListener('click', function (e) {
       e.preventDefault();
-      var url = location.origin + location.pathname + '#' + h.id, done = function () { a.classList.add('copied'); setTimeout(function () { a.classList.remove('copied'); }, 1400); };
+      var url = location.origin + '/n/' + h.closest('.page').id.slice(2) + '#' + h.id, done = function () { a.classList.add('copied'); setTimeout(function () { a.classList.remove('copied'); }, 1400); };
       history.replaceState(null, '', '#' + h.id);
       if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, done); else done();
     });
@@ -1234,8 +1234,7 @@
   }
   function popClose() { if (pop.hidden) return; musicStop(); pop.hidden = true; document.documentElement.style.overflow = ''; if (popFrom) popFrom.focus(); }
   document.querySelectorAll('.offclock [data-pop]').forEach(function (li) {
-    li.addEventListener('click', function (e) { if (!e.target.closest('a')) popOpen(li.getAttribute('data-pop')); });
-    li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); popOpen(li.getAttribute('data-pop')); } });
+    li.addEventListener('click', function (e) { if (!e.target.closest('a')) popOpen(li.getAttribute('data-pop')); }); // the card's button takes Enter and Space itself
   });
   pop.addEventListener('click', function (e) {
     if (e.target.closest('[data-rx]')) { popClose(); window.reactionTest(); return; }
@@ -2172,7 +2171,7 @@
       ctx.fillStyle = acc; ctx.font = '500 22px ' + fMono; ctx.textAlign = 'right';
       ctx.fillText('ifti-gold.vercel.app', W - pad, H - pad - 20); ctx.textAlign = 'left';
     }
-    function url() { return q.url || SITE + '#' + q.art.id; }
+    function url() { return q.url || (q.art.id.indexOf('n-') === 0 ? SITE + 'n/' + q.art.id.slice(2) : SITE + '#' + q.art.id); }
     function head(t) { dlg.querySelector('.sc-head b').textContent = t; dlg.setAttribute('aria-label', t); }
     // Any card: { title, paint(ctx, W, H, kit), said, url, file }. Used by the reaction test and the achievements list.
     window.shareCard = function (card) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The site is one page (notes and pages are #anchors, which search engines don't index separately), plus the CV. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://ifti-gold.vercel.app/</loc><lastmod>2026-10-19</lastmod></url>
+  <url><loc>https://ifti-gold.vercel.app/cv.pdf</loc><lastmod>2026-10-17</lastmod></url>
+</urlset>

@@ -34,5 +34,26 @@ const BUDGET = { 'index.html': 75 * 1024, 'app.js': 75 * 1024 }, kb = n => (n / 
 const size = { 'index.html': gzipSync(html).length, 'app.js': gzipSync(app).length };
 for (const f in BUDGET) if (size[f] > BUDGET[f]) { failed++; console.error(`${f} is ${kb(size[f])} KB gzipped, over its ${BUDGET[f] / 1024} KB budget.`); }
 
-console.log(`${scripts.length + 1} scripts checked, ${ids.size} ids, ${missing.length} broken anchor links. Gzipped: index.html ${kb(size['index.html'])} of 75 KB, app.js ${kb(size['app.js'])} of 75 KB.`);
+// 4. Contrast: in every palette, body text, secondary text and the faint text (--overlay1: dates, labels, captions) must reach
+//    4.5:1 on the page and on panels (--base and --mantle), and every tag must reach 4.5:1 on its own tinted chip.
+//    Light palettes darken tag text with the ink (TAG_INK below, same as the CSS). WCAG AA for small text.
+const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+const mix = (a, b, t) => '#' + [1, 3, 5].map(i => Math.round(parseInt(a.slice(i, i + 2), 16) * t + parseInt(b.slice(i, i + 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+const TAG_INK = 0.65, TAGS = ['mauve', 'pink', 'peach', 'green', 'sky', 'yellow', 'teal', 'maroon', 'lavender'];
+const low = [];
+for (const m of html.matchAll(/:root(?:, :root)?\[data-palette="(\w+)"\] \{([^}]+)\}/g)) {
+  const p = Object.fromEntries([...m[2].matchAll(/--([\w-]+): (#[0-9a-f]{6})/g)].map(x => [x[1], x[2]]));
+  const light = /color-scheme: light/.test(m[2]);
+  for (const t of ['text', 'subtext0', 'overlay1']) for (const bg of ['base', 'mantle']) {
+    const r = ratio(p[t], p[bg]); if (r < 4.5) low.push(`${m[1]}: --${t} on --${bg} is ${r.toFixed(2)}:1`);
+  }
+  for (const t of TAGS) {
+    const chip = mix(p[t], p.base, 0.12), ink = light ? mix(p[t], p.text, TAG_INK) : p[t], r = ratio(ink, chip);
+    if (r < 4.5) low.push(`${m[1]}: tag --${t} is ${r.toFixed(2)}:1`);
+  }
+}
+if (low.length) { failed++; console.error('Text below 4.5:1 contrast:\n  ' + low.join('\n  ')); }
+
+console.log(`${scripts.length + 1} scripts checked, ${ids.size} ids, ${missing.length} broken anchor links, ${low.length} contrast problems. Gzipped: index.html ${kb(size['index.html'])} of 75 KB, app.js ${kb(size['app.js'])} of 75 KB.`);
 process.exit(failed ? 1 : 0);

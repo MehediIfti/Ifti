@@ -32,9 +32,13 @@ npx serve .                 # preview at localhost:3000 (any static server works
 | `/api/f1` | Standings, Max's numbers, next race (Jolpica) | 6 h |
 | `/api/weather` | Dhaka temperature and sky (Open-Meteo) | 30 min |
 | `/api/ping` | Health check, used by the terminal's `ping` | none |
+| `/n/:id` → `/api/note` | A note's own address: its title, summary and preview tags, then on to `/#n-005` | 1 h, cleared on deploy |
+| `/feed.xml` → `/api/feed` | Atom feed of every note | 1 h, cleared on deploy |
 | `/api/spotify-login`, `/api/spotify-callback` | One-time Spotify setup | none |
 
 `api/_calendar.js` is shared by status and activity; files starting with `_` aren't endpoints.
+
+**Note links and the feed:** `api/_notes.js` reads the notes out of `index.html` (each `<article id="n-…">`: number, date from the note head, title, first paragraph, `data-tags`), which `vercel.json` bundles with `api/note.js` and `api/feed.js` (`includeFiles`). Nothing to update by hand: a new note gets its `/n/` address and feed entry on the next deploy. `/n/005` serves the note's own Open Graph and X tags, so a pasted link previews as that note, then sends people to `/#n-005`; `/n/005#s-n-005-…` opens at that section, and `/n/5` forwards to `/n/005`. The preview summary is the first paragraph, cut at a sentence end before about 200 characters, so write first paragraphs that stand on their own. Share cards and the `#` section links copy `/n/` addresses. The site address lives in `SITE` in `api/_notes.js` as well as the `SHARE PREVIEW` block; change both together. To check a preview after deploy, paste a `/n/` link into LinkedIn's Post Inspector (linkedin.com/post-inspector).
 
 **Vercel environment variables** (Project → Settings → Environment Variables; never in the page):
 
@@ -58,7 +62,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 - **Backlog:** ideas live as [issues](https://github.com/MehediIfti/Ifti/issues), grouped into milestones in play order: *1 · Easter eggs & delight*, *2 · Interaction polish*, *3 · Content & pages*, *Later · Needs a backend*. The [project board](https://github.com/MehediIfti/Ifti/projects) shows them as Ready, In progress, Done and Parked.
 - **Labels:** `fun`, `feature`, `design`, `content`, `chore`, `bug` say what it is. `20-min` / `2x20-min` say how long. `needs-info` waits on a fact or decision from me; `needs-backend` waits on a small server.
 - **Daily 20 minutes:** I open a session and say "next issue". The rules are in `CLAUDE.md`.
-- **Safety check:** every push runs `scripts/check.mjs` (GitHub Actions): the scripts must parse, every `#link` must point somewhere, and the page must stay under its size budget. Run it locally with `node scripts/check.mjs`.
+- **Safety check:** every push runs `scripts/check.mjs` (GitHub Actions): the scripts must parse, every `#link` must point somewhere, the page must stay under its size budget, and every palette must pass contrast: body, secondary and faint text (`--text`, `--subtext0`, `--overlay1`) at 4.5:1 on `--base` and `--mantle`, and every tag colour at 4.5:1 on its tinted chip. Light palettes darken tag text with the ink (the `.log .tag` rule for light palettes, `TAG_INK` in the check). A new palette that fails can't ship; nudge its lightness until it passes. Run it locally with `node scripts/check.mjs`.
 - **Layout check:** `scripts/check-layout.mjs` opens every page in four themes at 390, 700, 820 and 1440 px and fails if the reading column is under 300 px, the page scrolls sideways, or a script throws. It needs Playwright, so it runs locally, not on push. Without Playwright in `node_modules`, set `PLAYWRIGHT=/path/to/playwright`. A squashed column throws no error, so `check.mjs` can't catch it.
 - **New ideas:** use the Idea or Bug template on the New issue page.
 
@@ -145,6 +149,12 @@ npx serve .                 # preview at localhost:3000 (any static server works
 **Links to sections:** every note heading gets an id like `s-n-005-who-pays-for-it` when the page loads (the same id search uses), and a `#` beside it copies the link. A fresh visit to that link opens the note at the section.
 
 **Hover previews:** on a desktop, hovering any link to another page or note shows its title and first lines. Nothing to update; it reads the page itself.
+
+**Accessibility:** interactive cards are real `<button>`s (Off the clock: `.oc-go` stretches over its card), right-column headings are `h4` styled but `aria-level="2"` for screen readers, and the notes tab bar is a labelled group with `aria-current` on the open note. An axe scan of every page in all four themes found nothing on 19 Oct 2026; keep it that way when adding UI.
+
+**Search engines:** `robots.txt` allows everything and points to `sitemap.xml`, which lists the homepage and the CV (pages and notes are `#anchors`, which search engines don't index on their own; #27 fixes that). Update `lastmod` when the CV changes.
+
+**Headers:** `vercel.json` sends `X-Content-Type-Options`, `X-Frame-Options: SAMEORIGIN` (the Whiteboard frame is same-origin), `Referrer-Policy` and a `Permissions-Policy` that turns off camera, microphone, location, payment and USB. Fonts are cached for a year.
 
 **Speed:** keep it fast by following these rules.
 - Fonts are self-hosted in `fonts/` (Latin only, `font-display: swap`). Don't add Google Fonts links. To add a font, download its Latin woff2 into `fonts/` and add an `@font-face` at the top of the `<style>`. Only the default theme's fonts are preloaded.

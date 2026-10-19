@@ -11,6 +11,7 @@
 <meta name="theme-color" content="#0b0c0f">
 <!-- SHARE PREVIEW: swap SITE to the custom domain once it's connected -->
 <link rel="canonical" href="https://ifti-gold.vercel.app/">
+<link rel="alternate" type="application/atom+xml" title="Ifti's Notebook" href="https://ifti-gold.vercel.app/feed.xml">
 <script>
   // HOSTING: the site runs on Vercel. Set LIVE to its address (e.g. "https://ifti.vercel.app/") and the
   // old GitHub Pages address forwards there, keeping the #page. Empty means both addresses serve the site.
@@ -97,16 +98,16 @@ img { max-width: 100%; }
   --s-0: 0.8125rem; --s-1: 1rem; --s-2: 1.3rem; --s-3: 2.125rem;
 }
 /* themes (bare :root = default) */
-:root, :root[data-palette="black"] { --base: #0c0d10; --mantle: #14151a; --surface0: #23252c; --surface1: #30323b; --overlay1: #6b6b73; --text: #d4d4d8; --subtext1: #e4e4e7; --subtext0: #8e8e96; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
-:root[data-palette="mocha"] { --base: #1e1e2e; --mantle: #181825; --surface0: #313244; --surface1: #45475a; --overlay1: #7f849c; --text: #cdd6f4; --subtext1: #bac2de; --subtext0: #a6adc8; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
-:root[data-palette="gruvbox"] { --base: #282828; --mantle: #1d2021; --surface0: #3c3836; --surface1: #504945; --overlay1: #928374; --text: #ebdbb2; --subtext1: #fbf1c7; --subtext0: #a89984; --mauve: #d3869b; --maroon: #fb4934; --peach: #fe8019; --teal: #8ec07c; --green: #b8bb26; --yellow: #fabd2f; --pink: #d3869b; --sky: #83a598; --lavender: #83a598; color-scheme: dark; }
-:root[data-palette="nord"] { --base: #2e3440; --mantle: #272c36; --surface0: #3b4252; --surface1: #434c5e; --overlay1: #7b88a1; --text: #e5e9f0; --subtext1: #eceff4; --subtext0: #a3abba; --mauve: #b48ead; --maroon: #bf616a; --peach: #d08770; --teal: #8fbcbb; --green: #a3be8c; --yellow: #ebcb8b; --pink: #b48ead; --sky: #88c0d0; --lavender: #81a1c1; color-scheme: dark; }
-:root[data-palette="latte"] { --base: #eff1f5; --mantle: #e6e9ef; --surface0: #ccd0da; --surface1: #bcc0cc; --overlay1: #8c8fa1; --text: #4c4f69; --subtext1: #5c5f77; --subtext0: #6c6f85; --mauve: #8839ef; --maroon: #d20f39; --peach: #fe640b; --teal: #179299; --green: #40a02b; --yellow: #df8e1d; --pink: #ea76cb; --sky: #04a5e5; --lavender: #7287fd; color-scheme: light; }
-:root[data-palette="solarized"] { --base: #fdf6e3; --mantle: #eee8d5; --surface0: #e4ddc8; --surface1: #d3cbb7; --overlay1: #93a1a1; --text: #586e75; --subtext1: #073642; --subtext0: #839496; --mauve: #6c71c4; --maroon: #dc322f; --peach: #cb4b16; --teal: #2aa198; --green: #859900; --yellow: #b58900; --pink: #d33682; --sky: #268bd2; --lavender: #6c71c4; color-scheme: light; }
-:root[data-palette="cropmark"] { --base: #121212; --mantle: #161616; --surface0: #414141; --surface1: #2c2c2c; --overlay1: #6e6e6e; --text: #ededed; --subtext1: #ededed; --subtext0: #a0a0a0; --mauve: #f7cafa; --maroon: #f7cafa; --peach: #d8e495; --teal: #a0a0a0; --green: #a0c0a7; --yellow: #d8e495; --pink: #f7cafa; --sky: #a0c0a7; --lavender: #f7cafa; color-scheme: dark; }
-:root[data-palette="lightsout"] { --base: #0b0e1a; --mantle: #10152a; --surface0: #262e4f; --surface1: #313a60; --overlay1: #5d6584; --text: #e9ecf5; --subtext1: #ffffff; --subtext0: #9098b3; --mauve: #ffc906; --maroon: #ff5a52; --peach: #ff5a52; --teal: #ffc906; --green: #3ddc84; --yellow: #ffc906; --pink: #ff5a52; --sky: #4f7cff; --lavender: #4f7cff; color-scheme: dark; }
-:root[data-palette="halftone"] { --base: #e3f8e7; --mantle: #d6f0db; --surface0: #b4d2ba; --surface1: #9dbda4; --overlay1: #5f7565; --text: #111311; --subtext1: #000000; --subtext0: #3b4a3f; --mauve: #111311; --maroon: #c2410c; --peach: #f05a28; --teal: #111311; --green: #2f7d45; --yellow: #f05a28; --pink: #c2410c; --sky: #2563c9; --lavender: #4b4fb8; color-scheme: light; }
-:root[data-palette="paper"] { --base: #ffffff; --mantle: #f6f6f4; --surface0: #e4e2dd; --surface1: #c9c6bf; --overlay1: #9a968e; --text: #2b2925; --subtext1: #1f1d1a; --subtext0: #6b675f; --mauve: #8c2f2b; --maroon: #8c2f2b; --peach: #3d3a35; --teal: #8a6d3b; --green: #4f7a3a; --yellow: #a87a12; --pink: #9b4f78; --sky: #3f6f8f; --lavender: #6a5f9e; color-scheme: light; }
+:root, :root[data-palette="black"] { --base: #0c0d10; --mantle: #14151a; --surface0: #23252c; --surface1: #30323b; --overlay1: #808088; --text: #d4d4d8; --subtext1: #e4e4e7; --subtext0: #8e8e96; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
+:root[data-palette="mocha"] { --base: #1e1e2e; --mantle: #181825; --surface0: #313244; --surface1: #45475a; --overlay1: #82879f; --text: #cdd6f4; --subtext1: #bac2de; --subtext0: #a6adc8; --mauve: #cba6f7; --maroon: #f38ba8; --peach: #fab387; --teal: #94e2d5; --green: #a6e3a1; --yellow: #f9e2af; --pink: #f5c2e7; --sky: #89dceb; --lavender: #b4befe; color-scheme: dark; }
+:root[data-palette="gruvbox"] { --base: #282828; --mantle: #1d2021; --surface0: #3c3836; --surface1: #504945; --overlay1: #9d8e7f; --text: #ebdbb2; --subtext1: #fbf1c7; --subtext0: #a89984; --mauve: #d68b9e; --maroon: #fb7762; --peach: #fe8019; --teal: #8ec07c; --green: #b8bb26; --yellow: #fabd2f; --pink: #d68b9e; --sky: #86a89b; --lavender: #86a89b; color-scheme: dark; }
+:root[data-palette="nord"] { --base: #2e3440; --mantle: #272c36; --surface0: #3b4252; --surface1: #434c5e; --overlay1: #919eb7; --text: #e5e9f0; --subtext1: #eceff4; --subtext0: #a3abba; --mauve: #cca6c5; --maroon: #e0a1a2; --peach: #dfa09e; --teal: #8fbcbb; --green: #a3be8c; --yellow: #ebcb8b; --pink: #cca6c5; --sky: #88c0d0; --lavender: #94b4d4; color-scheme: dark; }
+:root[data-palette="latte"] { --base: #eff1f5; --mantle: #e6e9ef; --surface0: #ccd0da; --surface1: #bcc0cc; --overlay1: #636678; --text: #4c4f69; --subtext1: #5c5f77; --subtext0: #63667c; --mauve: #8839ef; --maroon: #d20f39; --peach: #ca4501; --teal: #17787f; --green: #2e7c28; --yellow: #8f661d; --pink: #dd1594; --sky: #04769d; --lavender: #4459fd; color-scheme: light; }
+:root[data-palette="solarized"] { --base: #fdf6e3; --mantle: #eee8d5; --surface0: #e4ddc8; --surface1: #d3cbb7; --overlay1: #5c6a6a; --text: #546a71; --subtext1: #073642; --subtext0: #596a6c; --mauve: #575caf; --maroon: #dc2623; --peach: #bd4416; --teal: #246f6d; --green: #596d00; --yellow: #836000; --pink: #cb2c79; --sky: #266a90; --lavender: #575caf; color-scheme: light; }
+:root[data-palette="cropmark"] { --base: #121212; --mantle: #161616; --surface0: #414141; --surface1: #2c2c2c; --overlay1: #818181; --text: #ededed; --subtext1: #ededed; --subtext0: #a0a0a0; --mauve: #f7cafa; --maroon: #f7cafa; --peach: #d8e495; --teal: #a0a0a0; --green: #a0c0a7; --yellow: #d8e495; --pink: #f7cafa; --sky: #a0c0a7; --lavender: #f7cafa; color-scheme: dark; }
+:root[data-palette="lightsout"] { --base: #0b0e1a; --mantle: #10152a; --surface0: #262e4f; --surface1: #313a60; --overlay1: #78809f; --text: #e9ecf5; --subtext1: #ffffff; --subtext0: #9098b3; --mauve: #ffc906; --maroon: #ff5a52; --peach: #ff5a52; --teal: #ffc906; --green: #3ddc84; --yellow: #ffc906; --pink: #ff5a52; --sky: #517eff; --lavender: #517eff; color-scheme: dark; }
+:root[data-palette="halftone"] { --base: #e3f8e7; --mantle: #d6f0db; --surface0: #b4d2ba; --surface1: #9dbda4; --overlay1: #576d5d; --text: #111311; --subtext1: #000000; --subtext0: #3b4a3f; --mauve: #111311; --maroon: #c2410c; --peach: #f05a28; --teal: #111311; --green: #2f7d45; --yellow: #f05a28; --pink: #c2410c; --sky: #2563c9; --lavender: #4b4fb8; color-scheme: light; }
+:root[data-palette="paper"] { --base: #ffffff; --mantle: #f6f6f4; --surface0: #e4e2dd; --surface1: #c9c6bf; --overlay1: #736f67; --text: #2b2925; --subtext1: #1f1d1a; --subtext0: #6b675f; --mauve: #8c2f2b; --maroon: #8c2f2b; --peach: #3d3a35; --teal: #8a6d3b; --green: #4f7a3a; --yellow: #a87a12; --pink: #9b4f78; --sky: #3f6f8f; --lavender: #6a5f9e; color-scheme: light; }
 
 /* background styles */
 :root[data-bg="grid"]  { --pattern: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); --pattern-size: 24px 24px; }
@@ -518,7 +519,7 @@ ul.plain li::marker { color: var(--muted); }
 .obs-view > * + * { margin-top: 1.25rem; }
 .obs-view > h1 + * { margin-top: 1.25rem; }
 .obs-props { padding-bottom: 1.1rem; border-bottom: 1px solid var(--surface0); font-family: var(--sans); font-size: 0.875rem; }
-.obs-props h5 { margin: 0 0 0.35rem; font: 600 0.8125rem/1.4 var(--sans); color: var(--subtext1); }
+.obs-props .obs-props-t { margin: 0 0 0.35rem; font: 600 0.8125rem/1.4 var(--sans); color: var(--subtext1); }
 .obs-props dl { display: grid; grid-template-columns: 8rem minmax(0, 1fr); margin: 0; }
 .obs-props dt, .obs-props dd { margin: 0; padding: 0.28rem 0.4rem; }
 .obs-props dt { display: flex; align-items: center; gap: 0.5rem; color: var(--subtext0); }
@@ -639,6 +640,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 .tag.t-series { --c: var(--green); } .tag.t-film { --c: var(--sky); } .tag.t-book { --c: var(--yellow); } .tag.t-tool { --c: var(--teal); }
 .tag.t-music { --c: var(--maroon); } .tag.t-pod { --c: var(--peach); }
 .tag.t-doc { --c: var(--teal); } .tag.t-kdrama { --c: var(--pink); }
+/* light palettes: tag text mixed with the ink so it reaches 4.5:1 on its tinted chip (check.mjs checks the same mix) */
+:root:is([data-palette="halftone"], [data-palette="latte"], [data-palette="solarized"], [data-palette="paper"]) .log .tag { color: color-mix(in srgb, var(--c) 65%, var(--text)); }
 .log .state { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
 .log .st { font-family: var(--mono); font-size: var(--s-0); color: var(--muted); min-width: 9rem; text-align: right; }
 .log p { flex-basis: 100%; color: var(--muted); font-size: 0.95em; }
@@ -1137,8 +1140,12 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 /* ============ pop-ups on Off the clock ============ */
 .offclock li[data-pop] { cursor: pointer; position: relative; transition: border-color 0.15s; }
 .offclock li[data-pop]::after { content: "↗"; position: absolute; top: 0.7rem; right: 0.8rem; font-family: var(--mono); font-size: 0.75rem; color: var(--overlay1); transition: color 0.15s; }
-.offclock li[data-pop]:hover, .offclock li[data-pop]:focus-visible { border-color: var(--h2); outline: none; }
-.offclock li[data-pop]:hover::after, .offclock li[data-pop]:focus-visible::after { color: var(--h2); }
+/* the whole card is the button's hit area: .oc-go stretches over its list item */
+.oc-go { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; text-align: left; cursor: pointer; }
+.oc-go::before { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.oc-go:focus-visible { outline: none; }
+.offclock li[data-pop]:hover, .offclock li[data-pop]:has(.oc-go:focus-visible) { border-color: var(--h2); outline: none; }
+.offclock li[data-pop]:hover::after, .offclock li[data-pop]:has(.oc-go:focus-visible)::after { color: var(--h2); }
 .pop { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 16px; background: color-mix(in srgb, var(--base) 65%, transparent); backdrop-filter: blur(3px); }
 .pop-card { position: relative; width: min(36rem, 100%); max-height: calc(100vh - 32px); overflow-y: auto; padding: 1.4rem 1.4rem 1.2rem; border: 1px solid var(--surface0); border-radius: 12px; background: var(--mantle); box-shadow: 0 24px 60px rgba(0,0,0,0.45); display: grid; gap: 1rem; }
 .pop-card .ap-x { position: absolute; top: 0.8rem; right: 0.8rem; }
@@ -1250,7 +1257,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 /* Search palette */
 .rail-search { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; width: 100%; margin-top: 1.6rem; padding: 0.4rem 0.55rem; font: inherit; color: var(--subtext0); background: none; border: 1px solid var(--rule); border-radius: 6px; cursor: pointer; }
 .rail-search:hover { color: var(--text); border-color: var(--overlay1); }
-.rail-search kbd, .pal kbd { font: 500 0.6875rem var(--mono); color: var(--muted); background: var(--surface0); border-radius: 3px; padding: 0.05rem 0.35rem; }
+.rail-search kbd, .pal kbd { font: 500 0.6875rem var(--mono); color: var(--text); background: var(--surface0); border-radius: 3px; padding: 0.05rem 0.35rem; }
 .rail-search + .stamp { margin-top: 1.25rem; }
 .pal { width: min(36rem, calc(100vw - 24px)); margin-top: 12vh; padding: 0; color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 12px; box-shadow: 0 24px 70px rgba(0,0,0,0.5); }
 .pal::backdrop, .sc::backdrop, .keys::backdrop { background: rgba(0,0,0,0.55); }
@@ -1268,7 +1275,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 @media (max-width: 760px) { .ach-share { display: none; } }
 .ach-toast { position: fixed; z-index: 140; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 1.25rem); transform: translate(-50%, 12px); opacity: 0; display: grid; gap: 0.1rem; padding: 0.55rem 1rem; text-align: center; color: var(--text); background: var(--mantle); border: 1px solid var(--accent); border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,0.35); pointer-events: none; transition: opacity 0.25s, transform 0.25s; }
 .ach-toast.on { opacity: 1; transform: translate(-50%, 0); }
-.ach-toast small { font: 500 0.625rem var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.ach-toast small { font: 500 0.625rem var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--label); }
 .ach-toast b { font-size: 0.875rem; }
 @media (max-width: 760px) { :root[data-mnav="tabs"] .ach-toast { bottom: calc(env(safe-area-inset-bottom, 0px) + 9rem); } }
 @media (prefers-reduced-motion: reduce) { .ach-toast { transition: none; transform: translate(-50%, 0); } }
@@ -1698,6 +1705,7 @@ html.touring .tour-fab::after { display: none; }
 .page.obs .obs-view .sn { margin: 0.9rem 0 0.25rem; padding: 0; border: 0; border-radius: 0; background: none; font-family: var(--sans); font-size: 0.9rem; line-height: 1.55; color: var(--muted); }
 .page.obs .obs-view .sn::before { font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
 .obs-view .lede mark, .obs-view p > mark { color: var(--h1); }
+:root[data-theme="midnight-ledger"] { --mark: color-mix(in srgb, var(--yellow) 20%, transparent); } /* a softer highlight keeps the violet text above 4.5:1 */
 .rail a.nav kbd { color: var(--overlay1); }
 :root[data-theme] .edu-card h2::before { content: none !important; }
 @media (max-width: 760px) { .term-fab { display: none; } }
@@ -1972,12 +1980,12 @@ html.touring .tour-fab::after { display: none; }
       <h2 class="grp">Off the clock</h2>
       <p class="sub">Everything that isn't client work. Tap one for more.</p>
       <ul class="offclock">
-        <li data-pop="f1" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15h16M6 15l2-5h7l3 5M8 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><b>Formula 1</b><p>I follow it far too closely for someone who can't drive.</p></li>
-        <li data-pop="music" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b>Music</b><p>Linkin Park and The Weeknd, mostly on repeat.</p></li>
-        <li data-pop="guitar" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 9l5-5M18 2l4 4M9.5 11.5a4 4 0 0 0-5.6 5.6l1.4 1.4a4 4 0 0 0 5.6-5.6M12 9l3 3M8 15h.01"/></svg><b>Guitar</b><p>I pick it up when nobody's waiting on me.</p></li>
-        <li data-pop="podcasts" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg><b>Podcasts</b><p>Always one in my ears. The current rotation is on the <a href="#now">Now page</a>.</p></li>
-        <li data-pop="football" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 7V3.5M15.5 9.5l3.3-1.2M14.2 13.5l2 3M9.8 13.5l-2 3M8.5 9.5L5.2 8.3"/></svg><b>Football</b><p>Liverpool and Brazil. I used to play; these days I watch.</p></li>
-        <li data-pop="travel" tabindex="0" role="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-10 4 6 2-3 6 7z"/><circle cx="17" cy="6" r="1.6"/></svg><b>Travel</b><p>Bangladesh first: Chattogram, Cox's Bazar, Bhatiari waterfall and Himchari.</p></li>
+        <li data-pop="f1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15h16M6 15l2-5h7l3 5M8 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Formula 1</button></b><p>I follow it far too closely for someone who can't drive.</p></li>
+        <li data-pop="music"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Music</button></b><p>Linkin Park and The Weeknd, mostly on repeat.</p></li>
+        <li data-pop="guitar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 9l5-5M18 2l4 4M9.5 11.5a4 4 0 0 0-5.6 5.6l1.4 1.4a4 4 0 0 0 5.6-5.6M12 9l3 3M8 15h.01"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Guitar</button></b><p>I pick it up when nobody's waiting on me.</p></li>
+        <li data-pop="podcasts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Podcasts</button></b><p>Always one in my ears. The current rotation is on the <a href="#now">Now page</a>.</p></li>
+        <li data-pop="football"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 7V3.5M15.5 9.5l3.3-1.2M14.2 13.5l2 3M9.8 13.5l-2 3M8.5 9.5L5.2 8.3"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Football</button></b><p>Liverpool and Brazil. I used to play; these days I watch.</p></li>
+        <li data-pop="travel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-10 4 6 2-3 6 7z"/><circle cx="17" cy="6" r="1.6"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Travel</button></b><p>Bangladesh first: Chattogram, Cox's Bazar, Bhatiari waterfall and Himchari.</p></li>
       </ul>
 
       <h2 class="grp">Let's talk</h2>
@@ -2060,6 +2068,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="label">Writing</p>
       <h1>Notes</h1>
       <p class="lede">Short notes from client work, and from what I'm watching and listening to.</p>
+      <p class="sub">Follow new notes by <a href="/feed.xml">RSS</a>.</p>
       <ul class="entries">
         <li><a href="#n-007"><span class="no">N°007</span><span class="t">Show the guardrails first</span><span class="d">18 Oct 2026</span></a></li>
         <li><a href="#n-006"><span class="no">N°006</span><span class="t">Show the cut marks</span><span class="d">18 Oct 2026</span></a></li>
@@ -2711,6 +2720,8 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">19 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Notes have their own links</span><span class="tag t-tool">Feature</span><p>Share a note and the post shows that note's title and summary, not the homepage. Links look like /n/005.</p></li>
+        <li><span class="t">RSS</span><span class="tag t-tool">Feature</span><p>Follow new notes in any feed reader at /feed.xml.</p></li>
         <li><span class="t">Theme tricks</span><span class="tag t-tool">Feature</span><p>Every theme now hides one trick. Halftone's sun is a good place to start.</p></li>
         <li><span class="t">Stereo by hand</span><span class="tag t-tool">Feature</span><p>Drag the record to scratch it, or hold the cassette to fast-forward.</p></li>
         <li><span class="t">Surprise me</span><span class="tag t-tool">Feature</span><p>Search "surprise me" for a random theme.</p></li>
@@ -2773,7 +2784,7 @@ html.touring .tour-fab::after { display: none; }
 
   <aside class="meta" id="meta" aria-label="Page details"></aside>
   <aside class="stereo" id="stereo" aria-label="What I'm playing on Spotify" data-deck="turntable" data-state="last" hidden>
-    <h4>On the stereo</h4>
+    <h4 aria-level="2">On the stereo</h4>
     <div class="st-deck" aria-hidden="true">
       <div class="tt"><div class="tt-platter"><div class="tt-record"><img class="st-art" alt="" width="64" height="64" hidden><i class="tt-hole"></i></div></div><i class="tt-arm"></i><span class="tt-speed">33⅓</span><i class="tt-knob"></i></div>
       <div class="cas"><div class="cas-label"><b class="st-title"></b><small class="st-artist"></small><i>A</i></div><div class="cas-win"><i class="cas-reel"></i><i class="cas-tape"></i><i class="cas-reel"></i></div><i class="cas-base"></i></div>
@@ -2886,7 +2897,7 @@ html.touring .tour-fab::after { display: none; }
 
 <div class="pop" id="pop" hidden><div class="pop-card" role="dialog" aria-modal="true" aria-labelledby="pop-t"><button type="button" class="ap-x" id="pop-x" aria-label="Close">×</button><div id="pop-body"></div></div></div>
 <div class="peek" id="peek" aria-hidden="true"></div>
-<div class="cof" id="cof">
+<div class="cof" id="cof" role="complementary" aria-label="Coffee counter">
   <div class="cof-pill">
     <button type="button" class="cof-brew" id="cof-brew" aria-label="Brew a cup" title="Brew a cup">
       <svg class="cof-cup" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><clipPath id="cof-clip"><path d="M4.5 8.5h12v5.5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/></clipPath><rect class="cof-fillup" x="4.5" y="8.5" width="12" height="10.5" clip-path="url(#cof-clip)"/><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path class="cof-steam" d="M9 2.5c-.8 1 .8 1.8 0 3M13 2.5c-.8 1 .8 1.8 0 3"/><path d="M4.5 8.5h12v5.5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M16.5 10h1.2a2.3 2.3 0 0 1 0 4.6h-1.4"/><path d="M4 21.5h13"/></g></svg>

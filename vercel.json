@@ -4,12 +4,24 @@
   "redirects": [
     { "source": "/whiteboard", "destination": "/whiteboard/", "permanent": true }
   ],
+  "functions": {
+    "api/note.js": { "includeFiles": "index.html" },
+    "api/feed.js": { "includeFiles": "index.html" }
+  },
   "rewrites": [
+    { "source": "/n/:id", "destination": "/api/note?id=:id" },
+    { "source": "/feed.xml", "destination": "/api/feed" },
     { "source": "/whiteboard/", "destination": "https://whiteboard-mu-two.vercel.app/" },
     { "source": "/whiteboard/:path*", "destination": "https://whiteboard-mu-two.vercel.app/:path*" }
   ],
   "headers": [
+    { "source": "/(.*)", "headers": [
+      { "key": "X-Content-Type-Options", "value": "nosniff" },
+      { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+      { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()" }
+    ] },
     { "source": "/fonts/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
-    { "source": "/api/((?!now-playing|status|f1|weather|activity).*)", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
+    { "source": "/api/((?!now-playing|status|f1|weather|activity|note|feed).*)", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
   ]
 }

@@ -63,7 +63,6 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 ## Next (ready to build)
 Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 
-- [ ] [#12](https://github.com/MehediIfti/Ifti/issues/12) Map game: find Dhaka · 20-min
 - [ ] [#13](https://github.com/MehediIfti/Ifti/issues/13) Theme roulette · 20-min
 - [ ] [#15](https://github.com/MehediIfti/Ifti/issues/15) Tour on phones · 20-min
 - [ ] [#29](https://github.com/MehediIfti/Ifti/issues/29) Contrast check for every theme in check.mjs · 20-min
@@ -88,6 +87,7 @@ Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 - [ ] [#34](https://github.com/MehediIfti/Ifti/issues/34) Spotify "On repeat": OK to sign in once more?
 
 ## Decided
+- No map game (#12, dropped 19 Oct 2026).
 - Phones stay lean. New fun features ship for computers first; phones get them only when they add something there.
 - No working hours on the site. Status is free or busy, any hour.
 - No Indian film, series or comedy references. American or relevant ones instead.

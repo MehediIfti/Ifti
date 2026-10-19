@@ -1263,6 +1263,9 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .ach-list li span { font-size: 0.8rem; }
 .ach-list li.got { color: var(--text); }
 .ach-list li.got i { color: var(--accent); }
+.ach-share { margin: 0; padding: 0 1rem 1rem; }
+.ach-share:has(> [hidden]) { display: none; }
+@media (max-width: 760px) { .ach-share { display: none; } }
 .ach-toast { position: fixed; z-index: 140; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 1.25rem); transform: translate(-50%, 12px); opacity: 0; display: grid; gap: 0.1rem; padding: 0.55rem 1rem; text-align: center; color: var(--text); background: var(--mantle); border: 1px solid var(--accent); border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,0.35); pointer-events: none; transition: opacity 0.25s, transform 0.25s; }
 .ach-toast.on { opacity: 1; transform: translate(-50%, 0); }
 .ach-toast small { font: 500 0.625rem var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
@@ -1531,6 +1534,13 @@ main > .here { display: none; } /* until the router puts it on a page */
 .rx-best.new small { color: #0b0e1a; }
 @keyframes rx-pop { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.7); } 35% { transform: scale(1.12); } 100% { transform: scale(1); box-shadow: 0 0 0 18px rgba(61, 220, 132, 0); } }
 @media (prefers-reduced-motion: reduce) { .rx-best.new { animation: none; } }
+.rx-pills { display: flex; gap: 0.6rem; }
+.rx-best.rx-beat { border-color: #ffc906; }
+.rx-best.rx-beat small { color: #ffc906; }
+.rx-best.rx-beat.won { background: #3ddc84; border-color: #3ddc84; color: #0b0e1a; }
+.rx-best.rx-beat.won small { color: #0b0e1a; }
+.rx-share { display: block; margin: 0 auto 0.9rem; font: 600 0.8125rem var(--mono); color: #0b0e1a; background: #ffc906; border: 0; border-radius: 4px; padding: 0.55rem 1.1rem; cursor: pointer; }
+.rx-share:hover, .rx-share:focus-visible { background: #ffd84a; outline: none; }
 .pop-rx { justify-self: start; }
 @media (max-width: 760px) { .pop-rx { display: none; } }
 .f1-rig span.on i { background: radial-gradient(circle at 40% 35%, #ff6b5e, #e10600 60%, #8f0400); box-shadow: 0 0 22px 4px rgba(225, 6, 0, 0.65); }
@@ -2650,6 +2660,8 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">19 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Challenge a friend</span><span class="tag t-tool">Feature</span><p>After the reaction test, share your best time as a card. The link drops your friend on the start lights with your time to beat.</p></li>
+        <li><span class="t">Share your score</span><span class="tag t-tool">Feature</span><p>The achievements list can turn your secrets found into a card, with the rest left as question marks.</p></li>
         <li><span class="t">Reaction test</span><span class="tag t-tool">Feature</span><p>The F1 start lights, timed. Click when they go out and see your time in milliseconds. Type reaction in the terminal, or open the F1 card.</p></li>
         <li><span class="t">Race weekend</span><span class="tag t-tool">Feature</span><p>From three days before a Grand Prix, the strip at the top counts down to lights out.</p></li>
         <li><span class="t">Secrets counter</span><span class="tag t-tool">Feature</span><p>The footer now says how many secrets the site hides, and how many you've found.</p></li>
@@ -2859,6 +2871,7 @@ html.touring .tour-fab::after { display: none; }
 <dialog class="keys ach" id="ach-dlg" aria-labelledby="ach-t">
   <div class="keys-head"><h2 id="ach-t">Achievements <small id="ach-n"></small></h2><button type="button" class="ap-x" id="ach-x" aria-label="Close">×</button></div>
   <ul class="ach-list" id="ach-list"></ul>
+  <p class="ach-share"><button type="button" class="btn" id="ach-share" hidden>Share my score</button></p>
 </dialog>
 
 <dialog class="sc" id="sc" aria-label="Share a quote">

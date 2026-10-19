@@ -47,6 +47,7 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] Reading progress: a line along the top fills as you read a note, with minutes left ([#9](https://github.com/MehediIfti/Ifti/issues/9))
 - [x] Links to sections: `#` beside every note heading copies a deep link
 - [x] Share cards from selected quotes, Tour, Print (Work prints as a CV)
+- [x] Challenge and secrets cards: share your reaction time with a `?beat=` link, or your secrets found ([#11](https://github.com/MehediIfti/Ifti/issues/11))
 - [x] Move things around: drag the Theme tab, Terminal, sections and rail links
 - [x] Coffee counter, Book a call, hover previews
 - [x] Brew a cup: click the coffee cup, your cups saved in your browser ([#1](https://github.com/MehediIfti/Ifti/issues/1))
@@ -62,7 +63,6 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 ## Next (ready to build)
 Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 
-- [ ] [#11](https://github.com/MehediIfti/Ifti/issues/11) Stat share cards · 20-min
 - [ ] [#12](https://github.com/MehediIfti/Ifti/issues/12) Map game: find Dhaka · 20-min
 - [ ] [#13](https://github.com/MehediIfti/Ifti/issues/13) Theme roulette · 20-min
 - [ ] [#15](https://github.com/MehediIfti/Ifti/issues/15) Tour on phones · 20-min

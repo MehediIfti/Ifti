@@ -1142,25 +1142,46 @@
 
   // ============ REACTION TEST: the start lights, timed. Five reds, a random hold, lights out, click or Space. ============
   // Computers only: opened from the terminal (reaction), search and the F1 pop-up. The best time stays in this browser (rx-best).
+  // CHALLENGE: after a run, Share draws a card of the best time with a link like /?beat=188. Whoever opens it lands on the
+  // lights with that time to beat; beat it and they get their own card to send back. On a phone the link just says to use a computer.
+  var beatIn = +((location.search.match(/[?&]beat=(\d{2,4})(?:&|$)/) || [])[1] || 0);
+  if (beatIn < 80 || beatIn > 2000) beatIn = 0;
+  if (beatIn) try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {} // a reload shouldn't re-open it
+  (function () {
+    if (!matchMedia('(max-width: 760px)').matches) return;
+    if (beatIn) setTimeout(function () {
+      var t = document.createElement('div'); t.className = 'ach-toast on'; t.setAttribute('role', 'status');
+      t.innerHTML = '<small>Challenge · ' + beatIn + ' ms</small><b>Open this on a computer to take it.</b>';
+      document.body.appendChild(t); setTimeout(function () { t.remove(); }, 6000);
+    }, 1200);
+  })();
   (function () {
     if (matchMedia('(max-width: 760px)').matches) return;
-    var o = null, timers = [], state = '', t0 = 0;
+    var o = null, timers = [], state = '', t0 = 0, beat = 0;
     function best() { try { return +localStorage.getItem('rx-best') || 0; } catch (e) { return 0; } }
     function say(msg, sub, jump) {
       var m = o.querySelector('.rx-msg'); m.className = 'rx-msg' + (jump ? ' jump' : ''); m.innerHTML = msg;
       o.querySelector('.rx-sub').innerHTML = sub || '';
     }
     // The best time sits under the lights the whole time; it turns green and pulses when you beat it.
-    function showBest(isNew) {
+    // On a challenge, a second pill shows the time to beat.
+    function showBest(isNew, won) {
       var b = best(), el = o.querySelector('.rx-best');
       el.className = 'rx-best' + (isNew ? ' new' : '');
       el.innerHTML = b ? '<small>' + (isNew ? 'New best' : 'Your best') + '</small><b>' + b + ' ms</b>' : '<small>Your best</small><b>—</b>';
+      var tb = o.querySelector('.rx-beat'); tb.hidden = !beat;
+      if (beat) { tb.className = 'rx-best rx-beat' + (won ? ' won' : ''); tb.innerHTML = '<small>' + (won ? 'Beaten' : 'To beat') + '</small><b>' + beat + ' ms</b>'; }
     }
+    var keysLine = '<kbd>Space</kbd> to go again · <kbd>S</kbd> to share · <kbd>Esc</kbd> to close';
     function clear() { timers.forEach(clearTimeout); timers = []; }
+    function ready() {
+      state = 'ready'; showBest(false, false);
+      say('<b>' + beat + ' ms</b>Someone sent you a challenge. Beat their start.', 'Press <kbd>Space</kbd> or click to bring the lights up.');
+    }
     function run() {
       clear(); state = 'on';
       var cols = o.querySelectorAll('.f1-rig span');
-      cols.forEach(function (c) { c.classList.remove('on'); }); showBest(false);
+      cols.forEach(function (c) { c.classList.remove('on'); }); showBest(false, false);
       say('Wait for the lights to go out.', 'Click or press <kbd>Space</kbd> when they do.');
       // One light a beat, like a real start, then a hold you can't predict.
       cols.forEach(function (c, i) { timers.push(setTimeout(function () { c.classList.add('on'); }, 500 + i * 600)); });
@@ -1170,6 +1191,7 @@
       }, 500 + 4 * 600 + 600 + Math.round(400 + Math.random() * 2000)));
     }
     function hit() {
+      if (state === 'ready') { run(); return; }
       if (state === 'on') {
         clear(); state = 'done';
         o.querySelectorAll('.f1-rig span').forEach(function (c) { c.classList.remove('on'); });
@@ -1177,16 +1199,21 @@
         return;
       }
       if (state === 'go') {
-        var ms = Math.round(performance.now() - t0), b = best(), isNew = !b || ms < b;
+        var ms = Math.round(performance.now() - t0), b = best(), isNew = !b || ms < b, won = beat && ms < beat;
         state = 'done';
         if (isNew) try { localStorage.setItem('rx-best', ms); } catch (e) {}
         if (ms < 250 && window.unlock) unlock('reaction');
-        showBest(isNew);
-        say('<b>' + ms + ' ms</b>' + (isNew ? 'F1 drivers usually react in about 200 ms.' : '+' + (ms - b) + ' ms off your best.'),
-          '<kbd>Space</kbd> to go again · <kbd>Esc</kbd> to close');
+        showBest(isNew, won);
+        var line = beat ? (won ? 'You beat ' + beat + ' ms by ' + (beat - ms) + ' ms. Send it back.' : '+' + (ms - beat) + ' ms off the challenge.')
+          : isNew ? 'F1 drivers usually react in about 200 ms.' : '+' + (ms - b) + ' ms off your best.';
+        say('<b>' + ms + ' ms</b>' + line, '<button type="button" class="rx-share">Share ' + best() + ' ms</button>' + keysLine);
         return;
       }
       if (state === 'done') run();
+    }
+    function share() {
+      var b = best(); if (!b || !window.shareCard) return;
+      end(); setTimeout(function () { window.shareCard(timeCard(b)); }, 280);
     }
     function end() {
       if (!o) return; clear(); state = '';
@@ -1198,18 +1225,58 @@
       e.stopImmediatePropagation();
       if (e.key === 'Escape') { e.preventDefault(); end(); }
       else if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); hit(); }
+      else if ((e.key === 's' || e.key === 'S') && state === 'done' && best()) { e.preventDefault(); share(); }
     }
-    window.reactionTest = function () {
+    window.reactionTest = function (toBeat) {
       if (o) return;
+      beat = toBeat || 0;
       o = document.createElement('div'); o.className = 'f1-lights rx'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', 'Reaction test');
       o.innerHTML = '<div class="rx-box"><div class="f1-rig" aria-hidden="true">' + '<span><i></i><i></i></span>'.repeat(5) + '</div>' +
-        '<p class="rx-best"></p><p class="rx-msg" aria-live="polite"></p><p class="rx-sub"></p></div>';
+        '<div class="rx-pills"><p class="rx-best"></p><p class="rx-best rx-beat" hidden></p></div><p class="rx-msg" aria-live="polite"></p><p class="rx-sub"></p></div>';
       document.body.appendChild(o);
-      o.addEventListener('pointerdown', function (e) { if (e.button === 0) hit(); });
+      o.addEventListener('pointerdown', function (e) {
+        if (e.target.closest('.rx-share')) { e.stopPropagation(); return; }
+        if (e.button === 0) hit();
+      });
+      o.addEventListener('click', function (e) { if (e.target.closest('.rx-share')) share(); });
       document.addEventListener('keydown', key, true);
       if (document.activeElement) document.activeElement.blur();
-      run();
+      if (beat) ready(); else run();
     };
+    if (beatIn) setTimeout(function () { window.reactionTest(beatIn); }, 900);
+
+    // The challenge card: the best time, big, under a lit rig. Drawn by the share dialog's canvas in the current theme.
+    function timeCard(ms) {
+      var link = SITE + '?beat=' + ms;
+      return {
+        title: 'Share your time', file: 'ifti-start-' + ms + 'ms.png', url: link,
+        said: ms + ' ms off the line on Ifti\'s start lights. Beat it.',
+        paint: function (ctx, W, H, P) {
+          P.frame('Ifti\'s notebook · Start lights');
+          var wide = W > H, r = wide ? 26 : 34, gap = wide ? 14 : 18, colW = r * 2 + 16, rigW = 5 * colW + 4 * gap + 24, rigH = 2 * (r * 2) + 10 + 32;
+          var rx = wide ? W - P.pad - rigW : P.pad, ry = wide ? P.pad + 80 : P.pad + 90;
+          // the rig: five columns of two reds, all lit
+          ctx.fillStyle = '#111'; ctx.fillRect(rx, ry, rigW, rigH);
+          for (var c = 0; c < 5; c++) {
+            var cx = rx + 12 + c * (colW + gap);
+            ctx.fillStyle = '#050505'; ctx.fillRect(cx, ry + 12, colW, rigH - 24);
+            for (var k = 0; k < 2; k++) {
+              var x = cx + colW / 2, y = ry + 16 + r + 4 + k * (r * 2 + 10);
+              ctx.save(); ctx.shadowColor = 'rgba(225, 6, 0, 0.7)'; ctx.shadowBlur = r;
+              var g = ctx.createRadialGradient(x - r * 0.25, y - r * 0.3, r * 0.1, x, y, r);
+              g.addColorStop(0, '#ff6b5e'); g.addColorStop(0.6, '#e10600'); g.addColorStop(1, '#8f0400');
+              ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+            }
+          }
+          var ty = wide ? P.pad + 330 : ry + rigH + 300, fs = wide ? 200 : 230;
+          ctx.fillStyle = P.ink; ctx.font = 'italic 700 ' + fs + 'px ' + P.fDisp; ctx.fillText(String(ms), P.pad - 6, ty);
+          var nw = ctx.measureText(String(ms)).width;
+          ctx.font = 'italic 700 ' + Math.round(fs * 0.36) + 'px ' + P.fDisp; ctx.fillText('ms', P.pad + nw + 10, ty);
+          ctx.fillStyle = P.mut; ctx.font = '500 ' + (wide ? 34 : 40) + 'px ' + P.fDisp; ctx.fillText('off the line. Can you beat it?', P.pad, ty + (wide ? 62 : 80));
+          P.foot('F1 drivers usually react in about 200 ms.', link.replace('https://', '').replace(/\/$/, ''));
+        }
+      };
+    }
   })();
 
   // ============ Hover previews on links to other pages and notes ============
@@ -1943,9 +2010,34 @@
       words.forEach(function (w) { var t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
       if (line) lines.push(line); return lines;
     }
+    // The frame, label and footer every card shares, in the current theme. Cards from shareCard() draw inside it.
+    function kit(ctx, W, H) {
+      var P = { bg: cssVar('--base') || '#111', ink: cssVar('--ink') || cssVar('--text') || '#eee', acc: cssVar('--accent') || '#f7cafa',
+        lab: cssVar('--label') || '#888', mut: cssVar('--muted') || '#999', rule: cssVar('--rule') || '#333', mark: cssVar('--overlay1') || '#666',
+        fDisp: getComputedStyle(document.querySelector('h1') || document.body).fontFamily, fMono: cssVar('--mono') || 'monospace', pad: W > H ? 72 : 88 };
+      P.frame = function (label) {
+        ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = P.rule; ctx.lineWidth = 2; ctx.strokeRect(P.pad / 2, P.pad / 2, W - P.pad, H - P.pad);
+        ctx.strokeStyle = P.mark;
+        [[P.pad / 2, P.pad / 2, 1, 1], [W - P.pad / 2, P.pad / 2, -1, 1], [P.pad / 2, H - P.pad / 2, 1, -1], [W - P.pad / 2, H - P.pad / 2, -1, -1]].forEach(function (c) {
+          ctx.beginPath(); ctx.moveTo(c[0] - 12 * c[2], c[1]); ctx.lineTo(c[0] + 12 * c[2], c[1]); ctx.moveTo(c[0], c[1] - 12 * c[3]); ctx.lineTo(c[0], c[1] + 12 * c[3]); ctx.stroke();
+        });
+        ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left'; ctx.fillStyle = P.lab; ctx.font = '500 22px ' + P.fMono;
+        ctx.fillText(label.toUpperCase(), P.pad, P.pad + 40);
+      };
+      P.foot = function (left, right) {
+        ctx.fillStyle = P.acc; ctx.fillRect(P.pad, H - P.pad - 64, 40, 3);
+        ctx.font = '500 22px ' + P.fMono; var room = W - P.pad * 2 - ctx.measureText(right).width - 40, fs = 24;
+        ctx.font = '500 ' + fs + 'px ' + P.fDisp; while (ctx.measureText(left).width > room && fs > 17) { fs--; ctx.font = '500 ' + fs + 'px ' + P.fDisp; }
+        ctx.fillStyle = P.mut; ctx.fillText(left, P.pad, H - P.pad - 20);
+        ctx.fillStyle = P.acc; ctx.font = '500 22px ' + P.fMono; ctx.textAlign = 'right'; ctx.fillText(right, W - P.pad, H - P.pad - 20); ctx.textAlign = 'left';
+      };
+      return P;
+    }
     function draw() {
       var W = size === 'wide' ? 1200 : 1080, H = size === 'wide' ? 630 : 1080, ctx = cv.getContext('2d');
       cv.width = W; cv.height = H;
+      if (q.paint) return q.paint(ctx, W, H, kit(ctx, W, H));
       var bg = cssVar('--base') || '#111', ink = cssVar('--ink') || cssVar('--text') || '#eee', acc = cssVar('--accent') || '#f7cafa';
       var lab = cssVar('--label') || '#888', mut = cssVar('--muted') || '#999', rule = cssVar('--rule') || '#333', mark = cssVar('--overlay1') || '#666';
       var h1 = q.art.querySelector('h1'), title = h1 ? h1.textContent.trim() : '', no = 'N°' + q.art.id.slice(2);
@@ -1976,9 +2068,19 @@
       ctx.fillStyle = acc; ctx.font = '500 22px ' + fMono; ctx.textAlign = 'right';
       ctx.fillText('ifti-gold.vercel.app', W - pad, H - pad - 20); ctx.textAlign = 'left';
     }
-    function url() { return SITE + '#' + q.art.id; }
+    function url() { return q.url || SITE + '#' + q.art.id; }
+    function head(t) { dlg.querySelector('.sc-head b').textContent = t; dlg.setAttribute('aria-label', t); }
+    // Any card: { title, paint(ctx, W, H, kit), said, url, file }. Used by the reaction test and the achievements list.
+    window.shareCard = function (card) {
+      q = card; pop.hidden = true; note.textContent = '';
+      head(card.title);
+      document.getElementById('sc-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(card.said) + '&url=' + encodeURIComponent(card.url);
+      document.getElementById('sc-li').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(card.url);
+      var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+      fonts.then(function () { draw(); if (!dlg.open) dlg.showModal(); });
+    };
     function open(s) {
-      q = { text: s.text, art: s.art }; pop.hidden = true; note.textContent = NOTE_TXT;
+      q = { text: s.text, art: s.art }; pop.hidden = true; note.textContent = NOTE_TXT; head('Share a quote');
       var tweet = '“' + (q.text.length > 200 ? q.text.slice(0, 197).replace(/\s+\S*$/, '') + '…' : q.text) + '”';
       document.getElementById('sc-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '&url=' + encodeURIComponent(url());
       document.getElementById('sc-li').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url());
@@ -1986,7 +2088,7 @@
       fonts.then(function () { draw(); if (!dlg.open) dlg.showModal(); if (window.unlock) unlock('share'); });
     }
     function blob(cb) { cv.toBlob(cb, 'image/png'); }
-    function fname() { return 'ifti-' + q.art.id + '-quote.png'; }
+    function fname() { return q.file || 'ifti-' + q.art.id + '-quote.png'; }
     document.getElementById('sc-dl').addEventListener('click', function () {
       blob(function (b) { var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = fname(); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000); });
     });
@@ -2000,7 +2102,7 @@
     if (navigator.canShare) shareBtn.hidden = false;
     shareBtn.addEventListener('click', function () {
       blob(function (b) {
-        var f = new File([b], fname(), { type: 'image/png' }), data = { files: [f], text: '“' + q.text + '”', url: url() };
+        var f = new File([b], fname(), { type: 'image/png' }), data = { files: [f], text: q.said || '“' + q.text + '”', url: url() };
         if (navigator.canShare && navigator.canShare(data)) navigator.share(data).catch(function () {});
         else note.textContent = "This browser can't share images. Download it instead.";
       });
@@ -2227,9 +2329,47 @@
       document.getElementById('ach-list').innerHTML = l.map(function (x) {
         return '<li class="' + (x.got ? 'got' : '') + '"><i aria-hidden="true">' + (x.got ? '✓' : '·') + '</i><b>' + esc(x.name) + '</b><span>' + (x.got ? 'Found' : esc(x.hint)) + '</span></li>';
       }).join('');
+      document.getElementById('ach-share').hidden = !n || !window.shareCard;
       if (!dlg.open) dlg.showModal();
     };
     document.getElementById('ach-x').addEventListener('click', function () { dlg.close(); });
+    // SECRETS CARD: how many you've found, the found ones by name, the rest as locked tiles. No hints on the card.
+    document.getElementById('ach-share').addEventListener('click', function () {
+      var l = window.achList(), n = l.filter(function (x) { return x.got; }).length;
+      dlg.close();
+      window.shareCard({
+        title: 'Share your score', file: 'ifti-secrets-' + n + '-of-' + l.length + '.png', url: SITE,
+        said: 'I found ' + n + ' of ' + l.length + ' secrets on Ifti\'s site. Can you find the rest?',
+        paint: function (ctx, W, H, P) {
+          P.frame('Ifti\'s notebook · Secrets');
+          var wide = W > H, fs = wide ? 150 : 170, ty = wide ? P.pad + 250 : P.pad + 250;
+          ctx.fillStyle = P.ink; ctx.font = '700 ' + fs + 'px ' + P.fDisp; ctx.fillText(String(n), P.pad - 4, ty);
+          var nw = ctx.measureText(String(n)).width;
+          ctx.fillStyle = P.mut; ctx.font = '600 ' + Math.round(fs * 0.42) + 'px ' + P.fDisp; ctx.fillText('of ' + l.length, P.pad + nw + 14, ty);
+          ctx.fillStyle = P.ink; ctx.font = '500 ' + (wide ? 34 : 40) + 'px ' + P.fDisp; ctx.fillText('secrets found.', P.pad, ty + (wide ? 60 : 72));
+          ctx.fillStyle = P.acc; ctx.fillText(n === l.length ? 'All of them.' : 'Can you find the rest?', P.pad, ty + (wide ? 104 : 124));
+          // tiles: three across, right half on wide cards, under the text on square ones
+          var gx = wide ? W * 0.5 : P.pad, gy = wide ? P.pad + 80 : ty + 190, gw = wide ? W - P.pad - gx : W - P.pad * 2, gh = wide ? H - P.pad - 110 - gy : H - P.pad - 110 - gy;
+          var cols = 3, rows = Math.ceil(l.length / cols), g = 10, tw = (gw - g * (cols - 1)) / cols, th = (gh - g * (rows - 1)) / rows;
+          l.forEach(function (a, i) {
+            var x = gx + (i % cols) * (tw + g), y = gy + Math.floor(i / cols) * (th + g);
+            if (a.got) {
+              ctx.fillStyle = P.acc; ctx.fillRect(x, y, tw, th);
+              ctx.fillStyle = P.bg; ctx.font = '600 ' + (wide ? 17 : 21) + 'px ' + P.fMono;
+              var words = a.name.split(' '), lines = [], cur = '';
+              words.forEach(function (w) { var t = cur ? cur + ' ' + w : w; if (ctx.measureText(t).width > tw - 24 && cur) { lines.push(cur); cur = w; } else cur = t; });
+              lines.push(cur);
+              var lh = wide ? 21 : 26; lines.slice(0, 3).forEach(function (t, k) { ctx.fillText(t, x + 12, y + th - 12 - (Math.min(lines.length, 3) - 1 - k) * lh); });
+            } else {
+              ctx.strokeStyle = P.rule; ctx.lineWidth = 2; ctx.strokeRect(x + 1, y + 1, tw - 2, th - 2);
+              ctx.fillStyle = P.mark; ctx.font = '600 ' + (wide ? 34 : 42) + 'px ' + P.fMono; ctx.textAlign = 'center';
+              ctx.fillText('?', x + tw / 2, y + th / 2 + (wide ? 12 : 15)); ctx.textAlign = 'left';
+            }
+          });
+          P.foot('Press ~ on a computer to start looking.', SITE.replace('https://', '').replace(/\/$/, ''));
+        }
+      });
+    });
     dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
   })();
 

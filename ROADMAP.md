@@ -86,7 +86,6 @@ The fun queue. Pick one when there's a free session.
 - [ ] [#44](https://github.com/MehediIfti/Ifti/issues/44) Fastest starts: a reaction-test leaderboard (needs a small store)
 
 ## Later (bigger builds, start with a first slice)
-- [ ] [#20](https://github.com/MehediIfti/Ifti/issues/20) Ask Ifti in the terminal: keyword search over the notes first, no AI. [30-day plan](docs/plans/ask-ifti-30-day-plan.md). Parked 18 Oct: quick wins first.
 - [ ] [#21](https://github.com/MehediIfti/Ifti/issues/21) Negotiation sparring game: a scripted buyer first
 - [ ] [#24](https://github.com/MehediIfti/Ifti/issues/24) Whiteboard guestbook: notes by FormSubmit, approved by hand
 - [ ] [#50](https://github.com/MehediIfti/Ifti/issues/50) Hear about broken features before visitors do: script errors logged by a Vercel function
@@ -101,6 +100,7 @@ The fun queue. Pick one when there's a free session.
 - [ ] [#34](https://github.com/MehediIfti/Ifti/issues/34) Spotify "On repeat": OK to sign in once more?
 
 ## Decided
+- Ask Ifti (#20) was closed on 18 Oct 2026 without being built. Its [30-day plan](docs/plans/ask-ifti-30-day-plan.md) stays; reopen #20 to bring it back.
 - No map game (#12, dropped 19 Oct 2026).
 - Phones stay lean. New fun features ship for computers first; phones get them only when they add something there.
 - No working hours on the site. Status is free or busy, any hour.

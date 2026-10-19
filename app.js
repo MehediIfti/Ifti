@@ -919,6 +919,110 @@
     if (e.key === 'Escape' && !sheet.hidden) sheetOpen(false);
   });
 
+  // ============ THEME SECRETS: one hidden trick per theme. Computers only; each unlocks the "trick" badge. ============
+  // Halftone: click the sun and it sets (click again, it rises). Midnight Ledger: L for a desk lamp that follows the cursor.
+  // Cropmark: C for the printer's proof: trim, bleed, crop and registration marks. Lights Out's trick is its start lights.
+  (function () {
+    var big = function () { return !matchMedia('(max-width: 760px)').matches && matchMedia('(pointer: fine)').matches; };
+    function found() { if (window.unlock) unlock('trick'); }
+    var hit = document.querySelector('.hero .ht-hit');
+    if (hit) hit.addEventListener('click', function () {
+      if (cur !== 'halftone') return;
+      var h = hit.parentNode; h.classList.toggle('set'); h.classList.add('moving');
+      clearTimeout(h.mv); h.mv = setTimeout(function () { h.classList.remove('moving'); }, 2400); found();
+    });
+    var lamp = null, proof = null, lx = innerWidth / 2, ly = innerHeight * 0.4;
+    function lampOff() { if (!lamp) return; var l = lamp; lamp = null; l.classList.remove('on'); setTimeout(function () { l.remove(); }, 500); }
+    function lampOn() {
+      lamp = document.createElement('div'); lamp.className = 'lamp'; lamp.setAttribute('aria-hidden', 'true'); lamp.innerHTML = '<b>Lamp on · L to switch off</b>';
+      lamp.style.setProperty('--lx', lx + 'px'); lamp.style.setProperty('--ly', ly + 'px');
+      document.body.appendChild(lamp); requestAnimationFrame(function () { lamp && lamp.classList.add('on'); }); found();
+    }
+    addEventListener('pointermove', function (e) {
+      lx = e.clientX; ly = e.clientY;
+      if (lamp) { lamp.style.setProperty('--lx', lx + 'px'); lamp.style.setProperty('--ly', ly + 'px'); }
+    }, { passive: true });
+    function proofOff() { if (!proof) return; var p = proof; proof = null; p.classList.remove('on'); setTimeout(function () { p.remove(); }, 250); }
+    function proofOn() {
+      var day = new Date().toLocaleDateString('en-GB', { timeZone: 'Asia/Dhaka', day: 'numeric', month: 'short', year: 'numeric' });
+      var page = (location.hash || '#index').slice(1);
+      proof = document.createElement('div'); proof.className = 'proof'; proof.setAttribute('aria-hidden', 'true');
+      proof.innerHTML = '<i class="pf-bleed"></i><i class="pf-trim"></i>' + ['tl', 'tr', 'bl', 'br'].map(function (c) { return '<i class="pf-cm ' + c + '"></i>'; }).join('') +
+        ['t', 'b', 'l', 'r'].map(function (c) { return '<i class="pf-reg ' + c + '"></i>'; }).join('') +
+        '<span class="pf-bar">' + ['#00aeef', '#ec008c', '#fff200', '#111', '#7fd6f7', '#f57fc5', '#fff97f', '#888'].map(function (c) { return '<i style="background:' + c + '"></i>'; }).join('') + '</span>' +
+        '<span class="pf-slug">Ifti\'s notebook · /' + esc(page) + ' · proof 1 · ' + esc(day) + ' · C to close</span>';
+      document.body.appendChild(proof); requestAnimationFrame(function () { proof && proof.classList.add('on'); }); found();
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+      var t = e.target.tagName; if (t === 'INPUT' || t === 'TEXTAREA' || e.target.isContentEditable) return;
+      var k = e.key.toLowerCase();
+      if (k === 'escape') { lampOff(); proofOff(); return; }
+      if (!big()) return;
+      if (k === 'l' && cur === 'midnight-ledger') { lamp ? lampOff() : lampOn(); }
+      if (k === 'c' && cur === 'cropmark') { proof ? proofOff() : proofOn(); }
+    });
+    // A theme change puts everything back.
+    new MutationObserver(function () {
+      if (cur !== 'midnight-ledger') lampOff();
+      if (cur !== 'cropmark') proofOff();
+      if (cur !== 'halftone') document.querySelectorAll('.hero.set').forEach(function (h) { h.classList.remove('set'); });
+    }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+
+  // ============ STEREO BY HAND: drag the record to scratch it (it swings back with a wobble); hold the cassette to fast-forward ============
+  // Visual only, no sound. Works on the stereo in the right column and in the Music pop-up. Unlocks "scratch".
+  (function () {
+    if (!matchMedia('(pointer: fine)').matches) return;
+    var drag = null;
+    function ang(e, c) { return Math.atan2(e.clientY - c.y, e.clientX - c.x) * 180 / Math.PI; }
+    document.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      var pl = e.target.closest('.stereo .tt-platter');
+      if (pl) {
+        e.preventDefault();
+        var r = pl.getBoundingClientRect(), c = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        drag = { el: pl, c: c, a0: ang(e, c), rot: 0, moved: 0 };
+        pl.classList.remove('back'); pl.classList.add('held'); pl.setPointerCapture(e.pointerId);
+        return;
+      }
+      var cas = e.target.closest('.stereo .cas');
+      if (cas) {
+        e.preventDefault(); cas.classList.add('ff');
+        var stop = function () { cas.classList.remove('ff'); removeEventListener('pointerup', stop); removeEventListener('pointercancel', stop); };
+        addEventListener('pointerup', stop); addEventListener('pointercancel', stop);
+        if (window.unlock) unlock('scratch');
+      }
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var a = ang(e, drag.c), d = a - drag.a0; if (d > 180) d -= 360; if (d < -180) d += 360;
+      drag.rot += d; drag.a0 = a; drag.moved += Math.abs(d);
+      drag.el.style.transform = 'rotate(' + drag.rot + 'deg)';
+    });
+    function release() {
+      if (!drag) return;
+      var d = drag; drag = null;
+      d.el.classList.remove('held'); d.el.classList.add('back'); d.el.style.transform = '';
+      if (d.moved > 40 && window.unlock) unlock('scratch');
+    }
+    document.addEventListener('pointerup', release); document.addEventListener('pointercancel', release);
+  })();
+
+  // ============ THEME ROULETTE: "Surprise me" in search picks a random theme, never the one you're on ============
+  // A short cross-fade where the browser can do it (and motion is on), then the theme's name for a moment.
+  window.surpriseTheme = function () {
+    var pool = THEMES.filter(function (t) { return t.id !== cur; }), t = pool[Math.floor(Math.random() * pool.length)];
+    var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function go() { pickTheme(t.id); }
+    if (document.startViewTransition && !calm) document.startViewTransition(go); else go();
+    var n = document.createElement('div'); n.className = 'th-name'; n.setAttribute('role', 'status');
+    n.innerHTML = '<small>Surprise · ' + esc(t.week) + '</small>' + esc(t.name);
+    document.body.appendChild(n);
+    setTimeout(function () { n.classList.add('on'); }, calm ? 0 : 350);
+    setTimeout(function () { n.classList.remove('on'); setTimeout(function () { n.remove(); if (t.id === 'lightsout') lightsOut(); }, 300); }, 1700);
+  };
+
   var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'whiteboard', '7': 'paperclip', '8': 'hermes', '9': 'research', '0': 'education' };
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -2151,6 +2255,7 @@
       THEMES.forEach(function (th) { items.push({ k: 'Theme', t: th.name || th.id, x: th.note || '', run: function () { apTheme(th.id); } }); });
       var book = document.querySelector('[data-book]');
       items.push({ k: 'Action', t: 'Achievements', x: 'badges unlocked progress', run: function () { setTimeout(window.openAch, 60); } });
+      items.push({ k: 'Action', t: 'Surprise me', x: 'random theme roulette shuffle', run: function () { setTimeout(window.surpriseTheme, 60); } });
       if (window.reactionTest) items.push({ k: 'Action', t: 'Reaction test', x: 'f1 start lights reflex game', run: function () { setTimeout(window.reactionTest, 60); } });
       if (matchMedia('(pointer: fine)').matches) items.push({ k: 'Action', t: 'Keyboard shortcuts', x: 'keys hotkeys help ?', run: function () { setTimeout(window.openKeys, 60); } });
       items.push(
@@ -2281,7 +2386,9 @@
       ['share', 'Shared a line', 'Turn a line from a note into a share card.'],
       ['backstage', 'Found the hidden room', 'It isn\'t on the map. The terminal knows the way.'],
       ['lights', 'Lights out', 'A very old cheat code.'],
-      ['reaction', 'Quick off the line', 'Under 250 ms on the start lights. Try reaction in the terminal.']
+      ['reaction', 'Quick off the line', 'Under 250 ms on the start lights. Try reaction in the terminal.'],
+      ['trick', 'Found a theme\'s trick', 'Every theme hides one. Try Halftone, Cropmark or Midnight Ledger.'],
+      ['scratch', 'Scratched the record', 'The stereo works by hand.']
     ];
     function get(k, d) { try { return JSON.parse(localStorage.getItem(k) || 'null') || d; } catch (e) { return d; } }
     function put(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }

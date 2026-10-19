@@ -26,6 +26,8 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] Target lock: the cursor hides and four corners frame anything clickable, keyboard focus too
 - [x] Favicon (`favicon.svg`, `.ico`, `apple-touch-icon.png`)
 - [x] Phone browser bar follows the theme
+- [x] Theme tricks: Halftone's sun sets, Midnight Ledger's desk lamp (L), Cropmark's printer's proof (C) ([#31](https://github.com/MehediIfti/Ifti/issues/31))
+- [x] Theme roulette: "Surprise me" in search ([#13](https://github.com/MehediIfti/Ifti/issues/13))
 
 ### Live data (Vercel functions in `api/`)
 - [x] On the stereo: Spotify now playing, turntable or cassette, compact player on phones ([#22](https://github.com/MehediIfti/Ifti/issues/22))
@@ -50,6 +52,7 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] Challenge and secrets cards: share your reaction time with a `?beat=` link, or your secrets found ([#11](https://github.com/MehediIfti/Ifti/issues/11))
 - [x] Move things around: drag the Theme tab, Terminal, sections and rail links
 - [x] Coffee counter, Book a call, hover previews
+- [x] Stereo by hand: scratch the record, fast-forward the cassette ([#31](https://github.com/MehediIfti/Ifti/issues/31))
 - [x] Brew a cup: click the coffee cup, your cups saved in your browser ([#1](https://github.com/MehediIfti/Ifti/issues/1))
 - [x] Both emails wherever the site shares one: personal and work (mehedi.ifti@musemind.agency)
 
@@ -63,14 +66,12 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 ## Next (ready to build)
 Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 
-- [ ] [#13](https://github.com/MehediIfti/Ifti/issues/13) Theme roulette · 20-min
 - [ ] [#15](https://github.com/MehediIfti/Ifti/issues/15) Tour on phones · 20-min
 - [ ] [#29](https://github.com/MehediIfti/Ifti/issues/29) Contrast check for every theme in check.mjs · 20-min
 - [ ] [#30](https://github.com/MehediIfti/Ifti/issues/30) Installable: web app manifest · 20-min
 - [ ] [#26](https://github.com/MehediIfti/Ifti/issues/26) Free-slot finder under Book a call · 2x20-min
 - [ ] [#27](https://github.com/MehediIfti/Ifti/issues/27) Note share previews and an RSS feed · 2x20-min
 - [ ] [#28](https://github.com/MehediIfti/Ifti/issues/28) Recap email builder in the Playground · 2x20-min
-- [ ] [#31](https://github.com/MehediIfti/Ifti/issues/31) Theme secrets and scratching the record · 2x20-min
 
 ## Later (bigger builds, start with a first slice)
 - [ ] [#20](https://github.com/MehediIfti/Ifti/issues/20) Ask Ifti in the terminal: keyword search over the notes first, no AI. [30-day plan](docs/plans/ask-ifti-30-day-plan.md). Parked 18 Oct: quick wins first.

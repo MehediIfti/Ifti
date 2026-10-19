@@ -1545,6 +1545,57 @@ main > .here { display: none; } /* until the router puts it on a page */
 @media (max-width: 760px) { .pop-rx { display: none; } }
 .f1-rig span.on i { background: radial-gradient(circle at 40% 35%, #ff6b5e, #e10600 60%, #8f0400); box-shadow: 0 0 22px 4px rgba(225, 6, 0, 0.65); }
 
+
+/* ============ THEME SECRETS: one trick per theme, computers only ============ */
+/* Halftone: click the sun and it sets behind its own bottom edge, click again and it rises. */
+.ht-hit { display: none; }
+@media (min-width: 761px) and (pointer: fine) {
+  :root[data-theme="halftone"] .ht-hit { display: block; position: absolute; z-index: 1; top: -2.25rem; right: -0.5rem; width: 8rem; aspect-ratio: 1; border-radius: 50%; cursor: pointer; }
+}
+@media (max-width: 1023px) { :root[data-theme="halftone"] .ht-hit { right: 1rem; } }
+:root[data-theme="halftone"] .hero::before { transition: transform 2.6s cubic-bezier(0.5, 0, 0.75, 0.4), clip-path 2.6s cubic-bezier(0.5, 0, 0.75, 0.4), filter 2.6s; clip-path: inset(0 0 0 0); }
+:root[data-theme="halftone"] .hero.set::before { transform: translateY(100%); clip-path: inset(0 0 100% 0); filter: hue-rotate(-18deg) saturate(1.4); }
+:root[data-theme="halftone"] .hero::after { content: ""; position: absolute; z-index: -1; top: 6.75rem; right: -2.5rem; width: 12rem; height: 2px; background: var(--ht-ink); opacity: 0; transition: opacity 0.6s; pointer-events: none; }
+:root[data-theme="halftone"] .hero.moving::after { opacity: 1; } /* the horizon shows only while the sun moves */
+@media (max-width: 1023px) { :root[data-theme="halftone"] .hero::after { right: 0; } }
+@media (max-width: 760px) { :root[data-theme="halftone"] .hero::after { display: none; } }
+/* Midnight Ledger: press L for a desk lamp that follows the cursor. Everything else goes dark. */
+.lamp { position: fixed; inset: 0; z-index: 55; pointer-events: none; background: radial-gradient(circle 15rem at var(--lx, 50%) var(--ly, 40%), rgba(255, 236, 196, 0.06) 0, rgba(5, 5, 8, 0) 40%, rgba(5, 5, 8, 0.9) 100%); opacity: 0; transition: opacity 0.5s; }
+.lamp.on { opacity: 1; }
+.lamp b { position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%); font: 500 0.6875rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #8a8a94; }
+/* Cropmark: press C for the printer's proof: trim line, bleed, crop and registration marks, a colour bar and the slug. */
+.proof { position: fixed; inset: 0; z-index: 55; pointer-events: none; opacity: 0; transition: opacity 0.25s; --bl: 26px; }
+.proof.on { opacity: 1; }
+.proof .pf-bleed { position: absolute; inset: 0; border: var(--bl) solid transparent; border-image: repeating-linear-gradient(45deg, rgba(247, 202, 250, 0.22) 0 6px, transparent 6px 12px) 26; }
+.proof .pf-trim { position: absolute; inset: var(--bl); border: 1px dashed rgba(247, 202, 250, 0.75); }
+.proof .pf-cm { position: absolute; width: 18px; height: 18px; border-color: #ededed; border-style: solid; border-width: 0; }
+.proof .pf-cm.tl { left: calc(var(--bl) - 22px); top: calc(var(--bl) - 22px); border-right-width: 1px; border-bottom-width: 1px; }
+.proof .pf-cm.tr { right: calc(var(--bl) - 22px); top: calc(var(--bl) - 22px); border-left-width: 1px; border-bottom-width: 1px; }
+.proof .pf-cm.bl { left: calc(var(--bl) - 22px); bottom: calc(var(--bl) - 22px); border-right-width: 1px; border-top-width: 1px; }
+.proof .pf-cm.br { right: calc(var(--bl) - 22px); bottom: calc(var(--bl) - 22px); border-left-width: 1px; border-top-width: 1px; }
+:root[data-theme] .proof .pf-reg.pf-reg { border-radius: 50% !important; }
+.proof .pf-reg { position: absolute; width: 18px; height: 18px; border: 1px solid #ededed; border-radius: 50% !important; background: linear-gradient(#ededed, #ededed) center / 1px 100% no-repeat, linear-gradient(#ededed, #ededed) center / 100% 1px no-repeat; }
+.proof .pf-reg.t { top: 4px; left: calc(50% - 9px); } .proof .pf-reg.b { bottom: 4px; left: calc(50% - 9px); }
+.proof .pf-reg.l { left: 4px; top: calc(50% - 9px); } .proof .pf-reg.r { right: 4px; top: calc(50% - 9px); }
+.proof .pf-bar { position: absolute; top: 6px; left: 64px; display: flex; height: 13px; }
+.proof .pf-bar i { width: 18px; } 
+.proof .pf-slug { position: absolute; bottom: 7px; left: 64px; font: 500 0.625rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #ededed; }
+/* Stereo by hand: drag the record to scratch it, it swings back with a wobble; hold a cassette reel to fast-forward. */
+@media (pointer: fine) { .stereo .tt-platter, .stereo .cas-win { cursor: grab; } .stereo .tt-platter.held { cursor: grabbing; } }
+.stereo .tt-platter.back { transition: transform 1.1s cubic-bezier(0.3, 1.7, 0.4, 1); }
+.stereo .cas.ff .cas-reel { animation: st-spin 0.22s linear infinite !important; }
+.stereo .cas.ff .cas-reel:first-child { --tape: 2px; } .stereo .cas.ff .cas-reel:last-child { --tape: 7px; }
+.stereo .cas-reel { transition: box-shadow 0.6s; }
+/* Theme roulette: the name of the theme it landed on, for a moment */
+.th-name { position: fixed; z-index: 140; left: 50%; top: 38%; transform: translate(-50%, -50%); padding: 0.7rem 1.4rem; font: 600 1.4rem var(--display); color: var(--text); background: var(--mantle); border: 1px solid var(--accent); border-radius: 10px; box-shadow: 0 16px 50px rgba(0,0,0,0.4); pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+.th-name small { display: block; font: 500 0.625rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.th-name.on { opacity: 1; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.45s; }
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="halftone"] .hero::before, :root[data-theme="halftone"] .hero::after, .lamp, .proof, .stereo .tt-platter.back, .th-name { transition: none; }
+  .stereo .cas.ff .cas-reel { animation: none !important; }
+}
+@media print { .lamp, .proof, .th-name { display: none; } }
 /* ============ terminal button ============ */
 .term-fab { position: fixed; z-index: 29; left: calc(env(safe-area-inset-left, 0px) + 12px); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem 0.45rem 0.7rem; font: 500 0.75rem var(--mono); color: var(--text); background: var(--mantle); border: 1px solid var(--surface0); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
 .term-fab:hover, .term-fab:focus-visible { border-color: var(--label); transform: translateY(-1px); outline: none; }
@@ -1854,7 +1905,7 @@ html.touring .tour-fab::after { display: none; }
     <p class="here" id="here"><b>Dhaka</b><span class="here-d"></span><span class="here-t"></span><span class="here-w"></span><span class="here-f1"></span></p>
     <!-- ============ INDEX ============ -->
     <section class="page" id="index">
-      <header class="hero">
+      <header class="hero"><span class="ht-hit" aria-hidden="true"></span>
         <p class="label">Global sales &amp; partnerships · Musemind</p>
         <h1>Ifti</h1>
         <p class="lede">I turn first conversations into partnerships that last. Most of my week is calls with founders and enterprise teams. The job is to find out what's actually broken before anyone pitches a fix.</p>
@@ -2660,6 +2711,9 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">19 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Theme tricks</span><span class="tag t-tool">Feature</span><p>Every theme now hides one trick. Halftone's sun is a good place to start.</p></li>
+        <li><span class="t">Stereo by hand</span><span class="tag t-tool">Feature</span><p>Drag the record to scratch it, or hold the cassette to fast-forward.</p></li>
+        <li><span class="t">Surprise me</span><span class="tag t-tool">Feature</span><p>Search "surprise me" for a random theme.</p></li>
         <li><span class="t">Challenge a friend</span><span class="tag t-tool">Feature</span><p>After the reaction test, share your best time as a card. The link drops your friend on the start lights with your time to beat.</p></li>
         <li><span class="t">Share your score</span><span class="tag t-tool">Feature</span><p>The achievements list can turn your secrets found into a card, with the rest left as question marks.</p></li>
         <li><span class="t">Reaction test</span><span class="tag t-tool">Feature</span><p>The F1 start lights, timed. Click when they go out and see your time in milliseconds. Type reaction in the terminal, or open the F1 card.</p></li>

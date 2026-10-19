@@ -986,10 +986,24 @@
       F1.wins = d.wins; F1.podiums = d.podiums; F1.starts = d.starts;
       if (d.teamPos) F1.teamPos = 'Red Bull is ' + ord(+d.teamPos) + ' in the constructors\' table on ' + d.teamPts + '.';
       if (d.latestWin) F1.lastWin = d.latestWin.isLast ? 'Won the ' + d.latestWin.race + ', his latest win.' : 'Latest win: the ' + d.latestWin.season + ' ' + d.latestWin.race + '.';
-      F1.next = d.next;
+      F1.next = d.next; hereF1();
       var pop = document.getElementById('pop'); if (pop && !pop.hidden && pop.querySelector('.pop-livery')) popOpen('f1'); // refresh if it's open
     }, function () {});
   }, 2500);
+  // RACE WEEKEND: from three days before a Grand Prix, the Dhaka strip counts down to lights out, then says the race is on
+  // for two hours. Times come from F1.next (api/f1.js); clicking opens the F1 pop-up. ?race=demo or ?race=live previews it.
+  var raceDemo = (location.search.match(/[?&]race=(demo|live)/) || [])[1];
+  if (raceDemo) F1.next = { race: 'United States Grand Prix', at: new Date(Date.now() + (raceDemo === 'live' ? -40 * 60e3 : (2 * 60 + 14) * 60e3)).toISOString() };
+  function hereF1() {
+    var box = document.querySelector('#here .here-f1'); if (!box) return;
+    var n = F1.next, at = n && new Date(n.at).getTime(), left = at - Date.now();
+    if (!n || isNaN(at) || left > 3 * 864e5 || left < -2 * 36e5) { box.innerHTML = ''; return; }
+    var m = Math.max(1, Math.ceil(left / 60e3)), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60), mm = m % 60;
+    var when = left <= 0 ? 'racing now' : 'lights out in ' + (d ? d + 'd ' + h + 'h' : h ? h + 'h ' + mm + 'm' : mm + 'm');
+    box.innerHTML = '<button type="button" title="' + esc(f1When(n.at)) + ' your time"><i aria-hidden="true">●</i>' + esc(n.race.replace(/ Grand Prix$/, ' GP')) + ' · ' + when + '</button>';
+  }
+  document.getElementById('here').addEventListener('click', function (e) { if (e.target.closest('.here-f1 button')) popOpen('f1'); });
+  hereF1(); setInterval(hereF1, 15000);
   var bookHref = (document.querySelector('[data-book]') || {}).href || 'mailto:mh.hasan884@gmail.com';
   var POPS = {
     f1: function () {
@@ -1002,6 +1016,7 @@
         F1.table.map(function (r) { return '<li' + (r[1] === F1.driver ? ' class="me"' : '') + '><span>P' + r[0] + '</span><span>' + esc(r[1]) + ' · ' + esc(r[2]) + '</span><span>' + r[3] + '</span></li>'; }).join('') + '</ol></div>' +
         '<p class="muted">' + esc(F1.lastWin) + (F1.next ? ' Next: the ' + esc(F1.next.race) + ', ' + esc(f1When(F1.next.at)) + ' your time.' : '') + '</p>' +
         '<div><p class="pop-k" style="margin-bottom:.4rem">Records</p><ul class="pop-list">' + F1.records.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>' +
+        '<button type="button" class="btn pop-rx" data-rx>Test your start</button>' +
         '<p class="pop-foot">Career figures as of the ' + esc(F1.asOf) + '. <a href="https://www.formula1.com/en/results/2026/drivers" target="_blank" rel="noopener">Live standings ↗</a></p>';
     },
     music: function () {
@@ -1118,9 +1133,84 @@
     li.addEventListener('click', function (e) { if (!e.target.closest('a')) popOpen(li.getAttribute('data-pop')); });
     li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); popOpen(li.getAttribute('data-pop')); } });
   });
-  pop.addEventListener('click', function (e) { if (e.target === pop || e.target.closest('a[href^="#"]')) popClose(); });
+  pop.addEventListener('click', function (e) {
+    if (e.target.closest('[data-rx]')) { popClose(); window.reactionTest(); return; }
+    if (e.target === pop || e.target.closest('a[href^="#"]')) popClose();
+  });
   document.getElementById('pop-x').addEventListener('click', popClose);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') popClose(); });
+
+  // ============ REACTION TEST: the start lights, timed. Five reds, a random hold, lights out, click or Space. ============
+  // Computers only: opened from the terminal (reaction), search and the F1 pop-up. The best time stays in this browser (rx-best).
+  (function () {
+    if (matchMedia('(max-width: 760px)').matches) return;
+    var o = null, timers = [], state = '', t0 = 0;
+    function best() { try { return +localStorage.getItem('rx-best') || 0; } catch (e) { return 0; } }
+    function say(msg, sub, jump) {
+      var m = o.querySelector('.rx-msg'); m.className = 'rx-msg' + (jump ? ' jump' : ''); m.innerHTML = msg;
+      o.querySelector('.rx-sub').innerHTML = sub || '';
+    }
+    // The best time sits under the lights the whole time; it turns green and pulses when you beat it.
+    function showBest(isNew) {
+      var b = best(), el = o.querySelector('.rx-best');
+      el.className = 'rx-best' + (isNew ? ' new' : '');
+      el.innerHTML = b ? '<small>' + (isNew ? 'New best' : 'Your best') + '</small><b>' + b + ' ms</b>' : '<small>Your best</small><b>—</b>';
+    }
+    function clear() { timers.forEach(clearTimeout); timers = []; }
+    function run() {
+      clear(); state = 'on';
+      var cols = o.querySelectorAll('.f1-rig span');
+      cols.forEach(function (c) { c.classList.remove('on'); }); showBest(false);
+      say('Wait for the lights to go out.', 'Click or press <kbd>Space</kbd> when they do.');
+      // One light a beat, like a real start, then a hold you can't predict.
+      cols.forEach(function (c, i) { timers.push(setTimeout(function () { c.classList.add('on'); }, 500 + i * 600)); });
+      timers.push(setTimeout(function () {
+        cols.forEach(function (c) { c.classList.remove('on'); });
+        state = 'go'; t0 = performance.now();
+      }, 500 + 4 * 600 + 600 + Math.round(400 + Math.random() * 2000)));
+    }
+    function hit() {
+      if (state === 'on') {
+        clear(); state = 'done';
+        o.querySelectorAll('.f1-rig span').forEach(function (c) { c.classList.remove('on'); });
+        say('<b>Jump start</b>You went before the lights went out.', 'In a race, that\'s a penalty. <kbd>Space</kbd> to go again · <kbd>Esc</kbd> to close', true);
+        return;
+      }
+      if (state === 'go') {
+        var ms = Math.round(performance.now() - t0), b = best(), isNew = !b || ms < b;
+        state = 'done';
+        if (isNew) try { localStorage.setItem('rx-best', ms); } catch (e) {}
+        if (ms < 250 && window.unlock) unlock('reaction');
+        showBest(isNew);
+        say('<b>' + ms + ' ms</b>' + (isNew ? 'F1 drivers usually react in about 200 ms.' : '+' + (ms - b) + ' ms off your best.'),
+          '<kbd>Space</kbd> to go again · <kbd>Esc</kbd> to close');
+        return;
+      }
+      if (state === 'done') run();
+    }
+    function end() {
+      if (!o) return; clear(); state = '';
+      var x = o; o = null; x.classList.add('out'); setTimeout(function () { x.remove(); }, 260);
+      document.removeEventListener('keydown', key, true);
+    }
+    function key(e) {
+      // While the lights are up they own the keyboard, so R, ? and ~ don't fire underneath.
+      e.stopImmediatePropagation();
+      if (e.key === 'Escape') { e.preventDefault(); end(); }
+      else if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); hit(); }
+    }
+    window.reactionTest = function () {
+      if (o) return;
+      o = document.createElement('div'); o.className = 'f1-lights rx'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', 'Reaction test');
+      o.innerHTML = '<div class="rx-box"><div class="f1-rig" aria-hidden="true">' + '<span><i></i><i></i></span>'.repeat(5) + '</div>' +
+        '<p class="rx-best"></p><p class="rx-msg" aria-live="polite"></p><p class="rx-sub"></p></div>';
+      document.body.appendChild(o);
+      o.addEventListener('pointerdown', function (e) { if (e.button === 0) hit(); });
+      document.addEventListener('keydown', key, true);
+      if (document.activeElement) document.activeElement.blur();
+      run();
+    };
+  })();
 
   // ============ Hover previews on links to other pages and notes ============
   (function () {
@@ -1212,7 +1302,7 @@
           ['whoami', 'who runs this notebook'], ['now', 'what I\'m on this month'], ['f1', 'Max and Red Bull, right now'],
           ['theme [name]', 'list or switch themes'], ['book', 'book a call'], ['email [work]', 'show both emails, copy one'], ['cv', 'download my CV'],
           ['socials', 'where else to find me'], ['coffee', 'cups so far this year'], ['fortune', 'a line from my notes'],
-          ['git log', 'what changed on the site'], ['top', 'what I\'m running on'], ['ping', 'check the site is up'], ['achievements', 'what you\'ve found'],
+          ['git log', 'what changed on the site'], ['top', 'what I\'m running on'], ['ping', 'check the site is up'], ['achievements', 'what you\'ve found'], ['reaction', 'the start lights, timed'],
           ['date', 'the time in Dhaka'], ['pwd', 'where you are'], ['echo <text>', 'say it back'], ['history', 'what you typed'],
           ['clear', 'clear the screen'], ['exit', 'close (or press Esc)']
         ].map(function (r) { return '  <span class="g">' + esc(r[0].padEnd(16, ' ')) + '</span>' + r[1]; }).join('\n') + '\n<span class="c">Tab completes. ↑ ↓ for history.</span>');
@@ -1341,9 +1431,13 @@
           return (x.got ? '  <span class="g">✓ ' + esc(x.name) + '</span>' : '  <span class="c">· ' + esc(x.name) + ' — ' + esc(x.hint) + '</span>');
         }).join('\n'));
       },
+      reaction: function () {
+        if (!window.reactionTest) { line('reaction: needs a computer.', 'r'); return; }
+        line('Lights on in a moment. Click or press Space when they go out.', 'g'); setTimeout(function () { close(); setTimeout(window.reactionTest, 250); }, 500);
+      },
       history: function () { print(hist.map(function (h, i) { return '<span class="c">' + String(i + 1).padStart(3, ' ') + '</span>  ' + esc(h); }).join('\n')); }
     };
-    CMDS.open = CMDS.cd; CMDS.man = CMDS.help; CMDS['?'] = CMDS.help; CMDS.contact = CMDS.email; CMDS.hire = CMDS.book; CMDS.rm = function () { line('Nothing here gets deleted.', 'r'); };
+    CMDS.open = CMDS.cd; CMDS.man = CMDS.help; CMDS['?'] = CMDS.help; CMDS.contact = CMDS.email; CMDS.hire = CMDS.book; CMDS.start = CMDS.reaction; CMDS.rm = function () { line('Nothing here gets deleted.', 'r'); };
     function run(raw) {
       raw = raw.trim(); print('<span class="g">' + esc(here()) + ' $</span> ' + esc(raw));
       if (!raw) return;
@@ -1955,6 +2049,7 @@
       THEMES.forEach(function (th) { items.push({ k: 'Theme', t: th.name || th.id, x: th.note || '', run: function () { apTheme(th.id); } }); });
       var book = document.querySelector('[data-book]');
       items.push({ k: 'Action', t: 'Achievements', x: 'badges unlocked progress', run: function () { setTimeout(window.openAch, 60); } });
+      if (window.reactionTest) items.push({ k: 'Action', t: 'Reaction test', x: 'f1 start lights reflex game', run: function () { setTimeout(window.reactionTest, 60); } });
       if (matchMedia('(pointer: fine)').matches) items.push({ k: 'Action', t: 'Keyboard shortcuts', x: 'keys hotkeys help ?', run: function () { setTimeout(window.openKeys, 60); } });
       items.push(
         { k: 'Action', t: 'Book a call', x: 'calendar meeting', run: function () { window.open(book.href, '_blank', 'noopener'); } },
@@ -2083,7 +2178,8 @@
       ['tour', 'Took the tour', 'Start the tour.'],
       ['share', 'Shared a line', 'Turn a line from a note into a share card.'],
       ['backstage', 'Found the hidden room', 'It isn\'t on the map. The terminal knows the way.'],
-      ['lights', 'Lights out', 'A very old cheat code.']
+      ['lights', 'Lights out', 'A very old cheat code.'],
+      ['reaction', 'Quick off the line', 'Under 250 ms on the start lights. Try reaction in the terminal.']
     ];
     function get(k, d) { try { return JSON.parse(localStorage.getItem(k) || 'null') || d; } catch (e) { return d; } }
     function put(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -2098,8 +2194,17 @@
     window.unlock = function (id) {
       var a = ACH.filter(function (x) { return x[0] === id; })[0];
       if (!a || got[id]) return;
-      got[id] = Date.now(); put('ach', got); queue.push(a[1]); toast();
+      got[id] = Date.now(); put('ach', got); queue.push(a[1]); toast(); foot();
     };
+    // The footer says how many there are, so people know to look. Click it for the list. Computers only (CSS).
+    var footBtn = document.getElementById('ach-foot');
+    function foot() {
+      if (!footBtn) return;
+      var n = ACH.filter(function (a) { return got[a[0]]; }).length;
+      footBtn.textContent = n ? n + ' of ' + ACH.length + ' secrets found.' : ACH.length + ' secrets to find.';
+      footBtn.hidden = footBtn.previousSibling.hidden = false;
+    }
+    if (footBtn) { footBtn.addEventListener('click', function () { window.openAch(); }); foot(); }
     // Themes and notes need a running list before they count.
     window.achTheme = function (id) { var l = get('ach-themes', []); if (l.indexOf(id) < 0) { l.push(id); put('ach-themes', l); } if (l.length >= 3) unlock('themes'); };
     function onPage() {

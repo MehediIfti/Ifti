@@ -33,6 +33,7 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] Door's open: free or in a meeting, from the work calendar, under my name ([#23](https://github.com/MehediIfti/Ifti/issues/23))
 - [x] Live activity: the meetings heatmap counts itself from the calendar
 - [x] Live F1 numbers from Jolpica, next race in the visitor's time
+- [x] Race weekend: the Dhaka strip counts down to lights out ([#42](https://github.com/MehediIfti/Ifti/issues/42))
 - [x] Dhaka right now: date, time and weather strip at the top of every page ([#14](https://github.com/MehediIfti/Ifti/issues/14))
 
 ### Interaction
@@ -40,7 +41,9 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 - [x] Search (Ctrl K / ⌘K) with actions: book a call, copy either email, tour, terminal, print, random note, achievements
 - [x] Terminal (`~`): `coffee`, `fortune`, `git log`, `git status`, `top`, `ping`, `achievements`, `email [work]`, `ls -a` and more ([#2](https://github.com/MehediIfti/Ifti/issues/2), [#3](https://github.com/MehediIfti/Ifti/issues/3))
 - [x] Keyboard: `?` shortcut sheet, `r` random note, Konami code for Lights Out, not saved ([#8](https://github.com/MehediIfti/Ifti/issues/8), [#10](https://github.com/MehediIfti/Ifti/issues/10), [#4](https://github.com/MehediIfti/Ifti/issues/4))
-- [x] Achievements: eight badges, stored only in the browser ([#6](https://github.com/MehediIfti/Ifti/issues/6))
+- [x] Achievements: nine badges, stored only in the browser ([#6](https://github.com/MehediIfti/Ifti/issues/6))
+- [x] Secrets counter in the footer: how many there are, how many you've found ([#40](https://github.com/MehediIfti/Ifti/issues/40))
+- [x] F1 reaction test: start lights, timed, best time kept, new badge under 250 ms ([#41](https://github.com/MehediIfti/Ifti/issues/41))
 - [x] Reading progress: a line along the top fills as you read a note, with minutes left ([#9](https://github.com/MehediIfti/Ifti/issues/9))
 - [x] Links to sections: `#` beside every note heading copies a deep link
 - [x] Share cards from selected quotes, Tour, Print (Work prints as a CV)
@@ -85,6 +88,7 @@ Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 - [ ] [#34](https://github.com/MehediIfti/Ifti/issues/34) Spotify "On repeat": OK to sign in once more?
 
 ## Decided
+- Phones stay lean. New fun features ship for computers first; phones get them only when they add something there.
 - No working hours on the site. Status is free or busy, any hour.
 - No Indian film, series or comedy references. American or relevant ones instead.
 - Stereo: turntable by default, cassette as the option. Hidden on the homepage.

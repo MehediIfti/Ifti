@@ -1,6 +1,7 @@
 // Live F1 numbers for the F1 pop-up and the terminal's f1 command: GET /api/f1
 // From the free Jolpica F1 API (the Ergast successor, no key). The page keeps hand-written fallbacks in F1 UPDATE,
 // plus the things this API doesn't count the same way: titles, poles and the records list.
+const bare = require('./_bare');
 const J = 'https://api.jolpi.ca/ergast/f1';
 const DRIVER = 'max_verstappen', TEAM = 'red_bull';
 
@@ -12,6 +13,7 @@ async function get(path) {
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 module.exports = async function handler(req, res) {
+  if (bare(req, res)) return;
   // Numbers change once a race weekend, so Vercel keeps an answer for six hours and serves the old one while it refreshes.
   res.setHeader('Cache-Control', 'public, s-maxage=21600, stale-while-revalidate=86400');
   try {

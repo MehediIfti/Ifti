@@ -36,7 +36,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 | `/feed.xml` → `/api/feed` | Atom feed of every note | 1 h, cleared on deploy |
 | `/api/spotify-login`, `/api/spotify-callback` | One-time Spotify setup | none |
 
-`api/_calendar.js` is shared by status and activity; files starting with `_` aren't endpoints.
+`api/_calendar.js` is shared by status and activity; files starting with `_` aren't endpoints. `api/_bare.js` sends any request with a query string (`/api/weather?x=1`) to the plain, cached address, so nobody can skip Vercel's cache and run up calls to Spotify, Google Calendar, Jolpica or Open-Meteo.
 
 **Note links and the feed:** `api/_notes.js` reads the notes out of `index.html` (each `<article id="n-…">`: number, date from the note head, title, first paragraph, `data-tags`), which `vercel.json` bundles with `api/note.js` and `api/feed.js` (`includeFiles`). Nothing to update by hand: a new note gets its `/n/` address and feed entry on the next deploy. `/n/005` serves the note's own Open Graph and X tags, so a pasted link previews as that note, then sends people to `/#n-005`; `/n/005#s-n-005-…` opens at that section, and `/n/5` forwards to `/n/005`. The preview summary is the first paragraph, cut at a sentence end before about 200 characters, so write first paragraphs that stand on their own. Share cards and the `#` section links copy `/n/` addresses. The site address lives in `SITE` in `api/_notes.js` as well as the `SHARE PREVIEW` block; change both together. To check a preview after deploy, paste a `/n/` link into LinkedIn's Post Inspector (linkedin.com/post-inspector).
 
@@ -162,7 +162,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 - Homepage blocks below the fold use `content-visibility: auto`. Add new long homepage sections to that rule.
 - Heavy visuals (like the hero map) build right after the first paint. Do the same for anything new and expensive.
 - No images in the page itself. `og.png` and `cv.pdf` only load when shared or clicked.
-- **Size budget:** `scripts/check.mjs` fails if `index.html` or `app.js` goes over 75 KB gzipped each (about 61 and 55 KB today). Raise `BUDGET` there on purpose, not to get a push through.
+- **Size budget:** `scripts/check.mjs` fails if `index.html` or `app.js` goes over 75 KB gzipped each (about 64 and 63 KB today). Raise `BUDGET` there on purpose, not to get a push through.
 - **The script lives in `app.js`,** loaded by a plain `<script src="/app.js">` at the end of `index.html` (not `defer`, so it runs exactly where the inline script used to). Browsers keep a copy between visits. Small page-specific scripts (the head script, the Now lists, the Halo dots) stay inline.
 - **Favicon:** `favicon.svg` is the source (target-lock corners around a pixel "i", drawn on a 32px grid). `favicon.ico` (16, 32, 48) and `apple-touch-icon.png` (180) are rendered from it; re-render both if the SVG changes.
 

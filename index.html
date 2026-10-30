@@ -159,6 +159,7 @@ h2:hover > .h-link, .h-link:focus-visible { opacity: 1; }
 .h-link.copied::before { content: "copied"; color: var(--accent); }
 @media (hover: none) { .h-link { opacity: 0.45; } }
 @media print { .h-link { display: none; } }
+}
 
 .shell {
   max-width: 68rem; margin: 0 auto;
@@ -1486,7 +1487,7 @@ main > .here { display: none; } /* until the router puts it on a page */
 .here-f1 i { font-style: normal; color: #e10600; margin-right: 0.35rem; }
 @media (max-width: 760px) { .here-f1 { display: none; } }
 .rail .avail span { flex-basis: 100%; padding-left: calc(7px + 0.45rem); }
-.avail-m { flex: none; gap: 0.35rem; font-size: 0.625rem; }
+.avail-m { flex: none; gap: 0.35rem; font-size: 0.625rem; min-height: 24px; align-items: center; padding: 0 0.2rem; } /* a 24 px tap target (WCAG 2.5.8) */
 @media (prefers-reduced-motion: no-preference) {
   .avail[data-state="free"] i { animation: av-pulse 2.4s ease-out infinite; }
   @keyframes av-pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); } 70%, 100% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } }
@@ -1828,6 +1829,12 @@ html.touring .tour-fab::after { display: none; }
 :root[data-theme="halftone"] footer.colophon { border-top: 0; background: repeating-conic-gradient(var(--ht-ink) 0 25%, transparent 0 50%) 0 0 / 8px 8px repeat-x; padding-top: 1.6rem; }
 :root[data-theme="halftone"] .hitmark { filter: invert(1); }
 @media print { :root[data-theme="halftone"] .hero::before { display: none; } }
+/* Touch screens: the small links get at least 24 px to tap (WCAG 2.5.8). Last in the CSS so it wins over each link's own rule. */
+@media (pointer: coarse) {
+  .h-link { display: inline-block; min-width: 24px; min-height: 24px; text-align: center; margin-left: 0.1em; }
+  .obs-x { width: 24px; height: 24px; }
+  .obs-tag { padding-block: 0.15rem; }
+  .m-top .who { display: inline-flex; align-items: center; min-height: 24px; }
 </style>
 <script>
   // THEME OF THE DAY: new visitors, and anyone who hasn't picked a theme, get one of these, changing at midnight Dhaka time.

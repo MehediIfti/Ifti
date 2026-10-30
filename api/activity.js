@@ -2,6 +2,7 @@
 // The last 18 weeks, Sunday to today, on Dhaka days, plus `since`: the first day the calendar link fully covers (earlier
 // days come from the hand-kept ACTIVITY block in the page). Counts only: no titles, no names, nothing else leaves here.
 // What counts as a meeting is decided in _calendar.js (all-day, marked Free, cancelled and declined events don't count).
+const bare = require('./_bare');
 const { readCalendar, meetings } = require('./_calendar');
 
 const DHAKA = 6 * 3600e3, WEEKS = 18;
@@ -23,6 +24,7 @@ function counts(data, now) {
 }
 
 module.exports = async function handler(req, res) {
+  if (bare(req, res)) return;
   const url = process.env.GOOGLE_ICS_URL;
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
   if (!url) return res.status(200).json({ configured: false });

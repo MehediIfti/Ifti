@@ -40,12 +40,17 @@
     var fmt = function (d, noDay) { return (noDay ? '' : 'SunMonTueWedThuFriSat'.substr(d.getDay() * 3, 3) + ' ') + d.getDate() + ' ' + 'JanFebMarAprMayJunJulAugSepOctNovDec'.substr(d.getMonth() * 3, 3); };
     var lvl = function (v) { return v === 0 ? 0 : v <= 2 ? 1 : v <= 5 ? 2 : v <= 8 ? 3 : 4; };
     var total = c.reduce(function (t, v) { return t + v; }, 0);
-    var months = '', last = -1;
+    var labels = [], last = -1, shown = -9;
     for (var k = 0; k < w; k++) {
       var m = day(k * 7).getMonth();
-      months += '<span>' + (m !== last && k < w - 1 ? 'JanFebMarAprMayJunJulAugSepOctNovDec'.substr(m * 3, 3) : '') + '</span>';
+      if (m !== last && k < w - 1) {
+        if (k - shown < 3) labels[shown] = ''; // too close to the one before ("Juul"): the earlier, shorter month gives way
+        labels[k] = 'JanFebMarAprMayJunJulAugSepOctNovDec'.substr(m * 3, 3); shown = k;
+      }
       last = m;
     }
+    var months = '';
+    for (k = 0; k < w; k++) months += '<span>' + (labels[k] || '') + '</span>';
     var cells = c.map(function (v, i) {
       return '<i class="l' + lvl(v) + '" data-d="' + fmt(day(i)) + '" data-n="' + v + '"></i>';
     }).join('');
@@ -348,11 +353,12 @@
         el.hidden = !ok; if (!ok) return;
         el.setAttribute('data-state', d.state);
         el.querySelector('b').textContent = d.state === 'free' ? "Door's open" : d.state === 'busy' ? 'In a meeting' : 'Off the clock';
-        el.title = d.state === 'busy' ? 'Free at ' + clock(d.until) + ', your time' : d.state === 'off' ? 'Back ' + when(d.back) + ', your time' : 'Free right now. Book a call.';
-        if (el.tagName === 'A') { if (d.state === 'free' && CALENDLY) el.href = CALENDLY; else el.removeAttribute('href'); }
+        el.title = d.state === 'busy' ? 'Free at ' + clock(d.until) + ', your time. Book a call for later.' : d.state === 'off' ? 'Back ' + when(d.back) + ', your time' : 'Free right now. Book a call.';
+        if (el.tagName === 'A') { if (CALENDLY) el.href = CALENDLY; else el.removeAttribute('href'); } // booking works in every state, not just when free
         var s = el.querySelector('span'); if (!s) return;
-        if (d.state === 'free') s.innerHTML = '<a href="' + CALENDLY + '" target="_blank" rel="noopener">Book a call</a>';
-        else s.textContent = d.state === 'busy' ? 'free at ' + clock(d.until) : 'back ' + when(d.back);
+        var book = CALENDLY ? '<a href="' + esc(CALENDLY) + '" target="_blank" rel="noopener">Book a call</a>' : '';
+        if (d.state === 'free') s.innerHTML = book;
+        else { s.textContent = (d.state === 'busy' ? 'free at ' + clock(d.until) : 'back ' + when(d.back)) + (book ? ' · ' : ''); if (book) s.insertAdjacentHTML('beforeend', book); }
       });
     }
     function load() {
@@ -419,7 +425,8 @@
   // Right column: contents, page details, what I'm on right now, prev/next note.
   var meta = document.getElementById('meta');
   var tocItems = [];
-  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+  // Safe in text and inside quoted attributes. Everything from Spotify, F1 or the notes goes through this.
+  function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
   // Every page ends by pointing to the next one, so the site reads in order
   function pageNext(page, id) {
     // page order is the rail's order, so dragging rail links changes Previous/Next too
@@ -697,13 +704,12 @@
     });
     h.appendChild(a);
   });
-  window.addEventListener('load', function () { var t = document.getElementById((location.hash || '#index').slice(1)); if (!t || t.classList.contains('page')) setTimeout(function () { window.scrollTo(0, 0); }, 0); });
-  window.addEventListener('load', function () { var a = document.getElementById(location.hash.slice(1)); if (a && !a.classList.contains('page') && a.closest('.page')) a.scrollIntoView(); else window.scrollTo(0, 0); });
+  // On load: a link to a section inside a page scrolls to it; anything else starts at the top.
+  window.addEventListener('load', function () { var t = document.getElementById((location.hash || '#index').slice(1)); if (t && !t.classList.contains('page') && t.closest('.page')) t.scrollIntoView(); else setTimeout(function () { window.scrollTo(0, 0); }, 0); });
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   show();
 
 
-  // Suggestion box. Paste your form endpoint (e.g. https://formspree.io/f/xxxx) to receive suggestions by email.
   // Suggestions are emailed to me through FormSubmit. The very first one triggers a one-time confirmation email.
   var SUGGEST_ENDPOINT = 'https://formsubmit.co/ajax/mh.hasan884@gmail.com';
   // Notes list: first sentence of each note as a one-line dek
@@ -1086,9 +1092,11 @@
     fetch('/api/f1').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
       if (!d || !d.table) return;
       var ord = function (n) { return n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th'); };
-      F1.asOf = d.asOf || F1.asOf; F1.pos = 'P' + d.pos; F1.pts = d.pts; F1.table = d.table;
-      F1.wins = d.wins; F1.podiums = d.podiums; F1.starts = d.starts;
-      if (d.teamPos) F1.teamPos = 'Red Bull is ' + ord(+d.teamPos) + ' in the constructors\' table on ' + d.teamPts + '.';
+      var num = function (v, was) { return /^\d{1,4}(\.\d)?$/.test(String(v)) ? String(v) : was; }; // a number, or keep the fallback
+      F1.asOf = d.asOf || F1.asOf; F1.pos = 'P' + num(d.pos, F1.pos.slice(1)); F1.pts = num(d.pts, F1.pts);
+      F1.table = d.table.map(function (r) { return [num(r[0], '?'), String(r[1]), String(r[2]), num(r[3], '?')]; });
+      F1.wins = num(d.wins, F1.wins); F1.podiums = num(d.podiums, F1.podiums); F1.starts = num(d.starts, F1.starts);
+      if (num(d.teamPos) && num(d.teamPts)) F1.teamPos = 'Red Bull is ' + ord(+d.teamPos) + ' in the constructors\' table on ' + d.teamPts + '.';
       if (d.latestWin) F1.lastWin = d.latestWin.isLast ? 'Won the ' + d.latestWin.race + ', his latest win.' : 'Latest win: the ' + d.latestWin.season + ' ' + d.latestWin.race + '.';
       F1.next = d.next; hereF1();
       var pop = document.getElementById('pop'); if (pop && !pop.hidden && pop.querySelector('.pop-livery')) popOpen('f1'); // refresh if it's open
@@ -2001,7 +2009,6 @@
       reset(); run.hidden = false; ans.hidden = false; log.innerHTML = ''; document.getElementById('we-ticket').textContent = '';
       ans.innerHTML = '<h4>Rocket · Not one of my demo runs</h4><ul><li>This demo plays four set tasks. Pick one of the prompts above, or ask about a call, closing deals, the pipeline or a scope request.</li></ul>';
     });
-    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
   })();
   // Hermes: Telegram-style preview. Picking an agent replays a short sample exchange.
   (function () {
@@ -2030,7 +2037,6 @@
     };
     var chat = document.getElementById('tg-chat'), timers = [];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
     function bubble(m) {
       if (m[0] === 'sys') return '<div class="tg-m sys">' + esc(m[1]) + '</div>';
       var photo = m[1].indexOf('[photo]') === 0, text = photo ? m[1].slice(8) : m[1];

@@ -2,6 +2,7 @@
 // Also lists the last three songs before it (recent: [{ title, artist, url, playedAt }]).
 // Needs SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET and SPOTIFY_REFRESH_TOKEN in Vercel (README → Spotify).
 // Answers { configured: false } until they are set, so the page simply hides the player.
+const bare = require('./_bare');
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 let cached = { token: null, until: 0 };
 
@@ -33,6 +34,7 @@ function shape(item) {
 }
 
 module.exports = async function handler(req, res) {
+  if (bare(req, res)) return;
   const { SPOTIFY_CLIENT_ID: id, SPOTIFY_CLIENT_SECRET: secret, SPOTIFY_REFRESH_TOKEN: refresh } = process.env;
   // Every visitor asks every 30 seconds; Vercel's cache answers most of them so Spotify sees about two calls a minute.
   res.setHeader('Cache-Control', 'public, s-maxage=20, stale-while-revalidate=40');

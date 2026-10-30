@@ -1,6 +1,7 @@
 // Am I free right now? For the status under my name on every page: GET /api/status
 // Reads my work calendar through its secret iCal address (GOOGLE_ICS_URL in Vercel; README → Calendar status) and
 // answers only free or busy-until. Meeting titles and details never leave this function.
+const bare = require('./_bare');
 const { readCalendar, meetings } = require('./_calendar');
 
 function status(data, now) {
@@ -11,6 +12,7 @@ function status(data, now) {
 }
 
 module.exports = async function handler(req, res) {
+  if (bare(req, res)) return;
   const url = process.env.GOOGLE_ICS_URL;
   res.setHeader('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=240');
   if (!url) return res.status(200).json({ configured: false });

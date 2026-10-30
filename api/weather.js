@@ -1,6 +1,7 @@
 // Dhaka's weather for the line under my name: GET /api/weather
 // From Open-Meteo (free, no key, no cookies). Fetched here rather than in the page so visitors' browsers never call a
 // third party, and cached for 30 minutes so Open-Meteo sees about two requests an hour whatever the traffic.
+const bare = require('./_bare');
 const URL = 'https://api.open-meteo.com/v1/forecast?latitude=23.81&longitude=90.41&current=temperature_2m,weather_code,is_day&timezone=Asia%2FDhaka';
 
 // WMO weather codes in one or two plain words.
@@ -18,6 +19,7 @@ function sky(code, day) {
 }
 
 module.exports = async function handler(req, res) {
+  if (bare(req, res)) return;
   res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=3600');
   try {
     const r = await fetch(URL);

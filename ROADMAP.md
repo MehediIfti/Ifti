@@ -69,7 +69,6 @@ Update it in the same commit as the change: tick the box, add the commit or issu
 ## Next (ready to build)
 Play order: lowest milestone first, oldest first. Say "next issue" to start one.
 
-- [ ] [#15](https://github.com/MehediIfti/Ifti/issues/15) Tour on phones · 20-min
 - [ ] [#30](https://github.com/MehediIfti/Ifti/issues/30) Installable: web app manifest · 20-min
 - [ ] [#26](https://github.com/MehediIfti/Ifti/issues/26) Free-slot finder under Book a call · 2x20-min
 - [ ] [#28](https://github.com/MehediIfti/Ifti/issues/28) Recap email builder in the Playground · 2x20-min
@@ -102,6 +101,7 @@ The fun queue. Pick one when there's a free session.
 ## Decided
 - Ask Ifti (#20) was closed on 18 Oct 2026 without being built. Its [30-day plan](docs/plans/ask-ifti-30-day-plan.md) stays; reopen #20 to bring it back.
 - No map game (#12, dropped 19 Oct 2026).
+- No tour on phones (#15, dropped 30 Oct 2026). The tour stays on computers.
 - Phones stay lean. New fun features ship for computers first; phones get them only when they add something there.
 - No working hours on the site. Status is free or busy, any hour.
 - No Indian film, series or comedy references. American or relevant ones instead.

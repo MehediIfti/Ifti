@@ -59,7 +59,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 
 ## How we work
 
-- **Backlog:** ideas live as [issues](https://github.com/MehediIfti/Ifti/issues), grouped into milestones in play order: *1 · Easter eggs & delight*, *2 · Interaction polish*, *3 · Content & pages*, *Later · Needs a backend*. The [project board](https://github.com/MehediIfti/Ifti/projects) shows them as Ready, In progress, Done and Parked.
+- **Backlog:** ideas live as [issues](https://github.com/MehediIfti/Ifti/issues), grouped into milestones in play order: *1 · Show the range*, *2 · Make it easy*. The [project board](https://github.com/MehediIfti/Ifti/projects) shows them as Ready, In progress, Done and Parked.
 - **Labels:** `fun`, `feature`, `design`, `content`, `chore`, `bug` say what it is. `20-min` / `2x20-min` say how long. `needs-info` waits on a fact or decision from me; `needs-backend` waits on a small server.
 - **Daily 20 minutes:** I open a session and say "next issue". The rules are in `CLAUDE.md`.
 - **Safety check:** every push runs `scripts/check.mjs` (GitHub Actions): the scripts must parse, every `#link` must point somewhere, the page must stay under its size budget, and every palette must pass contrast: body, secondary and faint text (`--text`, `--subtext0`, `--overlay1`) at 4.5:1 on `--base` and `--mantle`, and every tag colour at 4.5:1 on its tinted chip. Light palettes darken tag text with the ink (the `.log .tag` rule for light palettes, `TAG_INK` in the check). A new palette that fails can't ship; nudge its lightness until it passes. Run it locally with `node scripts/check.mjs`.

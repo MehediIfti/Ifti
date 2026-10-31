@@ -256,6 +256,12 @@ ul.plain li::marker { color: var(--muted); }
 .pg-cards p { margin-top: 0.3rem; font-size: 0.92em; color: var(--muted); line-height: 1.5; }
 .pg-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .pg-chips span { font-family: var(--mono); font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; color: var(--pg); background: color-mix(in srgb, var(--pg) 13%, transparent); }
+/* playground: lead-in label, caption under a terminal, link cards to the next page */
+.pg-cards + .pg-lead-in { margin: 1.25rem 0 0.5rem; font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); }
+.pg-term + .sub { margin-top: 0.6rem; font-size: 0.9rem; }
+.pg-next a { display: block; height: 100%; text-decoration: none; color: inherit; }
+.pg-next li:has(a:hover, a:focus-visible) { border-color: var(--pg); }
+.pg-next a:hover b { color: var(--pg); }
 /* paperclip: Wayne Enterprises dashboard */
 #paperclip.page, #hermes.page, #t3code.page { max-width: 46rem; }
 .pg-code { font-family: var(--mono); font-size: 0.8125rem; font-weight: 400; color: var(--text); }
@@ -2374,7 +2380,7 @@ html.touring .tour-fab::after { display: none; }
 
       <h2 id="shelf-exploring">Exploring</h2>
       <ul class="log" data-shelf="exploring" data-now="3">
-        <li><span class="t">T3 Code</span><span class="tag t-ai">AI</span><p>One app for all my coding agents. <a href="#t3code">My notes on it</a>.</p></li>
+        <li><span class="t">T3 Code</span><span class="tag t-ai">AI</span><p>The app I run Claude Code in. Still exploring it. <a href="#t3code">My notes on it</a>.</p></li>
         <li><span class="t">Claude Code</span><span class="tag t-ai">AI</span><p>Built this site with it, one conversation at a time.</p></li>
         <li><span class="t">OpenAI releases</span><span class="tag t-ai">AI</span><p>Keeping up with each launch and what it changes for client work.</p></li>
         <li><span class="t">Theo <span class="by">· t3.gg</span></span><span class="tag t-tool">YouTube</span><p>My main feed for what's moving in AI and dev tools.</p></li>
@@ -2522,6 +2528,7 @@ html.touring .tour-fab::after { display: none; }
           <div class="we-answer" id="we-answer" hidden></div>
         </div>
       </div>
+      <p class="sub">Paperclip runs agents as a company. For one personal agent, see <a href="#hermes">Hermes Agent</a>. For agents that write code, see <a href="#t3code">T3 Code</a>.</p>
     </section>
 
     <section class="page pg" id="hermes" style="--pg: var(--sky)">
@@ -2595,40 +2602,60 @@ html.touring .tour-fab::after { display: none; }
         </div>
       </div>
 
-      <p class="sub">Hermes is one agent that learns. To run a whole team of agents, Hermes included, see <a href="#paperclip">Paperclip</a>.</p>
+      <p class="sub">Hermes is one agent that learns. To run a whole team of agents, Hermes included, see <a href="#paperclip">Paperclip</a>. For agents that write code, see <a href="#t3code">T3 Code</a>.</p>
     </section>
 
     <section class="page pg" id="t3code" style="--pg: var(--mauve)">
-      <p class="label">Playground · Agent app</p>
+      <p class="label">Playground · Coding agents</p>
       <h1>T3 Code</h1>
-      <p class="pg-quote">“The agent harness control surface.” <span>— T3 Code</span></p>
-      <p class="lede">One app for the coding agents you already pay for. It has no model of its own: it drives Claude Code, Codex and others on your machine, through your own subscriptions. Free and open source, from Theo Browne and the Ping.gg team.</p>
+      <p class="pg-quote">“Wait, what are you selling me?” Nothing. <span>— T3 Code</span></p>
+      <p class="lede">One app to run the AI coding agents already on your computer. It has no AI of its own. It drives tools like Claude Code and Codex, on the plans you already pay for. Free and open source, from Theo Browne's team at Ping.gg.</p>
       <div class="pg-links">
         <a class="pg-btn" href="https://t3.codes" target="_blank" rel="noopener">Website ↗</a>
         <a class="pg-btn ghost" href="https://github.com/pingdotgg/t3code" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
       <dl class="pg-facts">
-        <div><dt>Licence</dt><dd>MIT</dd></div>
+        <div><dt>Licence</dt><dd>MIT, free</dd></div>
         <div><dt>By</dt><dd>Ping.gg</dd></div>
         <div><dt>Runs</dt><dd>Your machine</dd></div>
-        <div><dt>Try it</dt><dd><code class="pg-code">npx t3@latest</code></dd></div>
+        <div><dt>Apps</dt><dd>Desktop, web, phone</dd></div>
       </dl>
+
+      <h2>What's a coding agent?</h2>
+      <p>An AI that writes and changes software for you. You describe the job in plain English. It reads the project, makes the edits and runs them. Claude Code (from Anthropic) and Codex (from OpenAI) are two of them.</p>
+
+      <h2>How it fits together</h2>
+      <p class="sub">T3 Code sits between you and the agents. The work happens on your machine.</p>
+      <div class="hx-flow" aria-label="You, on desktop, web or phone, to T3 Code, to the coding agents on your machine">
+        <span class="hx-step"><b>You</b><small>desktop, web or phone</small></span><span class="hx-arr" aria-hidden="true">→</span>
+        <span class="hx-step"><b>T3 Code</b><small>one window, many threads</small></span><span class="hx-arr" aria-hidden="true">→</span>
+        <span class="hx-step"><b>Coding agents</b><small>on your machine, on your plans</small></span>
+      </div>
 
       <h2>What it does</h2>
       <ul class="pg-cards">
-        <li><b>Every agent, one window</b><p>Claude Code, Codex, Cursor and more, side by side.</p></li>
-        <li><b>Your own plans</b><p>It runs on the subscriptions you already have. No new keys, no second bill.</p></li>
-        <li><b>Work in parallel</b><p>Each task gets its own thread, and its own git worktree if you want one.</p></li>
-        <li><b>Away from the desk</b><p>Desktop, web and phone apps, so you can check on a run from anywhere.</p></li>
+        <li><b>Every agent, one window</b><p>Claude Code, Codex, Cursor and others, side by side instead of one app each.</p></li>
+        <li><b>No second bill</b><p>It uses the plans you already pay for. Nothing new to buy.</p></li>
+        <li><b>Several jobs at once</b><p>Each task runs in its own thread. It can also get its own copy of the project, so two agents never edit the same files.</p></li>
+        <li><b>Away from the desk</b><p>Desktop, web, iPhone and Android apps. Start a job at your computer, check on it from your phone.</p></li>
       </ul>
+      <p class="sub pg-lead-in">Works with</p>
+      <div class="pg-chips"><span>Claude Code</span><span>Codex</span><span>Cursor</span><span>Grok Build</span><span>OpenCode</span><span>Google Antigravity</span></div>
 
-      <h2>Agents it drives</h2>
-      <div class="pg-chips"><span>Claude Code</span><span>Codex</span><span>Cursor</span><span>Grok Build</span><span>OpenCode</span><span>Antigravity</span></div>
+      <h2>How I use it</h2>
+      <p>I'm still exploring it. For now it's where I run Claude Code, the agent I built this site with. This page was built in a T3 Code thread.</p>
 
-      <h2>How I'm using it</h2>
-      <p>I'm still exploring it. So far it's where I run Claude Code, and this page was built in a T3 Code thread.</p>
-      <p>It's early, and the team says so: expect bugs.</p>
-      <p class="sub">T3 Code runs agents on code. For the agents that run my day, see <a href="#hermes">Hermes Agent</a> and <a href="#paperclip">Paperclip</a>.</p>
+      <h2>Try it</h2>
+      <p class="sub">Set up one agent first, like Claude Code or Codex, and sign in. Then run:</p>
+      <div class="pg-term"><span class="pg-term-p" aria-hidden="true">$</span><code>npx t3@latest</code><button class="copy" type="button" data-copy="npx t3@latest">copy</button></div>
+      <p class="sub">It's very early, and the team says so: expect bugs.</p>
+
+      <h2>More in the Playground</h2>
+      <p class="sub">One of three agent pages. T3 Code is for writing code.</p>
+      <ul class="pg-cards pg-next">
+        <li><a href="#hermes"><b>Hermes Agent →</b><p>Three agents I message on Telegram. Each one learns as it goes.</p></a></li>
+        <li><a href="#paperclip"><b>Paperclip →</b><p>A whole company of agents, with roles and a boss.</p></a></li>
+      </ul>
     </section>
 
     <!-- ============ WHITEBOARD ============ -->
@@ -2784,7 +2811,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">31 Oct 2026</h2>
       <ul class="log cl-list">
-        <li><span class="t">T3 Code</span><span class="tag t-series">Page</span><p>The app I run my coding agents in, in the Playground. <a href="#t3code">See it</a>.</p></li>
+        <li><span class="t">T3 Code</span><span class="tag t-series">Page</span><p>A Playground page on the app I run Claude Code in: what it does and how I use it. <a href="#t3code">See it</a>.</p></li>
         <li><span class="t">Dot matrix covers</span><span class="tag t-design">Design</span><p>Every note now opens with a generative halftone sphere cover, seeded uniquely from the note's number.</p></li>
       </ul>
       <h2 class="cl-d">19 Oct 2026</h2>
@@ -2899,7 +2926,7 @@ html.touring .tour-fab::after { display: none; }
     <li class="wb-nav"><a class="nav" href="#whiteboard"><span class="n">06</span><span class="t">Whiteboard</span><span class="d">tool</span></a></li>
     <li><a class="nav" href="#paperclip"><span class="n">07</span><span class="t">Paperclip</span><span class="d">agent</span></a></li>
     <li><a class="nav" href="#hermes"><span class="n">08</span><span class="t">Hermes Agent</span><span class="d">agent</span></a></li>
-    <li><a class="nav" href="#t3code"><span class="n">09</span><span class="t">T3 Code</span><span class="d">tool</span></a></li>
+    <li><a class="nav" href="#t3code"><span class="n">09</span><span class="t">T3 Code</span><span class="d">coding</span></a></li>
   </ol>
   <p class="grp">Academia</p>
   <ol>

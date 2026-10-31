@@ -1090,7 +1090,7 @@
     setTimeout(function () { n.classList.remove('on'); setTimeout(function () { n.remove(); if (t.id === 'lightsout') lightsOut(); }, 300); }, 1700);
   };
 
-  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'whiteboard', '7': 'paperclip', '8': 'hermes', '9': 'research', '0': 'education' };
+  var keys = { '1': 'index', '2': 'now', '3': 'notes', '4': 'work', '5': 'shelf', '6': 'whiteboard', '7': 'paperclip', '8': 'hermes', '9': 't3code', '0': 'research' };
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var t = e.target.tagName;
@@ -1327,129 +1327,11 @@
       document.body.appendChild(t); setTimeout(function () { t.remove(); }, 6000);
     }, 1200);
   })();
-  (function () {
-    if (matchMedia('(max-width: 760px)').matches) return;
-    var o = null, timers = [], state = '', t0 = 0, beat = 0;
-    function best() { try { return +localStorage.getItem('rx-best') || 0; } catch (e) { return 0; } }
-    function say(msg, sub, jump) {
-      var m = o.querySelector('.rx-msg'); m.className = 'rx-msg' + (jump ? ' jump' : ''); m.innerHTML = msg;
-      o.querySelector('.rx-sub').innerHTML = sub || '';
-    }
-    // The best time sits under the lights the whole time; it turns green and pulses when you beat it.
-    // On a challenge, a second pill shows the time to beat.
-    function showBest(isNew, won) {
-      var b = best(), el = o.querySelector('.rx-best');
-      el.className = 'rx-best' + (isNew ? ' new' : '');
-      el.innerHTML = b ? '<small>' + (isNew ? 'New best' : 'Your best') + '</small><b>' + b + ' ms</b>' : '<small>Your best</small><b>—</b>';
-      var tb = o.querySelector('.rx-beat'); tb.hidden = !beat;
-      if (beat) { tb.className = 'rx-best rx-beat' + (won ? ' won' : ''); tb.innerHTML = '<small>' + (won ? 'Beaten' : 'To beat') + '</small><b>' + beat + ' ms</b>'; }
-    }
-    var keysLine = '<kbd>Space</kbd> to go again · <kbd>S</kbd> to share · <kbd>Esc</kbd> to close';
-    function clear() { timers.forEach(clearTimeout); timers = []; }
-    function ready() {
-      state = 'ready'; showBest(false, false);
-      say('<b>' + beat + ' ms</b>Someone sent you a challenge. Beat their start.', 'Press <kbd>Space</kbd> or click to bring the lights up.');
-    }
-    function run() {
-      clear(); state = 'on';
-      var cols = o.querySelectorAll('.f1-rig span');
-      cols.forEach(function (c) { c.classList.remove('on'); }); showBest(false, false);
-      say('Wait for the lights to go out.', 'Click or press <kbd>Space</kbd> when they do.');
-      // One light a beat, like a real start, then a hold you can't predict.
-      cols.forEach(function (c, i) { timers.push(setTimeout(function () { c.classList.add('on'); }, 500 + i * 600)); });
-      timers.push(setTimeout(function () {
-        cols.forEach(function (c) { c.classList.remove('on'); });
-        state = 'go'; t0 = performance.now();
-      }, 500 + 4 * 600 + 600 + Math.round(400 + Math.random() * 2000)));
-    }
-    function hit() {
-      if (state === 'ready') { run(); return; }
-      if (state === 'on') {
-        clear(); state = 'done';
-        o.querySelectorAll('.f1-rig span').forEach(function (c) { c.classList.remove('on'); });
-        say('<b>Jump start</b>You went before the lights went out.', 'In a race, that\'s a penalty. <kbd>Space</kbd> to go again · <kbd>Esc</kbd> to close', true);
-        return;
-      }
-      if (state === 'go') {
-        var ms = Math.round(performance.now() - t0), b = best(), isNew = !b || ms < b, won = beat && ms < beat;
-        state = 'done';
-        if (isNew) try { localStorage.setItem('rx-best', ms); } catch (e) {}
-        if (ms < 250 && window.unlock) unlock('reaction');
-        showBest(isNew, won);
-        var line = beat ? (won ? 'You beat ' + beat + ' ms by ' + (beat - ms) + ' ms. Send it back.' : '+' + (ms - beat) + ' ms off the challenge.')
-          : isNew ? 'F1 drivers usually react in about 200 ms.' : '+' + (ms - b) + ' ms off your best.';
-        say('<b>' + ms + ' ms</b>' + line, '<button type="button" class="rx-share">Share ' + best() + ' ms</button>' + keysLine);
-        return;
-      }
-      if (state === 'done') run();
-    }
-    function share() {
-      var b = best(); if (!b || !window.shareCard) return;
-      end(); setTimeout(function () { window.shareCard(timeCard(b)); }, 280);
-    }
-    function end() {
-      if (!o) return; clear(); state = '';
-      var x = o; o = null; x.classList.add('out'); setTimeout(function () { x.remove(); }, 260);
-      document.removeEventListener('keydown', key, true);
-    }
-    function key(e) {
-      // While the lights are up they own the keyboard, so R, ? and ~ don't fire underneath.
-      e.stopImmediatePropagation();
-      if (e.key === 'Escape') { e.preventDefault(); end(); }
-      else if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); hit(); }
-      else if ((e.key === 's' || e.key === 'S') && state === 'done' && best()) { e.preventDefault(); share(); }
-    }
-    window.reactionTest = function (toBeat) {
-      if (o) return;
-      beat = toBeat || 0;
-      o = document.createElement('div'); o.className = 'f1-lights rx'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', 'Reaction test');
-      o.innerHTML = '<div class="rx-box"><div class="f1-rig" aria-hidden="true">' + '<span><i></i><i></i></span>'.repeat(5) + '</div>' +
-        '<div class="rx-pills"><p class="rx-best"></p><p class="rx-best rx-beat" hidden></p></div><p class="rx-msg" aria-live="polite"></p><p class="rx-sub"></p></div>';
-      document.body.appendChild(o);
-      o.addEventListener('pointerdown', function (e) {
-        if (e.target.closest('.rx-share')) { e.stopPropagation(); return; }
-        if (e.button === 0) hit();
-      });
-      o.addEventListener('click', function (e) { if (e.target.closest('.rx-share')) share(); });
-      document.addEventListener('keydown', key, true);
-      if (document.activeElement) document.activeElement.blur();
-      if (beat) ready(); else run();
-    };
+  // The lights live in games.js, loaded the first time they're asked for. Defining reactionTest only on computers keeps it off phones everywhere.
+  if (!matchMedia('(max-width: 760px)').matches) {
+    window.reactionTest = function (toBeat) { lazy('games.js').then(function () { window.reactionTest(toBeat); }); };
     if (beatIn) setTimeout(function () { window.reactionTest(beatIn); }, 900);
-
-    // The challenge card: the best time, big, under a lit rig. Drawn by the share dialog's canvas in the current theme.
-    function timeCard(ms) {
-      var link = SITE + '?beat=' + ms;
-      return {
-        title: 'Share your time', file: 'ifti-start-' + ms + 'ms.png', url: link,
-        said: ms + ' ms off the line on Ifti\'s start lights. Beat it.',
-        paint: function (ctx, W, H, P) {
-          P.frame('Ifti\'s notebook · Start lights');
-          var wide = W > H, r = wide ? 26 : 34, gap = wide ? 14 : 18, colW = r * 2 + 16, rigW = 5 * colW + 4 * gap + 24, rigH = 2 * (r * 2) + 10 + 32;
-          var rx = wide ? W - P.pad - rigW : P.pad, ry = wide ? P.pad + 80 : P.pad + 90;
-          // the rig: five columns of two reds, all lit
-          ctx.fillStyle = '#111'; ctx.fillRect(rx, ry, rigW, rigH);
-          for (var c = 0; c < 5; c++) {
-            var cx = rx + 12 + c * (colW + gap);
-            ctx.fillStyle = '#050505'; ctx.fillRect(cx, ry + 12, colW, rigH - 24);
-            for (var k = 0; k < 2; k++) {
-              var x = cx + colW / 2, y = ry + 16 + r + 4 + k * (r * 2 + 10);
-              ctx.save(); ctx.shadowColor = 'rgba(225, 6, 0, 0.7)'; ctx.shadowBlur = r;
-              var g = ctx.createRadialGradient(x - r * 0.25, y - r * 0.3, r * 0.1, x, y, r);
-              g.addColorStop(0, '#ff6b5e'); g.addColorStop(0.6, '#e10600'); g.addColorStop(1, '#8f0400');
-              ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-            }
-          }
-          var ty = wide ? P.pad + 330 : ry + rigH + 300, fs = wide ? 200 : 230;
-          ctx.fillStyle = P.ink; ctx.font = 'italic 700 ' + fs + 'px ' + P.fDisp; ctx.fillText(String(ms), P.pad - 6, ty);
-          var nw = ctx.measureText(String(ms)).width;
-          ctx.font = 'italic 700 ' + Math.round(fs * 0.36) + 'px ' + P.fDisp; ctx.fillText('ms', P.pad + nw + 10, ty);
-          ctx.fillStyle = P.mut; ctx.font = '500 ' + (wide ? 34 : 40) + 'px ' + P.fDisp; ctx.fillText('off the line. Can you beat it?', P.pad, ty + (wide ? 62 : 80));
-          P.foot('F1 drivers usually react in about 200 ms.', link.replace('https://', '').replace(/\/$/, ''));
-        }
-      };
-    }
-  })();
+  }
 
   // ============ Hover previews on links to other pages and notes ============
   (function () {
@@ -1507,213 +1389,14 @@
 
   // ============ Terminal: press ~ (or the footer link) ============
   (function () {
-    var term = document.getElementById('term'), out = document.getElementById('term-out'), form = document.getElementById('term-form'), input = document.getElementById('term-i'), ps = document.getElementById('term-ps');
-    var hist = [], hi = 0, booted = false, lastFortune = null;
-    var pagesList = Array.prototype.filter.call(document.querySelectorAll('.page[id]'), function (p) { return p.id.indexOf('n-') !== 0 && p.id !== 'backstage'; }).map(function (p) { return p.id; });
-    var notesList = Array.prototype.map.call(document.querySelectorAll('article.page[id^="n-"]'), function (n) { return n; });
-    function here() { var id = (location.hash || '#index').slice(1); return id === 'index' ? '~' : id.indexOf('n-') === 0 ? '~/notes/' + id.slice(2) : '~/' + id; }
-    function print(html, cls) { var d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); out.scrollTop = out.scrollHeight; }
-    function line(t, cls) { print(esc(t), cls); }
-    function noteById(arg) {
-      if (!arg) return null; arg = String(arg).replace(/^n-?/i, '').replace(/^0+/, '');
-      return notesList.filter(function (n) { return n.id.slice(2).replace(/^0+/, '') === arg; })[0] || null;
-    }
-    function noteText(n) {
-      var parts = [];
-      n.querySelectorAll('h1, h2, p, li, dt, dd').forEach(function (el) {
-        if (el.closest('.note-head') || el.querySelector('a.back') || el.classList.contains('back')) return;
-        if (el.tagName === 'LI' && el.closest('dl')) return;
-        var c = el.cloneNode(true); c.querySelectorAll('.sn, .sn-ref').forEach(function (x) { x.remove(); });
-        var t = c.textContent.replace(/\s+/g, ' ').trim(); if (!t) return;
-        if (el.tagName === 'H1') parts.push('<span class="b">' + esc(t) + '</span>');
-        else if (el.tagName === 'H2') parts.push('\n<span class="m">## ' + esc(t) + '</span>');
-        else if (el.tagName === 'LI') parts.push('  • ' + esc(t));
-        else if (el.tagName === 'DT') parts.push('<span class="y">' + esc(t) + '</span>');
-        else if (el.tagName === 'DD') parts.push('  ' + esc(t));
-        else parts.push(esc(t));
-      });
-      return parts.join('\n');
-    }
-    var CMDS = {
-      help: function () {
-        print('<span class="b">Commands</span>\n' + [
-          ['ls', 'list pages and notes'], ['cd <page>', 'open a page (cd work, cd ..)'], ['cat <note>', 'read a note here (cat 5)'],
-          ['whoami', 'who runs this notebook'], ['now', 'what I\'m on this month'], ['f1', 'Max and Red Bull, right now'],
-          ['theme [name]', 'list or switch themes'], ['book', 'book a call'], ['email [work]', 'show both emails, copy one'], ['cv', 'download my CV'],
-          ['socials', 'where else to find me'], ['coffee', 'cups so far this year'], ['fortune', 'a line from my notes'],
-          ['git log', 'what changed on the site'], ['top', 'what I\'m running on'], ['ping', 'check the site is up'], ['achievements', 'what you\'ve found'], ['reaction', 'the start lights, timed'],
-          ['date', 'the time in Dhaka'], ['pwd', 'where you are'], ['echo <text>', 'say it back'], ['history', 'what you typed'],
-          ['clear', 'clear the screen'], ['exit', 'close (or press Esc)']
-        ].map(function (r) { return '  <span class="g">' + esc(r[0].padEnd(16, ' ')) + '</span>' + r[1]; }).join('\n') + '\n<span class="c">Tab completes. ↑ ↓ for history.</span>');
-      },
-      ls: function (a) {
-        if (a === '-a' || a === '-la' || a === '-al') { print('<span class="c">.</span>   <span class="c">..</span>   <span class="m">.backstage</span>   <span class="g">' + esc(pagesList.join('   ')) + '</span>'); a = 'notes'; }
-        else if (!a || a === 'pages' || a === '~') line(pagesList.join('   '), 'g');
-        if (!a || a === 'notes') print(notesList.map(function (n) { return '<span class="y">' + n.id.slice(2) + '</span>  ' + esc(n.querySelector('h1').textContent); }).join('\n'));
-      },
-      cd: function (a) {
-        if (!a || a === '~' || a === '/' || a === '..') { location.hash = 'index'; return; }
-        a = a.replace(/^~?\//, '').replace(/\/$/, '');
-        if (a === '.backstage' || a === 'backstage') { location.hash = 'backstage'; return; }
-        var n = /^notes\/(\d+)$/.test(a) ? noteById(a.split('/')[1]) : null;
-        if (n) { location.hash = n.id; return; }
-        if (pagesList.indexOf(a) >= 0) { location.hash = a; return; }
-        line('cd: no such page: ' + a + '. Try ls.', 'r');
-      },
-      cat: function (a) {
-        var n = noteById(a);
-        if (!n) { line(a ? 'cat: no note ' + a + '. Try ls notes.' : 'usage: cat <note number>', 'r'); return; }
-        print(noteText(n)); print('<span class="c">open it: cd notes/' + n.id.slice(2) + '</span>');
-      },
-      whoami: function () {
-        print('<span class="b">Mehedi Hasan Ifti</span> · Manager, Global Sales &amp; Partnerships at Musemind\nDhaka, Bangladesh. 35+ markets, from first-time founders to enterprise teams.\nI turn first conversations into partnerships that last.');
-      },
-      now: function () {
-        var rows = document.querySelectorAll('#now .log');
-        var get = function (i) { var t = rows[i] && rows[i].querySelector('.t'); return t ? t.childNodes[0].textContent.trim() : '—'; };
-        print('<span class="y">exploring</span>  ' + esc(get(0)) + '\n<span class="y">watching</span>   ' + esc(get(1)) + '\n<span class="y">reading</span>    ' + esc(get(2)) + '\n<span class="y">listening</span>  ' + esc(get(3)));
-      },
-      f1: function () {
-        print('<span class="b">' + esc(F1.driver) + '</span> #' + F1.number + ' · ' + esc(F1.team) + '\n' +
-          F1.titles + '× world champion (' + F1.titleYears + ')\n' + F1.wins + ' wins · ' + F1.poles + ' poles · ' + F1.podiums + ' podiums · ' + F1.starts + ' starts\n' +
-          '2026: <span class="y">' + F1.pos + '</span> on ' + F1.pts + ' pts. ' + esc(F1.lastWin) + '\n' +
-          (F1.next ? 'Next: <span class="g">' + esc(F1.next.race) + '</span>, ' + esc(f1When(F1.next.at)) + ' your time\n' : '') + '<span class="c">as of the ' + esc(F1.asOf) + '</span>');
-      },
-      theme: function (a) {
-        if (!a) { print(THEMES.map(function (t) { return (t.id === cur ? '<span class="g">* ' : '  ') + t.id + (t.id === cur ? '</span>' : '') + '  <span class="c">' + esc((t.id === THEME_DEFAULT ? 'Today' : t.week) + ' · ' + t.note) + '</span>'; }).join('\n') + '\n<span class="c">theme &lt;name&gt; to switch</span>'); return; }
-        var t = THEMES.filter(function (x) { return x.id === a || x.name.toLowerCase() === a.toLowerCase(); })[0];
-        if (!t) { line('theme: no theme ' + a + '. Try theme.', 'r'); return; }
-        var was = cur; pickTheme(t.id); line('Switched to ' + t.name + '.', 'g'); if (t.id === 'lightsout' && was !== t.id) { close(); setTimeout(lightsOut, 250); }
-      },
-      book: function () { window.open(bookHref, '_blank', 'noopener'); line('Opening my calendar in a new tab.', 'g'); },
-      email: function (a) {
-        // Both addresses; email copies the personal one, email work copies the office one.
-        var mine = 'mh.hasan884@gmail.com', work = 'mehedi.ifti@musemind.agency', e = /^work/i.test(a || '') ? work : mine;
-        print('<span class="y">personal</span>  <a href="mailto:' + mine + '">' + mine + '</a>\n<span class="y">work</span>      <a href="mailto:' + work + '">' + work + '</a>');
-        if (navigator.clipboard) navigator.clipboard.writeText(e).then(function () { line('Copied ' + e + '.' + (e === mine ? ' Type email work for the office one.' : ''), 'g'); }, function () {});
-      },
-      cv: function () { window.open('cv.pdf', '_blank', 'noopener'); line('Opening cv.pdf.', 'g'); },
-      socials: function () {
-        print(Array.prototype.map.call(document.querySelectorAll('.rail-socials .soc, .socials .soc'), function (a) { return a; })
-          .filter(function (a, i, all) { return all.findIndex(function (b) { return b.href === a.href; }) === i; })
-          .map(function (a) { return '<a href="' + a.href + '" target="_blank" rel="noopener">' + esc(a.textContent.trim() || a.getAttribute('aria-label') || a.href) + '</a>'; }).join('  '));
-      },
-      pwd: function () { line(here().replace('~', '/home/ifti')); },
-      date: function () { line(new Date().toLocaleString('en-GB', { timeZone: 'Asia/Dhaka', dateStyle: 'full', timeStyle: 'short' }) + ' in Dhaka'); },
-      echo: function (a, raw) { line(raw); },
-      clear: function () { out.innerHTML = ''; },
-      exit: function () { close(); },
-      sudo: function (a, raw) {
-        if (/^hire( ifti)?$/i.test(raw)) { line('Permission granted. Opening my calendar.', 'g'); window.open(bookHref, '_blank', 'noopener'); }
-        else line('Nice try. This incident will be reported.', 'r');
-      },
-      coffee: function () {
-        var c = window.coffeeNow && window.coffeeNow(); if (!c) { line('coffee: the pot is empty.', 'r'); return; }
-        print('<span class="c">     ( (\n      ) )</span>\n<span class="y">   ........\n   |      |]\n   \\      /\n    `----\'</span>\n' +
-          '<span class="b">' + c.cups.toLocaleString('en-US') + '</span> cups in ' + c.y + ' · ' + (c.sofar + (c.isWork ? 1 : 0)) + ' of ' + c.total + ' workdays · today: ' +
-          (c.isWork ? (c.today ? c.today + (c.today === 1 ? ' cup' : ' cups') : 'first cup soon') : 'day off') + '\n<span class="c">black Americanos, counted the same way as the pill</span>');
-      },
-      fortune: function () {
-        // A highlighted line from a note, never the same one twice in a row.
-        var marks = Array.prototype.slice.call(document.querySelectorAll('article.page[id^="n-"] mark'));
-        if (!marks.length) { line('fortune: nothing highlighted yet.', 'r'); return; }
-        var pick, tries = 0;
-        do { pick = marks[Math.floor(Math.random() * marks.length)]; } while (marks.length > 1 && pick === lastFortune && ++tries < 20);
-        lastFortune = pick;
-        var note = pick.closest('article.page');
-        print('<span class="b">' + esc(pick.textContent.replace(/\s+/g, ' ').trim()) + '</span>\n<span class="c">— ' + 'N°' + note.id.slice(2) + ' </span><a href="#' + note.id + '">' + esc(note.querySelector('h1').textContent) + '</a>');
-      },
-      git: function (a) {
-        if (/^status/.test(a)) { line('On branch main. Nothing to commit, working tree clean.', 'g'); return; }
-        if (!/^log/.test(a)) { line('usage: git log [--all]   (or git status)', 'c'); return; }
-        // The changelog, newest first, in git's one-line format. The ids are short hashes of each entry's title.
-        var rows = [];
-        document.querySelectorAll('#changelog .cl-list').forEach(function (ul) {
-          var d = ul.previousElementSibling; while (d && !d.classList.contains('cl-d')) d = d.previousElementSibling;
-          ul.querySelectorAll(':scope > li').forEach(function (li) {
-            var t = li.querySelector('.t').textContent.trim(), tag = li.querySelector('.tag'), h = 5381;
-            for (var i = 0; i < t.length; i++) h = (h * 33 + t.charCodeAt(i)) >>> 0;
-            rows.push('<span class="y">' + ('000000' + h.toString(16)).slice(-7) + '</span> <span class="c">' + esc(d ? d.textContent.trim() : '') + '</span> <span class="m">' + esc(tag ? tag.textContent.trim().toLowerCase() : 'change') + ':</span> ' + esc(t));
-          });
-        });
-        var all = /--all/.test(a), shown = all ? rows : rows.slice(0, 12);
-        print(shown.join('\n') + (rows.length > shown.length ? '\n<span class="c">' + (rows.length - shown.length) + ' older. git log --all for everything.</span>' : ''));
-      },
-      top: function () {
-        // The stats radar as a process list: interest is the CPU, strength is the memory.
-        var rows = STATS.slice().sort(function (x, y) { return y[3] - x[3]; });
-        print('<span class="b">top</span> - ' + new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Dhaka', hour12: false }) + ' Dhaka · ' + rows.length + ' processes · <span class="c">%CPU is interest, %MEM is strength, out of 100</span>\n' +
-          '<span class="c">  PID  %CPU  %MEM  COMMAND</span>\n' + rows.map(function (r, i) {
-            return '  ' + String(i + 1).padStart(3, ' ') + '  <span class="g">' + String(r[3]).padStart(4, ' ') + '</span>  ' + String(r[2]).padStart(4, ' ') + '  ' + esc(r[1]);
-          }).join('\n'));
-      },
-      ping: function () {
-        // Three real round trips to this site's own server function.
-        var host = location.host || 'ifti-gold.vercel.app', times = [], n = 0;
-        line('PING ' + host, 'c');
-        (function one() {
-          var t0 = performance.now();
-          fetch('/api/ping?t=' + Date.now(), { cache: 'no-store' }).then(function (r) {
-            if (!r.ok) throw 0;
-            var ms = Math.round(performance.now() - t0); times.push(ms);
-            print('64 bytes from ' + esc(host) + ': seq=' + n + ' time=<span class="g">' + ms + ' ms</span>');
-          }).catch(function () { line('Request timeout for seq ' + n, 'r'); }).then(function () {
-            if (++n < 3) return setTimeout(one, 400);
-            line('--- ' + host + ' ping statistics ---', 'c');
-            line(times.length + ' of 3 answered' + (times.length ? ', min ' + Math.min.apply(null, times) + ' ms, max ' + Math.max.apply(null, times) + ' ms' : ''), times.length ? 'g' : 'r');
-          });
-        })();
-      },
-      achievements: function () {
-        var l = window.achList ? window.achList() : [];
-        print('<span class="b">Achievements</span> <span class="c">' + l.filter(function (x) { return x.got; }).length + ' of ' + l.length + '</span>\n' + l.map(function (x) {
-          return (x.got ? '  <span class="g">✓ ' + esc(x.name) + '</span>' : '  <span class="c">· ' + esc(x.name) + ' — ' + esc(x.hint) + '</span>');
-        }).join('\n'));
-      },
-      reaction: function () {
-        if (!window.reactionTest) { line('reaction: needs a computer.', 'r'); return; }
-        line('Lights on in a moment. Click or press Space when they go out.', 'g'); setTimeout(function () { close(); setTimeout(window.reactionTest, 250); }, 500);
-      },
-      history: function () { print(hist.map(function (h, i) { return '<span class="c">' + String(i + 1).padStart(3, ' ') + '</span>  ' + esc(h); }).join('\n')); }
-    };
-    CMDS.open = CMDS.cd; CMDS.man = CMDS.help; CMDS['?'] = CMDS.help; CMDS.contact = CMDS.email; CMDS.hire = CMDS.book; CMDS.start = CMDS.reaction; CMDS.rm = function () { line('Nothing here gets deleted.', 'r'); };
-    function run(raw) {
-      raw = raw.trim(); print('<span class="g">' + esc(here()) + ' $</span> ' + esc(raw));
-      if (!raw) return;
-      hist.push(raw); hi = hist.length;
-      var parts = raw.split(/\s+/), cmd = parts.shift().toLowerCase(), arg = parts.join(' ');
-      if (Object.prototype.hasOwnProperty.call(CMDS, cmd)) CMDS[cmd](arg, arg); else line(cmd + ': command not found. Type help.', 'r');
-      ps.textContent = here() + ' $';
-    }
-    function open() {
-      term.hidden = false; requestAnimationFrame(function () { term.classList.add('on'); });
-      if (window.unlock) unlock('terminal');
-      if (!booted) { booted = true; print('<span class="m">ifti@notebook</span> — last login ' + new Date().toDateString() + ' from Dhaka\nType <span class="g">help</span> to see what I can do. <span class="c">Esc to close.</span>'); }
-      ps.textContent = here() + ' $'; setTimeout(function () { input.focus(); }, 30);
-    }
-    function close() { term.classList.remove('on'); setTimeout(function () { term.hidden = true; }, 220); input.blur(); }
-    form.addEventListener('submit', function (e) { e.preventDefault(); run(input.value); input.value = ''; });
-    input.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { e.preventDefault(); close(); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); if (hi > 0) input.value = hist[--hi]; }
-      else if (e.key === 'ArrowDown') { e.preventDefault(); hi = Math.min(hist.length, hi + 1); input.value = hist[hi] || ''; }
-      else if (e.key === 'Tab') {
-        e.preventDefault();
-        var v = input.value, sp = v.lastIndexOf(' '), head = v.slice(0, sp + 1), word = v.slice(sp + 1);
-        var pool = sp < 0 ? Object.keys(CMDS) : /^(cd|open)\s/.test(v) ? pagesList : /^theme\s/.test(v) ? THEMES.map(function (t) { return t.id; }) : [];
-        var hits = pool.filter(function (c) { return c.indexOf(word) === 0; });
-        if (hits.length === 1) input.value = head + hits[0] + (sp < 0 ? ' ' : '');
-        else if (hits.length > 1) line(hits.join('   '), 'c');
-      }
-    });
-    document.getElementById('term-x').addEventListener('click', close);
-    document.querySelectorAll('.term-open').forEach(function (b) { b.addEventListener('click', function () { term.hidden ? open() : close(); }); });
+    // The commands live in term.js, loaded the first time the terminal opens.
+    function toggle() { lazy('term.js').then(function () { window.termToggle(); }); }
+    document.querySelectorAll('.term-open').forEach(function (b) { b.addEventListener('click', toggle); });
     document.addEventListener('keydown', function (e) {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       var t = e.target.tagName; if (t === 'INPUT' || t === 'TEXTAREA') return;
-      if (e.key === '~' || e.key === '`') { e.preventDefault(); term.hidden ? open() : close(); }
+      if (e.key === '~' || e.key === '`') { e.preventDefault(); toggle(); }
     });
-    window.addEventListener('hashchange', function () { if (!term.hidden) { ps.textContent = here() + ' $'; setTimeout(function () { input.focus({ preventScroll: true }); }, 0); } });
   })();
 
   // Home hero: the world as a dot grid (Natural Earth, 1.8 degree cells, run-length encoded), offices linked to Dhaka.
@@ -1810,6 +1493,9 @@
     // globe: the same dots on an orthographic projection, drag to turn
     var cv = document.getElementById('hm-globe'), ctx = cv.getContext('2d'), lam = -70, phi = 20, target = null, drag = null, raf = null;
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches, rad = Math.PI / 180, cols = {};
+    // Phones draw every other frame (30 a second, turning twice as far each time), and nothing is drawn while the globe is off screen.
+    var step = matchMedia('(pointer: coarse)').matches ? 2 : 1, skip = 0, seen = true;
+    if (window.IntersectionObserver) new IntersectionObserver(function (e) { seen = e[0].isIntersecting; if (seen) kick(); }).observe(cv);
     function readCols() { var cs = getComputedStyle(document.documentElement); ['--surface1', '--green', '--peach', '--surface0', '--text'].forEach(function (v) { cols[v] = cs.getPropertyValue(v).trim(); }); }
     function proj(lat, lon, R, cx, cy) {
       var f = lat * rad, l = (lon + lam) * rad, f0 = phi * rad;
@@ -1825,18 +1511,25 @@
     }
     function drawGlobe() {
       raf = null;
-      if (fig.getAttribute('data-mode') !== 'globe' || !document.getElementById('index').classList.contains('on')) return;
+      if (!seen || fig.getAttribute('data-mode') !== 'globe' || !document.getElementById('index').classList.contains('on')) return;
+      if (step > 1 && skip++ % step) { raf = requestAnimationFrame(drawGlobe); return; }
       var dpr = devicePixelRatio || 1, w = cv.clientWidth, hh = cv.clientHeight;
       if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(hh * dpr); }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, hh);
       if (!cols['--green']) readCols();
       var R = hh * 0.46, cx = w / 2, cy = hh / 2;
       ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.strokeStyle = cols['--surface0']; ctx.lineWidth = 1; ctx.stroke();
+      // Dots are grouped by colour and by one of eight shades (nearer the edge is fainter), then each group is filled once.
+      var groups = {};
       for (var i = 0; i < land.length; i++) {
         var d = land[i], p = proj(d[0], d[1], R, cx, cy); if (p[2] <= 0) continue;
-        ctx.globalAlpha = 0.25 + 0.75 * p[2];
-        ctx.fillStyle = d[2] === 'x' ? cols['--surface1'] : d[2] === 'b' ? cols['--green'] : cols['--peach'];
-        ctx.fillRect(p[0] - 1, p[1] - 1, d[2] === 'x' ? 1.8 : 2.4, d[2] === 'x' ? 1.8 : 2.4);
+        var kind = d[2] === 'x' ? 'x' : d[2] === 'b' ? 'b' : 'o', k = kind + Math.min(7, Math.floor(p[2] * 8)), sz = kind === 'x' ? 1.8 : 2.4;
+        (groups[k] || (groups[k] = new Path2D())).rect(p[0] - 1, p[1] - 1, sz, sz);
+      }
+      for (var gk in groups) {
+        ctx.globalAlpha = 0.25 + 0.75 * (+gk.slice(1) + 0.5) / 8;
+        ctx.fillStyle = gk[0] === 'x' ? cols['--surface1'] : gk[0] === 'b' ? cols['--green'] : cols['--peach'];
+        ctx.fill(groups[gk]);
       }
       ctx.globalAlpha = 1;
       SITES.slice(1).forEach(function (st) {
@@ -1852,8 +1545,8 @@
         ctx.beginPath(); ctx.arc(p[0], p[1], st[0] === active || st === home ? 4 : 3, 0, 7); ctx.fillStyle = st === home ? cols['--green'] : cols['--peach']; ctx.fill();
         if (st[0] === active || st === home) { ctx.font = '10px "IBM Plex Mono", monospace'; ctx.fillStyle = cols['--text']; ctx.fillText(st[1], p[0] + 7, p[1] - 6); }
       });
-      if (target !== null) { var dl = ((target - lam + 540) % 360) - 180; lam += dl * 0.08; if (Math.abs(dl) < 0.3) target = null; }
-      else if (!drag && !still) lam += 0.12;
+      if (target !== null) { var dl = ((target - lam + 540) % 360) - 180; lam += dl * (1 - Math.pow(0.92, step)); if (Math.abs(dl) < 0.3) target = null; }
+      else if (!drag && !still) lam += 0.12 * step;
       raf = requestAnimationFrame(drawGlobe);
     }
     function spinTo(k) { var st = SITES.filter(function (x) { return x[0] === k; })[0]; if (st) target = -st[4] + 10; }
@@ -1879,23 +1572,6 @@
     setActive('a', false);
   }, 0); });
 
-  // Intro: type the breach lines, glitch the page in, then never again this visit.
-  (function () {
-    if (!root.classList.contains('intro')) return;
-    var lines = document.querySelectorAll('#boot p'), timers = [], done = false;
-    try { localStorage.setItem('booted', '1'); } catch (e) {}
-    function finish() {
-      if (done) return; done = true; timers.forEach(clearTimeout);
-      root.classList.add('boot-out');
-      setTimeout(function () {
-        root.classList.remove('intro', 'boot-out'); root.classList.add('glitch');
-        setTimeout(function () { root.classList.remove('glitch'); }, 420);
-      }, 260);
-    }
-    lines.forEach(function (l, i) { timers.push(setTimeout(function () { l.classList.add('on'); }, 60 + i * 95)); });
-    timers.push(setTimeout(finish, 60 + lines.length * 95 + 160));
-    ['click', 'keydown', 'touchstart'].forEach(function (ev) { window.addEventListener(ev, finish, { once: true, passive: true }); });
-  })();
   // Target lock: over anything clickable the cursor hides and four corners frame the target. Mouse and trackpad only.
   var lockOn = function () { return false; };
   if (matchMedia('(pointer: fine)').matches) (function () {
@@ -2146,12 +1822,26 @@
 
   var SITE = 'https://ifti-gold.vercel.app/';
   var cssVar = function (k) { return getComputedStyle(document.documentElement).getPropertyValue(k).trim(); };
+  // LAZY FILES: term.js, games.js and share.js load on first use, so a phone's first visit only parses what it shows.
+  // They read what they need from the main script through window.__site. On computers they load once the page is idle, so they still open instantly.
+  var lazyFiles = {};
+  function lazy(f) {
+    return lazyFiles[f] || (lazyFiles[f] = new Promise(function (ok, fail) {
+      var s = document.createElement('script'); s.src = '/' + f; s.onload = ok;
+      s.onerror = function () { delete lazyFiles[f]; s.remove(); fail(new Error(f + " didn't load")); };
+      document.body.appendChild(s);
+    }));
+  }
+  window.__site = {
+    SITE: SITE, cssVar: cssVar, esc: esc, F1: F1, f1When: f1When, THEMES: THEMES, THEME_DEFAULT: THEME_DEFAULT, pickTheme: pickTheme, lightsOut: lightsOut, STATS: STATS,
+    get cur() { return cur; }, get bookHref() { return bookHref; }
+  };
+  if (matchMedia('(pointer: fine)').matches && !matchMedia('(max-width: 760px)').matches) addEventListener('load', function () {
+    (window.requestIdleCallback || setTimeout)(function () { ['term.js', 'share.js', 'games.js'].forEach(function (f) { lazy(f).catch(function () {}); }); }, { timeout: 4000 });
+  });
 
-  // ============ Share cards: select a line in a note, get an image of it in the current theme ============
   (function () {
-    var pop = document.getElementById('share-pop'), dlg = document.getElementById('sc'), cv = document.getElementById('sc-cv');
-    var note = document.getElementById('sc-note'), NOTE_TXT = note.textContent;
-    var q = null, size = 'wide', timer = 0;
+    var pop = document.getElementById('share-pop'), q = null, timer = 0;
     function selInNote() {
       var sel = getSelection(); if (!sel || sel.isCollapsed || !sel.rangeCount) return null;
       var r = sel.getRangeAt(0), n = r.commonAncestorContainer; n = n.nodeType === 1 ? n : n.parentElement;
@@ -2173,121 +1863,11 @@
     document.addEventListener('selectionchange', check);
     addEventListener('scroll', function () { if (!pop.hidden) check(); }, { passive: true });
     pop.addEventListener('mousedown', function (e) { e.preventDefault(); }); // keep the selection
-    pop.addEventListener('click', function () { if (q) open(q); });
-
-    function wrap(ctx, text, maxW) {
-      var words = text.split(' '), lines = [], line = '';
-      words.forEach(function (w) { var t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
-      if (line) lines.push(line); return lines;
-    }
-    // The frame, label and footer every card shares, in the current theme. Cards from shareCard() draw inside it.
-    function kit(ctx, W, H) {
-      var P = { bg: cssVar('--base') || '#111', ink: cssVar('--ink') || cssVar('--text') || '#eee', acc: cssVar('--accent') || '#f7cafa',
-        lab: cssVar('--label') || '#888', mut: cssVar('--muted') || '#999', rule: cssVar('--rule') || '#333', mark: cssVar('--overlay1') || '#666',
-        fDisp: getComputedStyle(document.querySelector('h1') || document.body).fontFamily, fMono: cssVar('--mono') || 'monospace', pad: W > H ? 72 : 88 };
-      P.frame = function (label) {
-        ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H);
-        ctx.strokeStyle = P.rule; ctx.lineWidth = 2; ctx.strokeRect(P.pad / 2, P.pad / 2, W - P.pad, H - P.pad);
-        ctx.strokeStyle = P.mark;
-        [[P.pad / 2, P.pad / 2, 1, 1], [W - P.pad / 2, P.pad / 2, -1, 1], [P.pad / 2, H - P.pad / 2, 1, -1], [W - P.pad / 2, H - P.pad / 2, -1, -1]].forEach(function (c) {
-          ctx.beginPath(); ctx.moveTo(c[0] - 12 * c[2], c[1]); ctx.lineTo(c[0] + 12 * c[2], c[1]); ctx.moveTo(c[0], c[1] - 12 * c[3]); ctx.lineTo(c[0], c[1] + 12 * c[3]); ctx.stroke();
-        });
-        ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left'; ctx.fillStyle = P.lab; ctx.font = '500 22px ' + P.fMono;
-        ctx.fillText(label.toUpperCase(), P.pad, P.pad + 40);
-      };
-      P.foot = function (left, right) {
-        ctx.fillStyle = P.acc; ctx.fillRect(P.pad, H - P.pad - 64, 40, 3);
-        ctx.font = '500 22px ' + P.fMono; var room = W - P.pad * 2 - ctx.measureText(right).width - 40, fs = 24;
-        ctx.font = '500 ' + fs + 'px ' + P.fDisp; while (ctx.measureText(left).width > room && fs > 17) { fs--; ctx.font = '500 ' + fs + 'px ' + P.fDisp; }
-        ctx.fillStyle = P.mut; ctx.fillText(left, P.pad, H - P.pad - 20);
-        ctx.fillStyle = P.acc; ctx.font = '500 22px ' + P.fMono; ctx.textAlign = 'right'; ctx.fillText(right, W - P.pad, H - P.pad - 20); ctx.textAlign = 'left';
-      };
-      return P;
-    }
-    function draw() {
-      var W = size === 'wide' ? 1200 : 1080, H = size === 'wide' ? 630 : 1080, ctx = cv.getContext('2d');
-      cv.width = W; cv.height = H;
-      if (q.paint) return q.paint(ctx, W, H, kit(ctx, W, H));
-      var bg = cssVar('--base') || '#111', ink = cssVar('--ink') || cssVar('--text') || '#eee', acc = cssVar('--accent') || '#f7cafa';
-      var lab = cssVar('--label') || '#888', mut = cssVar('--muted') || '#999', rule = cssVar('--rule') || '#333', mark = cssVar('--overlay1') || '#666';
-      var h1 = q.art.querySelector('h1'), title = h1 ? h1.textContent.trim() : '', no = 'N°' + q.art.id.slice(2);
-      var fBody = getComputedStyle(q.art.querySelector('p') || document.body).fontFamily, fDisp = getComputedStyle(h1 || document.body).fontFamily, fMono = cssVar('--mono') || 'monospace';
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-      var pad = size === 'wide' ? 72 : 88;
-      // hairline frame with crop marks, like the cards on the site
-      ctx.strokeStyle = rule; ctx.lineWidth = 2; ctx.strokeRect(pad / 2, pad / 2, W - pad, H - pad);
-      ctx.strokeStyle = mark; ctx.lineWidth = 2;
-      [[pad / 2, pad / 2, 1, 1], [W - pad / 2, pad / 2, -1, 1], [pad / 2, H - pad / 2, 1, -1], [W - pad / 2, H - pad / 2, -1, -1]].forEach(function (c) {
-        ctx.beginPath(); ctx.moveTo(c[0] - 12 * c[2], c[1]); ctx.lineTo(c[0] + 12 * c[2], c[1]); ctx.moveTo(c[0], c[1] - 12 * c[3]); ctx.lineTo(c[0], c[1] + 12 * c[3]); ctx.stroke();
-      });
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillStyle = lab; ctx.font = '500 22px ' + fMono;
-      ctx.fillText(("IFTI'S NOTEBOOK · " + no).toUpperCase(), pad, pad + 40);
-      // quote: biggest size that fits the box
-      var text = q.text.length > 320 ? q.text.slice(0, 317).replace(/\s+\S*$/, '') + '…' : q.text;
-      var boxW = W - pad * 2, top = pad + 96, bottom = H - pad - 92, fs = size === 'wide' ? 58 : 72, lines, lh;
-      for (; fs > 24; fs -= 2) { ctx.font = '400 ' + fs + 'px ' + fBody; lh = fs * 1.3; lines = wrap(ctx, '“' + text + '”', boxW); if (lines.length * lh <= bottom - top) break; }
-      ctx.fillStyle = ink; ctx.font = '400 ' + fs + 'px ' + fBody;
-      var y0 = top + fs;
-      lines.forEach(function (l, i) { ctx.fillText(l, pad, y0 + i * lh); });
-      // footer: note title on the left, link on the right
-      ctx.fillStyle = acc; ctx.fillRect(pad, H - pad - 64, 40, 3);
-      ctx.fillStyle = mut; ctx.font = '500 26px ' + fDisp;
-      var tl = title; while (ctx.measureText(tl).width > boxW * 0.62 && tl.length > 4) tl = tl.slice(0, -2).trim() + '…';
-      ctx.fillText(tl, pad, H - pad - 20);
-      ctx.fillStyle = acc; ctx.font = '500 22px ' + fMono; ctx.textAlign = 'right';
-      ctx.fillText('ifti-gold.vercel.app', W - pad, H - pad - 20); ctx.textAlign = 'left';
-    }
-    function url() { return q.url || (q.art.id.indexOf('n-') === 0 ? SITE + 'n/' + q.art.id.slice(2) : SITE + '#' + q.art.id); }
-    function head(t) { dlg.querySelector('.sc-head b').textContent = t; dlg.setAttribute('aria-label', t); }
-    // Any card: { title, paint(ctx, W, H, kit), said, url, file }. Used by the reaction test and the achievements list.
-    window.shareCard = function (card) {
-      q = card; pop.hidden = true; note.textContent = '';
-      head(card.title);
-      document.getElementById('sc-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(card.said) + '&url=' + encodeURIComponent(card.url);
-      document.getElementById('sc-li').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(card.url);
-      var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-      fonts.then(function () { draw(); if (!dlg.open) dlg.showModal(); });
-    };
-    function open(s) {
-      q = { text: s.text, art: s.art }; pop.hidden = true; note.textContent = NOTE_TXT; head('Share a quote');
-      var tweet = '“' + (q.text.length > 200 ? q.text.slice(0, 197).replace(/\s+\S*$/, '') + '…' : q.text) + '”';
-      document.getElementById('sc-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '&url=' + encodeURIComponent(url());
-      document.getElementById('sc-li').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url());
-      var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-      fonts.then(function () { draw(); if (!dlg.open) dlg.showModal(); if (window.unlock) unlock('share'); });
-    }
-    function blob(cb) { cv.toBlob(cb, 'image/png'); }
-    function fname() { return q.file || 'ifti-' + q.art.id + '-quote.png'; }
-    document.getElementById('sc-dl').addEventListener('click', function () {
-      blob(function (b) { var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = fname(); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000); });
-    });
-    document.getElementById('sc-copy').addEventListener('click', function () {
-      blob(function (b) {
-        try { navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]).then(function () { note.textContent = 'Copied. Paste it into your post.'; }, function () { note.textContent = "Couldn't copy. Download it instead."; }); }
-        catch (e) { note.textContent = "Couldn't copy. Download it instead."; }
-      });
-    });
-    var shareBtn = document.getElementById('sc-share');
-    if (navigator.canShare) shareBtn.hidden = false;
-    shareBtn.addEventListener('click', function () {
-      blob(function (b) {
-        var f = new File([b], fname(), { type: 'image/png' }), data = { files: [f], text: q.said || '“' + q.text + '”', url: url() };
-        if (navigator.canShare && navigator.canShare(data)) navigator.share(data).catch(function () {});
-        else note.textContent = "This browser can't share images. Download it instead.";
-      });
-    });
-    dlg.querySelectorAll('[data-size]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        size = b.getAttribute('data-size');
-        dlg.querySelectorAll('[data-size]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-        draw();
-      });
-    });
-    document.getElementById('sc-close').addEventListener('click', function () { dlg.close(); });
-    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
-    window.shareQuote = function (text, art) { open({ text: text, art: art }); };
+    pop.addEventListener('click', function () { if (q) window.shareQuote(q.text, q.art); });
   })();
+  // The cards themselves: share.js, loaded the first time one opens. Each call loads it, then hands over to the real one.
+  window.shareCard = function (card) { lazy('share.js').then(function () { window.shareCard(card); }); };
+  window.shareQuote = function (text, art) { lazy('share.js').then(function () { window.shareQuote(text, art); }); };
 
   // ============ Command palette: Ctrl/⌘ + K finds any page, section, note, book or theme ============
   (function () {

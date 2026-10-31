@@ -1878,6 +1878,26 @@ html.touring .tour-fab::after { display: none; }
   <p>&gt; decrypting notes, work, playground</p>
   <p class="ok">ACCESS GRANTED<span class="cur"></span></p>
 </div>
+<script>
+// Intro: type the breach lines, glitch the page in, then never again this visit. Inline, right after its markup, so it starts
+// with the first paint instead of waiting for app.js (on a slow phone that wait added about 0.8 s before the page showed).
+(function () {
+  var root = document.documentElement; if (!root.classList.contains('intro')) return;
+  var lines = document.querySelectorAll('#boot p'), timers = [], done = false;
+  try { localStorage.setItem('booted', '1'); } catch (e) {}
+  function finish() {
+    if (done) return; done = true; timers.forEach(clearTimeout);
+    root.classList.add('boot-out');
+    setTimeout(function () {
+      root.classList.remove('intro', 'boot-out'); root.classList.add('glitch');
+      setTimeout(function () { root.classList.remove('glitch'); }, 420);
+    }, 260);
+  }
+  lines.forEach(function (l, i) { timers.push(setTimeout(function () { l.classList.add('on'); }, 60 + i * 95)); });
+  timers.push(setTimeout(finish, 60 + lines.length * 95 + 160));
+  ['click', 'keydown', 'touchstart'].forEach(function (ev) { window.addEventListener(ev, finish, { once: true, passive: true }); });
+})();
+</script>
 
 <header class="m-top" id="m-top">
   <a class="who" href="#index">Ifti</a>
@@ -1905,14 +1925,14 @@ html.touring .tour-fab::after { display: none; }
         <li><a class="nav" href="#whiteboard"><kbd>6</kbd>Whiteboard</a></li>
         <li><a class="nav" href="#paperclip"><kbd>7</kbd>Paperclip</a></li>
         <li><a class="nav" href="#hermes"><kbd>8</kbd>Hermes Agent</a></li>
-        <li><a class="nav" href="#t3code"><kbd aria-hidden="true">&nbsp;</kbd>T3 Code</a></li>
+        <li><a class="nav" href="#t3code"><kbd>9</kbd>T3 Code</a></li>
       </ol>
     </div>
     <div class="rail-grp" data-grp="academia" data-shut>
       <button type="button" class="name grp-t" aria-expanded="true" aria-controls="grp-academia">Academia<i aria-hidden="true"></i></button>
       <ol id="grp-academia">
-        <li><a class="nav" href="#research"><kbd>9</kbd>Research</a></li>
-        <li><a class="nav" href="#education"><kbd>0</kbd>Education</a></li>
+        <li><a class="nav" href="#research"><kbd>0</kbd>Research</a></li>
+        <li><a class="nav" href="#education"><kbd aria-hidden="true">&nbsp;</kbd>Education</a></li>
       </ol>
     </div>
     <button type="button" class="pal-open rail-search" aria-label="Search the site">Search <kbd class="pal-key">Ctrl K</kbd></button>
@@ -2879,12 +2899,12 @@ html.touring .tour-fab::after { display: none; }
     <li class="wb-nav"><a class="nav" href="#whiteboard"><span class="n">06</span><span class="t">Whiteboard</span><span class="d">tool</span></a></li>
     <li><a class="nav" href="#paperclip"><span class="n">07</span><span class="t">Paperclip</span><span class="d">agent</span></a></li>
     <li><a class="nav" href="#hermes"><span class="n">08</span><span class="t">Hermes Agent</span><span class="d">agent</span></a></li>
-    <li><a class="nav" href="#t3code"><span class="n">··</span><span class="t">T3 Code</span><span class="d">tool</span></a></li>
+    <li><a class="nav" href="#t3code"><span class="n">09</span><span class="t">T3 Code</span><span class="d">tool</span></a></li>
   </ol>
   <p class="grp">Academia</p>
   <ol>
-    <li><a class="nav" href="#research"><span class="n">09</span><span class="t">Research</span><span class="d">papers</span></a></li>
-    <li><a class="nav" href="#education"><span class="n">00</span><span class="t">Education</span><span class="d">IUT · BBA</span></a></li>
+    <li><a class="nav" href="#research"><span class="n">00</span><span class="t">Research</span><span class="d">papers</span></a></li>
+    <li><a class="nav" href="#education"><span class="n">··</span><span class="t">Education</span><span class="d">IUT · BBA</span></a></li>
   </ol>
   <div class="now-mini" id="m-nowmini"></div>
   <div class="socials" data-socials></div>

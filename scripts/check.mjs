@@ -1,6 +1,7 @@
 // Runs on every push (see .github/workflows/check.yml) and works locally: node scripts/check.mjs
 // 1. Every inline script in index.html, and app.js, must parse.  2. Every href="#id" (in the page or the script) must point to an id that exists.
-// 3. index.html and app.js each stay under their size budget (gzipped), so the speed rules in the README hold as they grow.
+// 3. index.html, app.js and the files it loads on first use (term.js, games.js, share.js) stay under their size budgets (gzipped),
+//    so the speed rules in the README hold as they grow.
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { gzipSync } from 'node:zlib';
@@ -10,6 +11,8 @@ import { fileURLToPath } from 'node:url';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const app = readFileSync(new URL('../app.js', import.meta.url), 'utf8');
+const LAZY = ['term.js', 'games.js', 'share.js']; // loaded by app.js on first use (LAZY FILES in app.js)
+const lazy = Object.fromEntries(LAZY.map(f => [f, readFileSync(new URL('../' + f, import.meta.url), 'utf8')]));
 let failed = 0;
 
 const dir = mkdtempSync(join(tmpdir(), 'check-'));
@@ -19,19 +22,23 @@ scripts.forEach((m, i) => {
   try { execFileSync(process.execPath, ['--check', f], { stdio: 'pipe' }); }
   catch (e) { failed++; console.error(`Script ${i + 1} does not parse:\n${e.stderr}`); }
 });
-try { execFileSync(process.execPath, ['--check', fileURLToPath(new URL('../app.js', import.meta.url))], { stdio: 'pipe' }); }
-catch (e) { failed++; console.error(`app.js does not parse:\n${e.stderr}`); }
+for (const f of ['app.js', ...LAZY]) {
+  try { execFileSync(process.execPath, ['--check', fileURLToPath(new URL('../' + f, import.meta.url))], { stdio: 'pipe' }); }
+  catch (e) { failed++; console.error(`${f} does not parse:\n${e.stderr}`); }
+  if (f !== 'app.js' && !app.includes(`'${f}'`)) { failed++; console.error(`app.js no longer loads ${f}.`); }
+}
 if (!html.includes('<script src="/app.js"></script>')) { failed++; console.error('index.html no longer loads app.js.'); }
 
 const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]));
 const generated = /^s-/; // section ids the search palette adds at runtime
-const missing = [...new Set([...(html + app).matchAll(/href="#([^"]+)"/g)].map(m => m[1]))].filter(id => !/['"+\s]/.test(id)) // skip links built in JavaScript
+const missing = [...new Set([...(html + app + Object.values(lazy).join('')).matchAll(/href="#([^"]+)"/g)].map(m => m[1]))].filter(id => !/['"+\s]/.test(id)) // skip links built in JavaScript
   .filter(id => !ids.has(id) && !generated.test(id));
 if (missing.length) { failed++; console.error('Links to ids that do not exist: ' + missing.map(x => '#' + x).join(', ')); }
 
 // gzipped bytes; raise them on purpose, not by accident
-const BUDGET = { 'index.html': 75 * 1024, 'app.js': 75 * 1024 }, kb = n => (n / 1024).toFixed(1);
-const size = { 'index.html': gzipSync(html).length, 'app.js': gzipSync(app).length };
+// the lazy files only load when used, so each gets a small budget of its own: a feature that grows past it should be split again
+const BUDGET = { 'index.html': 75 * 1024, 'app.js': 75 * 1024, 'term.js': 10 * 1024, 'games.js': 6 * 1024, 'share.js': 6 * 1024 }, kb = n => (n / 1024).toFixed(1);
+const size = { 'index.html': gzipSync(html).length, 'app.js': gzipSync(app).length, ...Object.fromEntries(LAZY.map(f => [f, gzipSync(lazy[f]).length])) };
 for (const f in BUDGET) if (size[f] > BUDGET[f]) { failed++; console.error(`${f} is ${kb(size[f])} KB gzipped, over its ${BUDGET[f] / 1024} KB budget.`); }
 
 // 4. Contrast: in every palette, body text, secondary text and the faint text (--overlay1: dates, labels, captions) must reach
@@ -55,5 +62,6 @@ for (const m of html.matchAll(/:root(?:, :root)?\[data-palette="(\w+)"\] \{([^}]
 }
 if (low.length) { failed++; console.error('Text below 4.5:1 contrast:\n  ' + low.join('\n  ')); }
 
-console.log(`${scripts.length + 1} scripts checked, ${ids.size} ids, ${missing.length} broken anchor links, ${low.length} contrast problems. Gzipped: index.html ${kb(size['index.html'])} of 75 KB, app.js ${kb(size['app.js'])} of 75 KB.`);
+console.log(`${scripts.length + 1 + LAZY.length} scripts checked, ${ids.size} ids, ${missing.length} broken anchor links, ${low.length} contrast problems. Gzipped: ` +
+  Object.keys(BUDGET).map(f => `${f} ${kb(size[f])} of ${BUDGET[f] / 1024} KB`).join(', ') + '.');
 process.exit(failed ? 1 : 0);

@@ -257,7 +257,7 @@ ul.plain li::marker { color: var(--muted); }
 .pg-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .pg-chips span { font-family: var(--mono); font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; color: var(--pg); background: color-mix(in srgb, var(--pg) 13%, transparent); }
 /* paperclip: Wayne Enterprises dashboard */
-#paperclip.page, #hermes.page { max-width: 46rem; }
+#paperclip.page, #hermes.page, #t3code.page { max-width: 46rem; }
 .pg-code { font-family: var(--mono); font-size: 0.8125rem; font-weight: 400; color: var(--text); }
 .we { display: grid; gap: 1.1rem; padding: 1.1rem; border: 1px solid var(--rule); border-radius: 12px; background: var(--mantle); }
 .we-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem 1.5rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--surface0); }
@@ -1905,6 +1905,7 @@ html.touring .tour-fab::after { display: none; }
         <li><a class="nav" href="#whiteboard"><kbd>6</kbd>Whiteboard</a></li>
         <li><a class="nav" href="#paperclip"><kbd>7</kbd>Paperclip</a></li>
         <li><a class="nav" href="#hermes"><kbd>8</kbd>Hermes Agent</a></li>
+        <li><a class="nav" href="#t3code"><kbd aria-hidden="true">&nbsp;</kbd>T3 Code</a></li>
       </ol>
     </div>
     <div class="rail-grp" data-grp="academia" data-shut>
@@ -2353,6 +2354,7 @@ html.touring .tour-fab::after { display: none; }
 
       <h2 id="shelf-exploring">Exploring</h2>
       <ul class="log" data-shelf="exploring" data-now="3">
+        <li><span class="t">T3 Code</span><span class="tag t-ai">AI</span><p>One app for all my coding agents. <a href="#t3code">My notes on it</a>.</p></li>
         <li><span class="t">Claude Code</span><span class="tag t-ai">AI</span><p>Built this site with it, one conversation at a time.</p></li>
         <li><span class="t">OpenAI releases</span><span class="tag t-ai">AI</span><p>Keeping up with each launch and what it changes for client work.</p></li>
         <li><span class="t">Theo <span class="by">· t3.gg</span></span><span class="tag t-tool">YouTube</span><p>My main feed for what's moving in AI and dev tools.</p></li>
@@ -2576,6 +2578,39 @@ html.touring .tour-fab::after { display: none; }
       <p class="sub">Hermes is one agent that learns. To run a whole team of agents, Hermes included, see <a href="#paperclip">Paperclip</a>.</p>
     </section>
 
+    <section class="page pg" id="t3code" style="--pg: var(--mauve)">
+      <p class="label">Playground · Agent app</p>
+      <h1>T3 Code</h1>
+      <p class="pg-quote">“The agent harness control surface.” <span>— T3 Code</span></p>
+      <p class="lede">One app for the coding agents you already pay for. It has no model of its own: it drives Claude Code, Codex and others on your machine, through your own subscriptions. Free and open source, from Theo Browne and the Ping.gg team.</p>
+      <div class="pg-links">
+        <a class="pg-btn" href="https://t3.codes" target="_blank" rel="noopener">Website ↗</a>
+        <a class="pg-btn ghost" href="https://github.com/pingdotgg/t3code" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <dl class="pg-facts">
+        <div><dt>Licence</dt><dd>MIT</dd></div>
+        <div><dt>By</dt><dd>Ping.gg</dd></div>
+        <div><dt>Runs</dt><dd>Your machine</dd></div>
+        <div><dt>Try it</dt><dd><code class="pg-code">npx t3@latest</code></dd></div>
+      </dl>
+
+      <h2>What it does</h2>
+      <ul class="pg-cards">
+        <li><b>Every agent, one window</b><p>Claude Code, Codex, Cursor and more, side by side.</p></li>
+        <li><b>Your own plans</b><p>It runs on the subscriptions you already have. No new keys, no second bill.</p></li>
+        <li><b>Work in parallel</b><p>Each task gets its own thread, and its own git worktree if you want one.</p></li>
+        <li><b>Away from the desk</b><p>Desktop, web and phone apps, so you can check on a run from anywhere.</p></li>
+      </ul>
+
+      <h2>Agents it drives</h2>
+      <div class="pg-chips"><span>Claude Code</span><span>Codex</span><span>Cursor</span><span>Grok Build</span><span>OpenCode</span><span>Antigravity</span></div>
+
+      <h2>How I'm using it</h2>
+      <p>I'm still exploring it. So far it's where I run Claude Code, and this page was built in a T3 Code thread.</p>
+      <p>It's early, and the team says so: expect bugs.</p>
+      <p class="sub">T3 Code runs agents on code. For the agents that run my day, see <a href="#hermes">Hermes Agent</a> and <a href="#paperclip">Paperclip</a>.</p>
+    </section>
+
     <!-- ============ WHITEBOARD ============ -->
     <section class="page pg" id="whiteboard" style="--pg: var(--green)">
       <p class="label">Playground · Tool</p>
@@ -2729,6 +2764,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">31 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">T3 Code</span><span class="tag t-series">Page</span><p>The app I run my coding agents in, in the Playground. <a href="#t3code">See it</a>.</p></li>
         <li><span class="t">Dot matrix covers</span><span class="tag t-design">Design</span><p>Every note now opens with a generative halftone sphere cover, seeded uniquely from the note's number.</p></li>
       </ul>
       <h2 class="cl-d">19 Oct 2026</h2>
@@ -2843,6 +2879,7 @@ html.touring .tour-fab::after { display: none; }
     <li class="wb-nav"><a class="nav" href="#whiteboard"><span class="n">06</span><span class="t">Whiteboard</span><span class="d">tool</span></a></li>
     <li><a class="nav" href="#paperclip"><span class="n">07</span><span class="t">Paperclip</span><span class="d">agent</span></a></li>
     <li><a class="nav" href="#hermes"><span class="n">08</span><span class="t">Hermes Agent</span><span class="d">agent</span></a></li>
+    <li><a class="nav" href="#t3code"><span class="n">··</span><span class="t">T3 Code</span><span class="d">tool</span></a></li>
   </ol>
   <p class="grp">Academia</p>
   <ol>

@@ -56,7 +56,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     var path = location.pathname; try { path = decodeURIComponent(path); } catch (e) {} // a broken %-code: show it as typed
     path = path.replace(/^\/+|\/+$/g, '');
     document.getElementById('path').textContent = path || '/';
-    var PAGES = ['index', 'now', 'notes', 'work', 'shelf', 'whiteboard', 'paperclip', 'hermes', 'research', 'education', 'changelog'];
+    var PAGES = ['index', 'now', 'notes', 'work', 'shelf', 'whiteboard', 'paperclip', 'hermes', 't3code', 'research', 'education', 'changelog'];
     var last = path.split('/').pop().toLowerCase(), note = path.match(/n[-\/]?0*(\d{1,3})$/i), go = null;
     if (note) go = 'n-' + ('00' + note[1]).slice(-3);
     else if (PAGES.indexOf(last) >= 0) go = last;

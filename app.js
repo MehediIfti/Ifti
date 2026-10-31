@@ -727,7 +727,7 @@
     buildMeta(target, id); pageNext(target, id);
     document.getElementById('m-path').innerHTML = '~/' + (id === 'index' ? '' : id.indexOf('n-') === 0 ? 'notes/<b>' + id.slice(2) + '</b>' : '<b>' + id + '</b>');
     sheetOpen(false);
-    document.querySelectorAll('.m-more').forEach(function (b) { b.classList.toggle('on', ['paperclip', 'hermes', 'whiteboard', 'research', 'education'].indexOf(id) >= 0); });
+    document.querySelectorAll('.m-more').forEach(function (b) { b.classList.toggle('on', ['paperclip', 'hermes', 't3code', 'whiteboard', 'research', 'education'].indexOf(id) >= 0); });
     if (id === 'work' && radarPlay) radarPlay();
     var here = document.getElementById('here'); if (here && target.firstElementChild !== here) target.prepend(here); // Dhaka strip tops every page
     window.scrollTo(0, 0);

@@ -108,6 +108,61 @@
       .filter(function (r) { return r.shared.length; });
   }
   function noteTitle(n) { return n.querySelector('h1').textContent; }
+  function noteCoverSeed(id) {
+    var h = 0;
+    for (var i = 0; i < id.length; i++) h = ((h << 5) - h) + id.charCodeAt(i) | 0;
+    var s = Math.abs(h);
+    return function () { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+  }
+  function drawNoteCover(cvs, id) {
+    var rect = cvs.getBoundingClientRect(), w = rect.width || cvs.offsetWidth || 640, h = rect.height || cvs.offsetHeight || 160;
+    var dpr = window.devicePixelRatio || 1;
+    cvs.width = w * dpr; cvs.height = h * dpr;
+    var ctx = cvs.getContext('2d'); ctx.scale(dpr, dpr);
+    var rand = noteCoverSeed(id);
+    var cs = getComputedStyle(document.documentElement);
+    var baseCol = cs.getPropertyValue('--base').trim() || '#0c0d10';
+    var textCol = cs.getPropertyValue('--text').trim() || '#d4d4d8';
+    ctx.fillStyle = baseCol; ctx.fillRect(0, 0, w, h);
+    var cx = w * (0.68 + (rand() - 0.5) * 0.32), cy = h * (0.5 + (rand() - 0.5) * 0.25);
+    var sphereR = h * (0.52 + rand() * 0.22);
+    var lightAngle = rand() * Math.PI * 2, lx = Math.cos(lightAngle) * 0.6, ly = Math.sin(lightAngle) * 0.6, lz = 0.55;
+    var spacing = 7, cols = Math.ceil(w / spacing), rows = Math.ceil(h / spacing);
+    var hasRing = rand() > 0.3, ringTilt = (rand() - 0.5) * 0.8;
+    var ringInnerR = sphereR * 1.35, ringOuterR = sphereR * 1.85;
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var x = c * spacing + spacing / 2, y = r * spacing + spacing / 2;
+        var dx = x - cx, dy = y - cy, dist = Math.hypot(dx, dy);
+        var inRing = false, ringAlpha = 0;
+        if (hasRing) {
+          var rotY = dy * Math.cos(ringTilt) - dx * Math.sin(ringTilt);
+          var rotX = dx * Math.cos(ringTilt) + dy * Math.sin(ringTilt);
+          var rDist = Math.hypot(rotX, rotY * 3.2);
+          if (rDist >= ringInnerR && rDist <= ringOuterR) {
+            ringAlpha = Math.sin(((rDist - ringInnerR) / (ringOuterR - ringInnerR)) * Math.PI) * 0.75;
+            if (rotY > 0) ringAlpha *= 0.5;
+            inRing = true;
+          }
+        }
+        if (dist < sphereR) {
+          var z = Math.sqrt(sphereR * sphereR - dist * dist);
+          var diff = Math.max(0, (dx / sphereR) * lx + (dy / sphereR) * ly + (z / sphereR) * lz);
+          var radius = 0.7 + Math.pow(diff, 1.3) * (spacing * 0.44 - 0.7);
+          ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = textCol; ctx.globalAlpha = Math.min(1, 0.18 + diff * 0.82); ctx.fill();
+        } else if (inRing && ringAlpha > 0.05) {
+          ctx.beginPath(); ctx.arc(x, y, 0.8 + ringAlpha * (spacing * 0.3), 0, Math.PI * 2);
+          ctx.fillStyle = textCol; ctx.globalAlpha = ringAlpha * 0.6; ctx.fill();
+        } else {
+          var dotAlpha = rand() < 0.015 ? 0.4 : 0.07;
+          ctx.beginPath(); ctx.arc(x, y, 0.75, 0, Math.PI * 2);
+          ctx.fillStyle = textCol; ctx.globalAlpha = dotAlpha; ctx.fill();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
   noteEls.forEach(function (a, i) {
     var labels = a.querySelectorAll('.note-head .label');
     var no = labels[0].textContent.replace('N°', ''), date = labels[1].textContent, title = noteTitle(a), tags = tagsOf(a);
@@ -115,9 +170,11 @@
     a.querySelector('.note-head').remove();
     var view = document.createElement('div'); view.className = 'obs-view';
     while (a.firstChild) view.appendChild(a.firstChild);
+    var h1 = view.querySelector('h1');
+    h1.insertAdjacentHTML('beforebegin', '<div class="obs-cover" aria-hidden="true"><canvas data-cover="' + a.id + '"></canvas></div>');
     var text = view.textContent.replace(/\s+/g, ' ').trim(), words = text.split(' ').length;
     var row = function (ic, k, v) { return '<dt>' + icon(ic) + k + '</dt><dd>' + v + '</dd>'; };
-    view.querySelector('h1').insertAdjacentHTML('afterend', '<div class="obs-props"><p class="obs-props-t">Properties</p><dl>' +
+    h1.insertAdjacentHTML('afterend', '<div class="obs-props"><p class="obs-props-t">Properties</p><dl>' +
       row('calendar', 'created', esc(date)) + row('hash', 'number', esc(no)) +
       row('tags', 'tags', tags.map(function (t) { return '<a class="obs-tag" href="#notes">#' + esc(t) + '</a>'; }).join('')) +
       row('clock', 'reading', Math.max(1, Math.round(words / 230)) + ' min') + '</dl></div>');
@@ -662,7 +719,11 @@
     railGrps.forEach(function (g) { if (g.querySelector('a[aria-current="page"]')) grpSet(g, true, false); });
     var h = target.querySelector('h1');
     document.title = (id === 'index' ? '' : (h ? h.textContent + ' · ' : '')) + "Ifti's Notebook";
-    if (id.indexOf('n-') === 0) { openInTab(id); renderTabs(target); }
+    if (id.indexOf('n-') === 0) {
+      openInTab(id); renderTabs(target);
+      var coverCvs = target.querySelector('canvas[data-cover]');
+      if (coverCvs) setTimeout(function () { drawNoteCover(coverCvs, id); }, 0);
+    }
     buildMeta(target, id); pageNext(target, id);
     document.getElementById('m-path').innerHTML = '~/' + (id === 'index' ? '' : id.indexOf('n-') === 0 ? 'notes/<b>' + id.slice(2) + '</b>' : '<b>' + id + '</b>');
     sheetOpen(false);

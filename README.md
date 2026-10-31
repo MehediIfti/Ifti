@@ -26,7 +26,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 
 | Endpoint | What it does | Cache |
 |---|---|---|
-| `/api/now-playing` | What I'm playing on Spotify, and the three songs before it | 20 s |
+| `/api/now-playing` | What I'm playing on Spotify, and the three songs before it (saved, so they stay when nothing's on) | 20 s |
 | `/api/status` | Free or busy-until, from the work calendar | 2 min |
 | `/api/activity` | Meetings per day for 18 weeks (counts only) | 1 h |
 | `/api/f1` | Standings, Max's numbers, next race (Jolpica) | 6 h |
@@ -48,6 +48,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 | `SPOTIFY_REFRESH_TOKEN` | Reading what I play |
 | `SPOTIFY_SETUP_KEY` | Only during Spotify setup; delete after |
 | `GOOGLE_ICS_URL` | Secret iCal address of the work calendar. Treat it like a password |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | The Redis store that keeps my last few Spotify plays. Vercel adds both when you connect Upstash Redis |
 
 ## Hosting
 
@@ -103,6 +104,7 @@ npx serve .                 # preview at localhost:3000 (any static server works
 2. In Vercel → Settings → Environment Variables, add `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` from that app, and `SPOTIFY_SETUP_KEY` set to any long random word. Redeploy.
 3. Open `https://ifti-gold.vercel.app/api/spotify-login?key=<that word>`, sign in to Spotify and agree. The page shows a refresh token.
 4. Add it in Vercel as `SPOTIFY_REFRESH_TOKEN`, delete `SPOTIFY_SETUP_KEY`, and redeploy. The player appears on every page but the homepage.
+5. To keep the last three on show when nothing's playing: Vercel → Storage → Create → Upstash Redis (free plan), connect it to this project, and redeploy. `api/now-playing.js` then saves the last four things it saw (podcasts too, which Spotify's own history leaves out) under the key `spotify:recent`. The `Spotify` GitHub Action asks every 10 minutes, so plays are saved even when nobody has the site open. Without the store, the list comes from Spotify's history alone.
 
 **Calendar status:** under my name in the left rail on every page (and next to it in the phone top bar): **Door's open · Book a call** when my calendar is free, **In a meeting · free at 3:30 pm** when it's busy, at any hour (there are no working hours). Times show in the visitor's own time zone. Back-to-back meetings count as one; all-day events, events marked Free, cancelled ones and ones I declined don't count. `api/status.js` reads my work calendar through its secret iCal address and passes on only free or busy-until; titles and details never reach the page. It uses one package, `node-ical` (in `package.json`; Vercel installs it). Hidden until connected; add `?status=free` or `busy` to the address to preview. To connect, once: in Google Calendar (work account) → Settings → my calendar → Integrate calendar, copy **Secret address in iCal format**, add it in Vercel as `GOOGLE_ICS_URL`, and redeploy. Treat that link like a password: anyone with it can read the whole calendar. If it ever leaks, reset it on the same page and paste the new one.
 

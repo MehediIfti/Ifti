@@ -1,0 +1,12 @@
+name: Spotify
+# Asks the site what I'm playing every 10 minutes, so the saved list in api/now-playing.js catches songs and podcasts
+# even when nobody has the site open. GitHub runs scheduled jobs late at busy times; that's fine here.
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -fsS https://ifti-gold.vercel.app/api/now-playing -o /dev/null

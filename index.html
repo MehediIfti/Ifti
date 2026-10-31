@@ -29,7 +29,7 @@
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="Ifti's Notebook">
 <meta property="og:title" content="Mehedi Hasan Ifti · Sales &amp; partnerships">
-<meta property="og:description" content="I turn first conversations into partnerships that last. Notes from client rooms, AI agents I run, and life off the clock.">
+<meta property="og:description" content="I turn first conversations into partnerships that last. Notes from client work, the AI agents I run, and life off the clock.">
 <meta property="og:url" content="https://ifti-gold.vercel.app/">
 <meta property="og:image" content="https://ifti-gold.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
@@ -521,7 +521,7 @@ ul.plain li::marker { color: var(--muted); }
 .obs-mode { font-family: var(--mono); font-size: 0.6875rem; color: var(--overlay1); padding-right: 0.25rem; }
 /* wide pane, readable line length: content centred in the middle like Obsidian's reading view */
 .obs-view { padding: 2.5rem 2.5rem 2.75rem; }
-.obs-view > * { max-width: 40rem; margin-inline: auto; }
+.obs-view > * { max-width: 36rem; margin-inline: auto; }
 .obs-view > * + * { margin-top: 1.25rem; }
 .obs-view > h1 + * { margin-top: 1.25rem; }
 .obs-cover { position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; background: var(--base); border: 1px solid var(--surface0); margin-bottom: 1.25rem; }
@@ -680,6 +680,8 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 :root[data-layout="3"] .rail { border-right: 1px solid var(--rule); padding-right: 1.5rem; }
 :root[data-layout="3"] .sn { float: none; display: block; width: auto; margin: 0.6rem 0 0.2rem; padding-left: 0; border-left: 0; }
 :root[data-layout="3"] footer.colophon { grid-column: 2; justify-self: start; width: 100%; max-width: 46rem; }
+:root[data-layout="3"] .shell:has(.page.on:not(.pg, .obs, #index)) footer.colophon { max-width: 37rem; }
+:root[data-layout="3"] .shell:has(.page.obs.on) footer.colophon { max-width: 50rem; }
 :root[data-layout="3"] .meta {
   display: grid; gap: 1.75rem; align-content: start;
   position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4rem); align-self: start;
@@ -721,6 +723,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
 @media (max-width: 760px) { .kit { grid-template-columns: minmax(0, 1fr); gap: 0.3rem; } .kit dd { margin-bottom: 0.6rem; } }
 /* home: numbers, beliefs and interests */
 .page > .home-stats { margin-top: 1.25rem; }
+@media (max-width: 760px) { .home-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } .home-stats > div { padding: 0.7rem 0.75rem; } .home-stats > div:last-child:nth-child(odd) { grid-column: auto; } .home-stats dd { font-size: 1.4rem; } }
 .beliefs { list-style: none; padding: 0; margin-inline: 0; margin-bottom: 0; display: grid; gap: 0; counter-reset: b; border-top: 1px solid var(--rule); }
 .beliefs li { counter-increment: b; display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); padding: 0.85rem 0; border-bottom: 1px solid var(--rule); color: var(--muted); }
 .beliefs li::before { content: counter(b, decimal-leading-zero); font-family: var(--mono); font-size: var(--s-0); color: var(--label); padding-top: 0.2rem; }
@@ -948,6 +951,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   .m-sheet ol .d { font-family: var(--mono); font-size: 0.6875rem; color: var(--subtext0); text-align: right; }
   .m-sheet ol a[aria-current="page"] .t { color: var(--h1); }
   .m-sheet ol a[aria-current="page"] .n { color: var(--h1); }
+  .m-sheet ol a[aria-current="page"] { margin-inline: -0.6rem; padding-inline: 0.6rem; border-radius: 6px; background: color-mix(in srgb, var(--surface0) 45%, transparent); box-shadow: inset 2px 0 0 var(--accent); }
   .m-sheet .now-mini { display: grid; gap: 0.6rem; font-family: var(--mono); font-size: 0.75rem; color: var(--subtext0); }
   .m-sheet .now-mini b { font-weight: 400; color: var(--text); font-family: var(--body); font-size: 0.9375rem; display: block; }
   .m-sheet .links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font-family: var(--mono); font-size: 0.8125rem; }
@@ -967,6 +971,7 @@ footer.colophon { grid-column: 2; max-width: 37rem; margin-top: 4rem; padding-to
   :root[data-mnav="tabs"] .meta section.m-hide, :root[data-mnav="sheet"] .meta section.m-hide,
   :root[data-mnav="tabs"] .act-inline, :root[data-mnav="sheet"] .act-inline { display: none; }
   :root[data-mnav="tabs"] .meta section:has(.pn), :root[data-mnav="sheet"] .meta section:has(.pn) { grid-column: 1 / -1; }
+  :root[data-mnav="tabs"] .meta section:has(> .graph-open), :root[data-mnav="sheet"] .meta section:has(> .graph-open) { display: none; }
   :root[data-mnav="tabs"] .meta:not(:has(> section:not(.m-hide, .m-toc))), :root[data-mnav="sheet"] .meta:not(:has(> section:not(.m-hide, .m-toc))) { display: none; }
 }
 .ap-g.mobile-only { display: none; }
@@ -1223,7 +1228,7 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .suggest-d > summary span { color: var(--accent); white-space: nowrap; }
 .suggest-d[open] > summary span { display: none; }
 .suggest-d[open] > summary { margin-bottom: 1rem; }
-#now h3 { margin-top: 1.75rem; }
+#now h3 { margin-top: 2.25rem; margin-bottom: -0.5rem; font-family: var(--mono); font-size: var(--s-0); font-weight: 500; font-style: normal; letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
 /* Notes list: one-line dek under each title */
 .entries .dek { grid-column: 2 / -1; color: var(--muted); font-size: 0.9375rem; line-height: 1.45; margin-top: -0.6rem; }
 @media (max-width: 760px) {
@@ -1676,11 +1681,12 @@ html.touring .tour-fab::after { display: none; }
 
 /* ============ whiteboard (hosted in its own repo, loaded in a frame) ============ */
 #whiteboard.page { max-width: none; }
+#whiteboard.page > :not(.wb) { max-width: 46rem; }
 .wb { position: relative; height: min(72vh, 46rem); min-height: 26rem; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; background: #f7f7f5; }
 .wb iframe { display: block; width: 100%; height: 100%; border: 0; }
 .wb-phone { display: none; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-radius: 10px; color: var(--muted); }
 .wb-keys { font-size: 0.8125rem; } .wb-keys b { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--label); margin-right: 0.4rem; }
-@media (max-width: 760px) { .wb, .wb-keys, .wb-open, #whiteboard .sub, .wb-nav { display: none !important; } .wb-phone { display: block; } }
+@media (max-width: 760px) { .wb, .wb-keys, .wb-open, #whiteboard .sub { display: none !important; } .wb-phone { display: block; } }
 /* ============ UX pass: hierarchy, grouping, calmer blocks ============ */
 #index .hero h1 { font-size: clamp(2.6rem, 6vw, 3.75rem); line-height: 1.05; }
 #index .hero .lede { color: var(--ink); font-size: 1.2rem; }
@@ -1695,7 +1701,7 @@ html.touring .tour-fab::after { display: none; }
 .offclock svg { grid-row: auto; margin: 0; width: 20px; height: 20px; }
 .offclock li[data-pop]::after { top: 50%; transform: translateY(-50%); }
 @media (max-width: 760px) { .offclock { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.topics { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.topics { margin-inline: 0; margin-bottom: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
 .topics > div { padding: 0.85rem 0.95rem; background: var(--paper); }
 .topics dt { font-family: var(--display); font-weight: 600; font-size: 0.98rem; color: var(--ink); }
 .topics dd { margin: 0.2rem 0 0; font-size: 0.9rem; line-height: 1.45; color: var(--muted); }
@@ -1710,11 +1716,11 @@ html.touring .tour-fab::after { display: none; }
 .page-next small { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
 .page-next b { font-family: var(--display); font-weight: 600; font-size: 1.02rem; }
 .page-next a:hover b { color: var(--accent); }
-.note-next { grid-template-columns: 1fr auto 1fr; align-items: end; }
+.note-next { grid-template-columns: 1fr auto 1fr; align-items: start; column-gap: 2rem; }
 .note-next .all { text-align: center; }
 .note-next b { font-size: 0.95rem; }
-@media (max-width: 560px) { .note-next { grid-template-columns: 1fr 1fr; } .note-next .all { grid-column: 1 / -1; grid-row: 2; text-align: left; } }
-.page.obs .obs-view .sn { margin: 0.9rem 0 0.25rem; padding: 0; border: 0; border-radius: 0; background: none; font-family: var(--sans); font-size: 0.9rem; line-height: 1.55; color: var(--muted); }
+@media (max-width: 560px) { .note-next { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; } .note-next > span:empty, .note-next .all small { display: none; } .note-next a.nx, .note-next .all { text-align: left; } .note-next .all { order: 3; } }
+.page.obs .obs-view .sn { margin: 0.9rem 0 1.1rem; padding: 0 0 0 0.85rem; border: 0; border-left: 2px solid var(--surface0); border-radius: 0; background: none; font-family: var(--sans); font-size: 0.9rem; line-height: 1.55; color: var(--muted); }
 .page.obs .obs-view .sn::before { font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
 .obs-view .lede mark, .obs-view p > mark { color: var(--h1); }
 :root[data-theme="midnight-ledger"] { --mark: color-mix(in srgb, var(--yellow) 20%, transparent); } /* a softer highlight keeps the violet text above 4.5:1 */
@@ -1915,7 +1921,7 @@ html.touring .tour-fab::after { display: none; }
   <span class="path" id="m-path">~/</span>
   <button type="button" class="m-btn pal-open" aria-label="Search the site"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></g></svg></button>
   <button type="button" class="m-btn m-theme-top ap-open" aria-label="Change theme"><span class="ap-dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
-  <button type="button" class="m-btn m-menu" id="m-menu" aria-expanded="false" aria-controls="m-sheet"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>Index</button>
+  <button type="button" class="m-btn m-menu" id="m-menu" aria-expanded="false" aria-controls="m-sheet"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>Menu</button>
 </header>
 
 <div class="shell">
@@ -1957,7 +1963,7 @@ html.touring .tour-fab::after { display: none; }
       <header class="hero"><span class="ht-hit" aria-hidden="true"></span>
         <p class="label">Global sales &amp; partnerships · Musemind</p>
         <h1>Ifti</h1>
-        <p class="lede">I turn first conversations into partnerships that last. Most of my week is calls with founders and enterprise teams. The job is to find out what's actually broken before anyone pitches a fix.</p>
+        <p class="lede">I turn first conversations into partnerships that last. Most of my week is calls with founders and enterprise teams. The job is to find out what's broken before anyone pitches a fix.</p>
         <div class="cta"><a class="btn" data-book href="https://calendar.app.google/hLuo2fyWcoeTghbM6" target="_blank" rel="noopener">Book a call</a><a class="cta-2" href="#writing-h">Read my notes ↓</a></div>
         <figure class="hx-map" id="hero" data-mode="map" aria-label="Where I work: Dhaka and five cities I work with most, linked on a world map">
           <div class="hm-bar">
@@ -1972,24 +1978,24 @@ html.touring .tour-fab::after { display: none; }
             <div class="hm-tip" id="hm-tip" hidden></div>
           </div>
           <ul class="hm-legend" id="hm-legend"></ul>
-          <figcaption class="hm-cap"><span><b>6</b> cities</span><span><b>3</b> continents</span><span><b id="hm-span">10h</b> between the first and last time zone</span></figcaption>
+          <figcaption class="hm-cap"><span><b>6</b> cities</span><span><b>3</b> continents</span><span><b id="hm-span">10h</b> of time difference</span></figcaption>
         </figure>
       </header>
       <h2>What I do</h2>
-      <p>I'm Mehedi Hasan Ifti. I lead global sales and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency, including the inbound team. I work with everyone from first-time founders to enterprise teams, in 35+ markets. Most of them have a product that works and users who don't love it yet.</p>
+      <p>I'm Mehedi Hasan Ifti. I lead global sales and partnerships at <a href="https://musemind.agency" target="_blank" rel="noopener">Musemind</a>, a UX design agency. That includes the inbound team. I work with everyone from first-time founders to enterprise teams, in 35+ markets. Most of them have a product that works and users who don't love it yet.</p>
       <dl class="r-index home-stats">
         <div><dt>Markets</dt><dd>35+</dd></div>
-        <div><dt>Companies</dt><dd>200+</dd></div>
+        <div><dt>Companies worked with</dt><dd>200+</dd></div>
         <div><dt>Accounts led</dt><dd>45+</dd></div>
       </dl>
       <p class="links"><a class="back" href="#work">Full work history →</a><a class="back" href="cv.pdf" download>Download CV (PDF) ↓</a></p>
 
-      <h2>What I believe</h2>
+      <h2 class="grp">What I believe</h2>
       <p class="sub">Four rules I work by.</p>
       <ol class="beliefs">
         <li><span><b>One honest conversation beats ten polished emails.</b></span></li>
         <li><span><b>Proposals should be walked through, not sent.</b> The document is the leave-behind. The conversation is the pitch.</span></li>
-        <li><span><b>Clarity wins.</b> You don't need the flashiest idea. You need to know what you want, and you can usually tell within the first 30 minutes of a call.</span></li>
+        <li><span><b>Clarity wins.</b> You don't need the flashiest idea. You need to know what you want, and it usually shows in the first 30 minutes of a call.</span></li>
         <li><span><b>If it's meant for human eyes, write it yourself.</b> Use AI for the work. Don't use it for the thinking.</span></li>
       </ol>
 
@@ -2019,13 +2025,13 @@ html.touring .tour-fab::after { display: none; }
       </form>
 
       <h2 class="grp">Off the clock</h2>
-      <p class="sub">Everything that isn't client work. Tap one for more.</p>
+      <p class="sub">Everything that isn't client work. Open one to read more.</p>
       <ul class="offclock">
         <li data-pop="f1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15h16M6 15l2-5h7l3 5M8 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Formula 1</button></b><p>I follow it far too closely for someone who can't drive.</p></li>
         <li data-pop="music"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Music</button></b><p>Linkin Park and The Weeknd, mostly on repeat.</p></li>
         <li data-pop="guitar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 9l5-5M18 2l4 4M9.5 11.5a4 4 0 0 0-5.6 5.6l1.4 1.4a4 4 0 0 0 5.6-5.6M12 9l3 3M8 15h.01"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Guitar</button></b><p>I pick it up when nobody's waiting on me.</p></li>
         <li data-pop="podcasts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Podcasts</button></b><p>Always one in my ears. The current rotation is on the <a href="#now">Now page</a>.</p></li>
-        <li data-pop="football"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 7V3.5M15.5 9.5l3.3-1.2M14.2 13.5l2 3M9.8 13.5l-2 3M8.5 9.5L5.2 8.3"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Football</button></b><p>Liverpool and Brazil. I used to play; these days I watch.</p></li>
+        <li data-pop="football"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 7V3.5M15.5 9.5l3.3-1.2M14.2 13.5l2 3M9.8 13.5l-2 3M8.5 9.5L5.2 8.3"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Football</button></b><p>Liverpool and Brazil. I used to play. These days I watch.</p></li>
         <li data-pop="travel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-10 4 6 2-3 6 7z"/><circle cx="17" cy="6" r="1.6"/></svg><b><button type="button" class="oc-go" aria-haspopup="dialog">Travel</button></b><p>Bangladesh first: Chattogram, Cox's Bazar, Bhatiari waterfall and Himchari.</p></li>
       </ul>
 
@@ -2059,8 +2065,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="sub">Mostly AI, and mostly hands-on.</p>
       <ul class="log" data-from="exploring"></ul>
 
-      <h2>On my screen and in my ears</h2>
-      <p class="sub">What I'm watching, reading and listening to.</p>
+      <h2>Watching, reading, listening</h2>
       <h3>Watching</h3>
       <ul class="log" data-from="watching"></ul>
 
@@ -2109,7 +2114,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="label">Writing</p>
       <h1>Notes</h1>
       <p class="lede">Short notes from client work, and from what I'm watching and listening to.</p>
-      <p class="sub">Follow new notes by <a href="/feed.xml">RSS</a>.</p>
+      <p class="sub">Longer pieces go out on <a href="https://substack.com/@mehediifti" target="_blank" rel="noopener">Substack</a>. Follow new notes by <a href="/feed.xml">RSS</a>.</p>
       <ul class="entries">
         <li><a href="#n-007"><span class="no">N°007</span><span class="t">Show the guardrails first</span><span class="d">18 Oct 2026</span></a></li>
         <li><a href="#n-006"><span class="no">N°006</span><span class="t">Show the cut marks</span><span class="d">18 Oct 2026</span></a></li>
@@ -2124,12 +2129,12 @@ html.touring .tour-fab::after { display: none; }
     <article class="page" id="n-007" data-tags="trust sales enterprise positioning">
       <div class="note-head"><span class="label">N°007</span><span class="label">18 Oct 2026</span></div>
       <h1>Show the guardrails first</h1>
-      <p>What I took from <a href="#n-005">N°005</a>, Alexandr Wang on how Meta made its agent safe to say yes to, and how it changes the way I sell design work.</p>
+      <p>Alexandr Wang explained how Meta made its AI agent safe to say yes to (<a href="#n-005">N°005</a>). Four things from it change how I sell design work.</p>
       <ul class="plain">
         <li><b>Show the guardrails before the portfolio.</b> Enterprise buyers aren't asking whether we're good. They're asking what happens when something goes wrong. Answer that first.</li>
         <li><b>Sell to people who don't want the tech.</b> Most clients don't want to learn UX. They want fewer drop-offs and a product their users love. Talk about the outcome, not the craft.</li>
-        <li><b>Name their part up front.</b> Same as the $10,000 line. Feedback on time, one decision-maker, access to real users. Write it into the kickoff, like <a href="#n-003">scope</a>.</li>
-        <li><b>Get paid when it works.</b> Not every deal can be outcome-based, but tying part of it to a result is how you earn the next one.</li>
+        <li><b>Name their part up front.</b> Wang's $10,000 line applies: the client has a part to do too. Feedback on time, one decision-maker, access to real users. Write it into the kickoff, the same way I pin down <a href="#n-003">scope</a>.</li>
+        <li><b>Get paid when it works.</b> Not every deal can be paid on results, but tying part of the fee to one is how you earn the next deal.</li>
       </ul>
       <p>The takeaway isn't really about AI. <mark>People don't buy the smartest option. They buy the one they'd trust with the keys.</mark></p>
       <p><a class="back" href="#notes">← All notes</a></p>
@@ -2138,7 +2143,7 @@ html.touring .tour-fab::after { display: none; }
     <article class="page" id="n-006" data-tags="podcasts history evidence trust">
       <div class="note-head"><span class="label">N°006</span><span class="label">18 Oct 2026</span></div>
       <h1>Show the cut marks</h1>
-      <p>Notes from <a href="https://www.youtube.com/watch?v=ruVJE9po3-U" target="_blank" rel="noopener">Joe Rogan Experience #2558</a> with Tyler Engle, a musician and researcher who hosts the BassForge channel. Two and a half hours on old legends that might be true: a great flood, giants, and stone cut too cleanly for the tools of its time.</p>
+      <p>Notes from the <a href="https://www.youtube.com/watch?v=ruVJE9po3-U" target="_blank" rel="noopener">Joe Rogan Experience #2558</a> with Tyler Engle, a musician and researcher who hosts the BassForge channel. Two and a half hours on old legends that might be true: a great flood, giants, and stone cut too cleanly for the tools of its time.</p>
       <p>I can't judge most of it, and most archaeologists reject the big claims. I listened for how they argue, not to pick a side.</p>
 
       <h2>The flood that covered the world</h2>
@@ -2160,8 +2165,8 @@ html.touring .tour-fab::after { display: none; }
     <article class="page" id="n-005" data-tags="ai agents trust positioning">
       <div class="note-head"><span class="label">N°005</span><span class="label">17 Oct 2026</span></div>
       <h1>Trust is the product</h1>
-      <p>Notes from Cleo Abram's <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Huge Conversations</a> with Alexandr Wang, Meta's chief AI officer. The subject is Muse, Meta's personal agent. It hit 5 million downloads in 22 days and took the No. 1 free spot on the App Store, a place ChatGPT usually holds.</p>
-      <p>I went in expecting a capability pitch. Most of the hour was about something else: why anyone should let an agent near their inbox and their card.</p>
+      <p>Notes from Cleo Abram's <a href="https://www.youtube.com/watch?v=1LRvMRC_pfY" target="_blank" rel="noopener">Huge Conversations</a> with Alexandr Wang, Meta's chief AI officer. The subject is Muse, Meta's personal AI agent. It hit 5 million downloads in 22 days and took the No. 1 free spot on the App Store, a place ChatGPT usually holds.</p>
+      <p>I went in expecting a capability pitch. Most of the hour was about something else: why anyone should let an agent near their inbox and their bank card.</p>
 
       <h2>From chatting to doing</h2>
       <p>A chatbot answers. An agent does: chasing healthcare paperwork, cancelling a subscription you forgot about, filling in the form you've been putting off.</p>
@@ -2170,10 +2175,10 @@ html.touring .tour-fab::after { display: none; }
       <h2>How they make it safe to say yes</h2>
       <p>This is the part I'd steal. They didn't ask for trust. They built it into the product, one layer at a time.</p>
       <dl class="facts">
-        <dt>Sandbox</dt><dd>Each agent runs in its own secure virtual machine. What you share stays inside it.</dd>
+        <dt>Sandbox</dt><dd>Each agent runs in its own sealed-off virtual computer. What you share stays inside it.</dd>
         <dt>Sentinel</dt><dd>A second agent checks anything going out, like a form or a phone call, and blocks card and ID numbers.</dd>
-        <dt>Permission</dt><dd>A new website, or sending your data out, needs your yes first.</dd>
-        <dt>Next</dt><dd>Confidential virtual machines with stronger encryption, closer to WhatsApp-level privacy. Slower, and they say so.</dd>
+        <dt>Permission</dt><dd>Before it opens a new website or sends your data anywhere, it asks you.</dd>
+        <dt>Next</dt><dd>Sealed virtual computers with stronger encryption, closer to WhatsApp-level privacy. Slower, and they say so.</dd>
         <dt>Ads</dt><dd>Your chats and agent data stay out of Meta's ad system.</dd>
       </dl>
       <p>Each layer answers an objection before the user raises it. That's exactly how a good proposal should read.</p>
@@ -2188,8 +2193,9 @@ html.touring .tour-fab::after { display: none; }
       <p>He also said an agent's memory "is not like that of a human. Sometimes it can feel like it's like that, but it is really different." Useful to remember when it feels like it knows you.</p>
 
       <h2>The uncomfortable bit</h2>
-      <p>Cleo pushed on safety, and he didn't dodge. He summed up the race logic as "I am responsible, those people are not, so I cannot slow down," and admitted nobody yet knows how to oversee systems much smarter than us. He also said AI leaders are all very smart, but personal grudges are shaping how this gets built, and that he's changed his mind on China: the "monster" framing goes too far.</p>
-      <p>Outside the episode, Amazon has already blocked Muse from shopping on its site, citing data security.<span class="sn-ref"></span><span class="sn">The title calls it the biggest launch since ChatGPT. Downloads aren't retention. I'll check back in three months.</span> Trust isn't just the user's call. Every platform the agent touches gets a vote.</p>
+      <p>Cleo pushed on safety, and he didn't dodge. He summed up the race logic as "I am responsible, those people are not, so I cannot slow down," and admitted nobody yet knows how to oversee systems much smarter than us. He also said AI leaders are all very smart, but personal grudges are shaping how this gets built. And he's changed his mind on China: he thinks the "monster" framing goes too far.</p>
+      <p>Outside the episode, Amazon has already blocked Muse from shopping on its site, citing data security.<span class="sn-ref"></span><span class="sn">The episode's title calls it the biggest launch since ChatGPT. Downloads aren't retention. I'll check back in three months.</span></p>
+      <p>Trust isn't just the user's call. Every platform the agent touches gets a vote.</p>
 
       <p><a class="back" href="#notes">← All notes</a></p>
     </article>
@@ -2231,7 +2237,7 @@ html.touring .tour-fab::after { display: none; }
         <li><b>Decisions.</b> What we agreed.</li>
         <li><b>Owners.</b> One name per decision.</li>
         <li><b>Dates.</b> When each thing happens.</li>
-        <li><b>Open questions.</b> What's still unresolved, and who answers it.</li>
+        <li><b>Open questions.</b> What isn't decided yet, and who decides.</li>
       </ul>
       <p>If the stakeholder can't forward it to their boss without editing, it isn't finished.<span class="sn-ref"></span><span class="sn">Second test. Could the client's CFO read it cold and know what happens next?</span></p>
       <p><a class="back" href="#notes">← All notes</a></p>
@@ -2257,7 +2263,7 @@ html.touring .tour-fab::after { display: none; }
         <dt>Team</dt><dd>I lead the inbound team: every lead from first reply to signed deal</dd>
         <dt class="no-print">CV</dt><dd class="no-print"><a href="cv.pdf" download>Download the one-page PDF ↓</a></dd>
       </dl>
-      <p>My job is the relationship. I find out what the client's business actually needs, keep every stakeholder pointed the same way, and steer the work toward a result someone can measure.</p>
+      <p>My job is the relationship. I find out what the client's business needs, keep every stakeholder pointed the same way, and steer the work toward a result someone can measure.</p>
       <p>Trust compounds. I'd rather earn the second project than squeeze the first.</p>
 
       <h2>Who I work with</h2>
@@ -2265,6 +2271,14 @@ html.touring .tour-fab::after { display: none; }
         <dt>Enterprise</dt><dd>Teams that need design to clear procurement, internal politics and a dozen stakeholders, and still ship something good.</dd>
         <dt>Founders</dt><dd>People who need a product that sells before the runway ends. Fewer meetings, faster decisions.</dd>
       </dl>
+
+      <h2>How I work</h2>
+      <ul class="plain">
+        <li><b>Outcomes before outputs.</b> A screen is a deliverable. Revenue, retention or time saved is a result.</li>
+        <li><b>Say the hard thing early.</b> Bad news gets more expensive every week you wait.</li>
+        <li><b>One owner per decision.</b> If everyone owns it, nobody signs it off.</li>
+        <li><b>Write it down.</b> If it isn't in the recap, it didn't happen.</li>
+      </ul>
 
       <!-- WORK HISTORY UPDATE: one <li> per company, newest first. From LinkedIn. -->
       <h2>Work history</h2>
@@ -2291,7 +2305,7 @@ html.touring .tour-fab::after { display: none; }
             <p class="edu-k">Sales → customer success</p>
             <h3 class="edu-co">Airwork AI</h3>
             <p class="edu-f">Full-time · 2 yrs 6 mos · Remote</p>
-            <p>Helped founders build remote engineering teams with vetted talent from emerging economies.</p><ol class="job-roles"><li><div class="job-rh"><b>Senior Customer Success Manager</b><span>Jan 2025 – Feb 2026</span></div><ul><li>Led success for 45+ clients across about 15 countries</li><li>Helped founders build, scale and keep distributed engineering teams</li><li>Drove upsells and expansion, and watched account health to prevent churn</li></ul></li><li><div class="job-rh"><b>Customer Success Manager</b><span>Jul 2024 – Jan 2025</span></div><ul><li>Managed 50+ startup relationships from idea to launch</li><li>Built a structured feedback loop to improve product-market fit</li><li>Raised retention by reworking onboarding and support</li></ul></li><li><div class="job-rh"><b>B2B Sales Specialist</b><span>Sep 2023 – Jul 2024</span></div><ul><li>Closed deals with early-stage startups</li><li>Expanded reach to 15+ countries and onboarded 140+ startups</li></ul></li></ol>
+            <p>Helped founders build remote engineering teams with vetted talent from emerging economies.</p><ol class="job-roles"><li><div class="job-rh"><b>Senior Customer Success Manager</b><span>Jan 2025 – Feb 2026</span></div><ul><li>Led customer success for 45+ clients across about 15 countries</li><li>Helped founders build, scale and keep distributed engineering teams</li><li>Drove upsells and expansion, and watched account health to prevent churn</li></ul></li><li><div class="job-rh"><b>Customer Success Manager</b><span>Jul 2024 – Jan 2025</span></div><ul><li>Managed 50+ startup relationships from idea to launch</li><li>Built a feedback loop to improve product-market fit</li><li>Raised retention by reworking onboarding and support</li></ul></li><li><div class="job-rh"><b>B2B Sales Specialist</b><span>Sep 2023 – Jul 2024</span></div><ul><li>Closed deals with early-stage startups</li><li>Expanded reach to 15+ countries and onboarded 140+ startups</li></ul></li></ol>
             <div class="edu-skills"><span class="pp-tag">B2B sales</span><span class="pp-tag">Customer success</span><span class="pp-tag">Retention</span></div>
           </div>
         </li>
@@ -2301,7 +2315,7 @@ html.touring .tour-fab::after { display: none; }
             <p class="edu-k">Brand partnerships</p>
             <h3 class="edu-co">Daraz</h3>
             <p class="edu-f">Marketing Intern · Full-time · Dhaka, on-site</p>
-            <p>An e-commerce marketplace. I onboarded brands after the pitch, walked them through their MoUs and spend, and kept local, regional and finance teams aligned so issues got solved and brands got paid on time.</p>
+            <p>An e-commerce marketplace. I onboarded brands after the pitch and walked them through their MoUs and spend. I kept local, regional and finance teams aligned, so issues got solved and brands got paid on time.</p>
             <div class="edu-skills"><span class="pp-tag">Onboarding</span><span class="pp-tag">Stakeholder alignment</span></div>
           </div>
         </li>
@@ -2311,7 +2325,7 @@ html.touring .tour-fab::after { display: none; }
             <p class="edu-k">Community</p>
             <h3 class="edu-co">Beyond The Metrics</h3>
             <p class="edu-f">Co-founder, Vice President Administration · Gazipur</p>
-            <p>A university event and community we co-founded. We brought in speakers and ran sessions on zero budget. Getting people to show up was harder than any of the content, and leading people who aren't paid takes a different approach.</p>
+            <p>A university event and community we co-founded. We brought in speakers and ran sessions on zero budget. Getting people to show up was harder than any of the content. Leading people who aren't paid takes a different approach.</p>
             <div class="edu-skills"><span class="pp-tag">Leadership</span><span class="pp-tag">Events</span></div>
           </div>
         </li>
@@ -2328,14 +2342,6 @@ html.touring .tour-fab::after { display: none; }
       </ol>
       <p><a class="back" href="https://www.linkedin.com/in/mehedihasanifti/" target="_blank" rel="noopener">Full history on LinkedIn ↗</a></p>
 
-      <h2>How I work</h2>
-      <ul class="plain">
-        <li><b>Outcomes before outputs.</b> A screen is a deliverable. Revenue, retention or time saved is a result.</li>
-        <li><b>Say the hard thing early.</b> Bad news gets more expensive every week you wait.</li>
-        <li><b>One owner per decision.</b> If everyone owns it, nobody signs it off.</li>
-        <li><b>Write it down.</b> If it isn't in the recap, it didn't happen.</li>
-      </ul>
-
       <h2>Toolkit</h2>
       <p class="sub">What I actually use, day to day.</p>
       <dl class="kit">
@@ -2346,7 +2352,7 @@ html.touring .tour-fab::after { display: none; }
       </dl>
 
       <h2 class="no-print">Post-match stats</h2>
-      <p class="sub no-print">Scored like the end of a ranked match. Strength is today. Interest is where I'm putting the hours.</p>
+      <p class="sub no-print">Scored like the end of a ranked match. Strength is how good I am now. Interest is where I'm putting the hours.</p>
       <figure class="radar" id="radar">
         <div class="rd-hud"><span>Season 2026 · Key accounts</span><span class="ovr">OVR<b id="rd-ovr"></b></span></div>
         <div class="rd-body">
@@ -2366,7 +2372,7 @@ html.touring .tour-fab::after { display: none; }
       </figure>
 
       <h2>Working together</h2>
-      <p>Building something and want someone who asks the hard questions before quoting a price? Two questions worth answering before we talk:</p>
+      <p>Building something and want someone who asks the hard questions before quoting a price? Answer these two before we talk.</p>
       <ul class="plain">
         <li><b>What are you trying to move?</b> Revenue, retention or time saved, and by when.</li>
         <li><b>Who signs off?</b> Who decides, who pays, and who can say no.</li>
@@ -2423,7 +2429,7 @@ html.touring .tour-fab::after { display: none; }
       <h2 id="shelf-reading">Reading</h2>
       <ul class="log" data-shelf="reading" data-now="1">
         <li><span class="t">Never Split the Difference <span class="by">· Chris Voss</span></span><span class="tag t-book">Book</span><p>Negotiation is mostly listening. Labels and calibrated questions belong in every pricing call.</p></li>
-        <li><span class="t">The Mom Test <span class="by">· Rob Fitzpatrick</span></span><span class="tag t-book">Book</span><p>How to ask questions people can't answer politely. Required reading before any discovery call.</p></li>
+        <li><span class="t">The Mom Test <span class="by">· Rob Fitzpatrick</span></span><span class="tag t-book">Book</span><p>How to ask questions people can't fob off with a polite answer. Required reading before any discovery call.</p></li>
         <li><span class="t">High Output Management <span class="by">· Andrew Grove</span></span><span class="tag t-book">Book</span><p>Treat work like a production line and find the bottleneck. Still the clearest book on management.</p></li>
         <li><span class="t">Thinking in Bets <span class="by">· Annie Duke</span></span><span class="tag t-book">Book</span><p>Judge a decision by what you knew when you made it. The outcome is a separate question.</p></li>
         <li><span class="t">The Design of Everyday Things <span class="by">· Don Norman</span></span><span class="tag t-book">Book</span><p>Good design explained in plain words. Useful when the audience is a CFO.</p></li>
@@ -2451,7 +2457,7 @@ html.touring .tour-fab::after { display: none; }
         var dst = document.querySelector('#now [data-from="' + k + '"]'); if (!dst) return;
         for (var i = 0; i < Math.min(n, items.length); i++) dst.appendChild(items[i].cloneNode(true));
         var more = document.createElement('p'); more.className = 'log-more';
-        more.innerHTML = '<a href="#shelf-' + k + '">' + (items.length > n ? 'All ' + items.length + ' in ' + name.toLowerCase() + ' on the shelf →' : name + ' on the shelf →') + '</a>';
+        more.innerHTML = '<a href="#shelf-' + k + '">' + ('All ' + items.length + ' on the shelf →') + '</a>';
         dst.after(more);
       });
       if (dir) dir.innerHTML = links.join('');
@@ -2473,7 +2479,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="label">Playground · Agent orchestration</p>
       <h1>Paperclip</h1>
       <p class="pg-quote">“A team of agents for every person.” <span>— Paperclip</span></p>
-      <p class="lede">An open-source control room for running a company of AI agents. Each agent gets a role, a boss, a budget and a ticket queue. You sit above it as the board.</p>
+      <p class="lede">Free, open-source software for running AI agents like a company. An agent is an AI that does tasks, not just answers questions. Each one gets a role, a boss, a budget and a queue of tasks, called tickets. You sit at the top, as the board.</p>
       <div class="pg-links">
         <a class="pg-btn" href="https://paperclip.ing" target="_blank" rel="noopener">Website ↗</a>
         <a class="pg-btn ghost" href="https://paperclip.ing/docs" target="_blank" rel="noopener">Docs ↗</a>
@@ -2481,12 +2487,12 @@ html.touring .tour-fab::after { display: none; }
       </div>
       <dl class="pg-facts">
         <div><dt>Licence</dt><dd>MIT</dd></div>
-        <div><dt>Runs</dt><dd>Self-hosted</dd></div>
+        <div><dt>Runs</dt><dd>Your machine</dd></div>
         <div><dt>Install</dt><dd><code class="pg-code">npx paperclipai onboard</code></dd></div>
       </dl>
 
       <h2>How I run it</h2>
-      <p class="sub">My company inside Paperclip is Wayne Enterprises, simplified. Yours can look nothing like it: you design the company around how you work.</p>
+      <p class="sub">My company in Paperclip is called Wayne Enterprises. This is a simplified version. You design yours around how you work.</p>
 
       <div class="we" id="we" data-busy="false">
         <div class="we-top">
@@ -2505,7 +2511,7 @@ html.touring .tour-fab::after { display: none; }
           </div>
         </form>
 
-        <div class="we-rts" aria-label="Runtimes"><span data-rt="claude">Claude Code</span><span data-rt="codex">Codex</span><span data-rt="hermes">Hermes Agent</span><small>3 runtimes, one org chart</small></div>
+        <div class="we-rts" aria-label="Runtimes"><span data-rt="claude">Claude Code</span><span data-rt="codex">Codex</span><span data-rt="hermes">Hermes Agent</span><small>Three agent apps, one org chart</small></div>
         <div class="we-org" role="group" aria-label="Wayne Enterprises org chart: board, CEO, four department heads and four specialists">
           <div class="we-row"><div class="we-node board" data-a="ifti" data-rt="human"><span class="we-who"><b>Ifti</b><small>The board</small></span><span class="we-rt">Human</span><span class="we-st">idle</span></div></div>
           <span class="we-v" data-e="rocket" aria-hidden="true"></span>
@@ -2542,14 +2548,19 @@ html.touring .tour-fab::after { display: none; }
           <div class="we-answer" id="we-answer" hidden></div>
         </div>
       </div>
-      <p class="sub">Paperclip runs agents as a company. For one personal agent, see <a href="#hermes">Hermes Agent</a>. For agents that write code, see <a href="#t3code">T3 Code</a>.</p>
+      <h2>More in the Playground</h2>
+      <p class="sub">One of three agent pages. Paperclip runs agents as a company.</p>
+      <ul class="pg-cards pg-next">
+        <li><a href="#hermes"><b>Hermes Agent →</b><p>Three agents I message on Telegram. Each one learns as it goes.</p></a></li>
+        <li><a href="#t3code"><b>T3 Code →</b><p>One app to run the AI coding agents already on your computer.</p></a></li>
+      </ul>
     </section>
 
     <section class="page pg" id="hermes" style="--pg: var(--sky)">
       <p class="label">Playground · Personal agent</p>
       <h1>Hermes Agent</h1>
       <p class="pg-quote">“The agent that grows with you.” <span>— Nous Research</span></p>
-      <p class="lede">An open-source agent from Nous Research that gets better the more you use it. When it solves something, it saves how as a skill, and it remembers across sessions and every app you talk to it from.</p>
+      <p class="lede">A free, open-source AI agent from Nous Research: an assistant that does tasks for you and gets better the more you use it. When it solves something, it saves the steps as a skill to reuse. It remembers past chats, whichever app you message it from.</p>
       <div class="pg-links">
         <a class="pg-btn" href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener">Website ↗</a>
         <a class="pg-btn ghost" href="https://hermes-agent.nousresearch.com/docs" target="_blank" rel="noopener">Docs ↗</a>
@@ -2565,7 +2576,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="sub">Three Hermes agents, each with its own job and its own memory. I reach all of them from Telegram.</p>
       <div class="hx-flow" aria-label="Setup: Telegram to the Hermes gateway on my machine, then to three agents">
         <span class="hx-step"><b>Telegram</b><small>where I talk to them</small></span><span class="hx-arr" aria-hidden="true">→</span>
-        <span class="hx-step"><b>Hermes gateway</b><small>on my machine</small></span><span class="hx-arr" aria-hidden="true">→</span>
+        <span class="hx-step"><b>Hermes gateway</b><small>on my machine, passes messages on</small></span><span class="hx-arr" aria-hidden="true">→</span>
         <span class="hx-step hx-three"><b>3 agents</b><small>memory and skills each</small></span>
       </div>
       <ul class="hx-agents">
@@ -2610,13 +2621,18 @@ html.touring .tour-fab::after { display: none; }
         </ol>
         <div class="hm-panel" role="tabpanel" aria-live="polite">
           <p data-i="0">I send a message on Telegram: a receipt, a reminder, a call to prep for.</p>
-          <p data-i="1">It uses its tools to get it done: web search, a browser, vision, a terminal, and subagents that each work in their own sandbox.</p>
-          <p data-i="2">Once it has solved the problem, it writes down how as a reusable skill.</p>
+          <p data-i="1">It uses its tools to get it done: web search, a browser, reading images, running commands on my computer, and helper agents that each work in a sealed-off space.</p>
+          <p data-i="2">Once it has solved the problem, it writes down the steps as a skill it can reuse.</p>
           <p data-i="3">Next time something similar comes up, it starts from that skill. That's why Plutus now files a receipt from a single photo.</p>
         </div>
       </div>
 
-      <p class="sub">Hermes is one agent that learns. To run a whole team of agents, Hermes included, see <a href="#paperclip">Paperclip</a>. For agents that write code, see <a href="#t3code">T3 Code</a>.</p>
+      <h2>More in the Playground</h2>
+      <p class="sub">One of three agent pages. Hermes is one agent that learns.</p>
+      <ul class="pg-cards pg-next">
+        <li><a href="#paperclip"><b>Paperclip →</b><p>A whole company of agents, with roles and a boss. Hermes is one of them.</p></a></li>
+        <li><a href="#t3code"><b>T3 Code →</b><p>One app to run the AI coding agents already on your computer.</p></a></li>
+      </ul>
     </section>
 
     <section class="page pg" id="t3code" style="--pg: var(--mauve)">
@@ -2676,10 +2692,10 @@ html.touring .tour-fab::after { display: none; }
     <section class="page pg" id="whiteboard" style="--pg: var(--green)">
       <p class="label">Playground · Tool</p>
       <h1>Whiteboard</h1>
-      <p class="lede">A hand-drawn whiteboard I built for thinking on a page, modelled on Excalidraw. It saves in this browser and opens Excalidraw files.</p>
+      <p class="lede">A whiteboard I built for sketching ideas, with a hand-drawn look. It's modelled on Excalidraw, a free drawing app, and opens its files. Your drawing saves in this browser.</p>
       <div class="wb" id="wb"><iframe id="wb-frame" title="Whiteboard" allow="fullscreen; clipboard-read; clipboard-write"></iframe></div>
       <p class="sub wb-open"><a id="wb-open" href="/whiteboard/" target="_blank" rel="noopener">Open in its own tab ↗</a></p>
-      <details class="sub wb-keys"><summary>Keyboard shortcuts</summary><p>Click the board first, then: V select · R rectangle · D diamond · O ellipse · A arrow · L line · P draw · T text · N sticky · E eraser · F frame · K laser · H or Space to pan · Ctrl/⌘ + / for every command · ? for all shortcuts.</p></details>
+      <details class="sub wb-keys"><summary>Keyboard shortcuts</summary><p>Click the board first, then: V select · R rectangle · D diamond · O ellipse · A arrow · L line · P draw · T text · N sticky note · E eraser · F frame · K laser pointer · H or Space to pan · Ctrl/⌘ + / for every command · ? for all shortcuts.</p></details>
       <p class="wb-phone">The whiteboard is built for a computer screen. Open this page on a laptop or desktop to use it.</p>
     </section>
 
@@ -2702,7 +2718,7 @@ html.touring .tour-fab::after { display: none; }
               <li><b>Founding Vice President, Administration</b> · Beyond The Metrics</li>
               <li><b>Junior PR Officer</b> · IUT Career and Business Society</li>
             </ul>
-            <p class="edu-more"><a href="#research">Research from these years: 5 papers, 1 preprint →</a></p>
+            <p class="edu-more"><a href="#research">The research that started here: 5 papers, 1 preprint →</a></p>
           </div>
         </li>
         <li>
@@ -2727,8 +2743,8 @@ html.touring .tour-fab::after { display: none; }
     <section class="page" id="research">
       <p class="label">Academia · Islamic University of Technology</p>
       <h1>Research</h1>
-      <p class="lede">Papers I've co-authored. Most use text mining and bibliometric analysis to map what a field already knows and where it's heading. Each title opens the paper.</p>
-      <p class="r-line"><span><b>5</b> papers</span><span><b>1</b> preprint</span><span><b>10</b> citations</span><span>h-index <b>2</b></span><span>first author on <b>2</b></span></p>
+      <p class="lede">Papers I've co-authored. Most use software to read a field's published papers (text mining) and map how they cite each other (bibliometrics), to show what the field already knows and where it's heading. Each title opens the paper.</p>
+      <p class="r-line"><span><b>5</b> papers</span><span><b>1</b> preprint</span><span><b>10</b> citations</span><span><b>2</b> h-index</span><span><b>2</b> as first author</span></p>
       <p class="sub r-src">Citations and h-index from <a href="https://www.researchgate.net/profile/Mehedi-Ifti" target="_blank" rel="noopener">ResearchGate</a>, October 2026.</p>
 
       <h2>Papers</h2>
@@ -2739,7 +2755,7 @@ html.touring .tour-fab::after { display: none; }
             <span class="pp-t">Literature Review of Zero-Leverage Firms: A Text-Mining Approach</span>
             <span class="pp-v">Journal of King Abdulaziz University: Economics and Administration · 40(1), 68–87</span>
             <span class="pp-a">Md. Abul Kalam Azad, Paolo Saona, Laura Muro, <b>Mehedi Hasan Ifti</b>, Chowdhury Noushin Novera</span>
-            <span class="pp-s">The first review of the zero-leverage puzzle: why some firms carry no debt. Combines bibliometric analysis and text mining across 56 Web of Science papers to map the research streams and where the field goes next.</span>
+            <span class="pp-s">The first literature review of the zero-leverage puzzle: why some companies carry no debt. Uses bibliometrics and text mining on 56 papers from Web of Science to map the main lines of research and where the field goes next.</span>
             <span class="pp-m"><span>author 4 of 5</span><span class="pp-tag">Corporate finance</span><span class="pp-tag">Text mining</span><span class="pp-tag">Bibliometrics</span><span class="pp-go">doi.org/10.64064/1658-4236.1019 ↗</span></span>
           </a>
         </li>
@@ -2749,7 +2765,7 @@ html.touring .tour-fab::after { display: none; }
             <span class="pp-t">Research Synthesizes in Pro-environmental Behavior in Education: A Text Mining Approach</span>
             <span class="pp-v">Managing Global Transitions · 22(3), 231–251</span>
             <span class="pp-a">Chowdhury Noushin Novera, <b>Mehedi Hasan Ifti</b>, Anh Ngoc Quang Huynh, Ijaj Sadiq, Abul Kalam Azad</span>
-            <span class="pp-s">Bibliometric networks plus LDA topic modelling on the literature about education and environmentally friendly behaviour. Finds 12 distinct research topics and the role of social welfare in raising environmental awareness.</span>
+            <span class="pp-s">Maps the research on education and environmentally friendly behaviour, using citation networks and topic modelling, a method that groups papers by the words they use. Finds 12 distinct research topics, and points to the role of social welfare in raising environmental awareness.</span>
             <span class="pp-m"><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Education</span><span class="pp-tag">Text mining</span><span class="pp-go">doi.org/10.26493/1854-6935.22.231-251 ↗</span></span>
           </a>
           <p class="pp-alt">Also shared as a <a href="https://www.researchgate.net/publication/375828222_Research_Synthesis_in_Pro-environmental_Behaviour_in_Education_A_Text_Mining_Approach" target="_blank" rel="noopener">preprint, November 2023 ↗</a></p>
@@ -2771,7 +2787,7 @@ html.touring .tour-fab::after { display: none; }
             <span class="pp-t">Promoting Pro-Environmental Behavior in Policymaking: A Text-Mining Approach for Literature Review</span>
             <span class="pp-v">Evaluation Review · 48(2), 370–398</span>
             <span class="pp-a">Md. Abul Kalam Azad, <b>Mehedi Hasan Ifti</b>, Chowdhury Noushin Novera, Anh Ngoc Quang Huynh, Esra Sipahi Döngül</span>
-            <span class="pp-s">The first text-mining study of pro-environmental behaviour where policymaking is a central factor. Analyses 30 Scopus publications in R to surface the main research themes and gaps for future work.</span>
+            <span class="pp-s">The first text-mining study of pro-environmental behaviour where policymaking is a central factor. Uses text mining on 30 papers from Scopus to find the main research themes and the gaps left for future work.</span>
             <span class="pp-m"><span>author 2 of 5</span><span class="pp-tag">Sustainability</span><span class="pp-tag">Policy</span><span class="pp-tag">Text mining</span><span class="pp-go">doi.org/10.1177/0193841x231176869 ↗</span></span>
           </a>
         </li>
@@ -2781,7 +2797,7 @@ html.touring .tour-fab::after { display: none; }
             <span class="pp-t">Student Engagement in Online Classes During COVID-19: A Sentiment Analysis</span>
             <span class="pp-v">Bangladesh Journal of Integrated Thoughts · 17(2)</span>
             <span class="pp-a"><b>Mehedi Hasan Ifti</b>, Paolo Saona, Muhammad Tofazzel Hossain, Shahnur Azad Chowdhury, Md. Abul Kalam Azad</span>
-            <span class="pp-s">How students engaged with online classes during the pandemic, measured by running sentiment analysis (Azure Machine Learning) on their written responses.</span>
+            <span class="pp-s">How students engaged with online classes during the pandemic, measured by having software rate the tone of their written answers (sentiment analysis, with Azure Machine Learning).</span>
             <span class="pp-m"><span>first author</span><span class="pp-tag">Education</span><span class="pp-tag">Sentiment analysis</span><span class="pp-tag">Machine learning</span><span class="pp-go">doi.org/10.52805/bjit.v17i2.244 ↗</span></span>
           </a>
         </li>
@@ -2796,12 +2812,12 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">You found the room that isn't on the map. Here's what's behind the pages.</p>
       <dl class="facts" id="bs-stats"></dl>
 
-      <h2>One file</h2>
-      <p>The whole site is a single HTML file: every page, every note, all the styles and all the scripts. No framework and no build step. What sits in the repo is what your browser downloads.</p>
-      <p>A check runs on every push. The scripts must parse, every link inside the site must lead somewhere, and the page and its script must each stay under 75 KB compressed.</p>
+      <h2>One page, one script</h2>
+      <p>The site is one HTML file and one main script. The HTML holds every page, every note and all the styles; the script runs everything that moves. The terminal, the reaction test and the share cards are small extra scripts that load the first time you use them. No framework and no build step. What sits in the repo is what your browser downloads.</p>
+      <p>A check runs every time I publish a change. The code must be valid, every link inside the site must lead somewhere, and the page and its main script must each stay under 75 KB compressed.</p>
 
       <h2>Built by talking</h2>
-      <p>I build it in conversation with Claude Code. I say what I want. It writes the change, checks it in a browser at computer and phone sizes, and ships it. That's what the footer means.</p>
+      <p>I build it by talking to Claude Code, an AI coding agent. I say what I want. It writes the change, checks it in a browser at computer and phone sizes, and publishes it. That's what the footer means.</p>
 
       <h2>The rules it follows</h2>
       <ul class="plain">
@@ -2812,7 +2828,7 @@ html.touring .tour-fab::after { display: none; }
       </ul>
 
       <h2>The live parts</h2>
-      <p>A few small server functions run next to the page: what I'm playing on Spotify, whether I'm in a meeting, the Dhaka weather, the F1 numbers and the meetings heatmap. Keys stay on the server, calendar details never leave it, and the page sets no cookies.</p>
+      <p>A few small programs run on the server to feed the live parts: what I'm playing on Spotify, whether I'm in a meeting, the Dhaka weather, the F1 numbers and the meetings heatmap. Passwords and access keys stay on the server, calendar details never leave it, and the page sets no cookies.</p>
       <p><a class="back" href="#index">← Back to the notebook</a></p>
     </section>
 
@@ -2825,9 +2841,10 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">31 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Easier to read</span><span class="tag t-design">Design</span><p>Plainer words on every page, shorter lines on notes, and every Playground page ends with a way to the next one.</p></li>
         <li><span class="t">Topics</span><span class="tag t-series">Page</span><p>Everything on the site in one place, grouped by topic: notes, the Shelf, research, the Playground and Off the clock. <a href="#topics">See it</a>.</p></li>
         <li><span class="t">T3 Code</span><span class="tag t-series">Page</span><p>A Playground page on the app I run Claude Code in: what it does and how I use it. <a href="#t3code">See it</a>.</p></li>
-        <li><span class="t">Dot matrix covers</span><span class="tag t-design">Design</span><p>Every note now opens with a generative halftone sphere cover, seeded uniquely from the note's number.</p></li>
+        <li><span class="t">Dot matrix covers</span><span class="tag t-design">Design</span><p>Every note now opens with a cover of a dotted sphere, drawn by code. The note's number sets the pattern, so each note gets its own.</p></li>
       </ul>
       <h2 class="cl-d">19 Oct 2026</h2>
       <ul class="log cl-list">
@@ -2837,7 +2854,7 @@ html.touring .tour-fab::after { display: none; }
         <li><span class="t">Stereo by hand</span><span class="tag t-tool">Feature</span><p>Drag the record to scratch it, or hold the cassette to fast-forward.</p></li>
         <li><span class="t">Surprise me</span><span class="tag t-tool">Feature</span><p>Search "surprise me" for a random theme.</p></li>
         <li><span class="t">Challenge a friend</span><span class="tag t-tool">Feature</span><p>After the reaction test, share your best time as a card. The link drops your friend on the start lights with your time to beat.</p></li>
-        <li><span class="t">Share your score</span><span class="tag t-tool">Feature</span><p>The achievements list can turn your secrets found into a card, with the rest left as question marks.</p></li>
+        <li><span class="t">Share your score</span><span class="tag t-tool">Feature</span><p>The achievements list can turn the secrets you've found into a card. The rest show as question marks.</p></li>
         <li><span class="t">Reaction test</span><span class="tag t-tool">Feature</span><p>The F1 start lights, timed. Click when they go out and see your time in milliseconds. Type reaction in the terminal, or open the F1 card.</p></li>
         <li><span class="t">Race weekend</span><span class="tag t-tool">Feature</span><p>From three days before a Grand Prix, the strip at the top counts down to lights out.</p></li>
         <li><span class="t">Secrets counter</span><span class="tag t-tool">Feature</span><p>The footer now says how many secrets the site hides, and how many you've found.</p></li>
@@ -2845,13 +2862,13 @@ html.touring .tour-fab::after { display: none; }
       <h2 class="cl-d">18 Oct 2026</h2>
       <ul class="log cl-list">
         <li><span class="t">Reading progress</span><span class="tag t-tool">Feature</span><p>On any note, a thin line across the top fills as you read, and a small counter shows the minutes left.</p></li>
-        <li><span class="t">Music, live</span><span class="tag t-tool">Feature</span><p>Music under Off the clock now opens the stereo: what I'm playing on Spotify right now, and the three songs before it.</p></li>
+        <li><span class="t">Music, live</span><span class="tag t-tool">Feature</span><p>On the homepage, Music under Off the clock now opens the stereo: what I'm playing on Spotify right now, and the three songs before it.</p></li>
         <li><span class="t">Brew a cup</span><span class="tag t-tool">Feature</span><p>Click the cup on the coffee counter to brew one. Every hundredth cup of the year gets a puff of steam.</p></li>
         <li><span class="t">A real 404</span><span class="tag t-series">Page</span><p>A wrong address now gets a terminal that says so, and guesses the page you meant.</p></li>
         <li><span class="t">Achievements</span><span class="tag t-tool">Feature</span><p>Small badges for poking around. Search "achievements" to see what's left. They live only in your browser.</p></li>
-        <li><span class="t">Live activity</span><span class="tag t-tool">Feature</span><p>The meetings heatmap on the homepage now updates itself from my calendar. Still counts only.</p></li>
+        <li><span class="t">Live activity</span><span class="tag t-tool">Feature</span><p>The meetings heatmap on the homepage now updates itself from my calendar. It still shows counts only, no meeting details.</p></li>
         <li><span class="t">Dhaka right now</span><span class="tag t-tool">Feature</span><p>At the top of every page: the date and time in Dhaka, and the weather outside.</p></li>
-        <li><span class="t">Live F1 numbers</span><span class="tag t-tool">Feature</span><p>The F1 card and the terminal's f1 update themselves after every race, and show when the next one starts in your time.</p></li>
+        <li><span class="t">Live F1 numbers</span><span class="tag t-tool">Feature</span><p>The F1 card and the terminal's f1 command update themselves after every race, and show when the next one starts in your time.</p></li>
         <li><span class="t">Links to sections</span><span class="tag t-tool">Feature</span><p>Hover a heading in any note and click # to copy a link straight to that part.</p></li>
         <li><span class="t">More in the terminal</span><span class="tag t-tool">Feature</span><p>Press ~ and try coffee, fortune, git log, top or ping.</p></li>
         <li><span class="t">Keyboard shortcuts</span><span class="tag t-tool">Feature</span><p>Press ? to see every key the site answers to. R opens a random note.</p></li>
@@ -2868,7 +2885,7 @@ html.touring .tour-fab::after { display: none; }
         <li><span class="t">Tour</span><span class="tag t-tool">Feature</span><p>A one-minute walk through the site. Start it from the square button beside the terminal.</p></li>
         <li><span class="t">Print</span><span class="tag t-tool">Feature</span><p>Any page prints clean. The <a href="#work">Work</a> page prints as a CV.</p></li>
         <li><span class="t">Changelog</span><span class="tag t-series">Page</span><p>This page. New pages, notes and features only.</p></li>
-        <li><span class="t">Move things around</span><span class="tag t-tool">Feature</span><p>Drag the theme tab and the terminal to any edge of the screen. Drag sections and rail links to reorder them.</p></li>
+        <li><span class="t">Move things around</span><span class="tag t-tool">Feature</span><p>Drag the theme tab and the terminal to any edge of the screen. Drag sections and the menu links on the left to reorder them.</p></li>
         <li><span class="t">The Shelf is now the archive</span><span class="tag t-design">Design</span><p>Everything I watch, read, listen to and explore lives on the <a href="#shelf">Shelf</a>. The <a href="#now">Now</a> page shows the latest.</p></li>
         <li><span class="t">A cleaner site</span><span class="tag t-design">Design</span><p>The homepage tells one story from top to bottom, and every page ends with a link to the next one.</p></li>
         <li><span class="t">Whiteboard</span><span class="tag t-series">Page</span><p>A hand-drawn whiteboard I built, modelled on Excalidraw. It lives in the <a href="#whiteboard">Playground</a>.</p></li>
@@ -2890,6 +2907,7 @@ html.touring .tour-fab::after { display: none; }
         <li><span class="t">Themes</span><span class="tag t-tool">Feature</span><p>An appearance panel. Pick a theme, or change colours, background and type yourself.</p></li>
         <li><span class="t">Launch</span><span class="tag t-series">Page</span><p>Ifti's Notebook goes live with the <a href="#now">Now</a>, <a href="#work">Work</a> and <a href="#shelf">Shelf</a> pages and notes N°001 to N°004.</p></li>
       </ul>
+      <p><a class="back" href="#index">← Back to the notebook</a></p>
     </section>
   </main>
 
@@ -2939,7 +2957,7 @@ html.touring .tour-fab::after { display: none; }
   </ol>
   <p class="grp">Playground</p>
   <ol>
-    <li class="wb-nav"><a class="nav" href="#whiteboard"><span class="n">06</span><span class="t">Whiteboard</span><span class="d">tool</span></a></li>
+    <li class="wb-nav"><a class="nav" href="#whiteboard"><span class="n">06</span><span class="t">Whiteboard</span><span class="d">computer only</span></a></li>
     <li><a class="nav" href="#paperclip"><span class="n">07</span><span class="t">Paperclip</span><span class="d">agent</span></a></li>
     <li><a class="nav" href="#hermes"><span class="n">08</span><span class="t">Hermes Agent</span><span class="d">agent</span></a></li>
     <li><a class="nav" href="#t3code"><span class="n">09</span><span class="t">T3 Code</span><span class="d">coding</span></a></li>

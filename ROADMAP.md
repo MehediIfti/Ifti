@@ -10,11 +10,11 @@ It's a personal site. The best ones (Patrick Collison, Maggie Appleton, Gwern, D
 
 ## Show the range
 1. [ ] [Recap email builder in the Playground](https://github.com/MehediIfti/Ifti/issues/28): N°002 as a tool you can use · 2x20-min
-2. [ ] [Topics: everything I do on one page](https://github.com/MehediIfti/Ifti/issues/51), from work to F1 and coffee · 2x20-min
+2. [x] [Topics: everything I do on one page](https://github.com/MehediIfti/Ifti/issues/51), from work to F1 and coffee · 2x20-min
 
 ## Make it easy
 3. [ ] [Free-slot finder under Book a call](https://github.com/MehediIfti/Ifti/issues/26) · 2x20-min
-4. [ ] [Lighter first load on phones](https://github.com/MehediIfti/Ifti/issues/48) · 2x20-min
+4. [x] [Lighter first load on phones](https://github.com/MehediIfti/Ifti/issues/48) · 2x20-min
 5. [ ] [Status and confidence line on every note](https://github.com/MehediIfti/Ifti/issues/52) · 20-min · waiting on me
 
 Say "next issue" to start the top one.

@@ -704,6 +704,75 @@
     g.querySelector('.grp-t').addEventListener('click', function () { grpSet(g, g.classList.contains('shut'), true); });
   });
 
+  // ============ TOPICS UPDATE: the #topics page, the whole site grouped by what it's about ============
+  // Built before the first show(), so a link straight to one topic (#topic-ai) opens on it.
+  // Each row is [id, name, what goes in it]. Rename, reorder or cut rows here; the page, its chips and search follow.
+  //   tags:   note tags (each note's data-tags), so a new note files itself under every topic its tags match
+  //   shelf:  a Shelf list ('list:watching'), a tag colour ('.t-book') or the start of an item's title ('The Mom Test')
+  //   papers: every paper on the Research page · pages: page ids · pops: Off the clock cards (data-pop) · now: Now page lines, by label
+  // A note whose tags match no topic goes under "Everything else", so nothing goes missing.
+  var TOPICS = [
+    ['sales', 'Sales and partnerships', { tags: 'sales enterprise stakeholders scope kickoff communication', shelf: ['Never Split the Difference', 'The Mom Test'], now: 'Practising', pages: 'work' }],
+    ['trust', 'Trust and positioning', { tags: 'trust positioning' }],
+    ['ai', 'AI agents', { tags: 'ai agents', shelf: ['.t-ai', 'Theo'], now: 'Building', pages: 'paperclip hermes t3code' }],
+    ['research', 'Research', { papers: true, pages: 'research education' }],
+    ['f1', 'F1', { pops: 'f1' }],
+    ['coffee', 'Coffee', { now: 'Coffee' }],
+    ['music', 'Music', { shelf: ['.t-music'], pops: 'music guitar' }],
+    ['podcasts', 'Podcasts', { tags: 'podcasts', shelf: ['.t-pod'], pops: 'podcasts' }],
+    ['books', 'Books and film', { shelf: ['list:reading', 'list:watching'] }]
+  ];
+  (function () {
+    var box = document.getElementById('tp-list'), dir = document.querySelector('.tp-dir'); if (!box) return;
+    var words = function (s) { return String(s || '').split(/\s+/).filter(Boolean); };
+    var txt = function (el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; };
+    var all = function (sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); };
+    // Every source keeps its own order, which is already newest first: notes, papers, then the Shelf, the Now page, pages and cards.
+    var notes = all('article.page[id^="n-"]').map(function (n) {
+      return { tags: words(n.getAttribute('data-tags')), k: 'N°' + n.id.slice(2), t: txt(n.querySelector('h1')), d: txt(document.querySelector('#notes .entries a[href="#' + n.id + '"] .d')), go: '#' + n.id };
+    });
+    var papers = all('#research .papers > li > a.pp').map(function (a) { return { k: 'Paper', t: txt(a.querySelector('.pp-t')), d: txt(a.querySelector('.pp-y')).slice(0, 4), go: a.getAttribute('href'), ext: true }; });
+    var shelf = all('#shelf [data-shelf] > li').map(function (li) {
+      var sec = li.parentElement.getAttribute('data-shelf');
+      return { li: li, sec: sec, k: txt(li.querySelector('.tag')) || 'Shelf', t: txt(li.querySelector('.t')), d: txt(document.getElementById('shelf-' + sec)), go: '#shelf-' + sec };
+    });
+    function inShelf(rule, x) { return rule.indexOf('list:') === 0 ? x.sec === rule.slice(5) : rule[0] === '.' ? !!x.li.querySelector(rule) : x.t.indexOf(rule) === 0; }
+    function rows(r) {
+      var out = [], tags = words(r.tags);
+      notes.forEach(function (n) { if (n.tags.some(function (t) { return tags.indexOf(t) >= 0; })) { n.filed = true; out.push(n); } });
+      if (r.papers) out = out.concat(papers);
+      shelf.forEach(function (x) { if ((r.shelf || []).some(function (rule) { return inShelf(rule, x); })) out.push(x); });
+      words(r.now).forEach(function (k) {
+        all('#now dt').forEach(function (dt) { if (txt(dt) === k && dt.nextElementSibling) out.push({ k: 'Now', t: txt(dt.nextElementSibling), d: k, go: '#now' }); });
+      });
+      words(r.pages).forEach(function (id) {
+        var pg = document.getElementById(id); if (!pg) return;
+        out.push({ k: 'Page', t: txt(pg.querySelector('h1')), d: txt(pg.querySelector('.label')).split(' · ')[0], go: '#' + id });
+      });
+      words(r.pops).forEach(function (k) {
+        var li = document.querySelector('.offclock [data-pop="' + k + '"]');
+        if (li) out.push({ k: 'Hobby', t: txt(li.querySelector('.oc-go')), d: 'Off the clock', go: '#index', pop: k });
+      });
+      return out;
+    }
+    function list(id, name, items) {
+      return '<h2 id="topic-' + id + '" data-n="' + items.length + '">' + esc(name) + '</h2><ul class="entries">' + items.map(function (x) {
+        return '<li><a href="' + esc(x.go) + '"' + (x.ext ? ' target="_blank" rel="noopener"' : '') + (x.pop ? ' data-pop-go="' + x.pop + '"' : '') + '><span class="no">' + esc(x.k) + '</span><span class="t">' + esc(x.t) + (x.ext ? '<span class="ext">↗</span>' : '') + '</span><span class="d">' + esc(x.d) + '</span></a></li>';
+      }).join('') + '</ul>';
+    }
+    var built = TOPICS.map(function (r) { return [r[0], r[1], rows(r[2])]; }).filter(function (r) { return r[2].length; });
+    var rest = notes.filter(function (n) { return !n.filed; });
+    if (rest.length) built.push(['else', 'Everything else', rest]);
+    box.innerHTML = built.map(function (r) { return list(r[0], r[1], r[2]); }).join('');
+    if (dir) dir.innerHTML = built.map(function (r) { return '<a href="#topic-' + r[0] + '">' + esc(r[1]) + ' <span>' + r[2].length + '</span></a>'; }).join('');
+    // An Off the clock row opens that card's pop-up, the same as on the homepage.
+    box.addEventListener('click', function (e) {
+      var a = e.target.closest('[data-pop-go]'); if (!a) return;
+      var go = document.querySelector('.offclock [data-pop="' + a.getAttribute('data-pop-go') + '"] .oc-go');
+      if (go) { e.preventDefault(); go.click(); }
+    });
+  })();
+
   function show() {
     var first = document.getElementById('first-page'); if (first) first.remove();
     var id = (location.hash || '#index').slice(1);
@@ -727,7 +796,7 @@
     buildMeta(target, id); pageNext(target, id);
     document.getElementById('m-path').innerHTML = '~/' + (id === 'index' ? '' : id.indexOf('n-') === 0 ? 'notes/<b>' + id.slice(2) + '</b>' : '<b>' + id + '</b>');
     sheetOpen(false);
-    document.querySelectorAll('.m-more').forEach(function (b) { b.classList.toggle('on', ['paperclip', 'hermes', 't3code', 'whiteboard', 'research', 'education'].indexOf(id) >= 0); });
+    document.querySelectorAll('.m-more').forEach(function (b) { b.classList.toggle('on', ['topics', 'paperclip', 'hermes', 't3code', 'whiteboard', 'research', 'education'].indexOf(id) >= 0); });
     if (id === 'work' && radarPlay) radarPlay();
     var here = document.getElementById('here'); if (here && target.firstElementChild !== here) target.prepend(here); // Dhaka strip tops every page
     window.scrollTo(0, 0);
@@ -1523,13 +1592,14 @@
       var groups = {};
       for (var i = 0; i < land.length; i++) {
         var d = land[i], p = proj(d[0], d[1], R, cx, cy); if (p[2] <= 0) continue;
-        var kind = d[2] === 'x' ? 'x' : d[2] === 'b' ? 'b' : 'o', k = kind + Math.min(7, Math.floor(p[2] * 8)), sz = kind === 'x' ? 1.8 : 2.4;
-        (groups[k] || (groups[k] = new Path2D())).rect(p[0] - 1, p[1] - 1, sz, sz);
+        var k = (d[2] === 'x' ? 'x' : d[2] === 'b' ? 'b' : 'o') + Math.min(7, Math.floor(p[2] * 8));
+        (groups[k] || (groups[k] = [])).push(p[0] - 1, p[1] - 1);
       }
       for (var gk in groups) {
+        var g = groups[gk], sz = gk[0] === 'x' ? 1.8 : 2.4;
         ctx.globalAlpha = 0.25 + 0.75 * (+gk.slice(1) + 0.5) / 8;
         ctx.fillStyle = gk[0] === 'x' ? cols['--surface1'] : gk[0] === 'b' ? cols['--green'] : cols['--peach'];
-        ctx.fill(groups[gk]);
+        for (var j = 0; j < g.length; j += 2) ctx.fillRect(g[j], g[j + 1], sz, sz);
       }
       ctx.globalAlpha = 1;
       SITES.slice(1).forEach(function (st) {

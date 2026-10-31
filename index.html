@@ -1236,6 +1236,10 @@ html.glitch body::before { content: ""; position: fixed; inset: 0; z-index: 105;
 .shelf-dir a { font-family: var(--mono); font-size: var(--s-0); text-decoration: none; color: var(--subtext1); border: 1px solid var(--rule); padding: 0.3rem 0.65rem; }
 .shelf-dir a:hover { color: var(--accent); border-color: currentColor; }
 .shelf-dir span { color: var(--muted); margin-left: 0.3rem; }
+/* Topics: one list per topic, built by TOPICS UPDATE in app.js. The count sits in ::after so search reads the heading without it. */
+#tp-list h2[data-n]::after { content: attr(data-n); margin-left: 0.5rem; font-family: var(--mono); font-size: var(--s-0); font-weight: 400; color: var(--muted); vertical-align: 0.15em; }
+#tp-list .entries { margin-bottom: 0.5rem; }
+#tp-list .entries .no { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .log-more { margin-top: 0.6rem; font-size: 0.9375rem; }
 
 /* Move things around: floating buttons, section grips, drop line */
@@ -1924,6 +1928,7 @@ html.touring .tour-fab::after { display: none; }
       <li><a class="nav" href="#notes"><kbd>3</kbd>Notes</a></li>
       <li><a class="nav" href="#work"><kbd>4</kbd>Work</a></li>
       <li><a class="nav" href="#shelf"><kbd>5</kbd>Shelf</a></li>
+      <li><a class="nav" href="#topics"><kbd aria-hidden="true">&nbsp;</kbd>Topics</a></li>
     </ol>
     <div class="rail-grp" data-grp="playground">
       <button type="button" class="name grp-t" aria-expanded="true" aria-controls="grp-playground">Playground<i aria-hidden="true"></i></button>
@@ -2453,6 +2458,15 @@ html.touring .tour-fab::after { display: none; }
     })();
     </script>
 
+    <section class="page" id="topics">
+      <p class="label">Map</p>
+      <!-- TOPICS UPDATE lives in app.js: the topics, and which note tags, Shelf items, pages and cards go in each. This page fills itself from it. -->
+      <h1>Topics</h1>
+      <p class="lede">Everything on this site, grouped by what it's about, from client work to what I do off the clock.</p>
+      <nav class="shelf-dir tp-dir" aria-label="Topics"></nav>
+      <div id="tp-list"></div>
+    </section>
+
     <!-- ============ PLAYGROUND ============ -->
     <!-- PLAYGROUND: agents and workflows I work with. One page each. -->
     <section class="page pg" id="paperclip" style="--pg: var(--peach)">
@@ -2811,6 +2825,7 @@ html.touring .tour-fab::after { display: none; }
       <p class="lede">New pages, notes and features, newest first.</p>
       <h2 class="cl-d">31 Oct 2026</h2>
       <ul class="log cl-list">
+        <li><span class="t">Topics</span><span class="tag t-series">Page</span><p>Everything on the site in one place, grouped by topic: notes, the Shelf, research, the Playground and Off the clock. <a href="#topics">See it</a>.</p></li>
         <li><span class="t">T3 Code</span><span class="tag t-series">Page</span><p>A Playground page on the app I run Claude Code in: what it does and how I use it. <a href="#t3code">See it</a>.</p></li>
         <li><span class="t">Dot matrix covers</span><span class="tag t-design">Design</span><p>Every note now opens with a generative halftone sphere cover, seeded uniquely from the note's number.</p></li>
       </ul>
@@ -2920,6 +2935,7 @@ html.touring .tour-fab::after { display: none; }
     <li><a class="nav" href="#notes"><span class="n">03</span><span class="t">Notes</span><span class="d" id="m-notecount"></span></a></li>
     <li><a class="nav" href="#work"><span class="n">04</span><span class="t">Work</span><span class="d">Musemind</span></a></li>
     <li><a class="nav" href="#shelf"><span class="n">05</span><span class="t">Shelf</span><span class="d">archive</span></a></li>
+    <li><a class="nav" href="#topics"><span class="n">··</span><span class="t">Topics</span><span class="d">by subject</span></a></li>
   </ol>
   <p class="grp">Playground</p>
   <ol>

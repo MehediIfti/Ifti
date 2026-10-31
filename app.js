@@ -564,9 +564,10 @@
     stBoth('.st-st', function (t) { t.textContent = d.playing ? 'On air' : d.playedAt ? 'Last played' : 'Paused'; });
     stBoth('.st-title', function (t) { t.textContent = d.title; t.title = d.title; });
     stBoth('.st-artist', function (t) { t.textContent = d.artist || (d.kind === 'episode' ? 'Podcast' : ''); });
-    stBoth('.st-art', function (img) { if (d.art) { if (img.getAttribute('src') !== d.art) img.src = d.art; img.hidden = false; } else img.hidden = true; });
-    stBoth('.st-open', function (a) { if (d.url) a.href = d.url; else a.removeAttribute('href'); });
-    el.querySelector('.st-open').hidden = !d.url;
+    stBoth('.st-art', function (img) { if (/^https:\/\//.test(d.art || '')) { if (img.getAttribute('src') !== d.art) img.src = d.art; img.hidden = false; } else img.hidden = true; });
+    var stUrl = /^https:\/\//.test(d.url || '') ? d.url : null;
+    stBoth('.st-open', function (a) { if (stUrl) a.href = stUrl; else a.removeAttribute('href'); });
+    el.querySelector('.st-open').hidden = !stUrl;
     stTick(); stFit();
   }
   function stTick() {
@@ -794,7 +795,7 @@
       if (coverCvs) setTimeout(function () { drawNoteCover(coverCvs, id); }, 0);
     }
     buildMeta(target, id); pageNext(target, id);
-    document.getElementById('m-path').innerHTML = '~/' + (id === 'index' ? '' : id.indexOf('n-') === 0 ? 'notes/<b>' + id.slice(2) + '</b>' : '<b>' + id + '</b>');
+    document.getElementById('m-path').innerHTML = '~/' + (id === 'index' ? '' : id.indexOf('n-') === 0 ? 'notes/<b>' + esc(id.slice(2)) + '</b>' : '<b>' + esc(id) + '</b>');
     sheetOpen(false);
     document.querySelectorAll('.m-more').forEach(function (b) { b.classList.toggle('on', ['topics', 'paperclip', 'hermes', 't3code', 'whiteboard', 'research', 'education'].indexOf(id) >= 0); });
     if (id === 'work' && radarPlay) radarPlay();

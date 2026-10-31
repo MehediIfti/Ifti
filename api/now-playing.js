@@ -20,15 +20,20 @@ function store() {
     return (await r.json()).result;
   };
   return {
-    read: async () => { try { return JSON.parse(await run(['GET', KEY]) || '[]'); } catch (e) { return []; } },
+    read: async () => { try { const l = JSON.parse(await run(['GET', KEY]) || '[]'); return Array.isArray(l) ? l : []; } catch (e) { return []; } },
     write: list => run(['SET', KEY, JSON.stringify(list)]).catch(() => {})
   };
 }
 
+// Only https links leave this function, whether they came from Spotify or from the saved list, so a bad value can't
+// turn into a javascript: link or an http image on the page.
+const https = u => typeof u === 'string' && /^https:\/\//.test(u) ? u : null;
+const clean = t => t && typeof t === 'object' ? { ...t, title: String(t.title || ''), artist: String(t.artist || ''), url: https(t.url), art: https(t.art), playedAt: String(t.playedAt || '') } : null;
+
 // Newest first, one row per song (the latest time it was heard), at most KEEP rows.
 function merge(...lists) {
   const seen = new Set();
-  return lists.flat().filter(t => t && t.title && t.playedAt)
+  return lists.flat().map(clean).filter(t => t && t.title && t.playedAt)
     .sort((a, b) => b.playedAt.localeCompare(a.playedAt))
     .filter(t => { const k = t.url || t.title + '|' + t.artist; return !seen.has(k) && seen.add(k); })
     .slice(0, KEEP);
@@ -55,8 +60,8 @@ function shape(item) {
     kind: episode ? 'episode' : 'track',
     title: item.name,
     artist: episode ? (item.show && item.show.name) || '' : (item.artists || []).map(a => a.name).join(', '),
-    art: (images[1] || images[0] || {}).url || null,
-    url: (item.external_urls && item.external_urls.spotify) || null,
+    art: https((images[1] || images[0] || {}).url),
+    url: https(item.external_urls && item.external_urls.spotify),
     duration: item.duration_ms || 0
   };
 }
